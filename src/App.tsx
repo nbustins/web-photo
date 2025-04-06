@@ -1,4 +1,5 @@
 import { ConfigProvider, Layout, Menu } from 'antd';
+import SubMenu from 'antd/es/menu/SubMenu';
 import { JSX, useState } from 'react';
 
 
@@ -50,6 +51,11 @@ export default function App(): JSX.Element {
             }}
           >
             <Menu.Item key="home">Inici</Menu.Item>
+            <SubMenu key="store" title="Botiga">
+              <Menu.Item key="store:shirts">Samarretes</Menu.Item>
+              <Menu.Item key="store:mugs">Tasses</Menu.Item>
+              <Menu.Item key="store:books">Llibres</Menu.Item>
+            </SubMenu>
             <Menu.Item key="prices">Preus</Menu.Item>
             <Menu.Item key="store">Botiga</Menu.Item>
             <Menu.Item key="book">Reserves</Menu.Item>

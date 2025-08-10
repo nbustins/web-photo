@@ -40,3 +40,44 @@
 .read-the-docs {
   color: #888;
 }
+
+.carousel-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-images {
+  display: flex;
+  transition: transform 1s ease-in-out; /* Smooth sliding transition */
+  will-change: transform; /* Optimization for smooth animation */
+}
+
+.carousel-item {
+  flex: 0 0 20%; /* 100% / 5 images */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Animation effect when new images enter from the right */
+.carousel-item {
+  animation: slideInFromRight 1s ease-in-out;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%); /* Start from right side */
+  }
+  100% {
+    transform: translateX(0); /* Move into the normal position */
+  }
+}

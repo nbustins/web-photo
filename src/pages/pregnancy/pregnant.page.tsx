@@ -1,8 +1,6 @@
 import { Typography, Row, Col, Flex } from "antd";
 import { FC } from "react";
-import PhotoItem from "./components/photoComponent";
-import PricingCard from "./components/pricingCardComponent";
-import ImageSlider from "./components/carrousel";
+import { PhotoItem, PricingCard, ImageSlider } from "@components";
 import { motion } from "framer-motion";
 
 const { Title } = Typography;
@@ -122,62 +120,6 @@ export const PregnantPage : FC = () => (
         />
 
     </Flex>
-      {/* <Col xs={24} sm={12} md={8} style={{ height: '100%' }}      >
-        <PricingCard
-          title="Completa"
-          features={[
-            "1 hora de sessió",
-            "Guia per anar preparats a la sessió",
-            "Vestuari inclòs",
-            "Maquillatge i pentinat",
-            "Totes les fotos incloses",
-            "5 fotos impreses de 18x13",
-            "Taco de fusta amb doble foto",
-          ]}
-          price="290€"
-        />
-      </Col>
-
-      <Col xs={24} sm={12} md={8} style={{ height: '100%' }} >
-        <PricingCard
-          title="Bàsica"
-          features={[
-            "1 hora de sessió",
-            "Guia per anar preparats a la sessió",
-            "Vestuari inclòs",
-            <>
-              Entrega de 20 fotos editades <br />
-              <strong>(galeria completa +50€)</strong>
-            </>,
-            "5 fotos impreses de 10x15",
-            <br/>
-            
-          ]}
-          price="200€"
-        />
-      </Col>
-
-      <Col xs={24} sm={12} md={8} style={{ height: '100%' }} >
-        <PricingCard
-          title="Exterior"
-          features={[
-            "1 hora de sessió",
-            "Guia per anar preparats a la sessió",
-            "Vestuari inclòs",
-            <>
-              Entrega de 20 fotos editades <br />
-              <strong>(galeria completa +50€)</strong>
-            </>,
-            "5 fotos impreses de 10x15",
-            <br/>
-
-          ]}
-          price="215€"
-        />
-      </Col> */}
-    </Row>
-
-
-   
+  </Row> 
 </div>
 );

@@ -1,6 +1,6 @@
 import { Typography, Row, Col, Flex } from "antd";
 import { FC } from "react";
-import { PhotoItem, PricingCard, ImageSlider, AdviceText } from "@components";
+import { PhotoItem, PricingCard, ImageSlider, AdviceText } from "../../components";
 import { motion } from "framer-motion";
 
 const { Title } = Typography;

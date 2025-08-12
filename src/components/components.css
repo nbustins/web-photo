@@ -1,0 +1,53 @@
+/* Updated CSS */
+.carousel-container {
+  width: 100%;
+  padding: 2rem;
+}
+
+.slide-group {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px; /* Set minimum carousel height */
+  gap: 20px;
+}
+
+.image-container {
+  height: 300px; /* Fixed height for all images */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #f0f0f0; /* Fallback background */
+}
+
+.rotating-image {
+  animation: rotate 15s infinite linear;
+  transition: transform 0.3s ease;
+}
+
+/* Maintain aspect ratio on different screens */
+@media (max-width: 768px) {
+  .image-container {
+    height: 200px;
+    width: calc(50% - 10px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-container {
+    height: 150px;
+    width: 100% !important;
+  }
+}
+
+/* Fade */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn ease-in 1s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

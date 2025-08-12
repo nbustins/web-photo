@@ -1,15 +1,33 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import '../index.css';
 
 export const HomePage: FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 600px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const bgImage = isMobile
+    ? "url(photos/beb-mobile.png)" 
+    : "url(photos/beb.jpg)";      
+
   return (
     <div
       style={{
-        width: '100%',
-        height: '100vh', // full viewport height
-        backgroundImage: 'url(photos/beb.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+         minHeight: 'calc(100vh - 140px)', 
+      overflow: 'hidden',
+      backgroundImage: bgImage,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      margin: 0,
+      padding: 0,
+      boxSizing: 'border-box',
       }}
     />
   );

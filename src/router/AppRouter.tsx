@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { AppRoutes } from '../model/routes.model';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
-import { HomePage } from '../pages/home.page';
+import { HomePage } from '@pages/home.page';
 import { MainLayout } from '../layouts/main.layout';
-import { FamiliarPage } from '../pages/familiar.page';
-import { PregnantPage } from '../pages/pregnancy/pregnant.page';
-import { NewBornPage } from '../pages/newborn.page';
-import { UnderConstruction } from '../pages/under.construction';
+import { FamiliarPage } from '@pages/familiar.page';
+import { PregnantPage } from '@pages/pregnancy/pregnant.page';
+import { NewBornPage } from '@pages/newborn/newborn.page';
+import { UnderConstruction } from '@pages/under.construction';
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.home]: () => <HomePage/>,

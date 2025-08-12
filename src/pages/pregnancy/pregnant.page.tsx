@@ -57,7 +57,6 @@ export const PregnantPage : FC = () => (
         <PhotoItem key={index} src={path} alt="test" />
       ))}
     </Row>
-
   </motion.div>
 
   {/* Text why to do this session */}

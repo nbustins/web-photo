@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
 import "./components.css"
 
-const RotatingImageCarousel = ({ images }: { images: string[] }) => {
+interface CarouselProps {
+  images: string[];
+  visibleCount?: number;
+}
+
+const RotatingImageCarousel = ({ images, visibleCount = 3 }: CarouselProps) => {
   // Use local state for the carousel order. Initially it's the same as the original images
   const [carouselImages, setCarouselImages] = useState(images);
   // isAnimating controls whether to animate the slide-out effect
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Reset carousel if images prop changes
+  useEffect(() => {
+    setCarouselImages(images);
+  }, [images]);
 
   useEffect(() => {
     // Set an interval to rotate the images every 3 seconds
@@ -25,7 +35,7 @@ const RotatingImageCarousel = ({ images }: { images: string[] }) => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [images]);
+  }, [carouselImages, visibleCount]);
 
   return (
     <div
@@ -39,7 +49,7 @@ const RotatingImageCarousel = ({ images }: { images: string[] }) => {
       <div
         style={{
           display: 'flex',
-          transform: isAnimating ? 'translateX(-30%)' : 'translateX(0)',
+          transform: isAnimating ? `translateX(-${100 / visibleCount}%)` : 'translateX(0)',
           transition: isAnimating ? 'transform 1s ease-in-out' : 'none',
         }}
       >
@@ -47,8 +57,8 @@ const RotatingImageCarousel = ({ images }: { images: string[] }) => {
           <div
             key={index}
             style={{
-              flex: '0 0 30%', // 5 images displayed side-by-side (100% / 5)
-              width : "100%"
+              flex: `0 0 ${100 / visibleCount}%`,
+              width: '100%',
             }}
           >
             <img

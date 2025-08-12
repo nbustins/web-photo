@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import '../index.css';
 
 export const HomePage: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -12,19 +13,21 @@ export const HomePage: FC = () => {
   }, []);
 
   const bgImage = isMobile
-    ? "url(photos/beb-mobile.png)" // your mobile image
-    : "url(photos/beb.png)";      // your desktop image
+    ? "url(photos/beb-mobile.png)" 
+    : "url(photos/beb.jpg)";      
 
   return (
     <div
       style={{
-        width: '100vw',
-        minHeight: '100vh',
-        backgroundImage: bgImage,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        boxSizing: 'border-box',
+         minHeight: 'calc(100vh - 140px)', 
+      overflow: 'hidden',
+      backgroundImage: bgImage,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      margin: 0,
+      padding: 0,
+      boxSizing: 'border-box',
       }}
     />
   );

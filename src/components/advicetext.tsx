@@ -5,3 +5,5 @@ export const AdviceText: FC<{ children: ReactNode }> = ({ children }) => (
     {children}
   </span>
 );
+
+export default AdviceText;

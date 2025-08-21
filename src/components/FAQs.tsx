@@ -1,0 +1,87 @@
+import React from "react";
+import { Row, Col, Typography } from "antd";
+
+const { Title, Text } = Typography;
+
+interface FAQItem {
+  title: string;
+  text: React.ReactNode;
+}
+
+interface FAQsProps {
+  imageSrc: string;
+  imageAlt?: string;
+  faqs: FAQItem[];
+}
+
+const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) => (
+  <div
+    style={{
+      background: "#FFF9E5", // cream yellow
+      padding: "3rem",
+      borderRadius: "0",
+      width: "100%",
+      boxSizing: "border-box",
+    }}
+  >
+    <Row gutter={[32, 32]} align="middle" justify="center">
+      {/* Left column: Title and image */}
+      <Col xs={24} md={8} style={{ textAlign: "center" }}>
+        <Title
+          level={2}
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 700,
+            fontSize: "3rem",
+            marginBottom: "2rem",
+            color: "black",
+          }}
+        >
+          PREGUNTES<br />FREQÜENTS
+          <hr
+            style={{
+              border: "none",
+              height: "3px",
+              width: "60%",
+              margin: "1rem auto",
+              background: "black",
+              borderRadius: "3px",
+            }}
+          />
+        </Title>
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          style={{
+            width: "100%",
+            borderRadius: "1rem",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+            margin: "2rem auto",
+            display: "block",
+          }}
+        />
+      </Col>
+      {/* Right column: FAQ list */}
+      <Col xs={24} md={16}>
+        {faqs.map((faq, idx) => (
+          <div key={idx} style={{ marginBottom: "2rem" }}>
+            <Title
+              level={4}
+              style={{
+                fontSize: "1.5rem",
+                marginBottom: "0.5rem",
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 800,
+              }}
+            >
+              {faq.title}
+            </Title>
+            <Text style={{ fontSize: "1.2rem", color: "#333" }}>{faq.text}</Text>
+          </div>
+        ))}
+      </Col>
+    </Row>
+  </div>
+);
+
+export default FAQs;

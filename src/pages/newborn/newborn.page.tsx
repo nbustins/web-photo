@@ -3,11 +3,12 @@ import { FC } from "react";
 import { motion } from "framer-motion";
 import { PhotoItem, AdviceText,PricingCard,ImageSlider  } from "../../components";
 import FAQs from "../../components/FAQs";
+import { getPublicPath } from "../../utils/pathUtils";
 
 const { Title } = Typography;
 
-const photoPaths: string[] = Array.from({ length: 10 }, (_, i) => `/newborn/${i + 1}.jpg`);
-const rotPhotoPaths: string[] = Array.from({ length: 4 }, (_, i) => `/newborn/rot_${i + 1}.jpg`);
+const photoPaths: string[] = Array.from({ length: 10 }, (_, i) => getPublicPath(`/newborn/${i + 1}.jpg`));
+const rotPhotoPaths: string[] = Array.from({ length: 4 }, (_, i) => getPublicPath(`/newborn/rot_${i + 1}.jpg`));
 
 const rowStyle = {
   padding: "30px",
@@ -89,7 +90,7 @@ export const NewBornPage : FC = () => (
 
         {/* Wide photo at the top */}
         <img
-        src="/newborn/gran_new_born.jpg"
+        src={getPublicPath("/newborn/gran_new_born.jpg")}
         alt="Newborn session cover"
         style={{
           width: "100%",
@@ -180,7 +181,7 @@ export const NewBornPage : FC = () => (
     </div>
     
     <FAQs
-      imageSrc="/newborn/rot_3.jpg"
+      imageSrc={getPublicPath("/newborn/rot_3.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

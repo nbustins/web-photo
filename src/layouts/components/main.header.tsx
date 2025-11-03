@@ -3,6 +3,7 @@ import { Header } from "antd/es/layout/layout";
 import { AppRoutes} from "../../model/routes.model";
 import { useNavigate } from "react-router-dom";
 import { FC, useState } from "react";
+import { getPublicPath } from "../../utils/pathUtils";
 
 
 const getHeaderStyle = () => ({
@@ -59,7 +60,7 @@ export const MainHeader : FC = () => {
 
     return (
         <Header style={getHeaderStyle()}>
-        <img src="/Logo.png" alt="Logo" style={getImageLogoStyle()} onClick={() => navigate(AppRoutes.home)} />
+        <img src={getPublicPath("/Logo.png")} alt="Logo" style={getImageLogoStyle()} onClick={() => navigate(AppRoutes.home)} />
         <Menu
           theme="light"
           mode="horizontal"

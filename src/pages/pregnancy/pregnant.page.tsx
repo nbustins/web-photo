@@ -3,6 +3,7 @@ import { FC } from "react";
 import { PhotoItem, PricingCard, ImageSlider, AdviceText } from "../../components";
 import { motion } from "framer-motion";
 import FAQs from "../../components/FAQs";
+import { getPublicPath } from "../../utils/pathUtils";
 
 const { Title } = Typography;
 
@@ -12,8 +13,15 @@ const rowStyle = {
   display : "flex"
 }
 
-const photoPaths: string[] = Array.from({ length: 3 }, (_, i) => `/pregnancy/${i + 1}.jpg`);
-const rotPhotoPaths: string[] = Array.from({ length: 4 }, (_, i) => `/pregnancy/rot_${i + 1}.jpg`);
+const photoPaths: string[] = Array.from(
+  { length: 3 },
+  (_, i) => getPublicPath(`pregnancy/${i + 1}.jpg`)
+);
+
+const rotPhotoPaths: string[] = Array.from(
+  { length: 4 },
+  (_, i) => getPublicPath(`pregnancy/rot_${i + 1}.jpg`)
+);  
 
 const containerVariants = {
   hidden: { opacity: 1 },
@@ -124,7 +132,7 @@ export const PregnantPage : FC = () => (
     <Row gutter={[24, 24]} justify="center" style={rowStyle}>
     <Col xs={24} md={24} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
       <img
-        src="/pregnancy/gran.jpg"
+        src={getPublicPath("/pregnancy/gran.jpg")}
         alt="Imatge de la mare embarassada"
         style={{
           width: "100%",
@@ -196,7 +204,7 @@ export const PregnantPage : FC = () => (
     </div>
     
     <FAQs
-      imageSrc="/pregnancy/rot_4.jpg"
+      imageSrc={getPublicPath("/pregnancy/rot_4.jpg")}
       faqs={[
         { title: "QUINA SETMANA ÉS REALITZA LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },
@@ -207,3 +215,5 @@ export const PregnantPage : FC = () => (
   </>
 
 );
+
+

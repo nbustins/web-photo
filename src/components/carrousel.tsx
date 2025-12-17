@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import "./components.css"
+import { radii } from '../styles/tokens/radii';
 
 interface CarouselProps {
   images: string[];
@@ -37,47 +38,57 @@ const RotatingImageCarousel = ({ images, visibleCount = 3 }: CarouselProps) => {
     return () => clearInterval(interval);
   }, [carouselImages, visibleCount]);
 
-  return (
+ return (
+  <div
+    style={{
+      width: "100%",
+      overflow: "hidden",
+      position: "relative",
+    }}
+  >
     <div
       style={{
-        width: '100%',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        position: 'relative',
+        display: "flex",
+        transform: isAnimating
+          ? `translateX(-${100 / visibleCount}%)`
+          : "translateX(0)",
+        transition: isAnimating ? "transform 1s ease-in-out" : "none",
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          transform: isAnimating ? `translateX(-${100 / visibleCount}%)` : 'translateX(0)',
-          transition: isAnimating ? 'transform 1s ease-in-out' : 'none',
-        }}
-      >
-        {carouselImages.map((image, index) => (
+      {carouselImages.map((image, index) => (
+        <div
+          key={index}
+          style={{
+            flex: `0 0 ${100 / visibleCount}%`,
+            width: "100%",
+            padding: "1em",
+          }}
+        >
           <div
-            key={index}
             style={{
-              flex: `0 0 ${100 / visibleCount}%`,
-              width: '100%',
+              width: "100%",
+              aspectRatio: "2 / 3", // vertical
+              borderRadius: radii.md,
+              overflow: "hidden",
             }}
           >
             <img
               src={image}
               alt={`carousel-image-${index}`}
               style={{
-                width: '100%',
-                height: 'auto', // maintain aspect ratio
-                display: 'block',
-                padding : "1em",
-                borderRadius : "1.5em"
-                
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
               }}
             />
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
-  );
+  </div>
+);
+
 };
 
 export default RotatingImageCarousel;

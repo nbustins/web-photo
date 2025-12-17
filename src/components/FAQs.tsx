@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col, Typography } from "antd";
+import { radii } from "../styles/tokens/radii";
 
 const { Title, Text } = Typography;
 
@@ -19,7 +20,7 @@ const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) =
     style={{
       background: "#FFF9E5", // cream yellow
       padding: "3rem",
-      borderRadius: "0",
+      borderRadius: radii.md,
       width: "100%",
       boxSizing: "border-box",
     }}
@@ -45,7 +46,7 @@ const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) =
               width: "60%",
               margin: "1rem auto",
               background: "black",
-              borderRadius: "3px",
+              borderRadius: radii.md,
             }}
           />
         </Title>
@@ -54,7 +55,7 @@ const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) =
           alt={imageAlt}
           style={{
             width: "100%",
-            borderRadius: "1rem",
+            borderRadius: radii.md,
             boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
             margin: "2rem auto",
             display: "block",

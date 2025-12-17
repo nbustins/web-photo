@@ -4,13 +4,14 @@ import { PhotoItem, PricingCard, ImageSlider, AdviceText } from "../../component
 import { motion } from "framer-motion";
 import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";
+import { radii } from "../../styles/tokens/radii";
 
 const { Title } = Typography;
 
 const rowStyle = {
   padding: "3rem",
   width: '100%',
-  display : "flex"
+  display : "flex",
 }
 
 const photoPaths: string[] = Array.from(
@@ -128,21 +129,30 @@ export const PregnantPage : FC = () => (
         {textWhyDoThisSession}
       </Col>
     </Row>
+    
+    {/* Foto gran mare embarassada */}
+    <Row gutter={[24, 24]} justify="center">
+      <Col xs={24}>
+        <div
+          style={{
+            maxWidth: "100rem",
+            margin: "0 auto",
+            borderRadius: radii.md,
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src={getPublicPath("/pregnancy/gran.jpg")}
+            alt="Imatge de la mare embarassada"
+            style={{
+              width: "100%",
+              display: "block",
+            }}
+          />
+        </div>
+      </Col>
+    </Row>
 
-    <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-    <Col xs={24} md={24} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-      <img
-        src={getPublicPath("/pregnancy/gran.jpg")}
-        alt="Imatge de la mare embarassada"
-        style={{
-          width: "100%",
-          maxWidth : "100rem",
-          marginBottom: "1rem",
-          borderRadius: "1rem"
-        }}
-      />
-    </Col>
-  </Row>
 
 
     {/* Big quote */}

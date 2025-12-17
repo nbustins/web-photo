@@ -1,6 +1,7 @@
 import React from "react";
 import { Col } from "antd";
 import { motion } from "framer-motion";
+import { radii } from "../styles/tokens/radii";
 
 interface PhotoItemProps {
   src: string;
@@ -20,12 +21,11 @@ const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt }) => (
         src={src}
         alt = {alt}
         style={{
-          width: '100%',
-          height: 'auto',
-          display: 'block',
-          padding : "0.1em",
-          borderRadius : "1.5em",
-        }}
+        width: "100%",
+        aspectRatio: "2 / 3",
+        overflow: "hidden",
+        borderRadius: radii.md,
+      }}
       />
     </motion.div>
   </Col>

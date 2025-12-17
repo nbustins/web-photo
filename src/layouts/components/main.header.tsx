@@ -6,21 +6,26 @@ import { FC, useState } from "react";
 import { getPublicPath } from "../../utils/pathUtils";
 
 
-const getHeaderStyle = () => ({
+const headerStyle : React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   background: '#fff',
   padding: '0 20px',
-  boxShadow: '0 2px 8px #f0f1f2',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
   width: '100%',
-  height: 'auto'
-});
+  position: 'sticky',
+  top: 0,
+  zIndex: 1000,
+  height: 64,
+};
 
-const getImageLogoStyle = () => ({
-  maxHeight: '120px', 
-  width: 'auto', 
-  margin: 10 
-})
+const logoStyle: React.CSSProperties = {
+  height: '100%',
+  maxHeight: 55,
+  width: 'auto',
+  margin: '0 10px',
+  objectFit: 'contain',
+};
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -46,8 +51,6 @@ const items : MenuItem[] = [
 ]
 
 
-// const parentKeyMap = generateParentKeyMap(items);
-
 export const MainHeader : FC = () => {
 
     const navigate = useNavigate();
@@ -59,8 +62,8 @@ export const MainHeader : FC = () => {
     };
 
     return (
-        <Header style={getHeaderStyle()}>
-        <img src={getPublicPath("/Logo.png")} alt="Logo" style={getImageLogoStyle()} onClick={() => navigate(AppRoutes.home)} />
+        <Header style={headerStyle}>
+        <img src={getPublicPath("/Logo.png")} alt="Logo" style={logoStyle} onClick={() => navigate(AppRoutes.home)} />
         <Menu
           theme="light"
           mode="horizontal"

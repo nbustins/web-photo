@@ -1,5 +1,6 @@
 import React, { JSX } from "react";
 import { Card, Typography } from "antd";
+import { radii } from "../styles/tokens/radii";
 
 const { Title, Text } = Typography;
 
@@ -16,7 +17,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ title, features, price }) => 
       flexDirection: 'column',
       textAlign: 'center',
       boxShadow: 'none',
-      borderRadius: 10,
+      borderRadius: radii.md,
       minWidth : '35rem',
     }}
   >

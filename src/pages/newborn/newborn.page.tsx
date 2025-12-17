@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { PhotoItem, AdviceText,PricingCard,ImageSlider  } from "../../components";
 import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";
+import { radii } from "../../styles/tokens/radii";
 
 const { Title } = Typography;
 
@@ -90,15 +91,16 @@ export const NewBornPage : FC = () => (
 
         {/* Wide photo at the top */}
         <img
-        src={getPublicPath("/newborn/gran_new_born.jpg")}
-        alt="Newborn session cover"
-        style={{
-          width: "100%",
-          height: "auto",
-          objectFit: "cover",
-          borderRadius: "1rem",
-          display: "block",
-          margin: "0 auto 2rem auto" // centers the image and adds bottom margin
+          src={getPublicPath("/newborn/gran_new_born.jpg")}
+          alt="Newborn session cover"
+          style={{
+            width: "100%",
+            height: "auto",
+            objectFit: "cover",
+            borderRadius: radii.md,
+            display: "block",
+            margin: "0 auto 2rem auto",
+            maxWidth : 1200
           }}
         />
 

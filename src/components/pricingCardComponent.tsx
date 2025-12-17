@@ -17,7 +17,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ title, features, price }) => 
       textAlign: 'center',
       boxShadow: 'none',
       borderRadius: 10,
-      minWidth : '40rem',
+      minWidth : '35rem',
     }}
   >
     {/* Content above the price */}

@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import { JSX } from "react";
 import { Card, Typography } from "antd";
 import { radii } from "../styles/tokens/radii";
 
@@ -10,7 +10,7 @@ interface PricingCardProps {
   price: string;
 }
 
-const PricingCard: React.FC<PricingCardProps> = ({ title, features, price }) => (
+const PricingCard = ({ title, features, price } : PricingCardProps) => (
   <Card
     style={{
       display: 'flex',
@@ -18,20 +18,30 @@ const PricingCard: React.FC<PricingCardProps> = ({ title, features, price }) => 
       textAlign: 'center',
       boxShadow: 'none',
       borderRadius: radii.md,
-      minWidth : '35rem',
+      minWidth : '30rem',
     }}
   >
     {/* Content above the price */}
     <div style={{ flex: 1 }}> {/* This takes up all available space above the price */}
 
-      <Title level={3} style={{ fontSize: '4rem', marginBottom: '8px' }}>
+      <Title level={3} style={{ fontSize: '3rem', marginBottom: '8px', fontFamily: 'Italiana'}}>
         SESSIÓ <br />
         {title.toUpperCase()}
       </Title>
-      <hr style={{ width: '60%', margin: '16px auto' }} />
+
+      <hr
+        style={{
+          width: '40%',
+          margin: '32px auto',
+          border: 'none',
+          height: '1.1px',
+          borderRadius: '2px',
+          backgroundColor: '#231f20',
+        }}
+      />
 
       {features.map((item, index) => (
-        <Text key={index} style={{fontSize: '1.5rem', display: 'block', marginBottom: '8px' }}>
+        <Text key={index} style={{fontSize: '1rem', display: 'block', marginBottom: '8px' }}>
           {item}
         </Text>
       ))}
@@ -42,7 +52,8 @@ const PricingCard: React.FC<PricingCardProps> = ({ title, features, price }) => 
       level={4}
       style={{
         marginTop: '1.5rem',
-        fontSize : '3rem'
+        fontSize : '2rem',
+        fontWeight: 400,
       }}
     >
       {price}

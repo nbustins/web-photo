@@ -6,6 +6,7 @@ import { radii } from "../styles/tokens/radii";
 interface PhotoItemProps {
   src: string;
   alt: string;
+  style?: React.CSSProperties;
 }
 
 const itemVariants = {
@@ -14,7 +15,7 @@ const itemVariants = {
 };
 
 
-const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt }) => (
+const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt, style }) => (
   <Col xs={24} sm={12} md={8}>
     <motion.div variants={itemVariants}>
       <img
@@ -25,6 +26,7 @@ const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt }) => (
         aspectRatio: "2 / 3",
         overflow: "hidden",
         borderRadius: radii.md,
+        ...style,
       }}
       />
     </motion.div>

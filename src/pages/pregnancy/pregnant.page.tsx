@@ -1,12 +1,11 @@
-import { Typography, Row, Col, Flex } from "antd";
+import { Row, Col, Flex } from "antd";
 import { FC } from "react";
 import { PhotoItem, PricingCard, ImageSlider, AdviceText } from "../../components";
-import { motion } from "framer-motion";
 import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";
-import { radii } from "../../styles/tokens/radii";
-
-const { Title } = Typography;
+import { CustomTitle } from "../../components/customTitle";
+import { WhyDoSession } from "../../components/whyDoSession";
+import { ThreePhotoRow } from "../../components/threePhotoComponent";
 
 const rowStyle = {
   padding: "3rem",
@@ -19,20 +18,13 @@ const photoPaths: string[] = Array.from(
   (_, i) => getPublicPath(`pregnancy/${i + 1}.jpg`)
 );
 
-const rotPhotoPaths: string[] = Array.from(
-  { length: 4 },
-  (_, i) => getPublicPath(`pregnancy/rot_${i + 1}.jpg`)
-);  
+const rot_ini = 5;
+const rot_end = 16;
 
-const containerVariants = {
-  hidden: { opacity: 1 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3, // delay between children
-    },
-  },
-};
+const rotPhotoPaths: string[] = Array.from(
+  { length: rot_end - rot_ini + 1 },
+  (_, i) => getPublicPath(`pregnancy/${rot_ini + i}.jpg`)
+);
 
 const textWhyDoThisSession = (
       <p>
@@ -44,7 +36,7 @@ const textWhyDoThisSession = (
 const faq1text = () => 
 (
   <p>
-    La millor etpapa per fer la sessió és entre la setmana 28 i 32
+    La millor etapa per fer la sessió és entre la setmana 28 i 32
     d’embaràs.
   </p>
 )
@@ -82,87 +74,56 @@ const faq4text = () =>
   </p>
 )
 
+const faq5text = () => 
+(
+  <p>
+La sessió de maquillatge i perruqueria és dirigida per la Mireia, maquilladora professional, on ella us assessorarà i escoltarà les vostres preferències.
+
+Que la Mireia formi part de l'estudi és molt important pel resultat de les imatges, ja que ella ressaltarà les vostres faccions i us arreglarà els cabells perquè durant la sessió només hàgiu d'estar pendents de passar-ho bé i gaudir del moment.
+  </p>
+)
+
+const faq6text = () => 
+(
+  <p>
+    El vestuari de l’estudi és una part on hi ha roba que
+podeu utilitzar i que està pensada per tenir una bona
+harmonia en cada tipus de sessió, sigui a l’estudi o a
+l’exterior, aquesta sempre està disponible i podeu
+utilitzar el que més us agradi, tot i que sempre recomano
+portar una muda de recanvi amb roba vostre que us
+sentiu còmodes.
+  </p>
+)
+
 export const PregnantPage : FC = () => (
 
   <>
     <div style={{ padding: "40px" }}>
-    <Title
-      level={2}
+    <CustomTitle label="SESSIÓ" title="EMBARÀS" />
+    
+    {/* 3 photos */}
+    <ThreePhotoRow photoPaths={[photoPaths[0], photoPaths[1], photoPaths[2]]} rowStyle={rowStyle} />
+      
+    {/* Text why to do this session */}
+    <Row
+      gutter={[0, 24]}
+      justify="center"
       style={{
-        textAlign: "center",
-        fontSize: "4rem",
-        lineHeight: "1.1",
-        marginBottom: "40px",
+        marginLeft: -40,
+        marginRight: -40,
       }}
     >
-      SESSIÓ <br /> EMBARÀS
-    </Title>
-
-    {/* 3 photos */}
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-        {photoPaths.map((path, index) => (
-          <PhotoItem key={index} src={path} alt="test" />
-        ))}
-      </Row>
-    </motion.div>
-
-    {/* Text why to do this session */}
-    <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-      <Col xs={24} md={8} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{
-          fontSize: "4rem",
-          fontWeight: 700,
-          textAlign: "center",
-          lineHeight: 1.1,
-          marginBottom: "1rem",
-          transform: "rotate(-15deg)"
-        }}>
-          Per què recomano fer<br />la sessió d’embaràs?
-        </span>
-      </Col>
-      <Col xs={24} md={16} style={{ fontSize: "2rem", textAlign: "justify" }}>
-        {textWhyDoThisSession}
-      </Col>
+      <WhyDoSession textWhyDoThisSession={textWhyDoThisSession}/>
     </Row>
-    
-    {/* Foto gran mare embarassada */}
-    <Row gutter={[24, 24]} justify="center">
-      <Col xs={24}>
-        <div
-          style={{
-            maxWidth: "100rem",
-            margin: "0 auto",
-            borderRadius: radii.md,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={getPublicPath("/pregnancy/gran.jpg")}
-            alt="Imatge de la mare embarassada"
-            style={{
-              width: "100%",
-              display: "block",
-            }}
-          />
-        </div>
-      </Col>
-    </Row>
-
-
 
     {/* Big quote */}
     <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-      <Col style={{ fontSize: "3rem", textAlign: "justify",fontWeight: 600, fontFamily:"Playfair Display" }}>
+      <Col style={{ fontSize: "2.5rem", textAlign: "justify",fontWeight: 600, fontFamily:"Italiana", letterSpacing: "0.1rem" }}>
               “Una sessió perquè et sentis viva, única, delicada, natural, poderosa, lluminosa i estimada”
       </Col>
     </Row>
     
-
     {/* Carrousel images */}
     <Row gutter={[24, 24]} justify="center" style={rowStyle}>
       <ImageSlider images={rotPhotoPaths}/>
@@ -174,37 +135,42 @@ export const PregnantPage : FC = () => (
         <PricingCard
               title="Basica"
               features={[
-                "90 minuts de sessió",
+                "45 minuts de sessió",
                 "Guia per anar preparats a la sessió",
                 "Vestuari inclòs",
-                "Entrega de 15 fotos editades",
-                <br/>,
-                <br/>
-                
+                "Sessió familiar i individual",
+                "Galeria Online",
+                "Entrega de 20 fotos editades (galeria completa +60€)",
+                "5 Fotos impreses 18x13",
+                <br/>,                
               ]}
-              price="210€"
+              price="200€"
             />
           <PricingCard
-            title="Domicili"
+            title="Exterior"
             features={[
-              "90 minuts de sessió",
-                "Guia per anar preparats a la sessió",
-                "Vestuari inclòs",
-                "Entrega de 15 fotos editades",
-                <br/>,
-                <AdviceText>*A partir de 35 km des de l’estudi, pot haver-hi cost extra per desplaçament</AdviceText>,            
-            ]}
-            price="210€"
+              "45 minuts de sessió",
+              "Guia per anar preparats a la sessió",
+              "Vestuari inclòs",
+              "Sessió familiar i individual",
+              "Galeria online",
+              "Entrega de 20 fotos editades (galeria completa +60€)",
+              <br/>,        
+              <br/>,        
+              ]}
+            price="215€"
           />
           <PricingCard
             title="Completa"
             features={[
-            "90 minuts de sessió",
-            "Guia per anar preparats a la sessió",
-            "Galeria completa",
-            "5 fotos impresses de 18x13",
-            "Taco de fusta amb doble foto",
-            <br/>,
+              "45 minuts de sessió",
+              "Guia per anar preparats a la sessió",
+              "Vestuari inclòs",
+              "Sessió familiar i individual",
+              "Galeria Online",
+              "Entrega de 20 fotos editades (galeria completa +60€)",
+              "5 Fotos impreses 18x13",
+              "Sessió de maquillatge i perruqueria"
             ]}
             price="260€"
           />
@@ -214,12 +180,14 @@ export const PregnantPage : FC = () => (
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("/pregnancy/rot_4.jpg")}
+      imageSrc={getPublicPath("/pregnancy/16.jpg")}
       faqs={[
         { title: "QUINA SETMANA ÉS REALITZA LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },
         { title: "COM SÉ SI ÉS MIILLOR LA SESSIÓ A L'EXTERIOR O A L'ESTUDI?", text: faq3text() },
-        { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq4text() }
+        { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq4text() },
+        { title: "DE QUE TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQEURIA?", text: faq5text() },
+        { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq6text() }
 
       ]}/>
   </>

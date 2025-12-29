@@ -1,94 +1,103 @@
-import { useState, useEffect } from 'react';
-import "./components.css"
-import { radii } from '../styles/tokens/radii';
+import { useEffect, useRef, useState } from "react";
+import { radii } from "../styles/tokens/radii";
 
 interface CarouselProps {
   images: string[];
   visibleCount?: number;
+  intervalMs?: number;
+  transitionMs?: number;
 }
 
-const RotatingImageCarousel = ({ images, visibleCount = 3 }: CarouselProps) => {
-  // Use local state for the carousel order. Initially it's the same as the original images
-  const [carouselImages, setCarouselImages] = useState(images);
-  // isAnimating controls whether to animate the slide-out effect
-  const [isAnimating, setIsAnimating] = useState(false);
+const RotatingImageCarousel = ({
+  images,
+  visibleCount = 4,
+  intervalMs = 2500,
+  transitionMs = 800,
+}: CarouselProps) => {
+  const [items, setItems] = useState(images);
+  const [offset, setOffset] = useState(0);
+  const animatingRef = useRef(false);
 
-  // Reset carousel if images prop changes
   useEffect(() => {
-    setCarouselImages(images);
+    setItems(images);
+    setOffset(0);
   }, [images]);
 
   useEffect(() => {
-    // Set an interval to rotate the images every 3 seconds
     const interval = setInterval(() => {
-      // Begin the sliding animation by toggling the flag
-      setIsAnimating(true);
-      // After the animation duration (1s) is done, update the order
+      if (animatingRef.current) return;
+
+      animatingRef.current = true;
+      setOffset(1);
+
       setTimeout(() => {
-        setCarouselImages((prevImages) => {
-          // Pop first image and push it to the end
-          const [first, ...rest] = prevImages;
+        setItems((prev) => {
+          const [first, ...rest] = prev;
           return [...rest, first];
         });
-        // Reset the animation
-        setIsAnimating(false);
-      }, 1000); // match this to the CSS transition duration below
-    }, 3000);
+
+        // reset invisible
+        setOffset(0);
+        animatingRef.current = false;
+      }, transitionMs);
+    }, intervalMs);
 
     return () => clearInterval(interval);
-  }, [carouselImages, visibleCount]);
+  }, [intervalMs, transitionMs]);
 
- return (
-  <div
-    style={{
-      width: "100%",
-      overflow: "hidden",
-      position: "relative",
-    }}
-  >
+  // buffer visual
+  const renderItems = [...items, items[0]];
+
+  return (
     <div
       style={{
-        display: "flex",
-        transform: isAnimating
-          ? `translateX(-${100 / visibleCount}%)`
-          : "translateX(0)",
-        transition: isAnimating ? "transform 1s ease-in-out" : "none",
+        width: "100%",
+        overflow: "hidden",
       }}
     >
-      {carouselImages.map((image, index) => (
-        <div
-          key={index}
-          style={{
-            flex: `0 0 ${100 / visibleCount}%`,
-            width: "100%",
-            padding: "1em",
-          }}
-        >
+      <div
+        style={{
+          display: "flex",
+          willChange: "transform",
+          transform: `translate3d(-${(100 / visibleCount) * offset}%, 0, 0)`,
+          transition:
+            offset === 0
+              ? "none"
+              : `transform ${transitionMs}ms ease-in-out`,
+        }}
+      >
+        {renderItems.map((image, i) => (
           <div
+            key={`${image}-${i}`}
             style={{
-              width: "100%",
-              aspectRatio: "2 / 3", // vertical
-              borderRadius: radii.md,
-              overflow: "hidden",
+              flex: `0 0 ${100 / visibleCount}%`,
+              padding: "0.35em",
             }}
           >
-            <img
-              src={image}
-              alt={`carousel-image-${index}`}
+            <div
               style={{
                 width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
+                aspectRatio: "2 / 3",
+                borderRadius: radii.md,
+                overflow: "hidden",
               }}
-            />
+            >
+              <img
+                src={image}
+                alt={`carousel-${i}`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
-);
-
+  );
 };
 
 export default RotatingImageCarousel;

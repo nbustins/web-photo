@@ -10,7 +10,7 @@ const App: React.FC = () => {
             colorPrimary: '#7C7458', // Primary blue color
             colorLink: '#1890ff',    // Link color
             colorText: '#333',       // Text color
-            fontFamily:"Sour Gummy"
+            fontFamily:"Raleway"
           },
         }}
       >

@@ -15,7 +15,7 @@ interface FAQsProps {
   faqs: FAQItem[];
 }
 
-const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) => (
+const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs } : FAQsProps) => (
   <div
     style={{
       background: "#FFF9E5", // cream yellow
@@ -25,7 +25,7 @@ const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) =
       boxSizing: "border-box",
     }}
   >
-    <Row gutter={[32, 32]} align="middle" justify="center">
+    <Row gutter={[32, 32]} align="top" justify="center">
       {/* Left column: Title and image */}
       <Col xs={24} md={8} style={{ textAlign: "center" }}>
         <Title
@@ -42,7 +42,7 @@ const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) =
           <hr
             style={{
               border: "none",
-              height: "3px",
+              height: "2px",
               width: "60%",
               margin: "1rem auto",
               background: "black",
@@ -62,8 +62,9 @@ const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) =
           }}
         />
       </Col>
+      
       {/* Right column: FAQ list */}
-      <Col xs={24} md={16}>
+      <Col xs={24} md={16} style={{padding : "0 10rem 0rem 3rem"}}>
         {faqs.map((faq, idx) => (
           <div key={idx} style={{ marginBottom: "2rem" }}>
             <Title
@@ -77,7 +78,17 @@ const FAQs: React.FC<FAQsProps> = ({ imageSrc, imageAlt = "FAQ image", faqs }) =
             >
               {faq.title}
             </Title>
-            <Text style={{ fontSize: "1.2rem", color: "#333" }}>{faq.text}</Text>
+            <Text
+              style={{
+                fontSize: "1.2rem",
+                color: "#333",
+                textAlign: "justify",
+                display: "block",
+                hyphens: "auto",
+              }}
+        >
+              {faq.text}
+            </Text>
           </div>
         ))}
       </Col>

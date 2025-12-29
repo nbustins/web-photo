@@ -98,9 +98,13 @@ const faq6text = () => (
 export const PregnantPage = () => (
   <>
     <div style={{ padding: "40px" }}>
-      <CustomTitle label="SESSIÓ" title="EMBARÀS" />
+
+      <header>
+        <CustomTitle label="SESSIÓ" title="EMBARÀS" />
+      </header>
 
       {/* 3 photos */}
+      
       <ThreePhotoRow
         photoPaths={[photoPaths[0], photoPaths[1], photoPaths[2]]}
         rowStyle={rowStyle}

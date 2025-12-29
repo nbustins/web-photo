@@ -81,7 +81,7 @@ Que la Mireia formi part de l'estudi és molt important pel resultat de les imat
 
 export const NewBornPage = () => (
   <>
-    <div style={{ padding: "0px" }}>
+    <div style={{ padding: "40px" }}>
 
       <header>
           <CustomTitle label="SESSIÓ" title="RECENT NASCUT" />  

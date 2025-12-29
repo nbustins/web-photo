@@ -18,7 +18,7 @@ const containerVariants = {
 };
 
 export const ThreePhotoRow = ({
-  photoPaths
+  photoPaths, rowStyle
 }: ThreePhotoRowProps) => {
   return (
     <motion.div
@@ -26,7 +26,7 @@ export const ThreePhotoRow = ({
       initial="hidden"
       animate="visible"
     >
-      <Row gutter={[24, 24]} justify="center" align="middle">
+      <Row gutter={[24, 24]} justify="center" align="middle" style={{...rowStyle}}>
         <Col xs={24}  md={{ flex: "0 0 auto" }}>
           <PhotoItem
             src={photoPaths[0]}

@@ -95,7 +95,7 @@ const faq6text = () => (
   </p>
 );
 
-export const PregnantPage: FC = () => (
+export const PregnantPage = () => (
   <>
     <div style={{ padding: "40px" }}>
       <CustomTitle label="SESSIÓ" title="EMBARÀS" />

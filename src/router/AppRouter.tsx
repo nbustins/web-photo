@@ -7,6 +7,7 @@ import { FamiliarPage } from '../pages/familiar.page';
 import { PregnantPage } from '../pages/pregnancy/pregnant.page';
 import { NewBornPage } from '../pages/newborn/newborn.page';
 import { UnderConstruction } from '../pages/under.construction';
+import { ScrollToTop } from '../components/scrollToTop';
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.home]: () => <HomePage/>,
@@ -20,6 +21,7 @@ const privateRoutes: Partial<Record<AppRoutes, FC>> = {
 export const AppRouter: FC = () => {
   return (
     <HashRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           {Object.entries(privateRoutes).map(([route, Component]) => (

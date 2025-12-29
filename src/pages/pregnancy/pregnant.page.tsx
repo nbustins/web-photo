@@ -1,5 +1,4 @@
-import { Row, Col, Flex } from "antd";
-import { FC } from "react";
+import { Row, Col } from "antd";
 import { PricingCard, ImageSlider } from "../../components";
 import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";

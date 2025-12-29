@@ -21,7 +21,7 @@ const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs, imageWidth = "100%" }: F
   <div
     style={{
       background: "#FFF9E5", // cream yellow
-      padding: "1rem",
+      padding: "2rem",
       borderRadius: radii.md,
       width: "100%",
       boxSizing: "border-box",

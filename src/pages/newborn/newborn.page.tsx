@@ -1,15 +1,15 @@
-import { Typography, Row, Col, Flex } from "antd";
+import { Row, Col, Flex } from "antd";
 import { FC } from "react";
 import { motion } from "framer-motion";
-import { PhotoItem, AdviceText,PricingCard,ImageSlider  } from "../../components";
+import {  AdviceText,PricingCard,ImageSlider  } from "../../components";
 import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";
-import { radii } from "../../styles/tokens/radii";
+import { CustomTitle } from "../../components/customTitle";
+import { ThreePhotoRow } from "../../components/threePhotoComponent";
 
-const { Title } = Typography;
-
-const photoPaths: string[] = Array.from({ length: 10 }, (_, i) => getPublicPath(`/newborn/${i + 1}.jpg`));
-const rotPhotoPaths: string[] = Array.from({ length: 4 }, (_, i) => getPublicPath(`/newborn/rot_${i + 1}.jpg`));
+const fromIdx = 4;
+const toIdx = 13;
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`/newborn/${fromIdx + i}.jpg`));
 
 const rowStyle = {
   padding: "30px",
@@ -18,11 +18,16 @@ const rowStyle = {
 }
 
 const containerVariants = {
-  hidden: { opacity: 1 },
+  hidden: {
+    opacity: 0,
+    y: 40,
+  },
   visible: {
     opacity: 1,
+    y: 0,
     transition: {
-      staggerChildren: 0.3, // delay between children
+      duration: 1,
+      ease: "easeOut",
     },
   },
 };
@@ -35,12 +40,10 @@ const sessionDescription = (
   </p>
 );
 
-const sessionAdvice = (
+const sessionDescription2 = (
   <p>
-    Per aquest tipus de sessió m'agrada poder-me adaptar a vosaltres i és per això que, tot i la
-    meva recomanació de fer la sessió entre el dia 8 i 15 de vida del bebè no vull que això es
-    converteixi en una condició, ja que tots els parts i els bebès són únics i diferents i ho deixo a
-    les vostres mans. També us ofereixo el servei de poder fer la sessió a casa vostra.
+Una sessió tranquil·la, dedicada, natural, amb molt
+d’amor i adaptada a cada família
   </p>
 );
 
@@ -70,68 +73,83 @@ La sessió està dividida en 3 parts diferents, la primera on adormirem el bebè
   </p>
 )
 
+const faq4text = () => (
+  <p>
+La sessió de maquillatge i perruqueria és dirigida per la Mireia, maquilladora professional, on ella us assessorarà i escoltarà les vostres preferències.
+
+Que la Mireia formi part de l'estudi és molt important pel resultat de les imatges, ja que ella ressaltarà les vostres faccions i us arreglarà els cabells perquè durant la sessió només hàgiu d'estar pendents de passar-ho bé i gaudir del moment.  </p>
+)
+
 export const NewBornPage : FC = () => (
   <>
     <div style={{ padding: "40px" }}>
+
       <header>
-        <Title
-          level={2}
-          style={{
-            textAlign: "center",
-            fontSize: "4rem",
-            lineHeight: "1.1",
-            marginBottom: "40px",
-          }}
-        >
-          SESSIÓ <br /> RECENT NASCUT
-        </Title>
+          <CustomTitle label="SESSIÓ" title="RECENT NASCUT" />  
       </header>
 
       <section>
 
-        {/* Wide photo at the top */}
-        <img
-          src={getPublicPath("/newborn/gran_new_born.jpg")}
-          alt="Newborn session cover"
-          style={{
-            width: "100%",
-            height: "auto",
-            objectFit: "cover",
-            borderRadius: radii.md,
-            display: "block",
-            margin: "0 auto 2rem auto",
-            maxWidth : 1200
-          }}
-        />
+          {/* Wide photo at the top */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+          <Row justify="center">
+          <Col xs={24}>
+            <div
+              style={{
+                width: "100%",
+                height: "min(70vh, 750px)",
+                overflow: "hidden",
+                marginTop: "30px",
+              }}
+            >
+              <img
+              src={getPublicPath("/newborn/gran_new_born.jpg")}
+                alt="Imatge de la mare embarassada"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  display: "block",
+                  
+                }}
+              />
+            </div>
+          </Col>
+        </Row>
+        </motion.div>
+
 
         {/* Text decriptiu */}
         <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-          <Col style={{ fontSize: "1.5rem", textAlign: "justify" }}>
+          <Col style={{ fontSize: "2rem", textAlign: "center", margin: "0 25rem 0 25rem", fontFamily:"Italiana" }}>
             {sessionDescription}
           </Col>
         </Row>
         
         {/* 3 imatges amb entrada moviment */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-            {photoPaths.slice(0, 3).map((path, index) => (
-              <PhotoItem key={index} src={path} alt="test" />
-            ))}
-          </Row>
-        </motion.div>
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <ThreePhotoRow
+          photoPaths={[getPublicPath(`/newborn/2.jpg`), getPublicPath(`/newborn/3.jpg`), getPublicPath(`/newborn/4.jpg`)]}
+          rowStyle={rowStyle}
+        />
+      </motion.div>
         
-        {/* Text recomanacio */}
         <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-            <Col style={{ fontSize: "1.5rem", textAlign: "justify" }}>
-              {sessionAdvice}
-            </Col>
-          </Row>
-
-
+          <Col style={{ fontSize: "4rem", textAlign: "center", margin: "0 15rem 0 15rem", fontFamily:"Italiana" }}>
+            {sessionDescription2}
+          </Col>
+        </Row>
+        
         {/* Carrousel images */}
         <Row gutter={[24, 24]} justify="center" style={rowStyle}>
           <ImageSlider images={rotPhotoPaths}/>
@@ -183,11 +201,14 @@ export const NewBornPage : FC = () => (
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("/newborn/rot_3.jpg")}
+      imageSrc={getPublicPath("/newborn/14.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },
-        { title: "COM SERÀ LA SESSIÓ?", text: faq3text() }
-    ]}/>
+        { title: "COM SERÀ LA SESSIÓ?", text: faq3text() },
+        { title: "DE QUE TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQUERIA?", text: faq4text() }
+
+    ]}
+    imageWidth="75%"/>
   </>
 );

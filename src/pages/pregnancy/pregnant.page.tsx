@@ -1,6 +1,6 @@
 import { Row, Col, Flex } from "antd";
 import { FC } from "react";
-import { PhotoItem, PricingCard, ImageSlider, AdviceText } from "../../components";
+import { PricingCard, ImageSlider } from "../../components";
 import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";
 import { CustomTitle } from "../../components/customTitle";

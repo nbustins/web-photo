@@ -13,9 +13,11 @@ interface FAQsProps {
   imageSrc: string;
   imageAlt?: string;
   faqs: FAQItem[];
+  imageWidth?: string;
+
 }
 
-const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs } : FAQsProps) => (
+const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs, imageWidth = "100%" }: FAQsProps) => (
   <div
     style={{
       background: "#FFF9E5", // cream yellow
@@ -54,7 +56,7 @@ const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs } : FAQsProps) => (
           src={imageSrc}
           alt={imageAlt}
           style={{
-            width: "100%",
+            width: imageWidth,
             borderRadius: radii.md,
             boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
             margin: "2rem auto",

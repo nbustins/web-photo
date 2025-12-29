@@ -18,8 +18,7 @@ const containerVariants = {
 };
 
 export const ThreePhotoRow = ({
-  photoPaths,
-  rowStyle,
+  photoPaths
 }: ThreePhotoRowProps) => {
   return (
     <motion.div
@@ -27,36 +26,32 @@ export const ThreePhotoRow = ({
       initial="hidden"
       animate="visible"
     >
-      <Row
-        gutter={24}
-        justify="center"
-        align="middle"
-        style={rowStyle}
-      >
-        <Col>
+      <Row gutter={[24, 24]} justify="center" align="middle">
+        <Col xs={24}  md={{ flex: "0 0 auto" }}>
           <PhotoItem
             src={photoPaths[0]}
-            alt="left"
-            style={{ width: "340px" }}
+            alt="Fotografia newborn esquerra"
+            style={{ maxWidth: "340px", width: "100%" }}
           />
         </Col>
 
-        <Col>
+        <Col xs={24}  md={{ flex: "0 0 auto" }}>
           <PhotoItem
             src={photoPaths[1]}
-            alt="center"
-            style={{ width: "430px" }}
+            alt="Fotografia newborn central"
+            style={{ maxWidth: "430px", width: "100%" }}
           />
         </Col>
 
-        <Col>
+        <Col xs={24}  md={{ flex: "0 0 auto" }}>
           <PhotoItem
             src={photoPaths[2]}
-            alt="right"
-            style={{ width: "340px" }}
+            alt="Fotografia newborn dreta"
+            style={{ maxWidth: "340px", width: "100%" }}
           />
         </Col>
       </Row>
+
     </motion.div>
   );
 };

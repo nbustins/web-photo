@@ -18,7 +18,6 @@ const PricingCard = ({ title, features, price } : PricingCardProps) => (
       textAlign: 'center',
       boxShadow: 'none',
       borderRadius: radii.md,
-      minWidth : '30rem',
     }}
   >
     {/* Content above the price */}

@@ -80,9 +80,9 @@ La sessió de maquillatge i perruqueria és dirigida per la Mireia, maquilladora
 Que la Mireia formi part de l'estudi és molt important pel resultat de les imatges, ja que ella ressaltarà les vostres faccions i us arreglarà els cabells perquè durant la sessió només hàgiu d'estar pendents de passar-ho bé i gaudir del moment.  </p>
 )
 
-export const NewBornPage : FC = () => (
+export const NewBornPage = () => (
   <>
-    <div style={{ padding: "40px" }}>
+    <div style={{ padding: "0px" }}>
 
       <header>
           <CustomTitle label="SESSIÓ" title="RECENT NASCUT" />  
@@ -140,7 +140,7 @@ export const NewBornPage : FC = () => (
       </Row>
 
         
-      {/* 3 imatges amb entrada moviment */}
+      {/* 3 imatges amb entrada moviment */} 
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -153,6 +153,7 @@ export const NewBornPage : FC = () => (
         />
       </motion.div>
       
+
       {/* Descripció sessió */}
       <Row gutter={[24, 24]} justify="center" style={rowStyle}>
         <Col
@@ -173,19 +174,21 @@ export const NewBornPage : FC = () => (
 
       {/*  Price List */}
       <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-        <Flex wrap="wrap" gap="small" align="center" justify="space-evenly" style={{width: "100%"}}>
-          <PricingCard
-                title="Bàsica"
-                features={[
-                  "90 minuts de sessió",
-                  "Guia per anar preparats a la sessió",
-                  "Vestuari inclòs",
-                  "Entrega de 15 fotos editades",
-                  <br/>,
-                  <br/>,
-                ]}
-                price="210€"
-              />
+        <Col xs={24} md={8}>
+            <PricingCard
+                  title="Bàsica"
+                  features={[
+                    "90 minuts de sessió",
+                    "Guia per anar preparats a la sessió",
+                    "Vestuari inclòs",
+                    "Entrega de 15 fotos editades",
+                    <br/>,
+                    <br/>,
+                  ]}
+                  price="210€"
+                />
+        </Col>
+        <Col xs={24} md={8}>
             <PricingCard
               title="Domicili"
               features={[
@@ -198,19 +201,21 @@ export const NewBornPage : FC = () => (
               ]}
               price="210€"
             />
-            <PricingCard
-              title="Completa"
-              features={[
-                "90 minuts de sessió",
-                "Guia per anar preparats a la sessió",
-                "Galeria completa",
-                "5 fotos impresses de 18x13",
-                "Taco de fusta amb double foto",
-                <br/>
-              ]}
-              price="260€"
-            />
-        </Flex>
+        </Col>
+        <Col xs={24} md={8}>
+          <PricingCard
+            title="Completa"
+            features={[
+              "90 minuts de sessió",
+              "Guia per anar preparats a la sessió",
+              "Galeria completa",
+              "5 fotos impresses de 18x13",
+              "Taco de fusta amb double foto",
+              <br/>
+            ]}
+            price="260€"
+          />
+        </Col>
       </Row> 
       </section>
     </div>

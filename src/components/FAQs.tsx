@@ -21,15 +21,22 @@ const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs, imageWidth = "100%" }: F
   <div
     style={{
       background: "#FFF9E5", // cream yellow
-      padding: "3rem",
+      padding: "1rem",
       borderRadius: radii.md,
       width: "100%",
       boxSizing: "border-box",
     }}
   >
     <Row gutter={[32, 32]} align="top" justify="center">
+
       {/* Left column: Title and image */}
-      <Col xs={24} md={8} style={{ textAlign: "center" }}>
+      <Col xs={24} md={8} 
+        style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center", 
+            flexGrow: 1,
+          }}>
         <Title
           level={2}
           style={{
@@ -59,14 +66,13 @@ const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs, imageWidth = "100%" }: F
             width: imageWidth,
             borderRadius: radii.md,
             boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-            margin: "2rem auto",
             display: "block",
           }}
         />
       </Col>
       
       {/* Right column: FAQ list */}
-      <Col xs={24} md={16} style={{padding : "0 10rem 0rem 3rem"}}>
+      <Col xs={24} md={16} style={{maxWidth: "1200px"}}>
         {faqs.map((faq, idx) => (
           <div key={idx} style={{ marginBottom: "2rem" }}>
             <Title

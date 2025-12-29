@@ -16,7 +16,7 @@ const itemVariants = {
 
 
 const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt, style }) => (
-  <Col xs={24} sm={12} md={8}>
+  <Col>
     <motion.div variants={itemVariants}>
       <img
         src={src}

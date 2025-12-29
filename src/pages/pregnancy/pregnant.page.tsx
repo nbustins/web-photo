@@ -123,8 +123,8 @@ export const PregnantPage: FC = () => (
       <Row gutter={[24, 24]} justify="center" style={rowStyle}>
         <Col
           style={{
-            fontSize: "2.5rem",
-            textAlign: "justify",
+            fontSize: "clamp(1.2rem, 4vw, 2.5rem)",
+            textAlign: "center",
             fontWeight: 600,
             fontFamily: "Italiana",
             letterSpacing: "0.1rem",
@@ -137,19 +137,14 @@ export const PregnantPage: FC = () => (
       </Row>
 
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+      <Row gutter={[24, 24]} justify="center" style={{ margin: "0 0 3rem 0" }}>
         <ImageSlider images={rotPhotoPaths} />
       </Row>
 
       {/*  Price List */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-        <Flex
-          wrap="wrap"
-          gap="small"
-          align="center"
-          justify="space-evenly"
-          style={{ width: "100%" }}
-        >
+      <Row gutter={[24, 24]} justify="center">
+       <Col xs ={24} md={8}>
+       
           <PricingCard
             title="Basica"
             features={[
@@ -164,6 +159,9 @@ export const PregnantPage: FC = () => (
             ]}
             price="200€"
           />
+       </Col>
+        <Col xs ={24} md={8}>
+
           <PricingCard
             title="Exterior"
             features={[
@@ -178,6 +176,9 @@ export const PregnantPage: FC = () => (
             ]}
             price="215€"
           />
+        </Col>
+
+        <Col xs ={24} md={8}>
           <PricingCard
             title="Completa"
             features={[
@@ -192,7 +193,7 @@ export const PregnantPage: FC = () => (
             ]}
             price="260€"
           />
-        </Flex>
+        </Col>
       </Row>
     </div>
 

@@ -9,13 +9,12 @@ import { ThreePhotoRow } from "../../components/threePhotoComponent";
 
 const rowStyle = {
   padding: "3rem",
-  width: '100%',
-  display : "flex",
-}
+  width: "100%",
+  display: "flex",
+};
 
-const photoPaths: string[] = Array.from(
-  { length: 3 },
-  (_, i) => getPublicPath(`pregnancy/${i + 1}.jpg`)
+const photoPaths: string[] = Array.from({ length: 3 }, (_, i) =>
+  getPublicPath(`pregnancy/${i + 1}.jpg`)
 );
 
 const rot_ini = 5;
@@ -27,125 +26,144 @@ const rotPhotoPaths: string[] = Array.from(
 );
 
 const textWhyDoThisSession = (
-      <p>
-        Perquè l’embaràs és una etapa que no es repeteix mai igual. Pots pensar que la recordaràs sempre, però amb el temps, els detalls s’esvaeixen.
-        <br/> Fer-te una sessió és regalar-te un espai per parar, respirar i connectar amb tot el que vius i sents. És un record per tu, però també per al teu bebè: un dia podràs mostrar-li les ganes amb què l’esperàveu i com ja l’estimàveu.
-      </p>
-)
-
-const faq1text = () => 
-(
   <p>
-    La millor etapa per fer la sessió és entre la setmana 28 i 32
-    d’embaràs.
+    Perquè l’embaràs és una etapa que no es repeteix mai igual. Pots pensar que
+    la recordaràs sempre, però amb el temps, els detalls s’esvaeixen.
+    <br /> Fer-te una sessió és regalar-te un espai per parar, respirar i
+    connectar amb tot el que vius i sents. És un record per tu, però també per
+    al teu bebè: un dia podràs mostrar-li les ganes amb què l’esperàveu i com ja
+    l’estimàveu.
   </p>
-)
+);
 
-
-const faq2text = () => 
-(
+const faq1text = () => (
   <p>
-  Sempre recomano reservar cap a la setmana 20 d’embaràs, que
-  tinguem temps a organitzar i coincidir agenda. 
-
-  Per reservar ho pots fer a travès de la web o enviant-me un
-  WhatsApp al 623 00 27 92
+    La millor etapa per fer la sessió és entre la setmana 28 i 32 d’embaràs.
   </p>
-)
+);
 
-
-const faq3text = () => 
-(
+const faq2text = () => (
   <p>
-   El tipus de sessió és personal, l’estudi està més preparat per a les sessions, ja que teniu vestidor per canviar-vos, la roba de l’estudi, materials i atrezzo que podem utilitzar, etc. i la sessió està més preparada i tenim més hores al dia per poder fer la sessió.
-   Les sessions d’exterior són molt naturals i al ser a l’aire lliure tot el que no depengui de nosaltres no ho podem controlar, per això hem d’anar molt preparats. La ubicació la triem amb la vostra preferència de mar, muntanya, camp, gorg o qualsevol idea que us vingui al cap, tot és possible, però el més important és saber que aquesta es realitzen a la tarda el moment en què el sol cau, a l’hivern serà cap a les 17:00 h. i a l’estiu serà cap a les 19:00 h.
+    Sempre recomano reservar cap a la setmana 20 d’embaràs, que tinguem temps a
+    organitzar i coincidir agenda. Per reservar ho pots fer a travès de la web o
+    enviant-me un WhatsApp al 623 00 27 92
   </p>
-)
+);
 
-
-const faq4text = () => 
-(
+const faq3text = () => (
   <p>
-    El vestuari de l’estudi és una part on hi ha roba que podeu utilitzar i
-    que està pensada per tenir una bona harmonia en cada tipus de
-    sessió, sigui a l’estudi o a l’exterior, aquesta sempre està disponible i
-    podeu utilitzar el que més us agradi, tot i que sempre recomano
-    portar una muda de recanvi amb roba vostre que us sentiu còmodes.
+    El tipus de sessió és personal, l’estudi està més preparat per a les
+    sessions, ja que teniu vestidor per canviar-vos, la roba de l’estudi,
+    materials i atrezzo que podem utilitzar, etc. i la sessió està més preparada
+    i tenim més hores al dia per poder fer la sessió. Les sessions d’exterior
+    són molt naturals i al ser a l’aire lliure tot el que no depengui de
+    nosaltres no ho podem controlar, per això hem d’anar molt preparats. La
+    ubicació la triem amb la vostra preferència de mar, muntanya, camp, gorg o
+    qualsevol idea que us vingui al cap, tot és possible, però el més important
+    és saber que aquesta es realitzen a la tarda el moment en què el sol cau, a
+    l’hivern serà cap a les 17:00 h. i a l’estiu serà cap a les 19:00 h.
   </p>
-)
+);
 
-const faq5text = () => 
-(
+const faq4text = () => (
   <p>
-La sessió de maquillatge i perruqueria és dirigida per la Mireia, maquilladora professional, on ella us assessorarà i escoltarà les vostres preferències.
-
-Que la Mireia formi part de l'estudi és molt important pel resultat de les imatges, ja que ella ressaltarà les vostres faccions i us arreglarà els cabells perquè durant la sessió només hàgiu d'estar pendents de passar-ho bé i gaudir del moment.
+    El vestuari de l’estudi és una part on hi ha roba que podeu utilitzar i que
+    està pensada per tenir una bona harmonia en cada tipus de sessió, sigui a
+    l’estudi o a l’exterior, aquesta sempre està disponible i podeu utilitzar el
+    que més us agradi, tot i que sempre recomano portar una muda de recanvi amb
+    roba vostre que us sentiu còmodes.
   </p>
-)
+);
 
-const faq6text = () => 
-(
+const faq5text = () => (
   <p>
-    El vestuari de l’estudi és una part on hi ha roba que
-podeu utilitzar i que està pensada per tenir una bona
-harmonia en cada tipus de sessió, sigui a l’estudi o a
-l’exterior, aquesta sempre està disponible i podeu
-utilitzar el que més us agradi, tot i que sempre recomano
-portar una muda de recanvi amb roba vostre que us
-sentiu còmodes.
+    La sessió de maquillatge i perruqueria és dirigida per la Mireia,
+    maquilladora professional, on ella us assessorarà i escoltarà les vostres
+    preferències. Que la Mireia formi part de l'estudi és molt important pel
+    resultat de les imatges, ja que ella ressaltarà les vostres faccions i us
+    arreglarà els cabells perquè durant la sessió només hàgiu d'estar pendents
+    de passar-ho bé i gaudir del moment.
   </p>
-)
+);
 
-export const PregnantPage : FC = () => (
+const faq6text = () => (
+  <p>
+    El vestuari de l’estudi és una part on hi ha roba que podeu utilitzar i que
+    està pensada per tenir una bona harmonia en cada tipus de sessió, sigui a
+    l’estudi o a l’exterior, aquesta sempre està disponible i podeu utilitzar el
+    que més us agradi, tot i que sempre recomano portar una muda de recanvi amb
+    roba vostre que us sentiu còmodes.
+  </p>
+);
 
+export const PregnantPage: FC = () => (
   <>
     <div style={{ padding: "40px" }}>
-    <CustomTitle label="SESSIÓ" title="EMBARÀS" />
-    
-    {/* 3 photos */}
-    <ThreePhotoRow photoPaths={[photoPaths[0], photoPaths[1], photoPaths[2]]} rowStyle={rowStyle} />
-      
-    {/* Text why to do this session */}
-    <Row
-      gutter={[0, 24]}
-      justify="center"
-      style={{
-        marginLeft: -40,
-        marginRight: -40,
-      }}
-    >
-      <WhyDoSession textWhyDoThisSession={textWhyDoThisSession}/>
-    </Row>
+      <CustomTitle label="SESSIÓ" title="EMBARÀS" />
 
-    {/* Big quote */}
-    <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-      <Col style={{ fontSize: "2.5rem", textAlign: "justify",fontWeight: 600, fontFamily:"Italiana", letterSpacing: "0.1rem" }}>
-              “Una sessió perquè et sentis viva, única, delicada, natural, poderosa, lluminosa i estimada”
-      </Col>
-    </Row>
-    
-    {/* Carrousel images */}
-    <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-      <ImageSlider images={rotPhotoPaths}/>
-    </Row>
+      {/* 3 photos */}
+      <ThreePhotoRow
+        photoPaths={[photoPaths[0], photoPaths[1], photoPaths[2]]}
+        rowStyle={rowStyle}
+      />
 
-    {/*  Price List */}
-    <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-      <Flex wrap="wrap" gap="small" align="center" justify="space-evenly" style={{width: "100%"}}>
-        <PricingCard
-              title="Basica"
-              features={[
-                "45 minuts de sessió",
-                "Guia per anar preparats a la sessió",
-                "Vestuari inclòs",
-                "Sessió familiar i individual",
-                "Galeria Online",
-                "Entrega de 20 fotos editades (galeria completa +60€)",
-                "5 Fotos impreses 18x13",
-                <br/>,                
-              ]}
-              price="200€"
-            />
+      {/* Text why to do this session */}
+      <Row
+        gutter={[0, 24]}
+        justify="center"
+        style={{
+          marginLeft: -40,
+          marginRight: -40,
+        }}
+      >
+        <WhyDoSession textWhyDoThisSession={textWhyDoThisSession} />
+      </Row>
+
+      {/* Big quote */}
+      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+        <Col
+          style={{
+            fontSize: "2.5rem",
+            textAlign: "justify",
+            fontWeight: 600,
+            fontFamily: "Italiana",
+            letterSpacing: "0.1rem",
+            maxWidth: "2000px",
+          }}
+        >
+          “Una sessió perquè et sentis viva, única, delicada, natural, poderosa,
+          lluminosa i estimada”
+        </Col>
+      </Row>
+
+      {/* Carrousel images */}
+      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+        <ImageSlider images={rotPhotoPaths} />
+      </Row>
+
+      {/*  Price List */}
+      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+        <Flex
+          wrap="wrap"
+          gap="small"
+          align="center"
+          justify="space-evenly"
+          style={{ width: "100%" }}
+        >
+          <PricingCard
+            title="Basica"
+            features={[
+              "45 minuts de sessió",
+              "Guia per anar preparats a la sessió",
+              "Vestuari inclòs",
+              "Sessió familiar i individual",
+              "Galeria Online",
+              "Entrega de 20 fotos editades (galeria completa +60€)",
+              "5 Fotos impreses 18x13",
+              <br />,
+            ]}
+            price="200€"
+          />
           <PricingCard
             title="Exterior"
             features={[
@@ -155,9 +173,9 @@ export const PregnantPage : FC = () => (
               "Sessió familiar i individual",
               "Galeria online",
               "Entrega de 20 fotos editades (galeria completa +60€)",
-              <br/>,        
-              <br/>,        
-              ]}
+              <br />,
+              <br />,
+            ]}
             price="215€"
           />
           <PricingCard
@@ -170,28 +188,30 @@ export const PregnantPage : FC = () => (
               "Galeria Online",
               "Entrega de 20 fotos editades (galeria completa +60€)",
               "5 Fotos impreses 18x13",
-              "Sessió de maquillatge i perruqueria"
+              "Sessió de maquillatge i perruqueria",
             ]}
             price="260€"
           />
-
-      </Flex>
-    </Row> 
+        </Flex>
+      </Row>
     </div>
-    
+
     <FAQs
       imageSrc={getPublicPath("/pregnancy/16.jpg")}
       faqs={[
         { title: "QUINA SETMANA ÉS REALITZA LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },
-        { title: "COM SÉ SI ÉS MIILLOR LA SESSIÓ A L'EXTERIOR O A L'ESTUDI?", text: faq3text() },
+        {
+          title: "COM SÉ SI ÉS MIILLOR LA SESSIÓ A L'EXTERIOR O A L'ESTUDI?",
+          text: faq3text(),
+        },
         { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq4text() },
-        { title: "DE QUE TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQEURIA?", text: faq5text() },
-        { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq6text() }
-
-      ]}/>
+        {
+          title: "DE QUE TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQEURIA?",
+          text: faq5text(),
+        },
+        { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq6text() },
+      ]}
+    />
   </>
-
 );
-
-

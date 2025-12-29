@@ -124,79 +124,94 @@ export const NewBornPage : FC = () => (
         </motion.div>
 
 
-        {/* Text decriptiu */}
-        <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-          <Col style={{ fontSize: "2rem", textAlign: "center", margin: "0 25rem 0 25rem", fontFamily:"Italiana" }}>
-            {sessionDescription}
-          </Col>
-        </Row>
+      {/* Text decriptiu */}
+      <Row justify="center">
+        <Col
+          style={{
+            maxWidth: "1500px",
+            fontSize: "2rem",
+            textAlign: "center",
+            fontFamily: "Italiana",
+            padding: "0 1rem"
+          }}
+        >
+          {sessionDescription}
+        </Col>
+      </Row>
+
         
-        {/* 3 imatges amb entrada moviment */}
-        <motion.div
+      {/* 3 imatges amb entrada moviment */}
+      <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.3 }}
       >
         <ThreePhotoRow
           photoPaths={[getPublicPath(`/newborn/2.jpg`), getPublicPath(`/newborn/3.jpg`), getPublicPath(`/newborn/4.jpg`)]}
           rowStyle={rowStyle}
         />
       </motion.div>
+      
+      {/* Descripció sessió */}
+      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+        <Col
+          style={{
+              maxWidth: "950px",
+              fontSize: "2.5rem",
+              textAlign: "center",
+              fontFamily: "Italiana",
+            }}>
+          {sessionDescription2}
+        </Col>
+      </Row>
         
-        <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-          <Col style={{ fontSize: "4rem", textAlign: "center", margin: "0 15rem 0 15rem", fontFamily:"Italiana" }}>
-            {sessionDescription2}
-          </Col>
-        </Row>
-        
-        {/* Carrousel images */}
-        <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-          <ImageSlider images={rotPhotoPaths}/>
-        </Row>
+      {/* Carrousel images */}
+      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+        <ImageSlider images={rotPhotoPaths}/>
+      </Row>
 
-        {/*  Price List */}
-        <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-          <Flex wrap="wrap" gap="small" align="center" justify="space-evenly" style={{width: "100%"}}>
-            <PricingCard
-                  title="Bàsica"
-                  features={[
-                    "90 minuts de sessió",
-                    "Guia per anar preparats a la sessió",
-                    "Vestuari inclòs",
-                    "Entrega de 15 fotos editades",
-                    <br/>,
-                    <br/>,
-                  ]}
-                  price="210€"
-                />
-              <PricingCard
-                title="Domicili"
+      {/*  Price List */}
+      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+        <Flex wrap="wrap" gap="small" align="center" justify="space-evenly" style={{width: "100%"}}>
+          <PricingCard
+                title="Bàsica"
                 features={[
                   "90 minuts de sessió",
                   "Guia per anar preparats a la sessió",
                   "Vestuari inclòs",
                   "Entrega de 15 fotos editades",
                   <br/>,
-                  <AdviceText>*A partir de 35 km des de l’estudi, pot haver-hi cost extra per desplaçament</AdviceText>,
+                  <br/>,
                 ]}
                 price="210€"
               />
-              <PricingCard
-                title="Completa"
-                features={[
-                  "90 minuts de sessió",
-                  "Guia per anar preparats a la sessió",
-                  "Galeria completa",
-                  "5 fotos impresses de 18x13",
-                  "Taco de fusta amb double foto",
-                  <br/>
-                ]}
-                price="260€"
-              />
-          </Flex>
-        </Row> 
-
+            <PricingCard
+              title="Domicili"
+              features={[
+                "90 minuts de sessió",
+                "Guia per anar preparats a la sessió",
+                "Vestuari inclòs",
+                "Entrega de 15 fotos editades",
+                <br/>,
+                <AdviceText>*A partir de 35 km des de l’estudi, pot haver-hi cost extra per desplaçament</AdviceText>,
+              ]}
+              price="210€"
+            />
+            <PricingCard
+              title="Completa"
+              features={[
+                "90 minuts de sessió",
+                "Guia per anar preparats a la sessió",
+                "Galeria completa",
+                "5 fotos impresses de 18x13",
+                "Taco de fusta amb double foto",
+                <br/>
+              ]}
+              price="260€"
+            />
+        </Flex>
+      </Row> 
       </section>
     </div>
     

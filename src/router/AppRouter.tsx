@@ -3,11 +3,12 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import { AppRoutes } from '../model/routes.model';
 import { MainLayout } from '../layouts/main.layout';
 import { HomePage } from '../pages/home.page';
-import { FamiliarPage } from '../pages/familiar.page';
 import { PregnantPage } from '../pages/pregnancy/pregnant.page';
 import { NewBornPage } from '../pages/newborn/newborn.page';
 import { UnderConstruction } from '../pages/under.construction';
 import { ScrollToTop } from '../components/scrollToTop';
+import { FamiliarPage } from '../pages/familiar/familiar.page';
+import { SmashCakePage } from '../pages/smashcake/smashcake.page';
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.home]: () => <HomePage/>,
@@ -15,7 +16,8 @@ const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.newBorn] : () => <NewBornPage/>,
     [AppRoutes.familiar] : () => <FamiliarPage/>,
     [AppRoutes.materials] : () => <UnderConstruction/>,
-    [AppRoutes.dni] : () => <UnderConstruction/>
+    [AppRoutes.dni] : () => <UnderConstruction/>,
+    [AppRoutes.smashCake] : () => <SmashCakePage/>
 };
 
 export const AppRouter: FC = () => {

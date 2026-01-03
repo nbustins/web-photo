@@ -183,6 +183,7 @@ export const NewBornPage = () => (
                     "Entrega de 15 fotos editades",
                     <br/>,
                     <br/>,
+
                   ]}
                   price="210€"
                 />
@@ -210,7 +211,8 @@ export const NewBornPage = () => (
               "Galeria completa",
               "5 fotos impresses de 18x13",
               "Taco de fusta amb double foto",
-              <br/>
+              <br/>,
+              
             ]}
             price="260€"
           />

@@ -16,4 +16,5 @@ export const appRoutesTitle: Partial<Record<AppRoutes, string>> = {
     [AppRoutes.home]: 'Inici',
     [AppRoutes.pregnant]: 'Embaras',
     [AppRoutes.newBorn]: 'Recent Nascut',
+    [AppRoutes.smashCake] : "Smash Cake"
   };

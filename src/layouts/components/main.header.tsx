@@ -36,7 +36,8 @@ const items : MenuItem[] = [
         children: [
             {label : 'Embaras', key : AppRoutes.pregnant},
             {label : 'Recent Nascut', key : AppRoutes.newBorn},
-            {label : 'Familiar', key : AppRoutes.familiar}
+            {label : 'Familiar', key : AppRoutes.familiar},
+            {label : 'Smash Cake', key : AppRoutes.smashCake}
           ,
         ]
     },

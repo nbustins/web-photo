@@ -7,9 +7,9 @@ export function CustomTitle({ label, title }: { label: string; title: string }) 
     <div style={{ textAlign: "center", marginBottom: "0px" }}>
       <div
         style={{
-          fontSize: "3rem",
+          fontSize: "clamp(1.6rem, 3vw, 3rem)",
           letterSpacing: "0.2rem",
-          marginBottom: "-1rem",
+          marginBottom: "clamp(-0.4rem, -3vw, -1rem)",
           fontFamily: "Italiana",
         }}
       >
@@ -19,7 +19,7 @@ export function CustomTitle({ label, title }: { label: string; title: string }) 
       <Title
         level={1}
         style={{
-          fontSize: "6rem",
+          fontSize: "clamp(3rem,6vw,6rem)",
           fontWeight: 700,
           lineHeight: "1.1",
           margin: 0,

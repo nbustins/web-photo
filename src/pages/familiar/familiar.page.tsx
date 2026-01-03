@@ -91,20 +91,20 @@ export const FamiliarPage = () => (
               </Row>
               
               {/* Frase 2 */}
-              <Row justify="center" style={rowStyle}>
-                <Col
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
                   style={{
-                    maxWidth: "800px",
+                    maxWidth: 800,
+                    padding: "0 1rem",
                     fontSize: "2rem",
                     textAlign: "center",
                     fontFamily: "'Playfair Display'",
-                    padding: "0 1rem",
-                    letterSpacing: "0.2rem"
+                    letterSpacing: "0.2rem",
                   }}
                 >
                   {sessionDescription2}
-                </Col>
-              </Row>
+                </div>
+              </div>
 
               {/* Carrousel images */}
               <Row gutter={[24, 24]} justify="center" style={rowStyle}>

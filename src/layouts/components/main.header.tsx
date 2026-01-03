@@ -1,9 +1,10 @@
-import { Menu, MenuProps } from "antd";
+import { Button, Drawer, Grid, Menu, MenuProps } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { AppRoutes} from "../../model/routes.model";
 import { useNavigate } from "react-router-dom";
-import { FC, useState } from "react";
+import { useState } from "react";
 import { getPublicPath } from "../../utils/pathUtils";
+import { MenuOutlined } from "@ant-design/icons";
 
 
 const headerStyle : React.CSSProperties = {
@@ -51,20 +52,59 @@ const items : MenuItem[] = [
   }
 ]
 
+export const MainHeader = () => {
+    const { useBreakpoint } = Grid;
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
 
-export const MainHeader : FC = () => {
-
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const navigate = useNavigate();
     const [selectedKey, setSelectedKey] = useState<string>(AppRoutes.home);
 
     const handleMenuClick = (e: { key: string }) => {
       setSelectedKey(e.key);
       navigate(e.key);
+      if (isMobile) setDrawerOpen(false);
     };
 
-    return (
-        <Header style={headerStyle}>
-        <img src={getPublicPath("/Logo.png")} alt="Logo" style={logoStyle} onClick={() => navigate(AppRoutes.home)} />
+
+   return (
+    <Header style={headerStyle}>
+      <img
+        src={getPublicPath("/Logo.png")}
+        alt="Logo"
+        style={logoStyle}
+        onClick={() => navigate(AppRoutes.home)}
+      />
+
+      {isMobile ? (
+        <>
+          <Button
+            type="text"
+            icon={<MenuOutlined style={{ fontSize: 26 }} />}
+            onClick={() => setDrawerOpen(true)}
+            style={{ marginLeft: "auto" }}
+          />
+
+          <Drawer
+            placement="right"
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            styles={{
+              body: { padding: 0 },
+            }}
+          >
+            <Menu
+              theme="light"
+              mode="inline"
+              selectedKeys={[selectedKey]}
+              onClick={handleMenuClick}
+              items={items}
+            />
+          </Drawer>
+          
+        </>
+      ) : (
         <Menu
           theme="light"
           mode="horizontal"
@@ -73,12 +113,13 @@ export const MainHeader : FC = () => {
           style={{
             flex: 1,
             minWidth: 0,
-            fontSize: '25px',      // Make text bigger
-            color: '#333',         // Change text color
+            fontSize: "18px",
+            color: "#333",
           }}
-          items = {items}
+          items={items}
         />
-       
-      </Header>
-    )
+      )}
+    </Header>
+);
+
 }

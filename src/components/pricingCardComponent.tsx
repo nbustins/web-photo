@@ -23,7 +23,7 @@ const PricingCard = ({ title, features, price } : PricingCardProps) => (
     {/* Content above the price */}
     <div style={{ flex: 1 }}> {/* This takes up all available space above the price */}
 
-      <Title level={3} style={{ fontSize: '3rem', marginBottom: '8px', fontFamily: 'Italiana'}}>
+      <Title level={3} style={{ fontSize: "clamp(1.6rem, 3vw, 3rem)", marginBottom: '8px', fontFamily: 'Italiana'}}>
         SESSIÓ <br />
         {title.toUpperCase()}
       </Title>

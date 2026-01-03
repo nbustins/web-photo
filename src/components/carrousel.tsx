@@ -10,13 +10,21 @@ interface CarouselProps {
 
 const RotatingImageCarousel = ({
   images,
-  visibleCount = 4,
   intervalMs = 2500,
   transitionMs = 800,
 }: CarouselProps) => {
+  const getCount = () => (window.innerWidth < 768 ? 1 : 4);
+
   const [items, setItems] = useState(images);
   const [offset, setOffset] = useState(0);
   const animatingRef = useRef(false);
+  const [count, setCount] = useState(getCount);
+
+  useEffect(() => {
+    const onResize = () => setCount(getCount());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     setItems(images);
@@ -59,7 +67,7 @@ const RotatingImageCarousel = ({
         style={{
           display: "flex",
           willChange: "transform",
-          transform: `translate3d(-${(100 / visibleCount) * offset}%, 0, 0)`,
+          transform: `translate3d(-${(100 / count) * offset}%, 0, 0)`,
           transition:
             offset === 0
               ? "none"
@@ -70,7 +78,7 @@ const RotatingImageCarousel = ({
           <div
             key={`${image}-${i}`}
             style={{
-              flex: `0 0 ${100 / visibleCount}%`,
+              flex: `0 0 ${100 / count}%`,
               padding: "0.35em",
             }}
           >

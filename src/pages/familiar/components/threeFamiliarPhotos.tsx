@@ -1,6 +1,7 @@
 import { Row, Col } from "antd";
 import { motion } from "framer-motion";
 import { getPublicPath } from "../../../utils/pathUtils";
+import { radii } from "../../../styles/tokens/radii";
 
 const IMAGE_HEIGHT = 500;
 
@@ -51,7 +52,8 @@ export function ThreePhotoRow() {
             style={{
               width: "100%",
               height: IMAGE_HEIGHT,
-              objectFit: "cover"
+              objectFit: "cover",
+              borderRadius: radii.md
             }}
           />
         </Col>
@@ -64,7 +66,8 @@ export function ThreePhotoRow() {
             style={{
               width: "100%",
               height: IMAGE_HEIGHT,
-              objectFit: "cover"
+              objectFit: "cover",
+              borderRadius: radii.md
             }}
           />
         </Col>
@@ -77,7 +80,8 @@ export function ThreePhotoRow() {
             style={{
               width: "100%",
               height: IMAGE_HEIGHT,
-              objectFit: "cover"
+              objectFit: "cover",
+              borderRadius: radii.md
             }}
           />
         </Col>

@@ -5,6 +5,7 @@ import { ImageSlider, PricingCard } from "../../components";
 import { motion } from "framer-motion";
 import { ThreePhotoRow } from "../../components/threePhotoComponent";
 import FAQs from "../../components/FAQs";
+import { radii } from "../../styles/tokens/radii";
 
 const fromIdx = 5;
 const toIdx = 12;
@@ -106,6 +107,7 @@ export const SmashCakePage = () => (
                   objectFit: "cover",
                   objectPosition: "center",
                   display: "block",
+                  borderRadius: radii.md,
                   
                 }}
               />

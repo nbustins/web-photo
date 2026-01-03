@@ -72,7 +72,7 @@ const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs, imageWidth = "100%" }: F
       </Col>
       
       {/* Right column: FAQ list */}
-      <Col xs={24} md={16} style={{maxWidth: "1200px"}}>
+      <Col xs={24} md={16} style={{maxWidth: "900px"}}>
         {faqs.map((faq, idx) => (
           <div key={idx} style={{ marginBottom: "2rem" }}>
             <Title

@@ -4,6 +4,7 @@ import { getPublicPath } from "../../utils/pathUtils";
 import { ImageSlider, PricingCard } from "../../components";
 import { motion } from "framer-motion";
 import { ThreePhotoRow } from "../../components/threePhotoComponent";
+import FAQs from "../../components/FAQs";
 
 const fromIdx = 5;
 const toIdx = 12;
@@ -44,6 +45,31 @@ const sessionDescription2 = (
 veure lo ràpid que creixen
     </p>
 )
+
+const faq1text = () => (
+    <p>
+        Aquesta sessió recomano fer-la un mes abans del dia de l'aniversari,
+així tenim un mes de marge per editar les fotos i, si volguéssiu algun
+material per regalar per l'aniversari, aniríem tranquils amb el temps
+d'entrega.
+    </p>
+);
+
+
+const faq2text = () => (
+    <p>
+Aquesta sessió és recomanable reservar-la amb mínim de vint dies
+d'antelació (sempre com més aviat millor, ja que puc tenir l'agenda
+plena), així podem triar el pastís al vostre gust i que la pastissera
+tingui temps de fer-lo.
+    </p>
+);
+
+const faq3text = () => (
+    <p>
+  La sessió està formada de dues parts, la primera on realitzarem fotos familiars i la segona, on començarem amb el pastís.
+  </p>
+);
 
 export const SmashCakePage = () => (
    <>
@@ -175,15 +201,13 @@ export const SmashCakePage = () => (
       </section>
     </div>
     
-    {/* <FAQs
-      imageSrc={getPublicPath("/smashcake/14.jpg")}
+    <FAQs
+      imageSrc={getPublicPath("/smashcake/12.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },
         { title: "COM SERÀ LA SESSIÓ?", text: faq3text() },
-        { title: "DE QUE TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQUERIA?", text: faq4text() }
-
     ]}
-    imageWidth="75%"/> */}
+    imageWidth="70%"/>
   </>
 )

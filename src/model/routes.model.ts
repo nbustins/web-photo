@@ -1,4 +1,4 @@
-export const enum AppRoutes {
+export enum AppRoutes {
 
     home = '/',
     pregnant = '/embaras',

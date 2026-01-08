@@ -1,4 +1,4 @@
-export enum AppRoutes {
+export const enum AppRoutes {
 
     home = '/',
     pregnant = '/embaras',
@@ -8,7 +8,8 @@ export enum AppRoutes {
     revelation = "/revelacio",
     pets = "/mascotes",
     dni = "/dni",
-    materials = "/materials"
+    materials = "/materials",
+    bookSession = "/bookSession"
 
 }
 
@@ -16,5 +17,6 @@ export const appRoutesTitle: Partial<Record<AppRoutes, string>> = {
     [AppRoutes.home]: 'Inici',
     [AppRoutes.pregnant]: 'Embaras',
     [AppRoutes.newBorn]: 'Recent Nascut',
-    [AppRoutes.smashCake] : "Smash Cake"
+    [AppRoutes.smashCake] : "Smash Cake",
+    [AppRoutes.bookSession] : "Reservar Sessió"
   };

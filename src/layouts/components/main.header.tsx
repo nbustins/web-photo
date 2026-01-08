@@ -47,9 +47,13 @@ const items : MenuItem[] = [
       key: 'BOTIGA',
       children: [
           {label : 'DNI', key : AppRoutes.dni},
-          {label : 'Materials', key : AppRoutes.materials}
+          {label : 'Materials', key : AppRoutes.materials},
       ]
-  }
+    },
+    {
+      label: 'RESERVA',
+      key : AppRoutes.bookSession
+    }
 ]
 
 export const MainHeader = () => {

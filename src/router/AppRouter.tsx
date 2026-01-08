@@ -9,6 +9,7 @@ import { UnderConstruction } from '../pages/under.construction';
 import { ScrollToTop } from '../components/scrollToTop';
 import { FamiliarPage } from '../pages/familiar/familiar.page';
 import { SmashCakePage } from '../pages/smashcake/smashcake.page';
+import { BookSession } from '../pages/booksession/booksession';
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.home]: () => <HomePage/>,
@@ -17,7 +18,9 @@ const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.familiar] : () => <FamiliarPage/>,
     [AppRoutes.materials] : () => <UnderConstruction/>,
     [AppRoutes.dni] : () => <UnderConstruction/>,
-    [AppRoutes.smashCake] : () => <SmashCakePage/>
+    [AppRoutes.smashCake] : () => <SmashCakePage/>,
+    [AppRoutes.bookSession] : () => <BookSession/>
+    
 };
 
 export const AppRouter: FC = () => {

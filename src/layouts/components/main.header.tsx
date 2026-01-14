@@ -22,9 +22,9 @@ const headerStyle : React.CSSProperties = {
 
 const logoStyle: React.CSSProperties = {
   height: '100%',
-  maxHeight: 55,
+  maxHeight: 50,
   width: 'auto',
-  margin: '0 10px',
+  margin: '7px',
   objectFit: 'contain',
 };
 

@@ -46,7 +46,7 @@ const items : MenuItem[] = [
       label: 'BOTIGA',
       key: 'BOTIGA',
       children: [
-          {label : 'DNI', key : AppRoutes.dni},
+          {label : 'DNI', key : AppRoutes.store},
           {label : 'Materials', key : AppRoutes.materials},
       ]
     },

@@ -7,7 +7,7 @@ export enum AppRoutes {
     smashCake = "/smashCake",
     revelation = "/revelacio",
     pets = "/mascotes",
-    dni = "/dni",
+    store = "/store",
     materials = "/materials",
     bookSession = "/bookSession"
 

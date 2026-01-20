@@ -4,6 +4,9 @@ import React from "react";
 import { getPublicPath } from "../../utils/pathUtils";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
+import { StoreBook, StoreBookProps } from "./components/storeBook";
+import { title } from "process";
+import { text } from "stream/consumers";
 
 const services = [
   "FOTO DNI I PASSAPORT",
@@ -24,25 +27,38 @@ const ServicesList = () => (
   </div>
 );
 
+const rightData : StoreBookProps = {
+  title: 'IMPRESSIÓ DE FOTOGRAFIES AL MOMENT',
+  text:'Pots venir a l’estudi a imprimir les teves fotos, però si ho prefereixes, pots enviar-me un correu a lauratfotografia@gmail.com o un WhatsApp 623002792 i enviar-me les fotos per tenir-les llestes per a quan et vagi bé venir a buscar-les.',
+  buttonText: 'ENVIA LES TEVES FOTOS'
+}
+          
+const leftData : StoreBookProps = {
+  title: 'FOTO DNI',
+  text : 'Per venir a realitzar la foto de carnet a l’estudi heu de reservar hora a través del WhatsApp 623 00 27 92.',
+  buttonText: 'DEMANA CITA'
+}
+
+
 export const StorePage = () => (
   <>
     <section
       style={{
-        backgroundImage: `url(${getPublicPath("/store/1.jpg")})`,
+        //backgroundImage: `url(${getPublicPath("/store/1.jpg")})`,
         backgroundSize: "100% auto", // NO deforma
         backgroundPosition: "top center",
         backgroundRepeat: "no-repeat",
-        height: 1000,
+        //height: 1000,
       }}
     >
       <Space
         direction="vertical"
-        size={48} // controla exactament l’espai
+        size={18} // controla exactament l’espai
         style={{
           width: "100%",
           height: "100%",
-          paddingTop: 32, // opcional
-          paddingBottom: 32, // opcional
+          //paddingTop: 32, // opcional
+          //paddingBottom: 32, // opcional
         }}
       >
         <header>
@@ -67,73 +83,78 @@ export const StorePage = () => (
       </Space>
     </section>
 
-    <div>
-      <Row gutter={[32, 32]} align="stretch">
+    <div style={{padding: "40px"}}>
+      <Row  align="stretch">
 
         {/* Esquerra */}
         <Col xs={24} md={10} style={{ display: "flex" }}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              width: "100%",
-              padding: "24px",
-            }}
-          >
-            <Title level={3} style={{ marginTop: 0 }}>
-              FOTO DNI
-            </Title>
-
-            <Paragraph style={{ fontSize: "1.1rem" }}>
-             Per venir a realitzar la foto de carnet a l’estudi heu de reservar hora a través del WhatsApp 623 00 27 92.
-            </Paragraph>
-
-            <div style={{marginTop:"200", display: "flex", justifyContent: "center" }}>
-              <Button type="primary" style={{ width: "100%", maxWidth: 420 }}>
-                Continuar
-              </Button>
-            </div>
-            </div>
+          <StoreBook {... leftData} />
         </Col>
 
         {/* Dreta */}
-        <Col xs={24} md={14} style={{ display: "flex" }}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              width: "100%",
-              padding: "24px",
-            }}
-          >
-            <Title level={3} style={{ marginTop: 0 }}>
-              IMPRESSIÓ DE FOTOGRAFIES AL MOMENT
-            </Title>
-
-            <Paragraph style={{ fontSize: "1.1rem" }}>
-              Pots venir a l’estudi a imprimir les teves fotos, però si ho prefereixes, pots enviar-me un correu a lauratfotografia@gmail.com o un WhatsApp 623002792 i enviar-me les fotos per tenir-les llestes per a quan et vagi bé venir a buscar-les.
-            </Paragraph>
-
-               <div style={{marginTop:"200", display: "flex", justifyContent: "center" }}>
-              <Button
-                type="primary"
-                style={{
-                  width: "100%",
-                  maxWidth: 320,
-                  height: 54,          // més alt
-                  borderRadius: 999,  // super rodó (pill)
-                  fontSize: "1.1rem",
-                  fontWeight: 600,
-                }}
-              >
-                Pujar foto DNI
-              </Button>
-            </div>
-          </div>
+        <Col xs={24} md={14} style={{ display: "flex"}}>
+          <StoreBook {... rightData} />
         </Col>
       </Row>
     </div>
+<div style={{ width: "100%", overflowX: "hidden" }}>
+
+<Row gutter={[24, 24]} align="middle"style={{padding : "40px"}}>
+  <Col xs={24} md={10}>
+    <Title level={3} style={{ marginTop: 0, fontFamily: "Italiana", fontSize: '3rem' }}>
+      REGALA UNA SESSIÓ DE FOTOS
+    </Title>
+
+    <Paragraph style={{ fontSize: "1.1rem", textAlign: "justify" }}>
+      Els vals regals estan pensats perquè puguis regalar una sessió de fotos
+      d’embaràs, de recent nascut, familiar, de parella, de mascota ... A aquella
+      persona especial que vol gaudir d’una experiència única amb un record
+      fotogràfic.
+    </Paragraph>
+  </Col>
+
+  {/* ✅ Columna del mig: 2 imatges (1 i 2) */}
+  <Col xs={24} md={7}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <img
+        src={getPublicPath("giftcard/2.jpg")}
+        alt="Giftcard 1"
+        style={{
+          width: "100%",
+          height: 500,
+          objectFit: "cover",
+          borderRadius: 18,
+        }}
+      />
+
+      <img
+        src={getPublicPath("giftcard/3.jpg")}
+        alt="Giftcard 2"
+        style={{
+          width: "100%",
+          height: 400,
+          objectFit: "cover",
+          borderRadius: 18,
+        }}
+      />
+    </div>
+  </Col>
+
+  {/* ✅ Última columna: la 1 */}
+  <Col xs={24} md={7}>
+    <img
+      src={getPublicPath("giftcard/1.jpg")}
+      alt="Giftcard 1 gran"
+      style={{
+        width: "100%",
+        height: 700,
+        objectFit: "cover",
+        borderRadius: 18,
+        boxShadow: "0 10px 28px rgba(0,0,0,0.22)",
+      }}
+    />
+  </Col>
+</Row>
+</div>
   </>
 );

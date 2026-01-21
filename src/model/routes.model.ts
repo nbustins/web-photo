@@ -9,7 +9,8 @@ export enum AppRoutes {
     pets = "/mascotes",
     store = "/store",
     materials = "/materials",
-    bookSession = "/bookSession"
+    bookSession = "/bookSession",
+    bookStore = "/bookStore"
 
 }
 

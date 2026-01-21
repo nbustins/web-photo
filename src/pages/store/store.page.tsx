@@ -1,12 +1,11 @@
-import { Button, Col, Row, Space } from "antd";
+import { Col, Row } from "antd";
 import { CustomTitle } from "../../components/customTitle";
-import React from "react";
 import { getPublicPath } from "../../utils/pathUtils";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { StoreBook, StoreBookProps } from "./components/storeBook";
-import { title } from "process";
-import { text } from "stream/consumers";
+import { radii } from "../../styles/tokens/radii";
+import { motion } from "framer-motion";
 
 const services = [
   "FOTO DNI I PASSAPORT",
@@ -16,145 +15,167 @@ const services = [
   "MARCS DE FOTOS",
 ];
 
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.45, // ⬅️ temps entre elements (augmenta si ho vols més lent)
+      delayChildren: 0.2, // ⬅️ delay inicial abans de començar
+    },
+  },
+};
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: 18,
+    filter: "blur(6px)",
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 1.1, // ⬅️ duració de cada animació (més alt = més lent)
+      ease: [0.22, 1, 0.36, 1], // ⬅️ ease super smooth (easeOutCubic vibe)
+    },
+  },
+};
+
 const ServicesList = () => (
-  <div>
-    {services.map((service, i) => (
-      <React.Fragment key={service}>
+  <motion.div variants={container} initial="hidden" animate="show">
+    {services.map((service) => (
+      <motion.div key={service} variants={item}>
         {service}
-        {i < services.length - 1 && <br />}
-      </React.Fragment>
+      </motion.div>
     ))}
-  </div>
+  </motion.div>
 );
 
-const rightData : StoreBookProps = {
-  title: 'IMPRESSIÓ DE FOTOGRAFIES AL MOMENT',
-  text:'Pots venir a l’estudi a imprimir les teves fotos, però si ho prefereixes, pots enviar-me un correu a lauratfotografia@gmail.com o un WhatsApp 623002792 i enviar-me les fotos per tenir-les llestes per a quan et vagi bé venir a buscar-les.',
-  buttonText: 'ENVIA LES TEVES FOTOS'
-}
-          
-const leftData : StoreBookProps = {
-  title: 'FOTO DNI',
-  text : 'Per venir a realitzar la foto de carnet a l’estudi heu de reservar hora a través del WhatsApp 623 00 27 92.',
-  buttonText: 'DEMANA CITA'
-}
+const rightData: StoreBookProps = {
+  title: "IMPRESSIÓ DE FOTOGRAFIES AL MOMENT",
+  text: "Pots venir a l’estudi a imprimir les teves fotos, però si ho prefereixes, pots enviar-me un correu a lauratfotografia@gmail.com o un WhatsApp 623002792 i enviar-me les fotos per tenir-les llestes per a quan et vagi bé venir a buscar-les.",
+  buttonText: "ENVIA LES TEVES FOTOS",
+};
 
+const leftData: StoreBookProps = {
+  title: "FOTO DNI",
+  text: "Per venir a realitzar la foto de carnet a l’estudi heu de reservar hora a través del WhatsApp 623 00 27 92.",
+  buttonText: "DEMANA CITA",
+};
 
 export const StorePage = () => (
   <>
-    <section
+    <div
       style={{
-        //backgroundImage: `url(${getPublicPath("/store/1.jpg")})`,
-        backgroundSize: "100% auto", // NO deforma
-        backgroundPosition: "top center",
-        backgroundRepeat: "no-repeat",
-        //height: 1000,
+        display: "flex",
+        flexDirection: "column",
+        gap: "5rem", // ⬅️ separació entre seccions
+        padding: "40px",
       }}
     >
-      <Space
-        direction="vertical"
-        size={18} // controla exactament l’espai
-        style={{
-          width: "100%",
-          height: "100%",
-          //paddingTop: 32, // opcional
-          //paddingBottom: 32, // opcional
-        }}
-      >
-        <header>
-          <CustomTitle label="LA" title="BOTIGA" />
-        </header>
+      <header>
+        <CustomTitle label="LA" title="BOTIGA" />
+      </header>
 
-        <Row justify="center">
-          <Col
-            xs={24}
-            md={10}
-            style={{
-              maxWidth: "1500px",
-              fontSize: "1.5rem",
-              textAlign: "center",
-              fontFamily: "Italiana",
-              padding: "0 1rem",
-            }}
-          >
-            {ServicesList()}
+      <Row justify="center">
+        <Col
+          xs={24}
+          md={10}
+          style={{
+            maxWidth: "1500px",
+            fontSize: "1.5rem",
+            textAlign: "center",
+            fontFamily: "Italiana",
+            padding: "0 1rem",
+          }}
+        >
+          <ServicesList />
+        </Col>
+      </Row>
+
+      <div style={{ maxWidth: "1800px", margin: "0 auto", padding: "0 1rem" }}>
+        <Row align="stretch" gutter={[32, 32]}>
+          <Col xs={24} md={10} style={{ display: "flex" }}>
+            <StoreBook {...leftData} />
+          </Col>
+          <Col xs={24} md={14} style={{ display: "flex" }}>
+            <StoreBook {...rightData} />
           </Col>
         </Row>
-      </Space>
-    </section>
+      </div>
+    </div>
+    <div style={{ width: "100%", overflowX: "hidden" }}>
+      <Row gutter={[24, 24]} align="middle" style={{ padding: "40px" }}>
+        <Col xs={24} md={10}>
+          <Title
+            level={3}
+            style={{
+              marginTop: 0,
+              fontFamily: "Italiana",
+              fontSize: "3rem",
+              maxWidth: "650px",
+              margin: "0 auto",
+            }}
+          >
+            REGALA UNA SESSIÓ DE FOTOS
+          </Title>
 
-    <div style={{padding: "40px"}}>
-      <Row  align="stretch">
-
-        {/* Esquerra */}
-        <Col xs={24} md={10} style={{ display: "flex" }}>
-          <StoreBook {... leftData} />
+          <Paragraph
+            style={{
+              fontSize: "1.1rem",
+              textAlign: "justify",
+              maxWidth: "650px",
+              margin: "0 auto",
+            }}
+          >
+            Els vals regals estan pensats perquè puguis regalar una sessió de
+            fotos d’embaràs, de recent nascut, familiar, de parella, de mascota
+            ... A aquella persona especial que vol gaudir d’una experiència
+            única amb un record fotogràfic.
+          </Paragraph>
         </Col>
 
-        {/* Dreta */}
-        <Col xs={24} md={14} style={{ display: "flex"}}>
-          <StoreBook {... rightData} />
+        <Col xs={24} md={7}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <img
+              src={getPublicPath("giftcard/2.jpg")}
+              alt="Giftcard 1"
+              style={{
+                width: "100%",
+                height: 500,
+                objectFit: "cover",
+                borderRadius: radii.md,
+              }}
+            />
+
+            <img
+              src={getPublicPath("giftcard/3.jpg")}
+              alt="Giftcard 2"
+              style={{
+                width: "100%",
+                height: 400,
+                objectFit: "cover",
+                borderRadius: radii.md,
+              }}
+            />
+          </div>
+        </Col>
+
+        <Col xs={24} md={7}>
+          <img
+            src={getPublicPath("giftcard/1.jpg")}
+            alt="Giftcard 1 gran"
+            style={{
+              width: "100%",
+              height: 700,
+              objectFit: "cover",
+              borderRadius: radii.md,
+              boxShadow: "0 10px 28px rgba(0,0,0,0.22)",
+            }}
+          />
         </Col>
       </Row>
     </div>
-<div style={{ width: "100%", overflowX: "hidden" }}>
-
-<Row gutter={[24, 24]} align="middle"style={{padding : "40px"}}>
-  <Col xs={24} md={10}>
-    <Title level={3} style={{ marginTop: 0, fontFamily: "Italiana", fontSize: '3rem' }}>
-      REGALA UNA SESSIÓ DE FOTOS
-    </Title>
-
-    <Paragraph style={{ fontSize: "1.1rem", textAlign: "justify" }}>
-      Els vals regals estan pensats perquè puguis regalar una sessió de fotos
-      d’embaràs, de recent nascut, familiar, de parella, de mascota ... A aquella
-      persona especial que vol gaudir d’una experiència única amb un record
-      fotogràfic.
-    </Paragraph>
-  </Col>
-
-  {/* ✅ Columna del mig: 2 imatges (1 i 2) */}
-  <Col xs={24} md={7}>
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <img
-        src={getPublicPath("giftcard/2.jpg")}
-        alt="Giftcard 1"
-        style={{
-          width: "100%",
-          height: 500,
-          objectFit: "cover",
-          borderRadius: 18,
-        }}
-      />
-
-      <img
-        src={getPublicPath("giftcard/3.jpg")}
-        alt="Giftcard 2"
-        style={{
-          width: "100%",
-          height: 400,
-          objectFit: "cover",
-          borderRadius: 18,
-        }}
-      />
-    </div>
-  </Col>
-
-  {/* ✅ Última columna: la 1 */}
-  <Col xs={24} md={7}>
-    <img
-      src={getPublicPath("giftcard/1.jpg")}
-      alt="Giftcard 1 gran"
-      style={{
-        width: "100%",
-        height: 700,
-        objectFit: "cover",
-        borderRadius: 18,
-        boxShadow: "0 10px 28px rgba(0,0,0,0.22)",
-      }}
-    />
-  </Col>
-</Row>
-</div>
   </>
 );

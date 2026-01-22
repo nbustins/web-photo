@@ -46,8 +46,8 @@ const items : MenuItem[] = [
       label: 'BOTIGA',
       key: 'BOTIGA',
       children: [
-          {label : 'DNI', key : AppRoutes.dni},
-          {label : 'Materials', key : AppRoutes.materials},
+          {label : 'Informació', key : AppRoutes.store},
+          {label : 'Sol·licitud', key : AppRoutes.bookStore},
       ]
     },
     {

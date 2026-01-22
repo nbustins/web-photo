@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import '../index.css';
+import { getPublicPath } from "../utils/pathUtils";
 
 export const HomePage: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -14,7 +15,7 @@ export const HomePage: FC = () => {
 
   const bgImage = isMobile
     ? "url(photos/beb-mobile.png)" 
-    : "url(photos/beb.jpg)";      
+    : `url(${getPublicPath('main/main.jpg')})`;      
 
   return (
     <div

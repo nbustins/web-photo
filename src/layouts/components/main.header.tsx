@@ -86,6 +86,11 @@ export const MainHeader = () => {
     { label: "INICI", key: AppRoutes.home },
   ];
 
+  // Forçar recarrega de menu al carregar el logo
+  const [menuKey, setMenuKey] = useState(0);
+  const forceMenuRecalc = () => setMenuKey(k => k + 1);
+
+
   return (
     <Header style={headerStyle}>
       {isMobile ? (
@@ -141,6 +146,7 @@ export const MainHeader = () => {
             }}
           >
             <Menu
+              key= {menuKey}
               theme="light"
               mode="horizontal"
               selectedKeys={[selectedKey]}
@@ -164,6 +170,7 @@ export const MainHeader = () => {
               alt="Logo"
               style={logoStyle}
               onClick={() => navigate(AppRoutes.home)}
+              onLoad={forceMenuRecalc}
             />
           </div>
 

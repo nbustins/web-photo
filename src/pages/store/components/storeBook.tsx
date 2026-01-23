@@ -23,27 +23,103 @@ export const StoreBook = (data: StoreBookProps) => {
 
   const navigate = useNavigate();
 
-  return(
+return (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      height: "100%",
+      width: "100%",
+      padding: "32px 36px",
+      borderRadius: 18,
+      background: "linear-gradient(180deg, #fffdf7 0%, #fbf6ea 100%)",
+      border: "1px solid rgba(0,0,0,0.08)",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+      position: "relative",
+      overflow: "hidden",
+    }}
+  >
+    {/* Detall decoratiu (paper) */}
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        width: "100%",        
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 10,
+        background: "linear-gradient(90deg, rgba(0,0,0,0.05), rgba(0,0,0,0))",
       }}
-    >
-      <Title level={3} style={{ marginTop: 0, fontFamily: "Italiana" }}>
+    />
+
+    {/* Contingut */}
+    <div style={{ textAlign: "center" }}>
+      <Title
+        level={3}
+        style={{
+          marginTop: 0,
+          marginBottom: 8,
+          fontFamily: "Italiana",
+          letterSpacing: "1px",
+        }}
+      >
         {data.title}
       </Title>
 
-      <Paragraph style={{ fontSize: "1.1rem", textAlign:"justify" }}>{data.text}</Paragraph>
-
-      {/* boto al final */}
-      <div style={{ marginTop: "auto", display: "flex", justifyContent: "center" }}>
-        <Button type="primary" style={submitButtonStyle} onClick={() => navigate(AppRoutes.bookStore)}>
-          {data.buttonText}
-        </Button>
-      </div>
+      {/* separador */}
+      <div
+        style={{
+          width: 80,
+          height: 2,
+          margin: "10px auto 22px",
+          background: "rgba(0,0,0,0.15)",
+          borderRadius: 2,
+        }}
+      />
     </div>
-  )
+
+    <Paragraph
+      style={{
+        fontSize: "1.1rem",
+        textAlign: "justify",
+        lineHeight: 1.8,
+        fontFamily: "Georgia, 'Times New Roman', serif",
+        color: "rgba(0,0,0,0.82)",
+        marginBottom: 0,
+      }}
+    >
+      {data.text}
+    </Paragraph>
+
+    {/* Footer */}
+    <div
+      style={{
+        marginTop: "auto",
+        paddingTop: 28,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 16,
+      }}
+    >
+
+      <Button
+        type="primary"
+        style={{
+          ...submitButtonStyle,
+          padding: "10px 22px",
+          height: "auto",
+          borderRadius: 999,
+          fontSize: 15,
+          fontWeight: 600,
+          letterSpacing: "0.5px",
+          boxShadow: "0 10px 22px rgba(0,0,0,0.12)",
+        }}
+        onClick={() => navigate(AppRoutes.bookStore)}
+      >
+        {data.buttonText}
+      </Button>
+    </div>
+  </div>
+);
+
 };

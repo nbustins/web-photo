@@ -78,6 +78,7 @@ export const StorePage = () => (
         <CustomTitle label="LA" title="BOTIGA" />
       </header>
 
+      {/* Llista serveis */}
       <Row justify="center">
         <Col
           xs={24}
@@ -94,6 +95,7 @@ export const StorePage = () => (
         </Col>
       </Row>
 
+      {/* Reserves */}
       <div style={{ maxWidth: "1800px", margin: "0 auto", padding: "0 1rem" }}>
         <Row align="stretch" gutter={[32, 32]}>
           <Col xs={24} md={10} style={{ display: "flex" }}>
@@ -105,7 +107,30 @@ export const StorePage = () => (
         </Row>
       </div>
     </div>
-    <div style={{ width: "100%", overflowX: "hidden" }}>
+
+    {/* Vals regal */}
+    <div
+      style={{
+        width: "100%",
+        overflowX: "hidden",
+        background: "linear-gradient(180deg, #fffdf7 0%, #fbf6ea 100%)",
+        position: "relative",
+      }}
+    >
+      {/* Cercel decoratiu */}
+      <div
+        style={{
+          position: "absolute",
+          top: -120,
+          right: -120,
+          width: 320,
+          height: 320,
+          borderRadius: "50%",
+          background: "rgba(0,0,0,0.04)",
+          filter: "blur(2px)",
+        }}
+      />
+
       <Row gutter={[24, 24]} align="middle" style={{ padding: "40px" }}>
         <Col xs={24} md={10}>
           <Title

@@ -14,7 +14,7 @@ export const HomePage: FC = () => {
   }, []);
 
   const bgImage = isMobile
-    ? "url(photos/beb-mobile.png)" 
+    ? `url(${getPublicPath('main/main.jpg')})`
     : `url(${getPublicPath('main/main.jpg')})`;      
 
   return (

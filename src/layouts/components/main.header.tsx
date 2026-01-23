@@ -2,7 +2,7 @@ import { Button, Drawer, Grid, Menu, MenuProps } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { AppRoutes } from "../../model/routes.model";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getPublicPath } from "../../utils/pathUtils";
 import { MenuOutlined } from "@ant-design/icons";
 
@@ -90,6 +90,8 @@ export const MainHeader = () => {
   const [menuKey, setMenuKey] = useState(0);
   const forceMenuRecalc = () => setMenuKey(k => k + 1);
 
+  // Fallback recalcul de menu (proteccio per si de cas)
+  useEffect(() => forceMenuRecalc(), [])
 
   return (
     <Header style={headerStyle}>

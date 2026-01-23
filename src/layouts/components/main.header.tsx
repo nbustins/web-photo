@@ -16,7 +16,7 @@ const headerStyle: React.CSSProperties = {
   position: "sticky",
   top: 0,
   zIndex: 1000,
-  height: 70,
+  height: 80,
 };
 
 const sideMenuStyle: React.CSSProperties = {
@@ -27,7 +27,7 @@ const sideMenuStyle: React.CSSProperties = {
 };
 
 const logoStyle :  React.CSSProperties = {
-  maxHeight: 50,
+  maxHeight: 64,
   width: "auto",
   objectFit: "contain",
   cursor: "pointer",

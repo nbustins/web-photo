@@ -130,13 +130,14 @@ export const MainHeader = () => {
       ) : (
         // Desktop: 2 botons esquerra, logo centrat, 2 botons dreta
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto 1fr",
-            alignItems: "center",
+         style={{
             width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 18, // separació entre logo i menus (ajusta al gust)
             height: "100%",
-          }}
+        }}
         >
           {/* LEFT */}
           <div

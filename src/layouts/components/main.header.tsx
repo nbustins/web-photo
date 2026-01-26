@@ -24,9 +24,11 @@ const sideMenuStyle: React.CSSProperties = {
   fontSize: "18px",
   color: "#333",
   background: "transparent",
+  minWidth: '400px',
+  flexDirection: 'row-reverse'
 };
 
-const logoStyle :  React.CSSProperties = {
+const logoStyle: React.CSSProperties = {
   maxHeight: 64,
   width: "auto",
   objectFit: "contain",
@@ -83,15 +85,19 @@ export const MainHeader = () => {
 
   const rightItems: MenuItem[] = [
     items[2],
-    { label: "INICI", key: AppRoutes.home },
+    { label: " SOBRE MI", key: AppRoutes.home },
   ];
 
   // Forçar recarrega de menu al carregar el logo
-  const [menuKey, setMenuKey] = useState(0);
-  const forceMenuRecalc = () => setMenuKey(k => k + 1);
+  const [menuKeyRight, setMenuKeyRight] = useState(0);
+  const [menuKeyLeft, setMenuKeyLeft] = useState(0);
 
+  const forceMenuRecalc = () => {
+    setMenuKeyRight((k) => k + 1);
+    setMenuKeyLeft((k) => k + 2);
+  }
   // Fallback recalcul de menu (proteccio per si de cas)
-  useEffect(() => forceMenuRecalc(), [])
+  useEffect(() => forceMenuRecalc(), []);
 
   return (
     <Header style={headerStyle}>
@@ -130,71 +136,50 @@ export const MainHeader = () => {
       ) : (
         // Desktop: 2 botons esquerra, logo centrat, 2 botons dreta
         <div
-         style={{
+          style={{
             width: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: 18, // separació entre logo i menus (ajusta al gust)
             height: "100%",
-        }}
+          }}
         >
-          {/* LEFT */}
-          <div
+          <Menu
+            key={menuKeyLeft}
+            theme="light"
+            mode="horizontal"
+            selectedKeys={[selectedKey]}
+            onClick={handleMenuClick}
             style={{
-              justifySelf: "start",
-              display: "flex",
-              alignItems: "center",
-              height: "100%",
-            }}
-          >
-            <Menu
-              key= {menuKey}
-              theme="light"
-              mode="horizontal"
-              selectedKeys={[selectedKey]}
-              onClick={handleMenuClick}
-              style={sideMenuStyle}
-              items={leftItems}
-            />
-          </div>
+              ...sideMenuStyle,
+              flexDirection: 'row-reverse'
 
-          {/* CENTER LOGO */}
-          <div
-            style={{
-              justifySelf: "center",
-              display: "flex",
-              alignItems: "center",
-              height: "100%",
             }}
-          >
-            <img
-              src={getPublicPath("/Logo.png")}
-              alt="Logo"
-              style={logoStyle}
-              onClick={() => navigate(AppRoutes.home)}
-              onLoad={forceMenuRecalc}
-            />
-          </div>
+            items={leftItems}
+          />
 
-          {/* RIGHT */}
-          <div
+          <img
+            src={getPublicPath("/Logo.png")}
+            alt="Logo"
+            style={logoStyle}
+            onClick={() => navigate(AppRoutes.home)}
+            onLoad={forceMenuRecalc}
+          />
+
+          <Menu
+            key={menuKeyRight}
+            theme="light"
+            mode="horizontal"
+            selectedKeys={[selectedKey]}
+            onClick={handleMenuClick}
             style={{
-              justifySelf: "end",
-              display: "flex",
-              alignItems: "center",
-              height: "100%",
+              ...sideMenuStyle,
+              flexDirection: 'row'
+
             }}
-          >
-            <Menu
-              theme="light"
-              mode="horizontal"
-              selectedKeys={[selectedKey]}
-              onClick={handleMenuClick}
-              style={sideMenuStyle}
-              items={rightItems}
-            />
-          </div>
+            items={rightItems}
+          />
         </div>
       )}
     </Header>

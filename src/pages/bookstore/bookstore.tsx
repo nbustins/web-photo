@@ -1,7 +1,7 @@
 export const BookStore = () => (
     <div      
         style={{
-            height: 'calc(100vh - 120px)',
+            height: 'calc(100vh - 130px)',
             overflow: 'hidden',
         }}>
         <iframe

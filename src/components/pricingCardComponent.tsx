@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Space, Typography } from "antd";
 import { radii } from "../styles/tokens/radii";
 import { useNavigate } from "react-router";
 import { AppRoutes } from "../model/routes.model";
@@ -62,24 +62,15 @@ const PricingCard = ({ title, features, price } : PricingCardProps) => {
     >
       {price}
     </Title>
-
-    <Button
-      type="primary"
-      style={{
-        padding: "10px 22px",
-        height: "auto",
-        borderRadius: 999,
-        fontSize: 15,
-        fontWeight: 600,
-        letterSpacing: "0.5px",
-        boxShadow: "0 10px 22px rgba(0,0,0,0.12)",
-        marginTop : "0.5rem",
-        minWidth: "150px"
-      }}
-      onClick={() => navigate(AppRoutes.bookSession)}
-    >
-      Reserva
-    </Button>
+    <div style={{ width: "100%", marginTop:"25px" }}>
+      <Button
+        style={{ width: 150 }}
+          type="primary"
+          onClick={() => navigate(AppRoutes.bookSession)}
+        >
+        Reserva
+      </Button>
+    </div>
       
   </Card>)
 };

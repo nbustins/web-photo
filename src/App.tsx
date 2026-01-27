@@ -12,6 +12,17 @@ const App: React.FC = () => {
             colorText: '#333',       // Text color
             fontFamily:"Raleway"
           },
+          components: {
+            Button: {
+              paddingInline: 22,
+              controlHeight: 40,
+              borderRadius: 999,
+              fontSize: 15,
+              fontWeight: 600,
+              //letterSpacing: 0.5,
+              primaryShadow: "0 10px 22px rgba(0,0,0,0.12)",
+            },
+          },
         }}
       >
     <AppRouter />

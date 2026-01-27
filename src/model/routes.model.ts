@@ -1,16 +1,16 @@
 export enum AppRoutes {
 
     home = '/',
-    pregnant = '/embaras',
+    pregnant = '/pregnant',
     newBorn = '/new-born',
     familiar = '/familiar',
-    smashCake = "/smashCake",
-    revelation = "/revelacio",
-    pets = "/mascotes",
+    smashCake = "/smash-cake",
+    pets = "/pets",
     store = "/store",
     materials = "/materials",
-    bookSession = "/bookSession",
-    bookStore = "/bookStore"
+    bookSession = "/book-session",
+    bookStore = "/book-store",
+    aboutMe = "/about-me"
 
 }
 

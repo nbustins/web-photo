@@ -61,6 +61,10 @@ const items: MenuItem[] = [
     label: "RESERVA",
     key: AppRoutes.bookSession,
   },
+  {
+    label:"SOBRE MI",
+    key: AppRoutes.aboutMe
+  }
 ];
 
 export const MainHeader = () => {
@@ -78,15 +82,8 @@ export const MainHeader = () => {
     if (isMobile) setDrawerOpen(false);
   };
 
-  const leftItems: MenuItem[] = [
-    items[0], // SESSIONS
-    items[1], // BOTIGA
-  ];
-
-  const rightItems: MenuItem[] = [
-    items[2],
-    { label: " SOBRE MI", key: AppRoutes.home },
-  ];
+  const leftItems: MenuItem[] = items.slice(0, 2);
+  const rightItems: MenuItem[] = items.slice(2, 4);
 
   // Forçar recarrega de menu al carregar el logo
   const [menuKeyRight, setMenuKeyRight] = useState(0);

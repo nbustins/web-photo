@@ -43,7 +43,7 @@ const items: MenuItem[] = [
     label: "SESSIONS",
     key: "SESSIONS",
     children: [
-      { label: "Embaras", key: AppRoutes.pregnant },
+      { label: "Embaràs", key: AppRoutes.pregnant },
       { label: "Recent Nascut", key: AppRoutes.newBorn },
       { label: "Familiar", key: AppRoutes.familiar },
       { label: "Smash Cake", key: AppRoutes.smashCake },
@@ -153,7 +153,7 @@ export const MainHeader = () => {
               flexDirection: 'row-reverse'
 
             }}
-            items={leftItems}
+            items={[...leftItems].reverse()}
           />
 
           <img

@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react";
-import '../index.css';
+import "../index.css";
 import { getPublicPath } from "../utils/pathUtils";
+import { motion } from "framer-motion";
 
 export const HomePage: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -14,21 +15,24 @@ export const HomePage: FC = () => {
   }, []);
 
   const bgImage = isMobile
-    ? `url(${getPublicPath('main/main.jpg')})`
-    : `url(${getPublicPath('main/main.jpg')})`;      
+    ? `url(${getPublicPath("main/main.jpg")})`
+    : `url(${getPublicPath("main/main.jpg")})`;
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, scale: 1.03 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, ease: "easeOut" }}
       style={{
-         minHeight: 'calc(100vh - 140px)', 
-      overflow: 'hidden',
-      backgroundImage: bgImage,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      margin: 0,
-      padding: 0,
-      boxSizing: 'border-box',
+        minHeight: "calc(100vh - 140px)",
+        overflow: "hidden",
+        backgroundImage: bgImage,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
       }}
     />
   );

@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { Button, Card, Space, Typography } from "antd";
+import { Button, Card, Typography } from "antd";
 import { radii } from "../styles/tokens/radii";
 import { useNavigate } from "react-router";
 import { AppRoutes } from "../model/routes.model";

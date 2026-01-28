@@ -24,7 +24,7 @@ export const HomePage: FC = () => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1, ease: "easeOut" }}
       style={{
-        minHeight: "calc(100vh - 80px)",
+        minHeight: "calc(100vh - 180px)",
         overflow: "hidden",
         backgroundImage: bgImage,
         backgroundSize: "cover",

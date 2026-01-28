@@ -1,4 +1,4 @@
-import { Col, Row, Space } from "antd";
+import { Col, Row } from "antd";
 import { CustomTitle } from "../../components/customTitle";
 import { getPublicPath } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";

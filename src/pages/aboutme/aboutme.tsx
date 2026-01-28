@@ -38,21 +38,26 @@ const fadeRight = {
 export const AboutMe = () => {
   return (
     <div style={{ backgroundColor: "rgb(246,244,240)" }}>
+      {/* Contenidor central */}
       <div
         style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "10px 40px",
           display: "flex",
           flexDirection: "column",
-          gap: "5rem",
-          padding: "40px",
+          gap: "0rem",
         }}
       >
-        <Row>
-          <Col xs={24} md={14}>
+        <Row align="middle">
+          {/* Columna text */}
+          <Col xs={24} md={14} style={{ paddingRight: "4rem" }}>
             <motion.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
+              style={{ maxWidth: 700 }}
             >
               <AboutMeTitle label="Hola!" title="Soc la LAURA" />
             </motion.div>
@@ -63,6 +68,7 @@ export const AboutMe = () => {
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
+              style={{ maxWidth: 600 }}
             >
               <Text
                 style={{
@@ -79,7 +85,8 @@ export const AboutMe = () => {
             </motion.div>
           </Col>
 
-          <Col xs={24} md={10}>
+          {/* Columna imatge */}
+          <Col xs={24} md={10} style={{ marginTop: 40 }}>
             <motion.img
               variants={fadeRight}
               initial="hidden"
@@ -90,7 +97,7 @@ export const AboutMe = () => {
               alt="Giftcard 1"
               style={{
                 width: "100%",
-                maxWidth: 380,
+                maxWidth: 450,
                 height: "auto",
                 display: "block",
                 margin: "0 auto",
@@ -98,6 +105,7 @@ export const AboutMe = () => {
                 borderTopRightRadius: 200,
                 borderBottomLeftRadius: 0,
                 borderBottomRightRadius: 0,
+                boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
               }}
             />
           </Col>
@@ -106,3 +114,4 @@ export const AboutMe = () => {
     </div>
   );
 };
+

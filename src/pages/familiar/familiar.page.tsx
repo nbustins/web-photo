@@ -1,8 +1,8 @@
-import { Col, Row } from "antd";
+import { Col, Row, Space } from "antd";
 import { CustomTitle } from "../../components/customTitle";
 import { getPublicPath } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";
-import { radii } from "../../styles/tokens/radii";
+import { pageBodyPadding, radii } from "../../styles/tokens/radii";
 import { ImageSlider, PricingCard } from "../../components";
 
 const fromIdx = 4;
@@ -45,7 +45,7 @@ const sessionDescription2 = (
 export const FamiliarPage = () => (
 
     <>
-        <div style={{padding : "40px"}}>
+        <div style={{padding : pageBodyPadding}}>
             <header>
                 <CustomTitle label="SESSIÓ" title="FAMILIAR" />  
             </header>
@@ -107,12 +107,12 @@ export const FamiliarPage = () => (
               </div>
 
               {/* Carrousel images */}
-              <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+              <Row gutter={[24, 24]} justify="center" style={{ marginBottom: 24 }}>
                 <ImageSlider images={rotPhotoPaths}/>
               </Row>
-
+              
                {/*  Price List */}
-              <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+              <Row gutter={[24, 24]} justify="center" >
                 <Col xs={24} md={8}>
                     <PricingCard
                           title="Estudi"

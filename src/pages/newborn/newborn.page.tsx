@@ -5,6 +5,7 @@ import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";
 import { CustomTitle } from "../../components/customTitle";
 import { ThreePhotoRow } from "../../components/threePhotoComponent";
+import { pageBodyPadding } from "../../styles/tokens/radii";
 
 const fromIdx = 4;
 const toIdx = 13;
@@ -81,7 +82,7 @@ Que la Mireia formi part de l'estudi és molt important pel resultat de les imat
 
 export const NewBornPage = () => (
   <>
-    <div style={{ padding: "40px" }}>
+    <div style={{ padding: pageBodyPadding }}>
 
       <header>
           <CustomTitle label="SESSIÓ" title="RECENT NASCUT" />  
@@ -167,12 +168,12 @@ export const NewBornPage = () => (
       </Row>
         
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+      <Row gutter={[24, 24]} justify="center" style={{marginBottom: '24px'}}>
         <ImageSlider images={rotPhotoPaths}/>
       </Row>
 
       {/*  Price List */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+      <Row gutter={[24, 24]} justify="center" >
         <Col xs={24} md={8}>
             <PricingCard
                   title="Bàsica"

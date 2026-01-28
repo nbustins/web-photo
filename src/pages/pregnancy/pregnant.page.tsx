@@ -5,6 +5,7 @@ import { getPublicPath } from "../../utils/pathUtils";
 import { CustomTitle } from "../../components/customTitle";
 import { WhyDoSession } from "../../components/whyDoSession";
 import { ThreePhotoRow } from "../../components/threePhotoComponent";
+import { pageBodyPadding } from "../../styles/tokens/radii";
 
 const rowStyle = {
   padding: "3rem",
@@ -97,7 +98,7 @@ const faq6text = () => (
 
 export const PregnantPage = () => (
   <>
-    <div style={{ padding: "40px" }}>
+    <div style={{ padding: pageBodyPadding }}>
 
       <header>
         <CustomTitle label="SESSIÓ" title="EMBARÀS" />

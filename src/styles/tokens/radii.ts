@@ -3,3 +3,5 @@ export const radii = {
   md: "0.3rem",
   lg: "0.5rem",
 } as const;
+
+export const pageBodyPadding = "24px";

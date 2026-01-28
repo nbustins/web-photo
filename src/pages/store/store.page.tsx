@@ -4,7 +4,7 @@ import { getPublicPath } from "../../utils/pathUtils";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { StoreBook, StoreBookProps } from "./components/storeBook";
-import { radii } from "../../styles/tokens/radii";
+import { pageBodyPadding, radii } from "../../styles/tokens/radii";
 import { motion } from "framer-motion";
 
 const services = [
@@ -71,7 +71,7 @@ export const StorePage = () => (
         display: "flex",
         flexDirection: "column",
         gap: "5rem", // ⬅️ separació entre seccions
-        padding: "40px",
+        padding: pageBodyPadding,
       }}
     >
       <header>
@@ -98,10 +98,25 @@ export const StorePage = () => (
       {/* Reserves */}
       <div style={{ maxWidth: "1800px", margin: "0 auto", padding: "0 1rem" }}>
         <Row align="stretch" gutter={[32, 32]}>
-          <Col xs={24} md={10} style={{ display: "flex" }}>
+          <Col
+            xs={24}
+            md={10}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <StoreBook {...leftData} />
           </Col>
-          <Col xs={24} md={14} style={{ display: "flex" }}>
+
+          <Col
+            xs={24}
+            md={14}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <StoreBook {...rightData} />
           </Col>
         </Row>

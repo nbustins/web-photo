@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
-import "../index.css";
+import { ImageBackground } from "../components/imageBackground";
+import { PromoVideoBackground } from "../components/promoVideoBackground";
 import { getPublicPath } from "../utils/pathUtils";
-import { motion } from "framer-motion";
 
 export const HomePage: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -14,26 +14,17 @@ export const HomePage: FC = () => {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  const bgImage = isMobile
-    ? `url(${getPublicPath("main/main.jpg")})`
-    : `url(${getPublicPath("main/main.jpg")})`;
+  const height = "calc(100vh - 180px)";
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 1.03 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, ease: "easeOut" }}
-      style={{
-        minHeight: "calc(100vh - 180px)",
-        overflow: "hidden",
-        backgroundImage: bgImage,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        margin: 0,
-        padding: 0,
-        boxSizing: "border-box",
-      }}
-    />
+  const bgImage = isMobile
+    ? getPublicPath("main/main.jpg")
+    : getPublicPath("main/main.jpg");
+
+  const promoEnabled = true; // ← QUAN ACABI LA PROMO: false
+
+  return promoEnabled ? (
+    <PromoVideoBackground height={height} />
+  ) : (
+    <ImageBackground height={height} imageUrl={bgImage} />
   );
 };

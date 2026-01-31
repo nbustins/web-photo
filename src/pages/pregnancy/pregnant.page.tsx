@@ -202,7 +202,7 @@ export const PregnantPage = () => (
     </div>
 
     <FAQs
-      imageSrc={getPublicPath("/pregnancy/16.jpg")}
+      imageSrc={getPublicPath("pregnancy/16.jpg")}
       faqs={[
         { title: "QUINA SETMANA ÉS REALITZA LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

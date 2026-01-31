@@ -102,7 +102,7 @@ export const MainHeader = () => {
         <>
           {/* Mobile: logo esquerra + burger dreta (igual que abans) */}
           <img
-            src={getPublicPath("/Logo.png")}
+            src={getPublicPath("Logo.png")}
             alt="Logo"
             style={logoStyle}
             onClick={() => navigate(AppRoutes.home)}
@@ -157,7 +157,7 @@ export const MainHeader = () => {
           />
 
           <img
-            src={getPublicPath("/Logo.png")}
+            src={getPublicPath("Logo.png")}
             alt="Logo"
             style={logoStyle}
             onClick={() => navigate(AppRoutes.home)}

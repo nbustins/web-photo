@@ -9,7 +9,7 @@ import { pageBodyPadding, radii } from "../../styles/tokens/radii";
 
 const fromIdx = 5;
 const toIdx = 12;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`/smashcake/${fromIdx + i}.jpg`));
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`smashcake/${fromIdx + i}.jpg`));
 
 const rowStyle = {
   padding: "30px",
@@ -99,7 +99,7 @@ export const SmashCakePage = () => (
               }}
             >
               <img
-              src={getPublicPath("/smashcake/1.jpg")}
+              src={getPublicPath("smashcake/1.jpg")}
                 alt="Imatge de la mare embarassada"
                 style={{
                   width: "100%",
@@ -141,7 +141,7 @@ export const SmashCakePage = () => (
       viewport={{ once: true, amount: 0.3 }}
       >
         <ThreePhotoRow
-          photoPaths={[getPublicPath(`/smashcake/2.jpg`), getPublicPath(`/smashcake/3.jpg`), getPublicPath(`/smashcake/4.jpg`)]}
+          photoPaths={[getPublicPath(`smashcake/2.jpg`), getPublicPath(`smashcake/3.jpg`), getPublicPath(`smashcake/4.jpg`)]}
           rowStyle={rowStyle}
         />
       </motion.div>
@@ -204,7 +204,7 @@ export const SmashCakePage = () => (
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("/smashcake/12.jpg")}
+      imageSrc={getPublicPath("smashcake/12.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

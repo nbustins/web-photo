@@ -69,7 +69,7 @@ export function WhyDoSession({
             }}
           >
             <img
-              src={getPublicPath("/pregnancy/4.jpg")}
+              src={getPublicPath("pregnancy/4.jpg")}
               alt="Imatge de la mare embarassada"
               style={{
                 width: "100%",

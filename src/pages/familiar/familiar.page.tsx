@@ -7,7 +7,7 @@ import { ImageSlider, PricingCard } from "../../components";
 
 const fromIdx = 4;
 const toIdx = 12;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`/familiar/${fromIdx + i}.jpg`));
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`familiar/${fromIdx + i}.jpg`));
 
 const rowStyle = {
   padding: "30px",

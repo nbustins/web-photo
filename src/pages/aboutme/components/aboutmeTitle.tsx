@@ -21,7 +21,7 @@ export function AboutMeTitle({ label, title }: { label: string; title: string })
       <Title
         level={1}
         style={{
-          fontSize: "clamp(3rem,6vw,6rem)",
+          fontSize: "clamp(3rem,5vw,5rem)",
           fontWeight: 700,
           lineHeight: "1.1",
           margin: 0,

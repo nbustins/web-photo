@@ -108,10 +108,21 @@ export const AboutMe = () => {
                 boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
               }}
             />
+            {/* Imatge sobreposada */}
+            <img
+              src={getPublicPath("aboutme/logo.png")}
+              alt="Overlay"
+              style={{
+                position: "absolute",
+                bottom: -80,
+                left: -220,
+                width: 500,
+                pointerEvents: "none",
+              }}
+            />
           </Col>
         </Row>
       </div>
     </div>
   );
 };
-

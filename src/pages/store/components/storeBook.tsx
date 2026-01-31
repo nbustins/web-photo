@@ -60,6 +60,7 @@ export const StoreBook = (data: StoreBookProps) => {
             marginBottom: 8,
             fontFamily: "Italiana",
             letterSpacing: "1px",
+            fontSize: "2rem"
           }}
         >
           {data.title}

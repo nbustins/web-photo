@@ -124,7 +124,7 @@ export const FamiliarPage = () => (
                             "Entrega de 20 fotos editades (galeria completa +60€)",
                             "5 fotos impreses 10 x 15"
                           ]}
-                          price="160€"
+                          price="200€"
                         />
                 </Col>
                 <Col xs={24} md={8}>
@@ -138,7 +138,7 @@ export const FamiliarPage = () => (
                         "Entrega de 20 fotos editades (galeria completa +60€)",
                         <br/>,
                       ]}
-                      price="170€"
+                      price="220€"
                     />
                 </Col>
               </Row> 

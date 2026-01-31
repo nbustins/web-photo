@@ -44,8 +44,8 @@ const faq1text = () => (
 
 const faq2text = () => (
   <p>
-    Sempre recomano reservar cap a la setmana 20 d’embaràs, que tinguem temps a
-    organitzar i coincidir agenda. Per reservar ho pots fer a travès de la web o
+    Sempre recomano reservar cap a la setmana 20 d’embaràs, que tinguem temps d'
+    organitzar i coincidir agenda. Per reservar ho pots fer a través de la web o
     enviant-me un WhatsApp al 623 00 27 92
   </p>
 );
@@ -54,7 +54,7 @@ const faq3text = () => (
   <p>
     El tipus de sessió és personal, l’estudi està més preparat per a les
     sessions, ja que teniu vestidor per canviar-vos, la roba de l’estudi,
-    materials i atrezzo que podem utilitzar, etc. i la sessió està més preparada
+    materials i attrezzo que podem utilitzar, etc. i la sessió està més preparada
     i tenim més hores al dia per poder fer la sessió. Les sessions d’exterior
     són molt naturals i al ser a l’aire lliure tot el que no depengui de
     nosaltres no ho podem controlar, per això hem d’anar molt preparats. La
@@ -150,7 +150,7 @@ export const PregnantPage = () => (
        <Col xs ={24} md={8}>
        
           <PricingCard
-            title="Basica"
+            title="Bàsica"
             features={[
               "45 minuts de sessió",
               "Guia per anar preparats a la sessió",
@@ -207,15 +207,15 @@ export const PregnantPage = () => (
         { title: "QUINA SETMANA ÉS REALITZA LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },
         {
-          title: "COM SÉ SI ÉS MIILLOR LA SESSIÓ A L'EXTERIOR O A L'ESTUDI?",
+          title: "COM SÉ SI ÉS MILLOR LA SESSIÓ A L'EXTERIOR O A L'ESTUDI?",
           text: faq3text(),
         },
-        { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq4text() },
+        { title: "QUÈ ÉS EL VESTUARI DE L’ESTUDI?", text: faq4text() },
         {
-          title: "DE QUE TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQEURIA?",
+          title: "DE QUÈ TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQEURIA?",
           text: faq5text(),
         },
-        { title: "QUE ÉS EL VESTUARI DE L’ESTUDI?", text: faq6text() },
+        { title: "QUÈ ÉS EL VESTUARI DE L’ESTUDI?", text: faq6text() },
       ]}
     />
   </>

@@ -211,7 +211,7 @@ export const NewBornPage = () => (
               "Guia per anar preparats a la sessió",
               "Galeria completa",
               "5 fotos impresses de 18x13",
-              "Taco de fusta amb double foto",
+              "Taco de fusta amb doble foto",
               <br/>,
               
             ]}
@@ -228,7 +228,7 @@ export const NewBornPage = () => (
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },
         { title: "COM SERÀ LA SESSIÓ?", text: faq3text() },
-        { title: "DE QUE TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQUERIA?", text: faq4text() }
+        { title: "DE QUÈ TRACTA LA SESSIÓ DE MAQUILLATGE I PERRUQUERIA?", text: faq4text() }
 
     ]}
     imageWidth="75%"/>

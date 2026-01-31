@@ -54,13 +54,13 @@ const ServicesList = () => (
 
 const rightData: StoreBookProps = {
   title: "IMPRESSIÓ DE FOTOGRAFIES AL MOMENT",
-  text: "Pots venir a l’estudi a imprimir les teves fotos, però si ho prefereixes, pots enviar-me un correu a lauratfotografia@gmail.com o un WhatsApp 623002792 i enviar-me les fotos per tenir-les llestes per a quan et vagi bé venir a buscar-les.",
+  text: "Pots venir a l’estudi a imprimir les teves fotos, però si ho prefereixes, pots escriure'm un WhatsApp 623002792 i enviar-me les fotos, o omplir el formulari de reserves i tenir-les llestes per a quan et vagi bé venir a buscar-les.",
   buttonText: "ENVIA LES TEVES FOTOS",
 };
 
 const leftData: StoreBookProps = {
   title: "FOTO DNI",
-  text: "Per venir a realitzar la foto de carnet a l’estudi heu de reservar hora a través del WhatsApp 623 00 27 92.",
+  text: "Per venir a realitzar la foto de carnet a l’estudi heu de reservar hora a través del WhatsApp 623 00 27 92 o omplir el formulari de reserva.",
   buttonText: "DEMANA CITA",
 };
 

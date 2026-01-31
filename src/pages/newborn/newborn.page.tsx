@@ -9,7 +9,7 @@ import { pageBodyPadding } from "../../styles/tokens/radii";
 
 const fromIdx = 4;
 const toIdx = 13;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`/newborn/${fromIdx + i}.jpg`));
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`newborn/${fromIdx + i}.jpg`));
 
 const rowStyle = {
   padding: "30px",
@@ -107,7 +107,7 @@ export const NewBornPage = () => (
               }}
             >
               <img
-              src={getPublicPath("/newborn/gran_new_born.jpg")}
+              src={getPublicPath("newborn/gran_new_born.jpg")}
                 alt="Imatge de la mare embarassada"
                 style={{
                   width: "100%",
@@ -148,7 +148,7 @@ export const NewBornPage = () => (
       viewport={{ once: true, amount: 0.3 }}
       >
         <ThreePhotoRow
-          photoPaths={[getPublicPath(`/newborn/2.jpg`), getPublicPath(`/newborn/3.jpg`), getPublicPath(`/newborn/4.jpg`)]}
+          photoPaths={[getPublicPath(`newborn/2.jpg`), getPublicPath(`newborn/3.jpg`), getPublicPath(`newborn/4.jpg`)]}
           rowStyle={rowStyle}
         />
       </motion.div>
@@ -223,7 +223,7 @@ export const NewBornPage = () => (
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("/newborn/14.jpg")}
+      imageSrc={getPublicPath("newborn/14.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

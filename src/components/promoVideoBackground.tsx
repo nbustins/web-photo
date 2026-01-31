@@ -1,7 +1,17 @@
-import { FC, useRef } from "react";
+import { FC, useEffect, useState } from "react";
+import { getPublicPath } from "../utils/pathUtils";
 
-const VIDEO_URI = "https://res.cloudinary.com/djxytedne/video/upload/v1769615993/promo_video_gdgftp.mp4";
-const PROMO_POSTER_URI = "https://res.cloudinary.com/djxytedne/video/upload/so_1,f_auto,q_auto/promo_video_gdgftp.jpg";
+const uris = [
+  {
+    video : "https://res.cloudinary.com/djxytedne/video/upload/v1769883265/V%C3%8DDEO_WEB_MOBIL_d4gpgr.mp4",
+    poster : "https://res.cloudinary.com/djxytedne/video/upload/so_1,f_auto,q_auto/V%C3%8DDEO_WEB_MOBIL_d4gpgr.mp4"
+  },
+  {
+    video : "https://res.cloudinary.com/djxytedne/video/upload/v1769883183/V%C3%8DDEO_WEB_pdy1bw.mp4",
+    poster : "https://res.cloudinary.com/djxytedne/video/upload/so_1,f_auto,q_auto/V%C3%8DDEO_WEB_pdy1bw.mp4"
+  },
+]
+
 
 type PromoVideoBackgroundProps = {
   height: string;
@@ -10,7 +20,20 @@ type PromoVideoBackgroundProps = {
 export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
   height,
 }) => {
-  const bgRef = useRef<HTMLVideoElement | null>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 600px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const video_data = isMobile
+    ? uris[0]
+    : uris[1];
 
   return (
     <div
@@ -20,34 +43,9 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
         height,
         overflow: "hidden",
         background: "#000",
+        backgroundImage: `url(${getPublicPath("main/fons_video.jpg")})`,
       }}
     >
-      {/* vídeo difuminat */}
-      <video
-        ref={bgRef}
-        autoPlay
-        muted
-        playsInline
-        loop={false}
-        poster={PROMO_POSTER_URI}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          filter: "blur(30px)",
-          transform: "scale(1.2)",
-        }}
-        onLoadedMetadata={() => {
-          const v = bgRef.current;
-          if (!v) return;
-          v.currentTime = 0.1;
-          v.pause();
-        }}
-      >
-        <source src={VIDEO_URI} />
-      </video>
 
       {/* vídeo principal */}
       <video
@@ -55,7 +53,7 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
         loop
         muted
         playsInline
-        poster={PROMO_POSTER_URI}
+        poster={video_data.poster}
         style={{
           position: "relative",
           width: "100%",
@@ -63,7 +61,7 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
           objectFit: "contain",
         }}
       >
-        <source src={VIDEO_URI} />
+        <source src={video_data.video} />
       </video>
     </div>
   );

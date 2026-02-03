@@ -20,7 +20,7 @@ export const HomePage: FC = () => {
     ? getPublicPath("main/main.jpg")
     : getPublicPath("main/main.jpg");
 
-  const promoEnabled = true; // ← QUAN ACABI LA PROMO: false
+  const promoEnabled = false; 
 
   return promoEnabled ? (
     <PromoVideoBackground height={height} />

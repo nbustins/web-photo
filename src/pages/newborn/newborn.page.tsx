@@ -181,12 +181,12 @@ export const NewBornPage = () => (
                     "90 minuts de sessió",
                     "Guia per anar preparats a la sessió",
                     "Vestuari inclòs",
-                    "Entrega de 15 fotos editades",
+                    "Entrega de 15 fotos editades (galeria completa + 60€)",
                     <br/>,
                     <br/>,
 
                   ]}
-                  price="210€"
+                  price="220€"
                 />
         </Col>
         <Col xs={24} md={8}>
@@ -196,11 +196,11 @@ export const NewBornPage = () => (
                 "90 minuts de sessió",
                 "Guia per anar preparats a la sessió",
                 "Vestuari inclòs",
-                "Entrega de 15 fotos editades",
+                "Entrega de 15 fotos editades (galeria completa + 60€)",
                 <br/>,
                 <AdviceText>*A partir de 35 km des de l’estudi, pot haver-hi cost extra per desplaçament</AdviceText>,
               ]}
-              price="210€"
+              price="220€"
             />
         </Col>
         <Col xs={24} md={8}>
@@ -209,13 +209,14 @@ export const NewBornPage = () => (
             features={[
               "90 minuts de sessió",
               "Guia per anar preparats a la sessió",
+              "Vestuari inclòs",
               "Galeria completa",
+              "Sessió maquillatge i pentinat",
               "5 fotos impresses de 18x13",
-              "Taco de fusta amb doble foto",
               <br/>,
               
             ]}
-            price="260€"
+            price="280€"
           />
         </Col>
       </Row> 

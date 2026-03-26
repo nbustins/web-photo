@@ -10,7 +10,8 @@ export enum AppRoutes {
     materials = "/materials",
     bookSession = "/book-session",
     bookStore = "/book-store",
-    aboutMe = "/about-me"
+    aboutMe = "/about-me",
+    weddingAnnaJoan = "/weddings/anna-joan"
 
 }
 

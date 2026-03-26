@@ -13,6 +13,7 @@ import { BookSession } from '../pages/booksession/booksession';
 import { StorePage } from '../pages/store/store.page';
 import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
+import { AnnaJoanWedding } from '../pages/weddings/anna-joan';
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.home]: () => <HomePage/>,
@@ -41,6 +42,7 @@ export const AppRouter: FC = () => {
             />
           ))}
         </Route>
+        <Route path={AppRoutes.weddingAnnaJoan} element={<AnnaJoanWedding />} />
       </Routes>
     </HashRouter>
   );

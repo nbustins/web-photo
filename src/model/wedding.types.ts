@@ -4,6 +4,7 @@ export interface Wedding {
   title: string;
   event_date: string;
   closing_date: string;
+  manager_code: string;
 }
 
 export interface Guest {
@@ -16,6 +17,7 @@ export interface Guest {
 }
 
 export interface GuestConfirmation {
+  id: string;
   guest_id: string;
   attending: boolean;
   companions_count: number;
@@ -30,6 +32,11 @@ export interface GuestCompanion {
 
 export interface GuestWithWedding extends Guest {
   wedding: Wedding;
+}
+
+export interface GuestWithConfirmation extends Guest {
+  confirmation?: GuestConfirmation;
+  companions: GuestCompanion[];
 }
 
 export interface ConfirmationPayload {

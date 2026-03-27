@@ -1,0 +1,81 @@
+.manager-layout {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 253, 248, 0.97) 0%,
+    rgba(252, 248, 242, 0.95) 30%,
+    rgba(245, 240, 232, 0.93) 60%,
+    rgba(255, 252, 248, 0.97) 100%
+  );
+}
+
+.manager-header {
+  background: linear-gradient(135deg, #d4c4b5 0%, #c9b8a7 100%);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+}
+
+.manager-header-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manager-content {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.manager-card {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.manager-card .ant-card-body {
+  padding: 32px;
+}
+
+.manager-title {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  color: #3d3d3d;
+  margin-bottom: 24px !important;
+}
+
+.manager-stats-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.manager-stats-card .ant-descriptions-item-label {
+  font-weight: 500;
+}
+
+.manager-table-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .manager-content {
+    padding: 16px;
+  }
+
+  .manager-header {
+    padding: 0 16px;
+  }
+
+  .manager-header-content {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0;
+  }
+}

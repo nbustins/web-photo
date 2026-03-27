@@ -11,7 +11,8 @@ export enum AppRoutes {
     bookSession = "/book-session",
     bookStore = "/book-store",
     aboutMe = "/about-me",
-    weddingAnnaJoan = "/weddings/anna-joan"
+    weddingAnnaJoan = "/weddings/anna-joan",
+    weddingAnnaJoanManager = "/weddings/anna-joan/manager"
 
 }
 

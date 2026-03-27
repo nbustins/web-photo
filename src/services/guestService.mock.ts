@@ -1,5 +1,5 @@
 import { GuestServiceProvider } from './guestService.types';
-import { Wedding, GuestWithWedding, ConfirmationPayload } from '../model/wedding.types';
+import { Wedding, GuestWithWedding, GuestWithConfirmation, ConfirmationPayload } from '../model/wedding.types';
 
 const mockWedding: Wedding = {
   id: 'wedding-1',
@@ -7,6 +7,7 @@ const mockWedding: Wedding = {
   title: 'Anna & Joan',
   event_date: '2026-09-15',
   closing_date: '2026-09-10',
+  manager_code: 'MANAGER2026',
 };
 
 const mockGuests: Array<GuestWithWedding> = [
@@ -45,6 +46,20 @@ const confirmationsStore = new Map<string, {
   companion_names: string[];
   notes: string;
 }>();
+
+confirmationsStore.set('guest-1', {
+  attending: true,
+  companions_count: 2,
+  companion_names: ['Joan Garcia', 'Anna Garcia'],
+  notes: 'Al·lèrgia a les nous',
+});
+
+confirmationsStore.set('guest-2', {
+  attending: false,
+  companions_count: 0,
+  companion_names: [],
+  notes: '',
+});
 
 export class MockGuestService implements GuestServiceProvider {
   private delay(ms: number): Promise<void> {
@@ -89,5 +104,36 @@ export class MockGuestService implements GuestServiceProvider {
     });
 
     return { success: true };
+  }
+
+  async getGuestsWithConfirmations(slug: string, managerCode: string): Promise<GuestWithConfirmation[]> {
+    await this.delay(500);
+    console.log('[MockGuestService] getGuestsWithConfirmations:', slug, managerCode);
+
+    const wedding = await this.getWeddingBySlug(slug);
+    if (!wedding || wedding.manager_code !== managerCode) {
+      throw new Error('Codi de gestor incorrecte');
+    }
+
+    const weddingGuests = mockGuests.filter(g => g.wedding_id === wedding.id);
+    
+    return weddingGuests.map(guest => {
+      const confirmation = confirmationsStore.get(guest.id);
+      return {
+        ...guest,
+        confirmation: confirmation ? {
+          id: `conf-${guest.id}`,
+          guest_id: guest.id,
+          attending: confirmation.attending,
+          companions_count: confirmation.companions_count,
+          notes: confirmation.notes,
+        } : undefined,
+        companions: confirmation?.companion_names.map((name, idx) => ({
+          id: `comp-${guest.id}-${idx}`,
+          guest_confirmation_id: `conf-${guest.id}`,
+          name,
+        })) || [],
+      };
+    });
   }
 }

@@ -1,0 +1,80 @@
+.wedding-card-header {
+  margin-bottom: 8px;
+}
+
+.wedding-title {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: 2.8rem !important;
+  font-weight: 500 !important;
+  color: #3d3d3d !important;
+  margin: 0 0 8px 0 !important;
+  letter-spacing: 0.02em;
+}
+
+.wedding-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: #8a8075;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.wedding-guest-name {
+  display: block;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #a89888;
+  margin-top: 16px;
+}
+
+.wedding-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168, 158, 148, 0.3), transparent);
+  margin: 24px 0 !important;
+}
+
+.wedding-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 48px 40px;
+  box-shadow: 
+    0 25px 50px -12px rgba(166, 152, 140, 0.15),
+    0 0 0 1px rgba(212, 190, 175, 0.1);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .wedding-card {
+    padding: 32px 24px;
+    border-radius: 20px;
+  }
+
+  .wedding-title {
+    font-size: 2.2rem !important;
+  }
+
+  .wedding-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .wedding-radio-group {
+    gap: 8px;
+  }
+
+  .wedding-radio {
+    padding: 12px 16px;
+  }
+
+  .wedding-code-form .ant-space-compact {
+    flex-direction: column;
+  }
+
+  .wedding-code-form .ant-btn {
+    width: 100%;
+  }
+}

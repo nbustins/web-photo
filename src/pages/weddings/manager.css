@@ -1,16 +1,10 @@
 .manager-layout {
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 253, 248, 0.97) 0%,
-    rgba(252, 248, 242, 0.95) 30%,
-    rgba(245, 240, 232, 0.93) 60%,
-    rgba(255, 252, 248, 0.97) 100%
-  );
+  background-color: rgb(246, 244, 240);
 }
 
 .manager-header {
-  background: linear-gradient(135deg, #d4c4b5 0%, #c9b8a7 100%);
+  background: #7C7458;
   padding: 0 24px;
   display: flex;
   align-items: center;
@@ -36,8 +30,8 @@
   max-width: 400px;
   margin: 0 auto;
   text-align: center;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(124, 116, 88, 0.08);
 }
 
 .manager-card .ant-card-body {
@@ -45,23 +39,24 @@
 }
 
 .manager-title {
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
-  color: #3d3d3d;
+  font-family: 'Italiana', Georgia, serif !important;
+  color: #7C7458;
   margin-bottom: 24px !important;
 }
 
 .manager-stats-card {
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(124, 116, 88, 0.08);
 }
 
 .manager-stats-card .ant-descriptions-item-label {
   font-weight: 500;
+  color: #7C7458;
 }
 
 .manager-table-card {
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(124, 116, 88, 0.08);
 }
 
 @media (max-width: 768px) {

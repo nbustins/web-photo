@@ -26,7 +26,7 @@ const mockGuests: Array<GuestWithWedding> = [
     name: 'Pere López',
     email: 'pere@example.com',
     invite_code: 'PERE2025',
-    max_companions: 1,
+    max_companions: 3,
     wedding: mockWedding,
   },
   {

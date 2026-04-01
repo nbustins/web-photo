@@ -1,5 +1,6 @@
 .manager-layout {
-  min-height: 100vh;
+  min-height: 100%;
+  height: 100%;
   background-color: rgb(246, 244, 240);
 }
 

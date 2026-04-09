@@ -52,7 +52,7 @@ export const Workshop = () => {
         style={{
           maxWidth: 1100,
           margin: "0 auto",
-          padding: "40px 32px 64px",
+          padding: "20px 32px 28px",
         }}
       >
         {/* Title */}
@@ -70,7 +70,7 @@ export const Workshop = () => {
               fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)",
               color: "#666",
               fontStyle: "italic",
-              margin: "4px 0 40px",
+              margin: "4px 0 20px",
               letterSpacing: "0.05rem",
             }}
           >
@@ -79,16 +79,17 @@ export const Workshop = () => {
         </motion.div>
 
         {/* Main two-column section */}
-        <Row gutter={[40, 32]} align="top">
+        <Row gutter={[40, 32]} align="stretch">
           {/* Left: portrait photo */}
-          <Col xs={24} md={10}>
+          <Col xs={24} md={10} style={{ display: "flex" }}>
             <motion.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
+              style={{ flex: 1 }}
             >
-              <Placeholder aspect="2/3" />
+              <Placeholder aspect="2/3" style={{ height: "100%", aspectRatio: "unset" }} />
             </motion.div>
           </Col>
 
@@ -108,7 +109,7 @@ export const Workshop = () => {
                   fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
                   color: "#444",
                   lineHeight: 1.75,
-                  marginBottom: 28,
+                  marginBottom: 14,
                   textAlign: "justify",
                   hyphens: "auto",
                 }}
@@ -126,7 +127,7 @@ export const Workshop = () => {
                   fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
                   color: "#444",
                   lineHeight: 1.75,
-                  marginBottom: 28,
+                  marginBottom: 14,
                 }}
               >
                 <strong>TALLER:</strong> El taller es fa per grups privats
@@ -134,32 +135,71 @@ export const Workshop = () => {
               </p>
 
               {/* Schedule */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 8,
+                  marginTop: 4,
+                }}
+              >
                 {scheduleItems.map(({ day, shifts }) => (
-                  <div key={day}>
+                  <div
+                    key={day}
+                    style={{
+                      background: "rgba(255,255,255,0.55)",
+                      border: "1px solid #e2ddd7",
+                      borderRadius: "0.3rem",
+                      padding: "10px 14px",
+                    }}
+                  >
                     <p
                       style={{
                         fontFamily: "Raleway, sans-serif",
                         fontSize: "clamp(0.85rem, 1.3vw, 1rem)",
+                        fontWeight: 700,
                         color: "#333",
-                        marginBottom: 4,
+                        margin: "0 0 6px",
                       }}
                     >
-                      <strong>{day}</strong>
+                      {day}
                     </p>
-                    {shifts.map((shift) => (
-                      <p
-                        key={shift}
-                        style={{
-                          fontFamily: "Raleway, sans-serif",
-                          fontSize: "clamp(0.85rem, 1.3vw, 1rem)",
-                          color: "#555",
-                          margin: "0 0 2px 24px",
-                        }}
-                      >
-                        {shift}
-                      </p>
-                    ))}
+                    <div
+                      style={{
+                        borderTop: "1px solid #e2ddd7",
+                        paddingTop: 10,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 8,
+                      }}
+                    >
+                      {shifts.map((shift, i) => (
+                        <div key={shift}>
+                          <span
+                            style={{
+                              display: "block",
+                              fontFamily: "Raleway, sans-serif",
+                              fontSize: "0.65rem",
+                              letterSpacing: "0.08em",
+                              textTransform: "uppercase",
+                              color: "#a09890",
+                              marginBottom: 2,
+                            }}
+                          >
+                            {i === 0 ? "Matí" : "Tarda"}
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "Raleway, sans-serif",
+                              fontSize: "clamp(0.85rem, 1.3vw, 1rem)",
+                              color: "#444",
+                            }}
+                          >
+                            {shift.replace(/Torn (matí|tarda) de /, "")}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -173,7 +213,7 @@ export const Workshop = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          style={{ marginTop: 56 }}
+          style={{ marginTop: 20 }}
         >
           <Row gutter={[16, 16]}>
             {[1, 2, 3, 4].map((i) => (

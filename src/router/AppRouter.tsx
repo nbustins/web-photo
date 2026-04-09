@@ -13,7 +13,7 @@ import { BookSession } from '../pages/booksession/booksession';
 import { StorePage } from '../pages/store/store.page';
 import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
-import { AnnaJoanWedding } from '../pages/weddings/anna-joan';
+import { AnnaJoanWedding } from '../pages/weddings/weddingpages/anna-joan';
 import { Manager } from '../pages/weddings/manager';
 import { Workshop } from '../pages/workshop/workshop.page';
 

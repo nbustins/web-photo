@@ -16,9 +16,11 @@ import {
 
 type PageState = 'loading' | 'enter-code' | 'not-found' | 'closed' | 'form' | 'success';
 
-const SLUG = 'anna-joan';
+export interface WeddingConfig {
+  slug: string;
+}
 
-export const AnnaJoanWedding: FC = () => {
+export const WeddingPage: FC<WeddingConfig> = ({ slug }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [pageState, setPageState] = useState<PageState>('loading');
   const [wedding, setWedding] = useState<Wedding | null>(null);
@@ -31,7 +33,7 @@ export const AnnaJoanWedding: FC = () => {
 
   useEffect(() => {
     const init = async () => {
-      const weddingData = await guestService.getWeddingBySlug(SLUG);
+      const weddingData = await guestService.getWeddingBySlug(slug);
       setWedding(weddingData);
 
       if (code) {
@@ -45,7 +47,7 @@ export const AnnaJoanWedding: FC = () => {
 
   const validateCode = async (inviteCode: string) => {
     setPageState('loading');
-    const foundGuest = await guestService.getGuestBySlugAndCode(SLUG, inviteCode);
+    const foundGuest = await guestService.getGuestBySlugAndCode(slug, inviteCode);
 
     if (!foundGuest) {
       setPageState('not-found');
@@ -151,7 +153,6 @@ export const AnnaJoanWedding: FC = () => {
       padding: '40px 16px',
       boxSizing: 'border-box',
     }}>
-      {/* Background */}
       {wedding?.background_image ? (
         <div style={{
           position: 'fixed',

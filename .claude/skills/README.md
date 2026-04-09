@@ -8,6 +8,7 @@ Skills for the photographer studio website. Reference these when building new fe
 | [add-route.md](add-route.md) | Adding a new route + minimal page without the full session structure |
 | [design-system.md](design-system.md) | Colors, typography, spacing, animation — check before adding any new styles |
 | [shared-components.md](shared-components.md) | API reference for all existing reusable components |
+| [new-wedding-page.md](new-wedding-page.md) | Adding a new wedding RSVP page (standalone, Supabase-backed) |
 
 ## Tech stack summary
 

@@ -1,30 +1,58 @@
 import { FC } from 'react';
 import { Button, Typography } from 'antd';
-import { WeddingCard } from './WeddingCard';
-import './wedding-states.css';
+import { WeddingCard, WeddingCardHeader } from './WeddingCard';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
+
+const iconStyle: React.CSSProperties = {
+  width: 64,
+  height: 64,
+  borderRadius: '50%',
+  background: 'linear-gradient(135deg, #a09880 0%, #8a8070 100%)',
+  color: 'white',
+  fontSize: 32,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  margin: '0 auto 20px',
+};
 
 interface NotFoundStateProps {
+  title?: string;
+  heroImage?: string;
   onReset: () => void;
 }
 
-export const NotFoundState: FC<NotFoundStateProps> = ({ onReset }) => {
+export const NotFoundState: FC<NotFoundStateProps> = ({ title, heroImage, onReset }) => {
   return (
     <WeddingCard
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="wedding-icon-error">✕</div>
-      <Title level={3} className="wedding-title">Convidat no trobat</Title>
-      <Text className="wedding-text">
+      {title && <WeddingCardHeader title={title} heroImage={heroImage} />}
+      <div style={iconStyle}>✕</div>
+      <Typography.Title
+        level={3}
+        style={{
+          fontFamily: "'Italiana', Georgia, serif",
+          color: '#7C7458',
+          fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
+        }}
+      >
+        Convidat no trobat
+      </Typography.Title>
+      <Text style={{
+        fontFamily: "'Raleway', sans-serif",
+        fontSize: 'clamp(0.9rem, 1.4vw, 1rem)',
+        color: '#6a6a6a',
+        lineHeight: 1.7,
+      }}>
         No hem trobat cap convidat amb aquest codi. Si us plau, verifica el codi i torna-ho a intentar.
       </Text>
-      <Button 
-        type="primary" 
+      <Button
+        type="primary"
         onClick={onReset}
-        className="wedding-btn"
         style={{ marginTop: 24 }}
       >
         Tornar a introduir codi

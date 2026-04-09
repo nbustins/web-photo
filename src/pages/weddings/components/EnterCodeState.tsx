@@ -1,27 +1,47 @@
 import { FC } from 'react';
 import { Input, Button, Space } from 'antd';
 import { WeddingCard, WeddingCardHeader } from './WeddingCard';
-import './wedding-states.css';
 
 interface EnterCodeStateProps {
+  title: string;
+  subtitle?: string;
+  heroImage?: string;
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
 }
 
-export const EnterCodeState: FC<EnterCodeStateProps> = ({ 
-  value, 
-  onChange, 
-  onSubmit 
+export const EnterCodeState: FC<EnterCodeStateProps> = ({
+  title,
+  subtitle,
+  heroImage,
+  value,
+  onChange,
+  onSubmit,
 }) => {
   return (
     <WeddingCard>
-      <WeddingCardHeader 
-        title="Anna & Joan" 
-        subtitle="Confirma la teva assistència" 
+      <WeddingCardHeader
+        title={title}
+        subtitle={subtitle}
+        heroImage={heroImage}
       />
-      <div className="wedding-code-form">
-        <span className="wedding-label">Introdueix el teu codi d'invitació</span>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 16,
+        marginTop: 24,
+      }}>
+        <span style={{
+          fontFamily: "'Raleway', sans-serif",
+          fontSize: 'clamp(0.85rem, 1.3vw, 0.9rem)',
+          fontWeight: 500,
+          color: '#5a5a5a',
+          letterSpacing: '0.02em',
+        }}>
+          Introdueix el teu codi d'invitació
+        </span>
         <Space.Compact style={{ width: '100%', maxWidth: 300 }}>
           <Input
             size="large"
@@ -29,9 +49,13 @@ export const EnterCodeState: FC<EnterCodeStateProps> = ({
             value={value}
             onChange={(e) => onChange(e.target.value.toUpperCase())}
             onPressEnter={onSubmit}
-            className="wedding-code-input"
+            style={{
+              fontFamily: "'Raleway', sans-serif",
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+            }}
           />
-          <Button size="large" type="primary" onClick={onSubmit} className="wedding-code-btn">
+          <Button size="large" type="primary" onClick={onSubmit}>
             Continuar
           </Button>
         </Space.Compact>

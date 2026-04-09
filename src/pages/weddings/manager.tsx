@@ -2,23 +2,30 @@ import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Layout, Card, Table, Tag, Typography, Input, Space, Descriptions, Empty, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { guestService } from '../../services/guestService';
-import type { GuestWithConfirmation } from '../../model/wedding.types';
+import { guestService } from '../../services/wedding';
+import type { Wedding, GuestWithConfirmation } from '../../model/wedding.types';
 import './manager.css';
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
+
+const SLUG = 'anna-joan';
 
 type ManagerState = 'enter-code' | 'loading' | 'error' | 'data';
 
 export const Manager: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, setState] = useState<ManagerState>('enter-code');
+  const [wedding, setWedding] = useState<Wedding | null>(null);
   const [manualCode, setManualCode] = useState('');
   const [guests, setGuests] = useState<GuestWithConfirmation[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   const code = searchParams.get('code');
+
+  useEffect(() => {
+    guestService.getWeddingBySlug(SLUG).then(setWedding);
+  }, []);
 
   useEffect(() => {
     if (code) {
@@ -31,7 +38,7 @@ export const Manager: FC = () => {
   const loadGuests = async (managerCode: string) => {
     setState('loading');
     try {
-      const data = await guestService.getGuestsWithConfirmations('anna-joan', managerCode);
+      const data = await guestService.getGuestsWithConfirmations(SLUG, managerCode);
       setGuests(data);
       setState('data');
     } catch (error) {
@@ -46,6 +53,9 @@ export const Manager: FC = () => {
     }
   };
 
+  const weddingTitle = wedding?.title ?? '';
+  const managerTitle = weddingTitle ? `Gestió ${weddingTitle}` : 'Gestió';
+
   const getStats = () => {
     const total = guests.length;
     const confirmed = guests.filter(g => g.confirmation?.attending).length;
@@ -54,7 +64,7 @@ export const Manager: FC = () => {
     const totalCompanions = guests
       .filter(g => g.confirmation?.attending)
       .reduce((sum, g) => sum + (g.confirmation?.companions_count || 0), 0);
-    
+
     return { total, confirmed, declined, pending, totalCompanions };
   };
 
@@ -78,7 +88,7 @@ export const Manager: FC = () => {
         if (!record.confirmation) {
           return <Tag color="default">Pendent</Tag>;
         }
-        return record.confirmation.attending 
+        return record.confirmation.attending
           ? <Tag color="success">Confirmat</Tag>
           : <Tag color="error">Rebutjat</Tag>;
       },
@@ -107,11 +117,11 @@ export const Manager: FC = () => {
       title: 'Notes',
       dataIndex: 'notes',
       key: 'notes',
-      render: (notes: string, record) => {
+      render: (_notes: string, record) => {
         if (!record.confirmation?.notes) {
           return <Text type="secondary">-</Text>;
         }
-        return <Text type="secondary">{notes}</Text>;
+        return <Text type="secondary">{record.confirmation.notes}</Text>;
       },
     },
   ];
@@ -121,7 +131,7 @@ export const Manager: FC = () => {
       <Layout className="manager-layout">
         <Content className="manager-content">
           <Card className="manager-card">
-            <Title level={3} className="manager-title">Gestió Anna & Joan</Title>
+            <Title level={3} className="manager-title">{managerTitle}</Title>
             <Space direction="vertical" style={{ width: '100%' }} size="large">
               <Text>Introdueix el codi de gestor per accedir</Text>
               <Space.Compact style={{ width: '100%', maxWidth: 300 }}>
@@ -164,7 +174,7 @@ export const Manager: FC = () => {
     <Layout className="manager-layout">
       <Header className="manager-header">
         <div className="manager-header-content">
-          <Title level={3} style={{ margin: 0, color: '#fff' }}>Gestió Anna & Joan</Title>
+          <Title level={3} style={{ margin: 0, color: '#fff' }}>{managerTitle}</Title>
           <Button type="primary" onClick={() => setSearchParams({})}>
             Tancar sessió
           </Button>

@@ -2,8 +2,9 @@ import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { message } from 'antd';
 import { Form } from 'antd';
-import { guestService } from '../../services/guestService';
-import type { GuestWithWedding, ConfirmationPayload } from '../../model/wedding.types';
+import { guestService } from '../../services/wedding';
+import { getPublicPath } from '../../utils/pathUtils';
+import type { Wedding, GuestWithWedding, ConfirmationPayload } from '../../model/wedding.types';
 import {
   LoadingState,
   EnterCodeState,
@@ -12,13 +13,15 @@ import {
   FormState,
   SuccessState,
 } from './components';
-import './wedding-rsvp.css';
 
 type PageState = 'loading' | 'enter-code' | 'not-found' | 'closed' | 'form' | 'success';
+
+const SLUG = 'anna-joan';
 
 export const AnnaJoanWedding: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [pageState, setPageState] = useState<PageState>('loading');
+  const [wedding, setWedding] = useState<Wedding | null>(null);
   const [guest, setGuest] = useState<GuestWithWedding | null>(null);
   const [manualCode, setManualCode] = useState('');
   const [form] = Form.useForm();
@@ -27,17 +30,23 @@ export const AnnaJoanWedding: FC = () => {
   const code = searchParams.get('code');
 
   useEffect(() => {
-    if (code) {
-      validateCode(code);
-    } else {
-      setPageState('enter-code');
-    }
+    const init = async () => {
+      const weddingData = await guestService.getWeddingBySlug(SLUG);
+      setWedding(weddingData);
+
+      if (code) {
+        validateCode(code);
+      } else {
+        setPageState('enter-code');
+      }
+    };
+    init();
   }, [code]);
 
   const validateCode = async (inviteCode: string) => {
     setPageState('loading');
-    const foundGuest = await guestService.getGuestBySlugAndCode('anna-joan', inviteCode);
-    
+    const foundGuest = await guestService.getGuestBySlugAndCode(SLUG, inviteCode);
+
     if (!foundGuest) {
       setPageState('not-found');
       return;
@@ -63,7 +72,7 @@ export const AnnaJoanWedding: FC = () => {
     if (!guest) return;
 
     setSubmitting(true);
-    
+
     const payload: ConfirmationPayload = {
       guest_id: guest.id,
       attending: values.attending,
@@ -73,15 +82,19 @@ export const AnnaJoanWedding: FC = () => {
     };
 
     const result = await guestService.saveConfirmation(payload);
-    
+
     setSubmitting(false);
-    
+
     if (result.success) {
       setPageState('success');
     } else {
       message.error(result.error || 'Error al guardar la confirmació');
     }
   };
+
+  const weddingTitle = wedding?.title ?? '';
+  const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
+  const heroImage = wedding?.hero_image;
 
   const renderContent = () => {
     switch (pageState) {
@@ -91,6 +104,9 @@ export const AnnaJoanWedding: FC = () => {
       case 'enter-code':
         return (
           <EnterCodeState
+            title={weddingTitle}
+            subtitle={weddingSubtitle}
+            heroImage={heroImage}
             value={manualCode}
             onChange={setManualCode}
             onSubmit={handleCodeSubmit}
@@ -98,14 +114,17 @@ export const AnnaJoanWedding: FC = () => {
         );
 
       case 'not-found':
-        return <NotFoundState onReset={() => setSearchParams({})} />;
+        return <NotFoundState title={weddingTitle} heroImage={heroImage} onReset={() => setSearchParams({})} />;
 
       case 'closed':
-        return <ClosedState />;
+        return <ClosedState title={weddingTitle} heroImage={heroImage} />;
 
       case 'form':
         return guest ? (
           <FormState
+            title={weddingTitle}
+            subtitle={weddingSubtitle}
+            heroImage={heroImage}
             guest={guest}
             form={form}
             submitting={submitting}
@@ -122,9 +141,44 @@ export const AnnaJoanWedding: FC = () => {
   };
 
   return (
-    <div className="wedding-page">
-      <div className="wedding-background" />
-      <div className="wedding-container">
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      position: 'relative',
+      backgroundColor: 'rgb(246, 244, 240)',
+      padding: '40px 16px',
+      boxSizing: 'border-box',
+    }}>
+      {/* Background */}
+      {wedding?.background_image ? (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          backgroundImage: `url(${getPublicPath(wedding.background_image)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(20px) brightness(0.9)',
+          transform: 'scale(1.1)',
+        }} />
+      ) : (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          backgroundColor: 'rgb(246, 244, 240)',
+        }} />
+      )}
+
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        maxWidth: 520,
+        margin: 'auto',
+      }}>
         {renderContent()}
       </div>
     </div>

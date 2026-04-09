@@ -1,10 +1,15 @@
 import { FC } from 'react';
-import './wedding-states.css';
+import { Spin } from 'antd';
 
 export const LoadingState: FC = () => {
   return (
-    <div className="wedding-loading">
-      <div className="wedding-spinner" />
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 300,
+    }}>
+      <Spin size="large" />
     </div>
   );
 };

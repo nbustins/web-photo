@@ -1,6 +1,6 @@
-import { GuestServiceProvider } from './guestService.types';
-import { getSupabaseClient } from './supabaseClient';
-import { Wedding, GuestWithWedding, GuestWithConfirmation, ConfirmationPayload } from '../model/wedding.types';
+import { GuestServiceProvider } from './types';
+import { getSupabaseClient } from '../supabase.client';
+import { Wedding, GuestWithWedding, GuestWithConfirmation, ConfirmationPayload } from '../../model/wedding.types';
 
 export class SupabaseGuestService implements GuestServiceProvider {
   async getWeddingBySlug(slug: string): Promise<Wedding | null> {
@@ -54,18 +54,12 @@ export class SupabaseGuestService implements GuestServiceProvider {
       return null;
     }
 
-    return {
-      ...(guest as object),
-      wedding: wedding as Wedding,
-    } as GuestWithWedding;
+    return { ...(guest as object), wedding: wedding as Wedding } as GuestWithWedding;
   }
 
   async saveConfirmation(payload: ConfirmationPayload): Promise<{ success: boolean; error?: string }> {
     const supabase = getSupabaseClient();
-    if (!supabase) {
-      console.error('Supabase client not initialized');
-      return { success: false, error: 'Database not configured' };
-    }
+    if (!supabase) return { success: false, error: 'Database not configured' };
 
     try {
       const { error: confirmationError } = await supabase
@@ -75,13 +69,9 @@ export class SupabaseGuestService implements GuestServiceProvider {
           attending: payload.attending,
           companions_count: payload.companions_count,
           notes: payload.notes,
-        } as object, {
-          onConflict: 'guest_id',
-        } as object);
+        } as object, { onConflict: 'guest_id' } as object);
 
-      if (confirmationError) {
-        return { success: false, error: confirmationError.message };
-      }
+      if (confirmationError) return { success: false, error: confirmationError.message };
 
       const { data: confirmation } = await supabase
         .from('guest_confirmations')
@@ -95,32 +85,25 @@ export class SupabaseGuestService implements GuestServiceProvider {
           .delete()
           .eq('guest_confirmation_id', (confirmation as { id: string }).id);
 
-        const companionsToInsert = payload.companion_names.map(name => ({
-          guest_confirmation_id: (confirmation as { id: string }).id,
-          name,
-        }));
-
         const { error: companionsError } = await supabase
           .from('guest_companions')
-          .insert(companionsToInsert as object[]);
+          .insert(payload.companion_names.map(name => ({
+            guest_confirmation_id: (confirmation as { id: string }).id,
+            name,
+          })) as object[]);
 
-        if (companionsError) {
-          return { success: false, error: companionsError.message };
-        }
+        if (companionsError) return { success: false, error: companionsError.message };
       }
 
       return { success: true };
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      return { success: false, error: errorMessage };
+      return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
     }
   }
 
   async getGuestsWithConfirmations(slug: string, managerCode: string): Promise<GuestWithConfirmation[]> {
     const supabase = getSupabaseClient();
-    if (!supabase) {
-      throw new Error('Supabase client not initialized');
-    }
+    if (!supabase) throw new Error('Supabase client not initialized');
 
     const { data: wedding, error: weddingError } = await supabase
       .from('weddings')
@@ -129,49 +112,35 @@ export class SupabaseGuestService implements GuestServiceProvider {
       .eq('manager_code', managerCode)
       .single();
 
-    if (weddingError || !wedding) {
-      throw new Error('Codi de gestor incorrecte');
-    }
+    if (weddingError || !wedding) throw new Error('Codi de gestor incorrecte');
 
     const { data: guests, error: guestsError } = await supabase
       .from('guests')
       .select('*')
       .eq('wedding_id', wedding.id);
 
-    if (guestsError) {
-      throw new Error(guestsError.message);
-    }
+    if (guestsError) throw new Error(guestsError.message);
 
     const { data: confirmations, error: confirmationsError } = await supabase
       .from('guest_confirmations')
       .select('*')
       .in('guest_id', guests.map(g => g.id));
 
-    if (confirmationsError) {
-      throw new Error(confirmationsError.message);
-    }
+    if (confirmationsError) throw new Error(confirmationsError.message);
 
     const confirmationIds = confirmations.map(c => c.id);
     const { data: companions, error: companionsError } = confirmationIds.length > 0
-      ? await supabase
-          .from('guest_companions')
-          .select('*')
-          .in('guest_confirmation_id', confirmationIds)
+      ? await supabase.from('guest_companions').select('*').in('guest_confirmation_id', confirmationIds)
       : { data: [], error: null };
 
-    if (companionsError) {
-      throw new Error(companionsError.message);
-    }
+    if (companionsError) throw new Error(companionsError.message);
 
     return guests.map(guest => {
       const guestConfirmation = confirmations.find(c => c.guest_id === guest.id);
-      const guestCompanions = companions
-        .filter(c => c.guest_confirmation_id === guestConfirmation?.id);
-
       return {
         ...guest,
         confirmation: guestConfirmation,
-        companions: guestCompanions,
+        companions: companions.filter(c => c.guest_confirmation_id === guestConfirmation?.id),
       };
     });
   }

@@ -1,4 +1,4 @@
-import { Wedding, GuestWithWedding, GuestWithConfirmation, ConfirmationPayload } from '../model/wedding.types';
+import { Wedding, GuestWithWedding, GuestWithConfirmation, ConfirmationPayload } from '../../model/wedding.types';
 
 export interface GuestServiceProvider {
   getWeddingBySlug(slug: string): Promise<Wedding | null>;

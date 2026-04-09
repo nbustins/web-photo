@@ -2,6 +2,9 @@ export interface Wedding {
   id: string;
   slug: string;
   title: string;
+  subtitle?: string;
+  hero_image?: string;
+  background_image?: string;
   event_date: string;
   closing_date: string;
   manager_code: string;

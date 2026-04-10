@@ -14,6 +14,7 @@ import { StorePage } from '../pages/store/store.page';
 import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
 import { AnnaJoanWedding } from '../pages/weddings/weddingpages/anna-joan';
+import { AnnaJoanCustomWedding } from '../pages/weddings/weddingpages/anna-joan-custom';
 import { Manager } from '../pages/weddings/manager';
 import { Workshop } from '../pages/workshop/workshop.page';
 
@@ -47,7 +48,8 @@ export const AppRouter: FC = () => {
           ))}
         </Route>
         <Route path={AppRoutes.weddingAnnaJoan} element={<AnnaJoanWedding />} />
-        <Route path={AppRoutes.weddingAnnaJoanManager} element={<Manager />} />
+        <Route path={AppRoutes.weddingAnnaJoanCustom} element={<AnnaJoanCustomWedding />} />
+        <Route path={AppRoutes.weddingAnnaJoanManager} element={<Manager slug="anna-joan" />} />
       </Routes>
     </HashRouter>
   );

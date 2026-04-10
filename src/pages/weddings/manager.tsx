@@ -9,11 +9,9 @@ import './manager.css';
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 
-const SLUG = 'anna-joan';
-
 type ManagerState = 'enter-code' | 'loading' | 'error' | 'data';
 
-export const Manager: FC = () => {
+export const Manager: FC<{ slug: string }> = ({ slug }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, setState] = useState<ManagerState>('enter-code');
   const [wedding, setWedding] = useState<Wedding | null>(null);
@@ -24,7 +22,7 @@ export const Manager: FC = () => {
   const code = searchParams.get('code');
 
   useEffect(() => {
-    guestService.getWeddingBySlug(SLUG).then(setWedding);
+    guestService.getWeddingBySlug(slug).then(setWedding);
   }, []);
 
   useEffect(() => {
@@ -38,7 +36,7 @@ export const Manager: FC = () => {
   const loadGuests = async (managerCode: string) => {
     setState('loading');
     try {
-      const data = await guestService.getGuestsWithConfirmations(SLUG, managerCode);
+      const data = await guestService.getGuestsWithConfirmations(slug, managerCode);
       setGuests(data);
       setState('data');
     } catch (error) {

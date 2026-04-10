@@ -13,16 +13,57 @@ import {
   FormState,
   SuccessState,
 } from './components';
+import type { WeddingPageProps, WeddingPageContext, FormValues } from './WeddingPage.types';
 
-type PageState = 'loading' | 'enter-code' | 'not-found' | 'closed' | 'form' | 'success';
+export type { WeddingPageProps, WeddingPageContext, FormValues } from './WeddingPage.types';
 
-export interface WeddingConfig {
-  slug: string;
-}
+const renderDefault = (ctx: WeddingPageContext) => {
+  const { pageState, wedding, guest, manualCode, submitting, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;
 
-export const WeddingPage: FC<WeddingConfig> = ({ slug }) => {
+  const weddingTitle = wedding?.title ?? '';
+  const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
+  const heroImage = wedding?.hero_image;
+
+  switch (pageState) {
+    case 'loading':
+      return <LoadingState />;
+    case 'enter-code':
+      return (
+        <EnterCodeState
+          title={weddingTitle}
+          subtitle={weddingSubtitle}
+          heroImage={heroImage}
+          value={manualCode}
+          onChange={onCodeChange}
+          onSubmit={onCodeSubmit}
+        />
+      );
+    case 'not-found':
+      return <NotFoundState title={weddingTitle} heroImage={heroImage} onReset={onReset} />;
+    case 'closed':
+      return <ClosedState title={weddingTitle} heroImage={heroImage} />;
+    case 'form':
+      return guest ? (
+        <FormState
+          title={weddingTitle}
+          subtitle={weddingSubtitle}
+          heroImage={heroImage}
+          guest={guest}
+          form={form}
+          submitting={submitting}
+          onFinish={onFormSubmit}
+        />
+      ) : null;
+    case 'success':
+      return <SuccessState attending={form.getFieldValue('attending')} />;
+    default:
+      return null;
+  }
+};
+
+export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [pageState, setPageState] = useState<PageState>('loading');
+  const [pageState, setPageState] = useState<WeddingPageContext['pageState']>('loading');
   const [wedding, setWedding] = useState<Wedding | null>(null);
   const [guest, setGuest] = useState<GuestWithWedding | null>(null);
   const [manualCode, setManualCode] = useState('');
@@ -70,7 +111,7 @@ export const WeddingPage: FC<WeddingConfig> = ({ slug }) => {
     }
   };
 
-  const handleSubmit = async (values: { attending: boolean; companions_count?: number; companions_names?: string[]; notes?: string }) => {
+  const handleFormSubmit = async (values: FormValues) => {
     if (!guest) return;
 
     setSubmitting(true);
@@ -84,7 +125,6 @@ export const WeddingPage: FC<WeddingConfig> = ({ slug }) => {
     };
 
     const result = await guestService.saveConfirmation(payload);
-
     setSubmitting(false);
 
     if (result.success) {
@@ -94,53 +134,22 @@ export const WeddingPage: FC<WeddingConfig> = ({ slug }) => {
     }
   };
 
-  const weddingTitle = wedding?.title ?? '';
-  const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
-  const heroImage = wedding?.hero_image;
-
-  const renderContent = () => {
-    switch (pageState) {
-      case 'loading':
-        return <LoadingState />;
-
-      case 'enter-code':
-        return (
-          <EnterCodeState
-            title={weddingTitle}
-            subtitle={weddingSubtitle}
-            heroImage={heroImage}
-            value={manualCode}
-            onChange={setManualCode}
-            onSubmit={handleCodeSubmit}
-          />
-        );
-
-      case 'not-found':
-        return <NotFoundState title={weddingTitle} heroImage={heroImage} onReset={() => setSearchParams({})} />;
-
-      case 'closed':
-        return <ClosedState title={weddingTitle} heroImage={heroImage} />;
-
-      case 'form':
-        return guest ? (
-          <FormState
-            title={weddingTitle}
-            subtitle={weddingSubtitle}
-            heroImage={heroImage}
-            guest={guest}
-            form={form}
-            submitting={submitting}
-            onFinish={handleSubmit}
-          />
-        ) : null;
-
-      case 'success':
-        return <SuccessState attending={form.getFieldValue('attending')} />;
-
-      default:
-        return null;
-    }
+  const ctx: WeddingPageContext = {
+    pageState,
+    wedding,
+    guest,
+    manualCode,
+    submitting,
+    form,
+    onCodeChange: setManualCode,
+    onCodeSubmit: handleCodeSubmit,
+    onFormSubmit: handleFormSubmit,
+    onReset: () => setSearchParams({}),
   };
+
+  if (renderCustom) {
+    return <>{renderCustom(ctx)}</>;
+  }
 
   return (
     <div style={{
@@ -180,7 +189,7 @@ export const WeddingPage: FC<WeddingConfig> = ({ slug }) => {
         maxWidth: 520,
         margin: 'auto',
       }}>
-        {renderContent()}
+        {renderDefault(ctx)}
       </div>
     </div>
   );

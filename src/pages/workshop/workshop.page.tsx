@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import { motion } from "framer-motion";
 import { CustomTitle } from "../../components/customTitle";
 
@@ -27,23 +27,6 @@ const scheduleItems = [
   },
 ];
 
-const Placeholder = ({
-  aspect = "2/3",
-  style = {},
-}: {
-  aspect?: string;
-  style?: React.CSSProperties;
-}) => (
-  <div
-    style={{
-      width: "100%",
-      aspectRatio: aspect,
-      backgroundColor: "#d9d4cc",
-      borderRadius: "0.3rem",
-      ...style,
-    }}
-  />
-);
 
 export const Workshop = () => {
   return (
@@ -74,7 +57,7 @@ export const Workshop = () => {
               letterSpacing: "0.05rem",
             }}
           >
-            Celebren el primer any de l'estudi
+            Celebrem el primer any de l'estudi
           </p>
         </motion.div>
 
@@ -89,7 +72,11 @@ export const Workshop = () => {
               viewport={{ once: true }}
               style={{ flex: 1 }}
             >
-              <Placeholder aspect="2/3" style={{ height: "100%", aspectRatio: "unset" }} />
+              <img
+                src="https://res.cloudinary.com/djxytedne/image/upload/v1775818510/TALLER-22_rbyaxb.jpg"
+                alt="Taller lateral"
+                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "0.3rem", display: "block" }}
+              />
             </motion.div>
           </Col>
 
@@ -114,10 +101,10 @@ export const Workshop = () => {
                   hyphens: "auto",
                 }}
               >
-                L'estudi fa un any i vull celebrar-ho amb tots/es vosaltres!
-                Vine amb el teu grup d'amics o amigues, amb la teva familia o
-                amb qui tinguis ganes de pasar una bona estona a fer un taller
-                per brodar la vostra propia fotografia.
+                L'estudi fa un any i vull celebrar-ho amb tots/es vosaltres! 
+                Vine amb el teu grup d'amics o amigues, amb la teva família 
+                o amb qui tinguis ganes de passar una bona estona a fer un taller 
+                per brodar la vostra pròpia fotografia.
               </p>
 
               {/* Taller note */}
@@ -203,6 +190,20 @@ export const Workshop = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Reserva button */}
+              <div style={{ textAlign: "center", marginTop: 20 }}>
+                <Button
+                  type="primary"
+                  size="large"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSfyVezcLi0cFX52yqKiPdbcY6Ly66BzsoaaaFhTlXmqye4-vQ/viewform?usp=header"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ padding: "0 64px", height: 56, fontSize: "1.1rem", width: "100%" }}
+                >
+                  Reserva
+                </Button>
+              </div>
             </motion.div>
           </Col>
         </Row>
@@ -216,9 +217,18 @@ export const Workshop = () => {
           style={{ marginTop: 20 }}
         >
           <Row gutter={[16, 16]}>
-            {[1, 2, 3, 4].map((i) => (
+            {[
+              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-3_r0bzip.jpg",
+              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-2_jicr0x.jpg",
+              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-4_nqtmlx.jpg",
+              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4_bitwm5.jpg",
+            ].map((src, i) => (
               <Col xs={12} md={6} key={i}>
-                <Placeholder aspect="3/2" />
+                <img
+                  src={src}
+                  alt={`Taller ${i + 1}`}
+                  style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", borderRadius: "0.3rem", display: "block" }}
+                />
               </Col>
             ))}
           </Row>

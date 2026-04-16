@@ -13,6 +13,7 @@ import { BookSession } from '../pages/booksession/booksession';
 import { StorePage } from '../pages/store/store.page';
 import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
+import { Workshop } from '../pages/workshop/workshop.page';
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.home]: () => <HomePage/>,
@@ -24,7 +25,9 @@ const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.smashCake] : () => <SmashCakePage/>,
     [AppRoutes.bookSession] : () => <BookSession/>,
     [AppRoutes.bookStore] : () => <BookStore/>,
-    [AppRoutes.aboutMe] : () => <AboutMe/>
+    [AppRoutes.aboutMe] : () => <AboutMe/>,
+    [AppRoutes.workshop] : () => <Workshop/>
+
 };
 
 export const AppRouter: FC = () => {

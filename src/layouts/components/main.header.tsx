@@ -64,6 +64,10 @@ const items: MenuItem[] = [
   {
     label:"SOBRE MI",
     key: AppRoutes.aboutMe
+  },
+  {
+    label:"TALLER",
+    key: AppRoutes.workshop
   }
 ];
 
@@ -83,7 +87,7 @@ export const MainHeader = () => {
   };
 
   const leftItems: MenuItem[] = items.slice(0, 2);
-  const rightItems: MenuItem[] = items.slice(2, 4);
+  const rightItems: MenuItem[] = items.slice(2, 5);
 
   // Forçar recarrega de menu al carregar el logo
   const [menuKeyRight, setMenuKeyRight] = useState(0);

@@ -20,7 +20,7 @@ const scheduleItems = [
     day: "Dissabte 2/5:",
     shifts: [
       { label: "Matí", time: "10:30 - 13:00", full: false },
-      { label: "Tarda", time: "16:30 - 19:00", full: false },
+      { label: "Tarda", time: "16:30 - 19:00", full: true },
     ],
   },
   {

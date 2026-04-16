@@ -11,19 +11,31 @@ const fadeUp = {
 const scheduleItems = [
   {
     day: "Divendres 1/5:",
-    shifts: ["Torn matí de 10:30 - 13:00", "Torn tarda de 16:30 - 19:00"],
+    shifts: [
+      { label: "Matí", time: "10:30 - 13:00", full: false },
+      { label: "Tarda", time: "16:30 - 19:00", full: false },
+    ],
   },
   {
     day: "Dissabte 2/5:",
-    shifts: ["Torn matí de 10:30 - 13:00", "Torn tarda de 16:30 - 19:00"],
+    shifts: [
+      { label: "Matí", time: "10:30 - 13:00", full: false },
+      { label: "Tarda", time: "16:30 - 19:00", full: false },
+    ],
   },
   {
     day: "Diumenge 3/5:",
-    shifts: ["Torn matí de 10:30 - 13:00", "Torn tarda de 16:30 - 19:00"],
+    shifts: [
+      { label: "Matí", time: "10:30 - 13:00", full: false },
+      { label: "Tarda", time: "16:30 - 19:00", full: false },
+    ],
   },
   {
     day: "Dissabte 9/5:",
-    shifts: ["Torn matí de 10:30 - 13:00", "Torn tarda de 16:30 - 19:00"],
+    shifts: [
+      { label: "Matí", time: "10:30 - 13:00", full: false },
+      { label: "Tarda", time: "16:30 - 19:00", full: false },
+    ],
   },
 ];
 
@@ -130,7 +142,9 @@ export const Workshop = () => {
                   marginTop: 4,
                 }}
               >
-                {scheduleItems.map(({ day, shifts }) => (
+                {scheduleItems.map(({ day, shifts }) => {
+                  const allFull = shifts.every((s) => s.full);
+                  return (
                   <div
                     key={day}
                     style={{
@@ -138,6 +152,7 @@ export const Workshop = () => {
                       border: "1px solid #e2ddd7",
                       borderRadius: "0.3rem",
                       padding: "10px 14px",
+                      opacity: allFull ? 0.6 : 1,
                     }}
                   >
                     <p
@@ -147,9 +162,17 @@ export const Workshop = () => {
                         fontWeight: 700,
                         color: "#333",
                         margin: "0 0 6px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
                       }}
                     >
                       {day}
+                      {allFull && (
+                        <span style={{ fontSize: "0.6rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#b05050" }}>
+                          Complet
+                        </span>
+                      )}
                     </p>
                     <div
                       style={{
@@ -160,8 +183,8 @@ export const Workshop = () => {
                         gap: 8,
                       }}
                     >
-                      {shifts.map((shift, i) => (
-                        <div key={shift}>
+                      {shifts.map((shift) => (
+                        <div key={shift.label}>
                           <span
                             style={{
                               display: "block",
@@ -173,22 +196,27 @@ export const Workshop = () => {
                               marginBottom: 2,
                             }}
                           >
-                            {i === 0 ? "Matí" : "Tarda"}
+                            {shift.label}
+                            {shift.full && !allFull && (
+                              <span style={{ marginLeft: 6, color: "#b05050" }}>· Complet</span>
+                            )}
                           </span>
                           <span
                             style={{
                               fontFamily: "Raleway, sans-serif",
                               fontSize: "clamp(0.85rem, 1.3vw, 1rem)",
-                              color: "#444",
+                              color: shift.full ? "#999" : "#444",
+                              textDecoration: shift.full ? "line-through" : "none",
                             }}
                           >
-                            {shift.replace(/Torn (matí|tarda) de /, "")}
+                            {shift.time}
                           </span>
                         </div>
                       ))}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Reserva button */}

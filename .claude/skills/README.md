@@ -18,4 +18,4 @@ Skills for the photographer studio website. Reference these when building new fe
 - **Ant Design 5** for UI components and grid
 - **Framer Motion** for animations
 - Routes defined as enum in `src/model/routes.model.ts`
-- Aliases: `@components`, `@pages`, `@layouts`, `@utils`, `@hooks`
+- Aliases: `@components`, `@pages`, `@layouts`, `@utils`, `@hooks` 

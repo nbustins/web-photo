@@ -23,6 +23,9 @@ jobs:
         run: npm ci
 
       - name: Build project
+        env:
+          VITE_API_BASE_URL: https://wedding-api-23912834128-cgcxcyeec2d2fggj.westeurope-01.azurewebsites.net
+          VITE_USE_MOCK_DATA: "false"
         run: npm run build
 
       - name: Deploy to GitHub Pages

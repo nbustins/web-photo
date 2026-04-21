@@ -35,7 +35,7 @@ export const AnnaJoanCustomLayout: FC<WeddingPageContext> = ({
     switch (pageState) {
       case 'loading':
         return (
-          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 90 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 80 }}>
             <Spin size="large" />
           </div>
         );

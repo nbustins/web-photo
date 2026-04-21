@@ -7,7 +7,7 @@ export interface Wedding {
   background_image?: string;
   event_date: string;
   closing_date: string;
-  manager_code: string;
+  manager_code?: string;
 }
 
 export interface Guest {
@@ -44,6 +44,8 @@ export interface GuestWithConfirmation extends Guest {
 
 export interface ConfirmationPayload {
   guest_id: string;
+  slug: string;
+  invite_code: string;
   attending: boolean;
   companions_count: number;
   companion_names: string[];

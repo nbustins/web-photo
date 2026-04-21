@@ -118,6 +118,8 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
 
     const payload: ConfirmationPayload = {
       guest_id: guest.id,
+      slug,
+      invite_code: guest.invite_code,
       attending: values.attending,
       companions_count: values.attending ? (values.companions_count || 0) : 0,
       companion_names: values.attending ? (values.companions_names || []) : [],

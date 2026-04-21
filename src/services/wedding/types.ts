@@ -4,5 +4,5 @@ export interface GuestServiceProvider {
   getWeddingBySlug(slug: string): Promise<Wedding | null>;
   getGuestBySlugAndCode(slug: string, code: string): Promise<GuestWithWedding | null>;
   saveConfirmation(payload: ConfirmationPayload): Promise<{ success: boolean; error?: string }>;
-  getGuestsWithConfirmations(slug: string, managerCode: string): Promise<GuestWithConfirmation[]>;
+  getGuestsWithConfirmations(slug: string): Promise<GuestWithConfirmation[]>;
 }

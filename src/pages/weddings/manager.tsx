@@ -1,42 +1,44 @@
 import { FC, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Layout, Card, Table, Tag, Typography, Input, Space, Descriptions, Empty, Button } from 'antd';
+import { Layout, Card, Table, Tag, Typography, Input, Space, Descriptions, Empty, Button, Form } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { guestService } from '../../services/wedding';
+import { login, logout } from '../../services/auth/auth.service';
+import { getUser } from '../../services/auth/auth.store';
 import type { Wedding, GuestWithConfirmation } from '../../model/wedding.types';
 import './manager.css';
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 
-type ManagerState = 'enter-code' | 'loading' | 'error' | 'data';
+type ManagerState = 'login' | 'loading' | 'error' | 'data';
+
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
 
 export const Manager: FC<{ slug: string }> = ({ slug }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [state, setState] = useState<ManagerState>('enter-code');
+  const [state, setState] = useState<ManagerState>(() => (getUser() ? 'loading' : 'login'));
   const [wedding, setWedding] = useState<Wedding | null>(null);
-  const [manualCode, setManualCode] = useState('');
   const [guests, setGuests] = useState<GuestWithConfirmation[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const code = searchParams.get('code');
+  const [submitting, setSubmitting] = useState(false);
+  const [form] = Form.useForm<LoginFormValues>();
 
   useEffect(() => {
     guestService.getWeddingBySlug(slug).then(setWedding);
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
-    if (code) {
-      loadGuests(code);
-    } else {
-      setState('enter-code');
+    if (getUser()) {
+      loadGuests();
     }
-  }, [code]);
+  }, []);
 
-  const loadGuests = async (managerCode: string) => {
+  const loadGuests = async () => {
     setState('loading');
     try {
-      const data = await guestService.getGuestsWithConfirmations(slug, managerCode);
+      const data = await guestService.getGuestsWithConfirmations(slug);
       setGuests(data);
       setState('data');
     } catch (error) {
@@ -45,10 +47,25 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     }
   };
 
-  const handleCodeSubmit = () => {
-    if (manualCode.trim()) {
-      setSearchParams({ code: manualCode.trim().toUpperCase() });
+  const handleLogin = async ({ email, password }: LoginFormValues) => {
+    setSubmitting(true);
+    setErrorMessage('');
+    const result = await login(email, password);
+    setSubmitting(false);
+
+    if (!result.success) {
+      setErrorMessage(result.error);
+      return;
     }
+
+    await loadGuests();
+  };
+
+  const handleLogout = () => {
+    logout();
+    setGuests([]);
+    form.resetFields();
+    setState('login');
   };
 
   const weddingTitle = wedding?.title ?? '';
@@ -74,7 +91,7 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
       render: (name: string, record) => (
         <Space direction="vertical" size={0}>
           <Text strong>{name}</Text>
-          <Text type="secondary" style={{ fontSize: 12 }}>{record.email}</Text>
+          {record.email && <Text type="secondary" style={{ fontSize: 12 }}>{record.email}</Text>}
         </Space>
       ),
     },
@@ -124,30 +141,40 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     },
   ];
 
-  if (state === 'enter-code' || state === 'error') {
+  if (state === 'login' || state === 'error') {
     return (
       <Layout className="manager-layout">
         <Content className="manager-content">
           <Card className="manager-card">
             <Title level={3} className="manager-title">{managerTitle}</Title>
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
-              <Text>Introdueix el codi de gestor per accedir</Text>
-              <Space.Compact style={{ width: '100%', maxWidth: 300 }}>
-                <Input.Password
-                  size="large"
-                  placeholder="Codi de gestor"
-                  value={manualCode}
-                  onChange={(e) => setManualCode(e.target.value.toUpperCase())}
-                  onPressEnter={handleCodeSubmit}
-                />
-                <Button size="large" type="primary" onClick={handleCodeSubmit}>
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={handleLogin}
+              style={{ maxWidth: 320 }}
+              requiredMark={false}
+            >
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}
+              >
+                <Input size="large" autoComplete="email" />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                label="Contrasenya"
+                rules={[{ required: true, message: 'Contrasenya requerida' }]}
+              >
+                <Input.Password size="large" autoComplete="current-password" />
+              </Form.Item>
+              <Form.Item>
+                <Button size="large" type="primary" htmlType="submit" loading={submitting} block>
                   Accedir
                 </Button>
-              </Space.Compact>
-              {state === 'error' && (
-                <Text type="danger">{errorMessage}</Text>
-              )}
-            </Space>
+              </Form.Item>
+              {errorMessage && <Text type="danger">{errorMessage}</Text>}
+            </Form>
           </Card>
         </Content>
       </Layout>
@@ -173,7 +200,7 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
       <Header className="manager-header">
         <div className="manager-header-content">
           <Title level={3} style={{ margin: 0, color: '#fff' }}>{managerTitle}</Title>
-          <Button type="primary" onClick={() => setSearchParams({})}>
+          <Button type="primary" onClick={handleLogout}>
             Tancar sessió
           </Button>
         </div>

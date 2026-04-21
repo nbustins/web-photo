@@ -92,11 +92,11 @@ export class MockGuestService implements GuestServiceProvider {
     return { success: true };
   }
 
-  async getGuestsWithConfirmations(slug: string, managerCode: string): Promise<GuestWithConfirmation[]> {
+  async getGuestsWithConfirmations(slug: string): Promise<GuestWithConfirmation[]> {
     await this.delay(500);
     const wedding = await this.getWeddingBySlug(slug);
-    if (!wedding || wedding.manager_code !== managerCode) {
-      throw new Error('Codi de gestor incorrecte');
+    if (!wedding) {
+      throw new Error('Wedding not found');
     }
 
     return mockGuests

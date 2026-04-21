@@ -9,6 +9,7 @@ Skills for the photographer studio website. Reference these when building new fe
 | [design-system.md](design-system.md) | Colors, typography, spacing, animation — check before adding any new styles |
 | [shared-components.md](shared-components.md) | API reference for all existing reusable components |
 | [reserva-button.md](reserva-button.md) | CTA "Reserva" button linking to an external URL (Google Forms, etc.) |
+| [new-wedding-page.md](new-wedding-page.md) | Adding a new wedding RSVP page (standalone, Supabase-backed) |
 
 ## Tech stack summary
 

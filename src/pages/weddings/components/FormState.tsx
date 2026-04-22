@@ -1,24 +1,10 @@
 import { FC } from 'react';
-import { Form, Input, InputNumber, Radio, Button, FormInstance } from 'antd';
+import { Form, Input, Switch, Button, FormInstance, Typography } from 'antd';
 import { WeddingCard, WeddingCardHeader } from './WeddingCard';
-import type { GuestWithWedding } from '../../../model/wedding.types';
+import type { Invitation } from '../../../model/wedding.types';
+import type { InvitationFormValues } from '../WeddingPage.types';
 
-type FormValues = {
-  attending: boolean;
-  companions_count?: number;
-  companions_names?: string[];
-  notes?: string;
-};
-
-interface FormStateProps {
-  title: string;
-  subtitle?: string;
-  heroImage?: string;
-  guest: GuestWithWedding;
-  form: FormInstance<FormValues>;
-  submitting: boolean;
-  onFinish: (values: FormValues) => void;
-}
+const { Text } = Typography;
 
 const labelStyle: React.CSSProperties = {
   fontFamily: "'Raleway', sans-serif",
@@ -28,30 +14,37 @@ const labelStyle: React.CSSProperties = {
   letterSpacing: '0.02em',
 };
 
-const radioStyle: React.CSSProperties = {
-  padding: '16px 20px',
-  border: '1px solid rgba(124, 116, 88, 0.25)',
-  borderRadius: 10,
-  transition: 'all 0.2s ease',
-  width: '100%',
-};
-
-const radioLabelStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  fontSize: 'clamp(0.85rem, 1.3vw, 0.95rem)',
-  color: '#5a5a5a',
-};
-
 const inputStyle: React.CSSProperties = {
   fontFamily: "'Raleway', sans-serif",
   borderRadius: 8,
 };
 
+const guestRowStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '14px 16px',
+  borderRadius: 10,
+  border: '1px solid rgba(124, 116, 88, 0.2)',
+  marginBottom: 10,
+  background: 'rgba(255,255,255,0.6)',
+};
+
+interface FormStateProps {
+  title: string;
+  subtitle?: string;
+  heroImage?: string;
+  invitation: Invitation;
+  form: FormInstance<InvitationFormValues>;
+  submitting: boolean;
+  onFinish: (values: InvitationFormValues) => void;
+}
+
 export const FormState: FC<FormStateProps> = ({
   title,
   subtitle,
   heroImage,
-  guest,
+  invitation,
   form,
   submitting,
   onFinish,
@@ -61,7 +54,7 @@ export const FormState: FC<FormStateProps> = ({
       <WeddingCardHeader
         title={title}
         subtitle={subtitle}
-        guestName={`Hola, ${guest.name}!`}
+        guestName={`Hola, ${invitation.label}!`}
         heroImage={heroImage}
       />
 
@@ -70,60 +63,42 @@ export const FormState: FC<FormStateProps> = ({
         layout="vertical"
         onFinish={onFinish}
         style={{ textAlign: 'left', marginTop: 8 }}
-        initialValues={{ attending: true, companions_count: 0 }}
       >
         <Form.Item
-          name="attending"
-          label={<span style={labelStyle}>Assistiràs a la celebració?</span>}
-          rules={[{ required: true, message: 'Si us plau, selecciona una opció' }]}
+          label={<span style={labelStyle}>Qui assistirà a la celebració?</span>}
+          style={{ marginBottom: 8 }}
         >
-          <Radio.Group style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 8 }}>
-            <Radio value={true} style={radioStyle}>
-              <span style={radioLabelStyle}>Sí, hi seré</span>
-            </Radio>
-            <Radio value={false} style={radioStyle}>
-              <span style={radioLabelStyle}>No podré assistir</span>
-            </Radio>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item noStyle shouldUpdate={(prev, curr) => prev.attending !== curr.attending}>
-          {({ getFieldValue }) =>
-            getFieldValue('attending') === true && (
-              <>
-                <Form.Item
-                  name="companions_count"
-                  label={<span style={labelStyle}>Nombre de acompanyants (màxim {guest.max_companions})</span>}
-                  rules={[
-                    { required: true, message: 'Si us plau, indica el nombre de acompanyants' },
-                    { type: 'number', min: 0, max: guest.max_companions, message: `El nombre màxim és ${guest.max_companions}` },
-                  ]}
-                >
-                  <InputNumber min={0} max={guest.max_companions} style={{ width: '100%', maxWidth: 120 }} />
-                </Form.Item>
-
-                <Form.Item noStyle shouldUpdate={(prev, curr) => prev.companions_count !== curr.companions_count}>
-                  {({ getFieldValue }) => {
-                    const count = getFieldValue('companions_count') || 0;
-                    const companionFields = [];
-                    for (let i = 0; i < count; i++) {
-                      companionFields.push(
-                        <Form.Item
-                          key={i}
-                          name={['companions_names', i]}
-                          label={<span style={labelStyle}>Nom de l'acompanyant {i + 1}</span>}
-                          rules={[{ required: true, message: 'Si us plau, introdueix el nom' }]}
-                        >
-                          <Input placeholder={`Acompanyant ${i + 1}`} style={inputStyle} />
-                        </Form.Item>
-                      );
-                    }
-                    return <>{companionFields}</>;
-                  }}
-                </Form.Item>
-              </>
-            )
-          }
+          <Form.List name="guests">
+            {(fields) =>
+              fields.map((field) => (
+                <div key={field.key} style={guestRowStyle}>
+                  <Form.Item name={[field.name, 'id']} hidden noStyle>
+                    <input type="hidden" />
+                  </Form.Item>
+                  <Form.Item name={[field.name, 'name']} hidden noStyle>
+                    <input type="hidden" />
+                  </Form.Item>
+                  <Text style={{
+                    fontFamily: "'Raleway', sans-serif",
+                    fontSize: 'clamp(0.85rem, 1.3vw, 0.95rem)',
+                    color: '#333',
+                  }}>
+                    {form.getFieldValue(['guests', field.name, 'name'])}
+                  </Text>
+                  <Form.Item
+                    name={[field.name, 'attending']}
+                    valuePropName="checked"
+                    noStyle
+                  >
+                    <Switch
+                      checkedChildren="Vinc"
+                      unCheckedChildren="No vinc"
+                    />
+                  </Form.Item>
+                </div>
+              ))
+            }
+          </Form.List>
         </Form.Item>
 
         <Form.Item
@@ -145,7 +120,7 @@ export const FormState: FC<FormStateProps> = ({
             htmlType="submit"
             loading={submitting}
             size="large"
-            style={{ width: '100%', marginTop: 16 }}
+            style={{ width: '100%', marginTop: 8 }}
           >
             Confirmar assistència
           </Button>

@@ -1,52 +1,37 @@
 import { apiGet } from '../../api.client';
-import type { GuestWithConfirmation } from '../../../model/wedding.types';
-
-interface CompanionDto {
-  id: number;
-  name: string | null;
-}
+import type { ConfirmationRow } from '../../../model/wedding.types';
 
 interface ConfirmationListDto {
-  guestId: number;
-  name: string;
+  invitationId: number;
+  label: string;
   email: string | null;
   inviteCode: string;
-  maxCompanions: number;
-  attending: boolean | null;
-  companionsCount: number;
+  maxAddedGuests: number;
   notes: string | null;
   confirmedAt: string | null;
-  companions: CompanionDto[];
-  isCompanion: boolean;
+  guestId: number;
+  guestName: string;
+  isPredefined: boolean;
+  guestAttending: boolean | null;
 }
 
-function mapConfirmation(dto: ConfirmationListDto): GuestWithConfirmation {
-  const guestId = String(dto.guestId);
-  const confirmation = dto.attending !== null ? {
-    id: `conf-${guestId}`,
-    guest_id: guestId,
-    attending: dto.attending,
-    companions_count: dto.companionsCount,
-    notes: dto.notes ?? '',
-  } : undefined;
-
+function mapRow(dto: ConfirmationListDto): ConfirmationRow {
   return {
-    id: guestId,
-    wedding_id: '',
-    name: dto.name,
-    email: dto.email ?? '',
-    invite_code: dto.inviteCode,
-    max_companions: dto.maxCompanions,
-    confirmation,
-    companions: dto.companions.map(c => ({
-      id: String(c.id),
-      guest_confirmation_id: `conf-${guestId}`,
-      name: c.name ?? '',
-    })),
+    invitationId: dto.invitationId,
+    label: dto.label,
+    email: dto.email,
+    inviteCode: dto.inviteCode,
+    maxAddedGuests: dto.maxAddedGuests,
+    notes: dto.notes,
+    confirmedAt: dto.confirmedAt,
+    guestId: dto.guestId,
+    guestName: dto.guestName,
+    isPredefined: dto.isPredefined,
+    guestAttending: dto.guestAttending,
   };
 }
 
-export async function fetchConfirmations(weddingId: number): Promise<GuestWithConfirmation[]> {
+export async function fetchConfirmations(weddingId: number): Promise<ConfirmationRow[]> {
   const list = await apiGet<ConfirmationListDto[]>(`/api/weddings/${weddingId}/confirmations/list`);
-  return list.map(mapConfirmation);
+  return list.map(mapRow);
 }

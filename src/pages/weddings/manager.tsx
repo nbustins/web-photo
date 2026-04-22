@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
-import { Layout, Card, Table, Tag, Typography, Input, Space, Descriptions, Empty, Button, Form } from 'antd';
+import { Layout, Card, Table, Tag, Typography, Space, Descriptions, Empty, Button, Form, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { guestService } from '../../services/wedding';
 import { login, logout } from '../../services/auth/auth.service';
 import { getUser } from '../../services/auth/auth.store';
-import type { Wedding, GuestWithConfirmation } from '../../model/wedding.types';
+import type { Wedding, ConfirmationRow } from '../../model/wedding.types';
 import './manager.css';
 
 const { Header, Content } = Layout;
@@ -17,10 +17,15 @@ interface LoginFormValues {
   password: string;
 }
 
+const attendingTag = (attending: boolean | null) => {
+  if (attending === null) return <Tag color="default">Pendent</Tag>;
+  return attending ? <Tag color="success">Confirmat</Tag> : <Tag color="error">Rebutjat</Tag>;
+};
+
 export const Manager: FC<{ slug: string }> = ({ slug }) => {
   const [state, setState] = useState<ManagerState>(() => (getUser() ? 'loading' : 'login'));
   const [wedding, setWedding] = useState<Wedding | null>(null);
-  const [guests, setGuests] = useState<GuestWithConfirmation[]>([]);
+  const [rows, setRows] = useState<ConfirmationRow[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm<LoginFormValues>();
@@ -30,16 +35,14 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
   }, [slug]);
 
   useEffect(() => {
-    if (getUser()) {
-      loadGuests();
-    }
+    if (getUser()) loadData();
   }, []);
 
-  const loadGuests = async () => {
+  const loadData = async () => {
     setState('loading');
     try {
-      const data = await guestService.getGuestsWithConfirmations(slug);
-      setGuests(data);
+      const data = await guestService.getConfirmations(slug);
+      setRows(data);
       setState('data');
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Error desconegut');
@@ -52,18 +55,13 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     setErrorMessage('');
     const result = await login(email, password);
     setSubmitting(false);
-
-    if (!result.success) {
-      setErrorMessage(result.error);
-      return;
-    }
-
-    await loadGuests();
+    if (!result.success) { setErrorMessage(result.error); return; }
+    await loadData();
   };
 
   const handleLogout = () => {
     logout();
-    setGuests([]);
+    setRows([]);
     form.resetFields();
     setState('login');
   };
@@ -72,72 +70,58 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
   const managerTitle = weddingTitle ? `Gestió ${weddingTitle}` : 'Gestió';
 
   const getStats = () => {
-    const total = guests.length;
-    const confirmed = guests.filter(g => g.confirmation?.attending).length;
-    const declined = guests.filter(g => g.confirmation && !g.confirmation.attending).length;
-    const pending = guests.filter(g => !g.confirmation).length;
-    const totalCompanions = guests
-      .filter(g => g.confirmation?.attending)
-      .reduce((sum, g) => sum + (g.confirmation?.companions_count || 0), 0);
-
-    return { total, confirmed, declined, pending, totalCompanions };
+    const totalGuests = rows.length;
+    const confirmed = rows.filter(r => r.guestAttending === true).length;
+    const declined = rows.filter(r => r.guestAttending === false).length;
+    const pending = rows.filter(r => r.guestAttending === null).length;
+    const invitationIds = new Set(rows.map(r => r.invitationId));
+    const respondedIds = new Set(rows.filter(r => r.confirmedAt !== null).map(r => r.invitationId));
+    return { totalGuests, confirmed, declined, pending, totalInvitations: invitationIds.size, respondedInvitations: respondedIds.size };
   };
 
-  const columns: ColumnsType<GuestWithConfirmation> = [
+  const columns: ColumnsType<ConfirmationRow> = [
     {
-      title: 'Convidat',
-      dataIndex: 'name',
-      key: 'name',
-      render: (name: string, record) => (
+      title: 'Invitació',
+      key: 'invitation',
+      render: (_, r) => (
         <Space direction="vertical" size={0}>
-          <Text strong>{name}</Text>
-          {record.email && <Text type="secondary" style={{ fontSize: 12 }}>{record.email}</Text>}
+          <Text strong>{r.label}</Text>
+          <Text type="secondary" style={{ fontSize: 12 }}>{r.inviteCode}</Text>
         </Space>
       ),
     },
     {
-      title: 'Estat',
-      key: 'status',
-      width: 120,
-      render: (_, record) => {
-        if (!record.confirmation) {
-          return <Tag color="default">Pendent</Tag>;
-        }
-        return record.confirmation.attending
-          ? <Tag color="success">Confirmat</Tag>
-          : <Tag color="error">Rebutjat</Tag>;
-      },
+      title: 'Convidat',
+      key: 'guest',
+      render: (_, r) => (
+        <Space size={6}>
+          <Text>{r.guestName}</Text>
+          {!r.isPredefined && <Tag color="blue" style={{ fontSize: 11 }}>Afegit</Tag>}
+        </Space>
+      ),
     },
     {
-      title: 'Acompanyants',
-      key: 'companions',
-      width: 200,
-      render: (_, record) => {
-        if (!record.confirmation?.attending) {
-          return <Text type="secondary">-</Text>;
-        }
-        if (record.companions.length === 0) {
-          return <Text type="secondary">Cap</Text>;
-        }
-        return (
-          <Space wrap>
-            {record.companions.map((c, idx) => (
-              <Tag key={idx}>{c.name}</Tag>
-            ))}
-          </Space>
-        );
+      title: 'Assistència',
+      key: 'attending',
+      width: 120,
+      render: (_, r) => attendingTag(r.guestAttending),
+      filters: [
+        { text: 'Confirmat', value: 'confirmed' },
+        { text: 'Rebutjat', value: 'declined' },
+        { text: 'Pendent', value: 'pending' },
+      ],
+      onFilter: (value, r) => {
+        if (value === 'confirmed') return r.guestAttending === true;
+        if (value === 'declined') return r.guestAttending === false;
+        return r.guestAttending === null;
       },
     },
     {
       title: 'Notes',
-      dataIndex: 'notes',
       key: 'notes',
-      render: (_notes: string, record) => {
-        if (!record.confirmation?.notes) {
-          return <Text type="secondary">-</Text>;
-        }
-        return <Text type="secondary">{record.confirmation.notes}</Text>;
-      },
+      render: (_, r) => r.notes
+        ? <Text type="secondary">{r.notes}</Text>
+        : <Text type="secondary">-</Text>,
     },
   ];
 
@@ -154,18 +138,10 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
               style={{ maxWidth: 320 }}
               requiredMark={false}
             >
-              <Form.Item
-                name="email"
-                label="Email"
-                rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}
-              >
+              <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}>
                 <Input size="large" autoComplete="email" />
               </Form.Item>
-              <Form.Item
-                name="password"
-                label="Contrasenya"
-                rules={[{ required: true, message: 'Contrasenya requerida' }]}
-              >
+              <Form.Item name="password" label="Contrasenya" rules={[{ required: true, message: 'Contrasenya requerida' }]}>
                 <Input.Password size="large" autoComplete="current-password" />
               </Form.Item>
               <Form.Item>
@@ -185,9 +161,7 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     return (
       <Layout className="manager-layout">
         <Content className="manager-content">
-          <Card className="manager-card">
-            <Text>Carregant...</Text>
-          </Card>
+          <Card className="manager-card"><Text>Carregant...</Text></Card>
         </Content>
       </Layout>
     );
@@ -200,38 +174,31 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
       <Header className="manager-header">
         <div className="manager-header-content">
           <Title level={3} style={{ margin: 0, color: '#fff' }}>{managerTitle}</Title>
-          <Button type="primary" onClick={handleLogout}>
-            Tancar sessió
-          </Button>
+          <Button type="primary" onClick={handleLogout}>Tancar sessió</Button>
         </div>
       </Header>
       <Content className="manager-content">
         <Space direction="vertical" style={{ width: '100%' }} size="large">
           <Card className="manager-stats-card">
-            <Descriptions bordered column={5}>
-              <Descriptions.Item label="Total convidats">{stats.total}</Descriptions.Item>
-              <Descriptions.Item label="Confirmats">
-                <Text type="success">{stats.confirmed}</Text>
-              </Descriptions.Item>
-              <Descriptions.Item label="Rebutjats">
-                <Text type="danger">{stats.declined}</Text>
-              </Descriptions.Item>
+            <Descriptions bordered column={3}>
+              <Descriptions.Item label="Total convidats">{stats.totalGuests}</Descriptions.Item>
+              <Descriptions.Item label="Confirmats"><Text type="success">{stats.confirmed}</Text></Descriptions.Item>
+              <Descriptions.Item label="Rebutjats"><Text type="danger">{stats.declined}</Text></Descriptions.Item>
               <Descriptions.Item label="Pendents">{stats.pending}</Descriptions.Item>
-              <Descriptions.Item label="Total assistents">
-                {stats.confirmed + stats.totalCompanions}
-              </Descriptions.Item>
+              <Descriptions.Item label="Invitacions totals">{stats.totalInvitations}</Descriptions.Item>
+              <Descriptions.Item label="Invitacions respostes">{stats.respondedInvitations}</Descriptions.Item>
             </Descriptions>
           </Card>
 
           <Card className="manager-table-card">
-            {guests.length === 0 ? (
+            {rows.length === 0 ? (
               <Empty description="No hi ha convidats" />
             ) : (
               <Table
                 columns={columns}
-                dataSource={guests}
-                rowKey="id"
-                pagination={{ pageSize: 10 }}
+                dataSource={rows}
+                rowKey="guestId"
+                pagination={{ pageSize: 20 }}
                 locale={{ emptyText: 'No hi ha convidats' }}
               />
             )}

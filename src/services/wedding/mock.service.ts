@@ -1,5 +1,5 @@
-import { GuestServiceProvider } from './types';
-import { Wedding, GuestWithWedding, GuestWithConfirmation, ConfirmationPayload } from '../../model/wedding.types';
+import type { GuestServiceProvider } from './types';
+import type { Wedding, Invitation, ConfirmationRow, ConfirmInvitationPayload } from '../../model/wedding.types';
 
 const mockWedding: Wedding = {
   id: 'wedding-1',
@@ -13,56 +13,42 @@ const mockWedding: Wedding = {
   manager_code: 'MANAGER2026',
 };
 
-const mockGuests: Array<GuestWithWedding> = [
+const mockInvitations: Invitation[] = [
   {
-    id: 'guest-1',
-    wedding_id: 'wedding-1',
-    name: 'Maria Garcia',
-    email: 'maria@example.com',
-    invite_code: 'MARIA2025',
-    max_companions: 2,
-    wedding: mockWedding,
+    id: 1,
+    label: 'Família Garcia',
+    inviteCode: 'GARCIA01',
+    maxAddedGuests: 0,
+    weddingTitle: 'Anna & Joan',
+    eventDate: '2026-09-15',
+    notes: null,
+    slug: 'anna-joan',
+    guests: [
+      { id: 1, name: 'Maria Garcia', isPredefined: true, attending: null },
+      { id: 2, name: 'Pere Garcia', isPredefined: true, attending: null },
+      { id: 3, name: 'Joana Garcia', isPredefined: true, attending: null },
+    ],
   },
   {
-    id: 'guest-2',
-    wedding_id: 'wedding-1',
-    name: 'Pere López',
-    email: 'pere@example.com',
-    invite_code: 'PERE2025',
-    max_companions: 3,
-    wedding: mockWedding,
-  },
-  {
-    id: 'guest-3',
-    wedding_id: 'wedding-1',
-    name: 'Laia Puig',
-    email: 'laia@example.com',
-    invite_code: 'LAIA2025',
-    max_companions: 3,
-    wedding: mockWedding,
+    id: 2,
+    label: 'Família López',
+    inviteCode: 'LOPEZ002',
+    maxAddedGuests: 0,
+    weddingTitle: 'Anna & Joan',
+    eventDate: '2026-09-15',
+    notes: 'Al·lèrgia als fruits secs',
+    slug: 'anna-joan',
+    guests: [
+      { id: 4, name: 'Laia López', isPredefined: true, attending: true },
+      { id: 5, name: 'Jordi López', isPredefined: true, attending: true },
+      { id: 6, name: 'Noa López', isPredefined: true, attending: false },
+    ],
   },
 ];
 
-const confirmationsStore = new Map<string, {
-  attending: boolean;
-  companions_count: number;
-  companion_names: string[];
-  notes: string;
-}>();
-
-confirmationsStore.set('guest-1', {
-  attending: true,
-  companions_count: 2,
-  companion_names: ['Joan Garcia', 'Anna Garcia'],
-  notes: 'Al·lèrgia a les nous',
-});
-
-confirmationsStore.set('guest-2', {
-  attending: false,
-  companions_count: 0,
-  companion_names: [],
-  notes: '',
-});
+const invitationStore = new Map<number, Invitation>(
+  mockInvitations.map(i => [i.id, { ...i, guests: i.guests.map(g => ({ ...g })) }])
+);
 
 export class MockGuestService implements GuestServiceProvider {
   private delay(ms: number): Promise<void> {
@@ -74,50 +60,54 @@ export class MockGuestService implements GuestServiceProvider {
     return slug === mockWedding.slug ? mockWedding : null;
   }
 
-  async getGuestBySlugAndCode(slug: string, code: string): Promise<GuestWithWedding | null> {
+  async getInvitation(slug: string, code: string): Promise<Invitation | null> {
     await this.delay(300);
-    const wedding = await this.getWeddingBySlug(slug);
-    if (!wedding) return null;
-    return mockGuests.find(g => g.wedding_id === wedding.id && g.invite_code === code) ?? null;
+    const inv = [...invitationStore.values()].find(i => i.slug === slug && i.inviteCode === code);
+    return inv ?? null;
   }
 
-  async saveConfirmation(payload: ConfirmationPayload): Promise<{ success: boolean; error?: string }> {
+  async saveConfirmation(payload: ConfirmInvitationPayload): Promise<{ success: boolean; invitation?: Invitation; error?: string }> {
     await this.delay(500);
-    confirmationsStore.set(payload.guest_id, {
-      attending: payload.attending,
-      companions_count: payload.companions_count,
-      companion_names: payload.companion_names,
+    const inv = [...invitationStore.values()].find(
+      i => i.slug === payload.slug && i.inviteCode === payload.inviteCode
+    );
+    if (!inv) return { success: false, error: 'Invitació no trobada' };
+
+    const updated: Invitation = {
+      ...inv,
       notes: payload.notes,
-    });
-    return { success: true };
+      guests: payload.guests.map(g => ({
+        id: g.id,
+        name: g.name,
+        isPredefined: inv.guests.find(ig => ig.id === g.id)?.isPredefined ?? false,
+        attending: g.attending,
+      })),
+    };
+    invitationStore.set(updated.id, updated);
+    return { success: true, invitation: updated };
   }
 
-  async getGuestsWithConfirmations(slug: string): Promise<GuestWithConfirmation[]> {
-    await this.delay(500);
-    const wedding = await this.getWeddingBySlug(slug);
-    if (!wedding) {
-      throw new Error('Wedding not found');
+  async getConfirmations(slug: string): Promise<ConfirmationRow[]> {
+    await this.delay(400);
+    const rows: ConfirmationRow[] = [];
+    for (const inv of invitationStore.values()) {
+      if (inv.slug !== slug) continue;
+      for (const g of inv.guests) {
+        rows.push({
+          invitationId: inv.id,
+          label: inv.label,
+          email: null,
+          inviteCode: inv.inviteCode,
+          maxAddedGuests: inv.maxAddedGuests,
+          notes: inv.notes,
+          confirmedAt: g.attending !== null ? '2026-04-22T10:00:00Z' : null,
+          guestId: g.id,
+          guestName: g.name,
+          isPredefined: g.isPredefined,
+          guestAttending: g.attending,
+        });
+      }
     }
-
-    return mockGuests
-      .filter(g => g.wedding_id === wedding.id)
-      .map(guest => {
-        const confirmation = confirmationsStore.get(guest.id);
-        return {
-          ...guest,
-          confirmation: confirmation ? {
-            id: `conf-${guest.id}`,
-            guest_id: guest.id,
-            attending: confirmation.attending,
-            companions_count: confirmation.companions_count,
-            notes: confirmation.notes,
-          } : undefined,
-          companions: confirmation?.companion_names.map((name, idx) => ({
-            id: `comp-${guest.id}-${idx}`,
-            guest_confirmation_id: `conf-${guest.id}`,
-            name,
-          })) ?? [],
-        };
-      });
+    return rows;
   }
 }

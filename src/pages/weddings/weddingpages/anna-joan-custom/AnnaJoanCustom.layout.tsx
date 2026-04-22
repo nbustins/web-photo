@@ -11,14 +11,10 @@ import {
 
 const { Title, Text } = Typography;
 
-/**
- * Layout custom de validació per anna-joan.
- * Demostra que renderCustom rep el context complet i pot renderitzar lliurement.
- */
 export const AnnaJoanCustomLayout: FC<WeddingPageContext> = ({
   pageState,
   wedding,
-  guest,
+  invitation,
   manualCode,
   submitting,
   form,
@@ -30,6 +26,10 @@ export const AnnaJoanCustomLayout: FC<WeddingPageContext> = ({
   const weddingTitle = wedding?.title ?? '';
   const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
   const heroImage = wedding?.hero_image;
+
+  const guestValues: { attending: boolean }[] = form.getFieldValue('guests') ?? [];
+  const attendingCount = guestValues.filter(g => g.attending).length;
+  const totalCount = invitation?.guests.length ?? 0;
 
   const renderContent = () => {
     switch (pageState) {
@@ -55,19 +55,19 @@ export const AnnaJoanCustomLayout: FC<WeddingPageContext> = ({
       case 'closed':
         return <ClosedState title={weddingTitle} heroImage={heroImage} />;
       case 'form':
-        return guest ? (
+        return invitation ? (
           <FormState
             title={weddingTitle}
             subtitle={weddingSubtitle}
             heroImage={heroImage}
-            guest={guest}
+            invitation={invitation}
             form={form}
             submitting={submitting}
             onFinish={onFormSubmit}
           />
         ) : null;
       case 'success':
-        return <SuccessState attending={form.getFieldValue('attending')} />;
+        return <SuccessState attendingCount={attendingCount} totalCount={totalCount} />;
       default:
         return null;
     }
@@ -83,7 +83,6 @@ export const AnnaJoanCustomLayout: FC<WeddingPageContext> = ({
       padding: '40px 16px',
       boxSizing: 'border-box',
     }}>
-      {/* Banner custom */}
       <div style={{ marginBottom: 32, textAlign: 'center' }}>
         <Title level={4} style={{ color: '#e2b96f', margin: 0, letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: 300 }}>
           disseny alternatiu · validació

@@ -1,26 +1,30 @@
 import { ReactNode } from 'react';
 import { FormInstance } from 'antd';
-import type { Wedding, GuestWithWedding } from '../../model/wedding.types';
+import type { Wedding, Invitation } from '../../model/wedding.types';
 
 export type PageState = 'loading' | 'enter-code' | 'not-found' | 'closed' | 'form' | 'success';
 
-export interface FormValues {
+export interface GuestFormValue {
+  id: number;
+  name: string;
   attending: boolean;
-  companions_count?: number;
-  companions_names?: string[];
+}
+
+export interface InvitationFormValues {
   notes?: string;
+  guests: GuestFormValue[];
 }
 
 export interface WeddingPageContext {
   pageState: PageState;
   wedding: Wedding | null;
-  guest: GuestWithWedding | null;
+  invitation: Invitation | null;
   manualCode: string;
   submitting: boolean;
-  form: FormInstance;
+  form: FormInstance<InvitationFormValues>;
   onCodeChange: (code: string) => void;
   onCodeSubmit: () => void;
-  onFormSubmit: (values: FormValues) => Promise<void>;
+  onFormSubmit: (values: InvitationFormValues) => Promise<void>;
   onReset: () => void;
 }
 

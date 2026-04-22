@@ -1,63 +1,68 @@
 import { apiGet, apiPost, ApiError } from '../../api.client';
-import type { GuestWithWedding, Wedding, ConfirmationPayload } from '../../../model/wedding.types';
+import type { Invitation, ConfirmInvitationPayload } from '../../../model/wedding.types';
 
-interface GuestInviteDto {
+interface InvitationGuestDto {
   id: number;
   name: string;
+  isPredefined: boolean;
+  attending: boolean | null;
+}
+
+interface InvitationDto {
+  id: number;
+  label: string;
   inviteCode: string;
-  maxCompanions: number;
+  maxAddedGuests: number;
   weddingTitle: string;
   eventDate: string | null;
-  attending: boolean | null;
-  companionsCount: number;
   notes: string | null;
+  guests: InvitationGuestDto[];
 }
 
-interface ConfirmInviteRequest {
-  attending: boolean;
+interface ConfirmInvitationRequest {
   notes: string | null;
-  companions: { name: string }[];
+  guests: { id: number | null; name: string; attending: boolean | null }[];
 }
 
-function mapGuestInvite(dto: GuestInviteDto, slug: string): GuestWithWedding {
-  const wedding: Wedding = {
-    id: slug,
-    slug,
-    title: dto.weddingTitle,
-    event_date: dto.eventDate ?? '',
-    closing_date: dto.eventDate ?? '',
-  };
+function mapInvitation(dto: InvitationDto, slug: string): Invitation {
   return {
-    id: String(dto.id),
-    wedding_id: slug,
-    name: dto.name,
-    email: '',
-    invite_code: dto.inviteCode,
-    max_companions: dto.maxCompanions,
-    wedding,
+    id: dto.id,
+    label: dto.label,
+    inviteCode: dto.inviteCode,
+    maxAddedGuests: dto.maxAddedGuests,
+    weddingTitle: dto.weddingTitle,
+    eventDate: dto.eventDate,
+    notes: dto.notes,
+    slug,
+    guests: dto.guests.map(g => ({
+      id: g.id,
+      name: g.name,
+      isPredefined: g.isPredefined,
+      attending: g.attending,
+    })),
   };
 }
 
-export async function fetchGuestInvite(slug: string, code: string): Promise<GuestWithWedding | null> {
+export async function fetchGuestInvite(slug: string, code: string): Promise<Invitation | null> {
   try {
-    const dto = await apiGet<GuestInviteDto>(
+    const dto = await apiGet<InvitationDto>(
       `/api/public/weddings/${encodeURIComponent(slug)}/invites/${encodeURIComponent(code)}`,
     );
-    return mapGuestInvite(dto, slug);
+    return mapInvitation(dto, slug);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) return null;
     throw err;
   }
 }
 
-export async function postConfirmInvite(payload: ConfirmationPayload): Promise<void> {
-  const body: ConfirmInviteRequest = {
-    attending: payload.attending,
-    notes: payload.notes || null,
-    companions: payload.companion_names.map(name => ({ name })),
+export async function postConfirmInvite(payload: ConfirmInvitationPayload): Promise<Invitation> {
+  const body: ConfirmInvitationRequest = {
+    notes: payload.notes,
+    guests: payload.guests.map(g => ({ id: g.id, name: g.name, attending: g.attending })),
   };
-  await apiPost<GuestInviteDto, ConfirmInviteRequest>(
-    `/api/public/weddings/${encodeURIComponent(payload.slug)}/invites/${encodeURIComponent(payload.invite_code)}/confirm`,
+  const dto = await apiPost<InvitationDto, ConfirmInvitationRequest>(
+    `/api/public/weddings/${encodeURIComponent(payload.slug)}/invites/${encodeURIComponent(payload.inviteCode)}/confirm`,
     body,
   );
+  return mapInvitation(dto, payload.slug);
 }

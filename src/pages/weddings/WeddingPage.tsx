@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { Form } from 'antd';
 import { guestService } from '../../services/wedding';
 import { getPublicPath } from '../../utils/pathUtils';
-import type { Wedding, GuestWithWedding, ConfirmationPayload } from '../../model/wedding.types';
+import type { Wedding, Invitation, ConfirmInvitationPayload } from '../../model/wedding.types';
 import {
   LoadingState,
   EnterCodeState,
@@ -13,12 +13,12 @@ import {
   FormState,
   SuccessState,
 } from './components';
-import type { WeddingPageProps, WeddingPageContext, FormValues } from './WeddingPage.types';
+import type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
 
-export type { WeddingPageProps, WeddingPageContext, FormValues } from './WeddingPage.types';
+export type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
 
-const renderDefault = (ctx: WeddingPageContext) => {
-  const { pageState, wedding, guest, manualCode, submitting, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;
+const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
+  const { pageState, wedding, invitation, manualCode, submitting, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;
 
   const weddingTitle = wedding?.title ?? '';
   const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
@@ -43,19 +43,24 @@ const renderDefault = (ctx: WeddingPageContext) => {
     case 'closed':
       return <ClosedState title={weddingTitle} heroImage={heroImage} />;
     case 'form':
-      return guest ? (
+      return invitation ? (
         <FormState
           title={weddingTitle}
           subtitle={weddingSubtitle}
           heroImage={heroImage}
-          guest={guest}
+          invitation={invitation}
           form={form}
           submitting={submitting}
           onFinish={onFormSubmit}
         />
       ) : null;
     case 'success':
-      return <SuccessState attending={form.getFieldValue('attending')} />;
+      return (
+        <SuccessState
+          attendingCount={attendingCount}
+          totalCount={invitation?.guests.length ?? 0}
+        />
+      );
     default:
       return null;
   }
@@ -65,10 +70,11 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [pageState, setPageState] = useState<WeddingPageContext['pageState']>('loading');
   const [wedding, setWedding] = useState<Wedding | null>(null);
-  const [guest, setGuest] = useState<GuestWithWedding | null>(null);
+  const [invitation, setInvitation] = useState<Invitation | null>(null);
   const [manualCode, setManualCode] = useState('');
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<InvitationFormValues>();
   const [submitting, setSubmitting] = useState(false);
+  const [attendingCount, setAttendingCount] = useState(0);
 
   const code = searchParams.get('code');
 
@@ -88,20 +94,28 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
 
   const validateCode = async (inviteCode: string) => {
     setPageState('loading');
-    const foundGuest = await guestService.getGuestBySlugAndCode(slug, inviteCode);
+    const found = await guestService.getInvitation(slug, inviteCode);
 
-    if (!foundGuest) {
+    if (!found) {
       setPageState('not-found');
       return;
     }
 
-    const closingDate = new Date(foundGuest.wedding.closing_date);
-    if (closingDate < new Date()) {
+    const closingDate = new Date(found.eventDate ?? '');
+    if (!isNaN(closingDate.getTime()) && closingDate < new Date()) {
       setPageState('closed');
       return;
     }
 
-    setGuest(foundGuest);
+    setInvitation(found);
+    form.setFieldsValue({
+      notes: found.notes ?? undefined,
+      guests: found.guests.map(g => ({
+        id: g.id,
+        name: g.name,
+        attending: g.attending ?? false,
+      })),
+    });
     setPageState('form');
   };
 
@@ -111,25 +125,23 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
     }
   };
 
-  const handleFormSubmit = async (values: FormValues) => {
-    if (!guest) return;
+  const handleFormSubmit = async (values: InvitationFormValues) => {
+    if (!invitation) return;
 
     setSubmitting(true);
 
-    const payload: ConfirmationPayload = {
-      guest_id: guest.id,
+    const payload: ConfirmInvitationPayload = {
       slug,
-      invite_code: guest.invite_code,
-      attending: values.attending,
-      companions_count: values.attending ? (values.companions_count || 0) : 0,
-      companion_names: values.attending ? (values.companions_names || []) : [],
-      notes: values.notes || '',
+      inviteCode: invitation.inviteCode,
+      notes: values.notes || null,
+      guests: values.guests.map(g => ({ id: g.id, name: g.name, attending: g.attending })),
     };
 
     const result = await guestService.saveConfirmation(payload);
     setSubmitting(false);
 
     if (result.success) {
+      setAttendingCount(values.guests.filter(g => g.attending).length);
       setPageState('success');
     } else {
       message.error(result.error || 'Error al guardar la confirmació');
@@ -139,7 +151,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
   const ctx: WeddingPageContext = {
     pageState,
     wedding,
-    guest,
+    invitation,
     manualCode,
     submitting,
     form,
@@ -191,7 +203,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
         maxWidth: 520,
         margin: 'auto',
       }}>
-        {renderDefault(ctx)}
+        {renderDefault(ctx, attendingCount)}
       </div>
     </div>
   );

@@ -10,6 +10,50 @@ export interface Wedding {
   manager_code?: string;
 }
 
+// --- Public invitation model ---
+
+export interface InvitationGuest {
+  id: number;
+  name: string;
+  isPredefined: boolean;
+  attending: boolean | null;
+}
+
+export interface Invitation {
+  id: number;
+  label: string;
+  inviteCode: string;
+  maxAddedGuests: number;
+  weddingTitle: string;
+  eventDate: string | null;
+  notes: string | null;
+  slug: string;
+  guests: InvitationGuest[];
+}
+
+export interface ConfirmInvitationPayload {
+  slug: string;
+  inviteCode: string;
+  notes: string | null;
+  guests: { id: number; name: string; attending: boolean | null }[];
+}
+
+// --- Admin model ---
+
+export interface ConfirmationRow {
+  invitationId: number;
+  label: string;
+  email: string | null;
+  inviteCode: string;
+  maxAddedGuests: number;
+  notes: string | null;
+  confirmedAt: string | null;
+  guestId: number;
+  guestName: string;
+  isPredefined: boolean;
+  guestAttending: boolean | null;
+}
+
 export interface Guest {
   id: string;
   wedding_id: string;
@@ -33,21 +77,7 @@ export interface GuestCompanion {
   name: string;
 }
 
-export interface GuestWithWedding extends Guest {
-  wedding: Wedding;
-}
-
 export interface GuestWithConfirmation extends Guest {
   confirmation?: GuestConfirmation;
   companions: GuestCompanion[];
-}
-
-export interface ConfirmationPayload {
-  guest_id: string;
-  slug: string;
-  invite_code: string;
-  attending: boolean;
-  companions_count: number;
-  companion_names: string[];
-  notes: string;
 }

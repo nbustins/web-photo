@@ -18,10 +18,20 @@ const iconStyle: React.CSSProperties = {
 };
 
 interface SuccessStateProps {
-  attending: boolean;
+  attendingCount: number;
+  totalCount: number;
 }
 
-export const SuccessState: FC<SuccessStateProps> = ({ attending }) => {
+export const SuccessState: FC<SuccessStateProps> = ({ attendingCount, totalCount }) => {
+  const allAttending = attendingCount === totalCount && totalCount > 0;
+  const noneAttending = attendingCount === 0;
+
+  const message = allAttending
+    ? 'Gràcies per confirmar la vostra assistència. Esperem veure-us a la celebració!'
+    : noneAttending
+      ? 'Ens sap greu que no pugueu assistir. Us trobarem a faltar!'
+      : `${attendingCount} de ${totalCount} persones assistiran a la celebració. Gràcies per confirmar!`;
+
   return (
     <WeddingCard
       initial={{ opacity: 0, scale: 0.95 }}
@@ -45,9 +55,7 @@ export const SuccessState: FC<SuccessStateProps> = ({ attending }) => {
         color: '#6a6a6a',
         lineHeight: 1.7,
       }}>
-        {attending
-          ? "Gràcies per confirmar la teva assistència. Esperem veure't a la celebració!"
-          : 'Ens sap greu que no puguis assistir. Et trobarem a faltar!'}
+        {message}
       </Text>
       <Text style={{
         display: 'block',

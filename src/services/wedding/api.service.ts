@@ -1,10 +1,5 @@
 import { getUser } from '../auth/auth.store';
-import type {
-  Wedding,
-  GuestWithWedding,
-  GuestWithConfirmation,
-  ConfirmationPayload,
-} from '../../model/wedding.types';
+import type { Wedding, Invitation, ConfirmationRow, ConfirmInvitationPayload } from '../../model/wedding.types';
 import type { GuestServiceProvider } from './types';
 import { fetchPublicWedding } from './api/public-wedding.api';
 import { fetchGuestInvite, postConfirmInvite } from './api/guest-invite.api';
@@ -15,17 +10,17 @@ export class ApiGuestService implements GuestServiceProvider {
     return fetchPublicWedding(slug);
   }
 
-  getGuestBySlugAndCode(slug: string, code: string): Promise<GuestWithWedding | null> {
+  getInvitation(slug: string, code: string): Promise<Invitation | null> {
     return fetchGuestInvite(slug, code);
   }
 
-  async saveConfirmation(payload: ConfirmationPayload): Promise<{ success: boolean; error?: string }> {
-    if (!payload.slug || !payload.invite_code) {
-      return { success: false, error: 'Falta slug o invite_code al payload' };
+  async saveConfirmation(payload: ConfirmInvitationPayload): Promise<{ success: boolean; invitation?: Invitation; error?: string }> {
+    if (!payload.slug || !payload.inviteCode) {
+      return { success: false, error: 'Falta slug o inviteCode al payload' };
     }
     try {
-      await postConfirmInvite(payload);
-      return { success: true };
+      const invitation = await postConfirmInvite(payload);
+      return { success: true, invitation };
     } catch (err) {
       return {
         success: false,
@@ -34,10 +29,10 @@ export class ApiGuestService implements GuestServiceProvider {
     }
   }
 
-  getGuestsWithConfirmations(slug: string): Promise<GuestWithConfirmation[]> {
+  getConfirmations(_slug: string): Promise<ConfirmationRow[]> {
     const user = getUser();
     if (!user) throw new Error('No autenticat');
-    if (user.weddingId == null) throw new Error(`Usuari sense boda assignada (${slug})`);
+    if (user.weddingId == null) throw new Error('Usuari sense boda assignada');
     return fetchConfirmations(user.weddingId);
   }
 }

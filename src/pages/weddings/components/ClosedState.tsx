@@ -47,7 +47,7 @@ export const ClosedState: FC<ClosedStateProps> = ({ title, heroImage }) => {
         color: '#6a6a6a',
         lineHeight: 1.7,
       }}>
-        La data límit per confirmar l'assistència ha passat. Si necessites fer algún canvi, si us plau contacta directament amb els nuvis.
+        La data límit per confirmar l'assistència ha passat. Si necessites fer algún canvi pots tornar a accedir amb el teu codi.
       </Text>
     </WeddingCard>
   );

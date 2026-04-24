@@ -47,7 +47,6 @@ export interface ConfirmationRow {
   inviteCode: string;
   maxAddedGuests: number;
   notes: string | null;
-  confirmedAt: string | null;
   guestId: number;
   guestName: string;
   isPredefined: boolean;

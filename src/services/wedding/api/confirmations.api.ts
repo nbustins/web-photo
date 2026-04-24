@@ -8,7 +8,6 @@ interface ConfirmationListDto {
   inviteCode: string;
   maxAddedGuests: number;
   notes: string | null;
-  confirmedAt: string | null;
   guestId: number;
   guestName: string;
   isPredefined: boolean;
@@ -23,7 +22,6 @@ function mapRow(dto: ConfirmationListDto): ConfirmationRow {
     inviteCode: dto.inviteCode,
     maxAddedGuests: dto.maxAddedGuests,
     notes: dto.notes,
-    confirmedAt: dto.confirmedAt,
     guestId: dto.guestId,
     guestName: dto.guestName,
     isPredefined: dto.isPredefined,

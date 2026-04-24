@@ -100,7 +100,6 @@ export class MockGuestService implements GuestServiceProvider {
           inviteCode: inv.inviteCode,
           maxAddedGuests: inv.maxAddedGuests,
           notes: inv.notes,
-          confirmedAt: g.attending !== null ? '2026-04-22T10:00:00Z' : null,
           guestId: g.id,
           guestName: g.name,
           isPredefined: g.isPredefined,

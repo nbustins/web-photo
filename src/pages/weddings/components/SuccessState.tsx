@@ -63,7 +63,7 @@ export const SuccessState: FC<SuccessStateProps> = ({ attendingCount, totalCount
         color: '#9a9a9a',
         marginTop: 16,
       }}>
-        Pots tancar aquesta finestra. Si necessites fer algún canvi, contacta amb els nuvis.
+        Pots tancar aquesta finestra, si vols modificar la teva confirmació accedeix de nou amb el codi.
       </Text>
     </WeddingCard>
   );

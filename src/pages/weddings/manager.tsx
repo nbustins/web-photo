@@ -75,7 +75,7 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     const declined = rows.filter(r => r.guestAttending === false).length;
     const pending = rows.filter(r => r.guestAttending === null).length;
     const invitationIds = new Set(rows.map(r => r.invitationId));
-    const respondedIds = new Set(rows.filter(r => r.confirmedAt !== null).map(r => r.invitationId));
+    const respondedIds = new Set(rows.filter(r => r.guestAttending !== null).map(r => r.invitationId));
     return { totalGuests, confirmed, declined, pending, totalInvitations: invitationIds.size, respondedInvitations: respondedIds.size };
   };
 

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Layout, Card, Table, Tag, Typography, Space, Descriptions, Empty, Button, Form, Input } from 'antd';
+import { Layout, Card, Table, Tag, Typography, Space, Descriptions, Empty, Button, Form, Input, Drawer, List, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { guestService } from '../../services/wedding';
 import { login, logout } from '../../services/auth/auth.service';
@@ -17,9 +17,32 @@ interface LoginFormValues {
   password: string;
 }
 
+interface InvitationSummary {
+  invitationId: number;
+  label: string;
+  inviteCode: string;
+  maxAddedGuests: number;
+  notes: string | null;
+  guests: { id: number; name: string; isPredefined: boolean; attending: boolean | null }[];
+}
+
 const attendingTag = (attending: boolean | null) => {
   if (attending === null) return <Tag color="default">Pendent</Tag>;
   return attending ? <Tag color="success">Confirmat</Tag> : <Tag color="error">Rebutjat</Tag>;
+};
+
+const buildSummary = (rows: ConfirmationRow[], invitationId: number): InvitationSummary | null => {
+  const matching = rows.filter(r => r.invitationId === invitationId);
+  if (!matching.length) return null;
+  const first = matching[0];
+  return {
+    invitationId: first.invitationId,
+    label: first.label,
+    inviteCode: first.inviteCode,
+    maxAddedGuests: first.maxAddedGuests,
+    notes: first.notes,
+    guests: matching.map(r => ({ id: r.guestId, name: r.guestName, isPredefined: r.isPredefined, attending: r.guestAttending })),
+  };
 };
 
 export const Manager: FC<{ slug: string }> = ({ slug }) => {
@@ -29,6 +52,8 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm<LoginFormValues>();
+  const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
+  const [noteModal, setNoteModal] = useState<string | null>(null);
 
   useEffect(() => {
     guestService.getWeddingBySlug(slug).then(setWedding);
@@ -79,15 +104,23 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     return { totalGuests, confirmed, declined, pending, totalInvitations: invitationIds.size, respondedInvitations: respondedIds.size };
   };
 
+  const invitationFilters = Array.from(
+    new Map(rows.map(r => [r.invitationId, r.label])).entries()
+  ).map(([id, label]) => ({ text: label, value: id }));
+
   const columns: ColumnsType<ConfirmationRow> = [
     {
       title: 'Invitació',
       key: 'invitation',
+      filters: invitationFilters,
+      onFilter: (value, r) => r.invitationId === value,
       render: (_, r) => (
-        <Space direction="vertical" size={0}>
-          <Text strong>{r.label}</Text>
-          <Text type="secondary" style={{ fontSize: 12 }}>{r.inviteCode}</Text>
-        </Space>
+        <button
+          className="invitation-label-btn"
+          onClick={() => setSelectedSummary(buildSummary(rows, r.invitationId))}
+        >
+          {r.label}
+        </button>
       ),
     },
     {
@@ -119,9 +152,19 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     {
       title: 'Notes',
       key: 'notes',
-      render: (_, r) => r.notes
-        ? <Text type="secondary">{r.notes}</Text>
-        : <Text type="secondary">-</Text>,
+      render: (_, r) => {
+        if (!r.notes) return <Text type="secondary">-</Text>;
+        const truncated = r.notes.length > 60;
+        return (
+          <Text
+            type="secondary"
+            style={truncated ? { cursor: 'pointer' } : undefined}
+            onClick={truncated ? () => setNoteModal(r.notes) : undefined}
+          >
+            {truncated ? `${r.notes.slice(0, 60)}…` : r.notes}
+          </Text>
+        );
+      },
     },
   ];
 
@@ -173,8 +216,8 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
     <Layout className="manager-layout">
       <Header className="manager-header">
         <div className="manager-header-content">
-          <Title level={3} style={{ margin: 0, color: '#fff' }}>{managerTitle}</Title>
-          <Button type="primary" onClick={handleLogout}>Tancar sessió</Button>
+          <span className="manager-header-name">{weddingTitle}</span>
+          <Button className="manager-logout-btn" onClick={handleLogout}>Tancar sessió</Button>
         </div>
       </Header>
       <Content className="manager-content">
@@ -205,6 +248,51 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
           </Card>
         </Space>
       </Content>
+
+      <Modal
+        open={!!noteModal}
+        onCancel={() => setNoteModal(null)}
+        footer={null}
+        title="Notes"
+        width={480}
+      >
+        <Text style={{ whiteSpace: 'pre-wrap' }}>{noteModal}</Text>
+      </Modal>
+
+      <Drawer
+        title={selectedSummary?.label}
+        open={!!selectedSummary}
+        onClose={() => setSelectedSummary(null)}
+        width={360}
+      >
+        {selectedSummary && (
+          <Space direction="vertical" style={{ width: '100%' }} size="middle">
+            <Descriptions column={1} size="small" bordered>
+              <Descriptions.Item label="Codi">
+                <Text copyable code>{selectedSummary.inviteCode}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label="Màx. afegits">{selectedSummary.maxAddedGuests}</Descriptions.Item>
+              {selectedSummary.notes && (
+                <Descriptions.Item label="Notes">{selectedSummary.notes}</Descriptions.Item>
+              )}
+            </Descriptions>
+
+            <Title level={5} style={{ margin: 0 }}>Convidats</Title>
+            <List
+              size="small"
+              dataSource={selectedSummary.guests}
+              renderItem={g => (
+                <List.Item extra={attendingTag(g.attending)}>
+                  <Space size={6}>
+                    <Text>{g.name}</Text>
+                    {!g.isPredefined && <Tag color="blue" style={{ fontSize: 11 }}>Afegit</Tag>}
+                  </Space>
+                </List.Item>
+              )}
+            />
+          </Space>
+        )}
+      </Drawer>
     </Layout>
   );
 };

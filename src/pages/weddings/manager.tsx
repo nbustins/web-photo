@@ -220,7 +220,8 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
           <Button className="manager-logout-btn" onClick={handleLogout}>Tancar sessió</Button>
         </div>
       </Header>
-      <Content className="manager-content">
+      <Content className="manager-scroll-area">
+        <div className="manager-content">
         <Space direction="vertical" style={{ width: '100%' }} size="large">
           <Card className="manager-stats-card">
             <Descriptions bordered column={3}>
@@ -247,6 +248,7 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
             )}
           </Card>
         </Space>
+        </div>
       </Content>
 
       <Modal

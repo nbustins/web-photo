@@ -1,7 +1,6 @@
-import { getUser } from '../auth/auth.store';
 import type { Wedding, Invitation, ConfirmationRow, ConfirmInvitationPayload } from '../../model/wedding.types';
 import type { GuestServiceProvider } from './types';
-import { fetchPublicWedding } from './api/public-wedding.api';
+import { fetchPublicWedding, fetchAuthWeddingBySlug } from './api/public-wedding.api';
 import { fetchGuestInvite, postConfirmInvite } from './api/guest-invite.api';
 import { fetchConfirmations } from './api/confirmations.api';
 
@@ -29,10 +28,9 @@ export class ApiGuestService implements GuestServiceProvider {
     }
   }
 
-  getConfirmations(_slug: string): Promise<ConfirmationRow[]> {
-    const user = getUser();
-    if (!user) throw new Error('No autenticat');
-    if (user.weddingId == null) throw new Error('Usuari sense boda assignada');
-    return fetchConfirmations(user.weddingId);
+  async getConfirmations(slug: string): Promise<ConfirmationRow[]> {
+    const resolved = await fetchAuthWeddingBySlug(slug);
+    if (!resolved) throw new Error('Boda no trobada');
+    return fetchConfirmations(resolved.id);
   }
 }

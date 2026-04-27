@@ -17,6 +17,7 @@ import { Workshop } from '../pages/workshop/workshop.page';
 
 import { AnnaJoanWedding } from '../pages/weddings/weddingpages/anna-joan';
 import { AnnaJoanCustomWedding } from '../pages/weddings/weddingpages/anna-joan-custom';
+import { CarlaJoelWedding } from '../pages/weddings/weddingpages/carla-joel';
 import { Manager } from '../pages/weddings/manager';
 
 
@@ -52,6 +53,8 @@ export const AppRouter: FC = () => {
         <Route path={AppRoutes.weddingAnnaJoan} element={<AnnaJoanWedding />} />
         <Route path={AppRoutes.weddingAnnaJoanCustom} element={<AnnaJoanCustomWedding />} />
         <Route path={AppRoutes.weddingAnnaJoanManager} element={<Manager slug="anna-joan" />} />
+        <Route path={AppRoutes.weddingCarlaJoel} element={<CarlaJoelWedding />} />
+        <Route path={AppRoutes.weddingCarlaJoelManager} element={<Manager slug="carla-joel" />} />
       </Routes>
     </HashRouter>
   );

@@ -14,6 +14,8 @@ export enum AppRoutes {
     weddingAnnaJoan = "/weddings/anna-joan",
     weddingAnnaJoanManager = "/weddings/anna-joan/manager",
     weddingAnnaJoanCustom = "/weddings/anna-joan-custom",
+    weddingCarlaJoel = "/weddings/carla-joel",
+    weddingCarlaJoelManager = "/weddings/carla-joel/manager",
     workshop = "/workshop"
 
 }

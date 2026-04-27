@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Spin, Typography } from 'antd';
+import { Spin } from 'antd';
 import type { WeddingPageContext } from '../../WeddingPage.types';
 import {
   EnterCodeState,
@@ -8,10 +8,9 @@ import {
   FormState,
   SuccessState,
 } from '../../components';
+import { getPublicPath } from '../../../../utils/pathUtils';
 
-const { Title, Text } = Typography;
-
-export const AnnaJoanCustomLayout: FC<WeddingPageContext> = ({
+export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
   pageState,
   wedding,
   invitation,
@@ -76,23 +75,41 @@ export const AnnaJoanCustomLayout: FC<WeddingPageContext> = ({
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      position: 'relative',
+      backgroundColor: 'rgb(246, 244, 240)',
       padding: '40px 16px',
       boxSizing: 'border-box',
     }}>
-      <div style={{ marginBottom: 32, textAlign: 'center' }}>
-        <Title level={4} style={{ color: '#e2b96f', margin: 0, letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: 300 }}>
-          disseny alternatiu · validació
-        </Title>
-        <Text style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>
-          renderCustom actiu
-        </Text>
-      </div>
+      {wedding?.background_image ? (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          backgroundImage: `url(${getPublicPath(wedding.background_image)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(20px) brightness(0.9)',
+          transform: 'scale(1.1)',
+        }} />
+      ) : (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          backgroundColor: 'rgb(246, 244, 240)',
+        }} />
+      )}
 
-      <div style={{ width: '100%', maxWidth: 520 }}>
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        maxWidth: 520,
+        margin: 'auto',
+      }}>
         {renderContent()}
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Layout, Card, Table, Tag, Typography, Space, Descriptions, Empty, Button, Form, Input, Drawer, List, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { guestService } from '../../services/wedding';
@@ -45,9 +46,11 @@ const buildSummary = (rows: ConfirmationRow[], invitationId: number): Invitation
   };
 };
 
-export const Manager: FC<{ slug: string }> = ({ slug }) => {
+export const Manager: FC = () => {
+  const { slug } = useParams<{ slug: string }>();
   const [state, setState] = useState<ManagerState>(() => (getUser() ? 'loading' : 'login'));
   const [wedding, setWedding] = useState<Wedding | null>(null);
+  const [weddingNotFound, setWeddingNotFound] = useState(false);
   const [rows, setRows] = useState<ConfirmationRow[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -56,14 +59,19 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
   const [noteModal, setNoteModal] = useState<string | null>(null);
 
   useEffect(() => {
-    guestService.getWeddingBySlug(slug).then(setWedding);
+    if (!slug) return;
+    guestService.getWeddingBySlug(slug).then(w => {
+      setWedding(w);
+      setWeddingNotFound(w === null);
+    });
   }, [slug]);
 
   useEffect(() => {
-    if (getUser()) loadData();
-  }, []);
+    if (slug && getUser()) loadData();
+  }, [slug]);
 
   const loadData = async () => {
+    if (!slug) return;
     setState('loading');
     try {
       const data = await guestService.getConfirmations(slug);
@@ -93,6 +101,19 @@ export const Manager: FC<{ slug: string }> = ({ slug }) => {
 
   const weddingTitle = wedding?.title ?? '';
   const managerTitle = weddingTitle ? `Gestió ${weddingTitle}` : 'Gestió';
+
+  if (weddingNotFound) {
+    return (
+      <Layout className="manager-layout">
+        <Content className="manager-content">
+          <Card className="manager-card">
+            <Title level={3} className="manager-title">Boda no trobada</Title>
+            <Text type="secondary">No existeix cap boda amb el slug "{slug}".</Text>
+          </Card>
+        </Content>
+      </Layout>
+    );
+  }
 
   const getStats = () => {
     const totalGuests = rows.length;

@@ -15,9 +15,8 @@ import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
 import { Workshop } from '../pages/workshop/workshop.page';
 
-import { AnnaJoanWedding } from '../pages/weddings/weddingpages/anna-joan';
-import { AnnaJoanCustomWedding } from '../pages/weddings/weddingpages/anna-joan-custom';
-import { CarlaJoelWedding } from '../pages/weddings/weddingpages/carla-joel';
+import { CarlaJoelCustomWedding } from '../pages/weddings/weddingpages/carla-joel-custom';
+import { GenericWedding } from '../pages/weddings/weddingpages/GenericWedding';
 import { Manager } from '../pages/weddings/manager';
 
 
@@ -50,11 +49,11 @@ export const AppRouter: FC = () => {
             />
           ))}
         </Route>
-        <Route path={AppRoutes.weddingAnnaJoan} element={<AnnaJoanWedding />} />
-        <Route path={AppRoutes.weddingAnnaJoanCustom} element={<AnnaJoanCustomWedding />} />
-        <Route path={AppRoutes.weddingAnnaJoanManager} element={<Manager slug="anna-joan" />} />
-        <Route path={AppRoutes.weddingCarlaJoel} element={<CarlaJoelWedding />} />
-        <Route path={AppRoutes.weddingCarlaJoelManager} element={<Manager slug="carla-joel" />} />
+        <Route path="/weddings/:slug" element={<GenericWedding />} />
+        <Route path="/weddings/:slug/manager" element={<Manager />} />
+
+        /* Custom wedding routes */
+        {/* <Route path="/weddings/carla-joel" element={<CarlaJoelCustomWedding />} /> */}
       </Routes>
     </HashRouter>
   );

@@ -11,11 +11,6 @@ export enum AppRoutes {
     bookSession = "/book-session",
     bookStore = "/book-store",
     aboutMe = "/about-me",
-    weddingAnnaJoan = "/weddings/anna-joan",
-    weddingAnnaJoanManager = "/weddings/anna-joan/manager",
-    weddingAnnaJoanCustom = "/weddings/anna-joan-custom",
-    weddingCarlaJoel = "/weddings/carla-joel",
-    weddingCarlaJoelManager = "/weddings/carla-joel/manager",
     workshop = "/workshop"
 
 }
@@ -28,3 +23,6 @@ export const appRoutesTitle: Partial<Record<AppRoutes, string>> = {
     [AppRoutes.bookSession] : "Reservar Sessió",
     [AppRoutes.workshop] : "Taller"
   };
+
+export const weddingPath = (slug: string) => `/weddings/${slug}`;
+export const weddingManagerPath = (slug: string) => `/weddings/${slug}/manager`;

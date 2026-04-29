@@ -3,6 +3,18 @@ import { Input, Button, Dropdown } from 'antd';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import type { ConfirmationRow } from '../../../model/wedding.types';
 import { radii } from '../../../styles/tokens/radii';
+import {
+  COLOR_BG,
+  COLOR_HEADER,
+  COLOR_TEXT_DARK,
+  COLOR_GREEN,
+  COLOR_RUST,
+  FONT_TITLE,
+  FONT_BODY,
+  StatusPill,
+  LabelTag,
+  StatCell,
+} from './manager-shared';
 
 type StatusFilter = 'all' | 'confirmed' | 'declined' | 'pending';
 
@@ -22,31 +34,7 @@ interface ManagerMobileProps {
   onShowNote: (note: string) => void;
 }
 
-const COLOR_BG = '#f5f0ea';
-const COLOR_HEADER = '#5C5440';
-const COLOR_TEXT_DARK = '#3d3228';
-const COLOR_OLIVE = '#7C7458';
-const COLOR_GREEN = '#5e8a4e';
-const COLOR_RUST = '#b06a3a';
 const NOTES_TRUNCATE = 90;
-
-const statusPill = (attending: boolean | null): React.CSSProperties => {
-  const base: React.CSSProperties = {
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: 13,
-    fontWeight: 500,
-    padding: '6px 16px',
-    borderRadius: 8,
-    border: '1px solid',
-    whiteSpace: 'nowrap',
-  };
-  if (attending === true) return { ...base, color: COLOR_GREEN, borderColor: 'rgba(94,138,78,0.45)', background: 'rgba(94,138,78,0.08)' };
-  if (attending === false) return { ...base, color: COLOR_RUST, borderColor: 'rgba(176,106,58,0.45)', background: 'rgba(176,106,58,0.08)' };
-  return { ...base, color: COLOR_OLIVE, borderColor: 'rgba(124,116,88,0.45)', background: 'rgba(124,116,88,0.08)' };
-};
-
-const statusLabel = (attending: boolean | null) =>
-  attending === true ? 'Confirmat' : attending === false ? 'Rebutjat' : 'Pendent';
 
 export const ManagerMobile: FC<ManagerMobileProps> = ({
   weddingTitle,
@@ -96,7 +84,7 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
         zIndex: 10,
       }}>
         <span style={{
-          fontFamily: "'Italiana', Georgia, serif",
+          fontFamily: FONT_TITLE,
           fontStyle: 'italic',
           fontSize: 26,
           color: '#fff',
@@ -114,7 +102,7 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
             background: 'transparent',
             border: '1px solid rgba(255,255,255,0.65)',
             color: '#fff',
-            fontFamily: "'Raleway', sans-serif",
+            fontFamily: FONT_BODY,
             fontSize: 14,
             padding: '10px 22px',
             borderRadius: 999,
@@ -156,9 +144,10 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
             prefix={<SearchOutlined style={{ color: '#bfb8a8' }} />}
             value={search}
             onChange={e => setSearch(e.target.value)}
-            style={{ fontFamily: "'Raleway', sans-serif", borderRadius: radii.md }}
+            style={{ fontFamily: FONT_BODY, borderRadius: radii.md }}
           />
           <Dropdown
+            overlayClassName="wedding-filter-dropdown"
             menu={{
               items: filterItems,
               onClick: ({ key }) => setFilter(key as StatusFilter),
@@ -166,7 +155,7 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
             }}
             trigger={['click']}
           >
-            <Button size="large" icon={<FilterOutlined />} style={{ borderRadius: radii.md }}>
+            <Button size="large" icon={<FilterOutlined />} style={{ borderRadius: radii.md, fontFamily: FONT_BODY }}>
               Filtre
             </Button>
           </Dropdown>
@@ -179,7 +168,7 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
             padding: 32,
             textAlign: 'center',
             color: '#9a9a9a',
-            fontFamily: "'Raleway', sans-serif",
+            fontFamily: FONT_BODY,
           }}>
             No hi ha resultats
           </div>
@@ -205,29 +194,16 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
                   <span style={{
-                    fontFamily: "'Italiana', Georgia, serif",
+                    fontFamily: FONT_TITLE,
                     fontSize: 19,
                     color: COLOR_TEXT_DARK,
                     letterSpacing: '0.01em',
                   }}>
                     {r.guestName}
                   </span>
-                  <span style={statusPill(r.guestAttending)}>
-                    {statusLabel(r.guestAttending)}
-                  </span>
+                  <StatusPill attending={r.guestAttending} />
                 </div>
-                <span style={{
-                  alignSelf: 'flex-start',
-                  fontFamily: "'Raleway', sans-serif",
-                  fontSize: 13,
-                  color: COLOR_OLIVE,
-                  border: `1px solid rgba(124,116,88,0.35)`,
-                  borderRadius: radii.md,
-                  padding: '3px 10px',
-                  background: 'rgba(124,116,88,0.04)',
-                }}>
-                  {r.label}
-                </span>
+                <LabelTag>{r.label}</LabelTag>
                 {r.notes && (
                   <span
                     onClick={(e) => {
@@ -237,7 +213,7 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
                       }
                     }}
                     style={{
-                      fontFamily: "'Raleway', sans-serif",
+                      fontFamily: FONT_BODY,
                       fontSize: 14,
                       color: '#8a8275',
                       lineHeight: 1.5,
@@ -254,32 +230,3 @@ export const ManagerMobile: FC<ManagerMobileProps> = ({
     </div>
   );
 };
-
-const StatCell: FC<{ value: number; label: string; color: string }> = ({ value, label, color }) => (
-  <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 2,
-  }}>
-    <span style={{
-      fontFamily: "'Italiana', Georgia, serif",
-      fontSize: 30,
-      fontWeight: 500,
-      color,
-      lineHeight: 1,
-    }}>
-      {value}
-    </span>
-    <span style={{
-      fontFamily: "'Raleway', sans-serif",
-      fontSize: 11,
-      fontWeight: 500,
-      color: '#9a9080',
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase',
-    }}>
-      {label}
-    </span>
-  </div>
-);

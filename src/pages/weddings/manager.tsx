@@ -8,6 +8,18 @@ import { getUser } from '../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../model/wedding.types';
 import { useIsMobile } from './useIsMobile';
 import { MobileShell, ManagerMobile } from './components';
+import {
+  COLOR_TEXT_DARK,
+  COLOR_GREEN,
+  COLOR_RUST,
+  COLOR_OLIVE,
+  COLOR_MUTED,
+  FONT_TITLE,
+  FONT_BODY,
+  StatusPill,
+  LabelTag,
+  StatCell,
+} from './components/manager-shared';
 import './manager.css';
 
 const { Header, Content } = Layout;
@@ -28,11 +40,6 @@ interface InvitationSummary {
   notes: string | null;
   guests: { id: number; name: string; isPredefined: boolean; attending: boolean | null }[];
 }
-
-const attendingTag = (attending: boolean | null) => {
-  if (attending === null) return <Tag color="default">Pendent</Tag>;
-  return attending ? <Tag color="success">Confirmat</Tag> : <Tag color="error">Rebutjat</Tag>;
-};
 
 const buildSummary = (rows: ConfirmationRow[], invitationId: number): InvitationSummary | null => {
   const matching = rows.filter(r => r.invitationId === invitationId);
@@ -139,12 +146,9 @@ export const Manager: FC = () => {
       filters: invitationFilters,
       onFilter: (value, r) => r.invitationId === value,
       render: (_, r) => (
-        <button
-          className="invitation-label-btn"
-          onClick={() => setSelectedSummary(buildSummary(rows, r.invitationId))}
-        >
+        <LabelTag onClick={() => setSelectedSummary(buildSummary(rows, r.invitationId))}>
           {r.label}
-        </button>
+        </LabelTag>
       ),
     },
     {
@@ -152,16 +156,31 @@ export const Manager: FC = () => {
       key: 'guest',
       render: (_, r) => (
         <Space size={6}>
-          <Text>{r.guestName}</Text>
-          {!r.isPredefined && <Tag color="blue" style={{ fontSize: 11 }}>Afegit</Tag>}
+          <span style={{ fontFamily: FONT_TITLE, fontSize: 17, color: COLOR_TEXT_DARK, letterSpacing: '0.01em' }}>
+            {r.guestName}
+          </span>
+          {!r.isPredefined && (
+            <Tag
+              style={{
+                fontFamily: FONT_BODY,
+                fontSize: 11,
+                color: COLOR_OLIVE,
+                background: 'rgba(124,116,88,0.08)',
+                border: '1px solid rgba(124,116,88,0.35)',
+                borderRadius: 999,
+              }}
+            >
+              Afegit
+            </Tag>
+          )}
         </Space>
       ),
     },
     {
       title: 'Assistència',
       key: 'attending',
-      width: 120,
-      render: (_, r) => attendingTag(r.guestAttending),
+      width: 140,
+      render: (_, r) => <StatusPill attending={r.guestAttending} />,
       filters: [
         { text: 'Confirmat', value: 'confirmed' },
         { text: 'Rebutjat', value: 'declined' },
@@ -177,16 +196,20 @@ export const Manager: FC = () => {
       title: 'Notes',
       key: 'notes',
       render: (_, r) => {
-        if (!r.notes) return <Text type="secondary">-</Text>;
+        if (!r.notes) return <span style={{ fontFamily: FONT_BODY, color: COLOR_MUTED }}>-</span>;
         const truncated = r.notes.length > 60;
         return (
-          <Text
-            type="secondary"
-            style={truncated ? { cursor: 'pointer' } : undefined}
+          <span
+            style={{
+              fontFamily: FONT_BODY,
+              fontSize: 14,
+              color: '#8a8275',
+              cursor: truncated ? 'pointer' : 'default',
+            }}
             onClick={truncated ? () => setNoteModal(r.notes) : undefined}
           >
             {truncated ? `${r.notes.slice(0, 60)}…` : r.notes}
-          </Text>
+          </span>
         );
       },
     },
@@ -311,10 +334,25 @@ export const Manager: FC = () => {
               size="small"
               dataSource={selectedSummary.guests}
               renderItem={g => (
-                <List.Item extra={attendingTag(g.attending)}>
+                <List.Item extra={<StatusPill attending={g.attending} />}>
                   <Space size={6}>
-                    <Text>{g.name}</Text>
-                    {!g.isPredefined && <Tag color="blue" style={{ fontSize: 11 }}>Afegit</Tag>}
+                    <span style={{ fontFamily: FONT_TITLE, fontSize: 17, color: COLOR_TEXT_DARK, letterSpacing: '0.01em' }}>
+                      {g.name}
+                    </span>
+                    {!g.isPredefined && (
+                      <Tag
+                        style={{
+                          fontFamily: FONT_BODY,
+                          fontSize: 11,
+                          color: COLOR_OLIVE,
+                          background: 'rgba(124,116,88,0.08)',
+                          border: '1px solid rgba(124,116,88,0.35)',
+                          borderRadius: 999,
+                        }}
+                      >
+                        Afegit
+                      </Tag>
+                    )}
                   </Space>
                 </List.Item>
               )}
@@ -353,14 +391,14 @@ export const Manager: FC = () => {
         <div className="manager-content">
         <Space direction="vertical" style={{ width: '100%' }} size="large">
           <Card className="manager-stats-card">
-            <Descriptions bordered column={3}>
-              <Descriptions.Item label="Total convidats">{stats.totalGuests}</Descriptions.Item>
-              <Descriptions.Item label="Confirmats"><Text type="success">{stats.confirmed}</Text></Descriptions.Item>
-              <Descriptions.Item label="Rebutjats"><Text type="danger">{stats.declined}</Text></Descriptions.Item>
-              <Descriptions.Item label="Pendents">{stats.pending}</Descriptions.Item>
-              <Descriptions.Item label="Invitacions totals">{stats.totalInvitations}</Descriptions.Item>
-              <Descriptions.Item label="Invitacions respostes">{stats.respondedInvitations}</Descriptions.Item>
-            </Descriptions>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, padding: '8px 0' }}>
+              <StatCell value={stats.totalGuests} label="Total" color={COLOR_TEXT_DARK} />
+              <StatCell value={stats.confirmed} label="Confirmats" color={COLOR_GREEN} />
+              <StatCell value={stats.pending} label="Pendents" color={COLOR_TEXT_DARK} />
+              <StatCell value={stats.declined} label="Rebutjats" color={COLOR_RUST} />
+              <StatCell value={stats.totalInvitations} label="Invitacions" color={COLOR_TEXT_DARK} />
+              <StatCell value={stats.respondedInvitations} label="Respostes" color={COLOR_TEXT_DARK} />
+            </div>
           </Card>
 
           <Card className="manager-table-card">

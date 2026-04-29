@@ -115,6 +115,35 @@
   background: rgba(124, 116, 88, 0.08);
 }
 
+.wedding-filter-dropdown .ant-dropdown-menu {
+  border-radius: 0.3rem;
+  padding: 6px;
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(124, 116, 88, 0.18);
+  border: 1px solid rgba(124, 116, 88, 0.18);
+}
+
+.wedding-filter-dropdown .ant-dropdown-menu-item {
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  color: #3d3228;
+  border-radius: 0.3rem;
+  padding: 8px 14px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.wedding-filter-dropdown .ant-dropdown-menu-item:hover {
+  background: rgba(124, 116, 88, 0.08);
+  color: #7C7458;
+}
+
+.wedding-filter-dropdown .ant-dropdown-menu-item-selected,
+.wedding-filter-dropdown .ant-dropdown-menu-item-selected:hover {
+  background: rgba(124, 116, 88, 0.14);
+  color: #7C7458;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .manager-content {
     padding: 16px;

@@ -8,3 +8,4 @@ export { SuccessState } from './SuccessState';
 export { MobileLayout } from './MobileLayout';
 export { MobileSwiper } from './MobileSwiper';
 export { MobileShell } from './MobileShell';
+export { ManagerMobile } from './ManagerMobile';

@@ -7,7 +7,7 @@ import { login, logout } from '../../services/auth/auth.service';
 import { getUser } from '../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../model/wedding.types';
 import { useIsMobile } from './useIsMobile';
-import { MobileShell } from './components';
+import { MobileShell, ManagerMobile } from './components';
 import './manager.css';
 
 const { Header, Content } = Layout;
@@ -276,45 +276,8 @@ export const Manager: FC = () => {
 
   const stats = getStats();
 
-  return (
-    <Layout className="manager-layout">
-      <Header className="manager-header">
-        <div className="manager-header-content">
-          <span className="manager-header-name">{weddingTitle}</span>
-          <Button className="manager-logout-btn" onClick={handleLogout}>Tancar sessió</Button>
-        </div>
-      </Header>
-      <Content className="manager-scroll-area">
-        <div className="manager-content">
-        <Space direction="vertical" style={{ width: '100%' }} size="large">
-          <Card className="manager-stats-card">
-            <Descriptions bordered column={3}>
-              <Descriptions.Item label="Total convidats">{stats.totalGuests}</Descriptions.Item>
-              <Descriptions.Item label="Confirmats"><Text type="success">{stats.confirmed}</Text></Descriptions.Item>
-              <Descriptions.Item label="Rebutjats"><Text type="danger">{stats.declined}</Text></Descriptions.Item>
-              <Descriptions.Item label="Pendents">{stats.pending}</Descriptions.Item>
-              <Descriptions.Item label="Invitacions totals">{stats.totalInvitations}</Descriptions.Item>
-              <Descriptions.Item label="Invitacions respostes">{stats.respondedInvitations}</Descriptions.Item>
-            </Descriptions>
-          </Card>
-
-          <Card className="manager-table-card">
-            {rows.length === 0 ? (
-              <Empty description="No hi ha convidats" />
-            ) : (
-              <Table
-                columns={columns}
-                dataSource={rows}
-                rowKey="guestId"
-                pagination={{ pageSize: 20 }}
-                locale={{ emptyText: 'No hi ha convidats' }}
-              />
-            )}
-          </Card>
-        </Space>
-        </div>
-      </Content>
-
+  const overlays = (
+    <>
       <Modal
         open={!!noteModal}
         onCancel={() => setNoteModal(null)}
@@ -359,6 +322,65 @@ export const Manager: FC = () => {
           </Space>
         )}
       </Drawer>
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <>
+        <ManagerMobile
+          weddingTitle={weddingTitle}
+          rows={rows}
+          stats={stats}
+          onLogout={handleLogout}
+          onSelectInvitation={(id) => setSelectedSummary(buildSummary(rows, id))}
+          onShowNote={(note) => setNoteModal(note)}
+        />
+        {overlays}
+      </>
+    );
+  }
+
+  return (
+    <Layout className="manager-layout">
+      <Header className="manager-header">
+        <div className="manager-header-content">
+          <span className="manager-header-name">{weddingTitle}</span>
+          <Button className="manager-logout-btn" onClick={handleLogout}>Tancar sessió</Button>
+        </div>
+      </Header>
+      <Content className="manager-scroll-area">
+        <div className="manager-content">
+        <Space direction="vertical" style={{ width: '100%' }} size="large">
+          <Card className="manager-stats-card">
+            <Descriptions bordered column={3}>
+              <Descriptions.Item label="Total convidats">{stats.totalGuests}</Descriptions.Item>
+              <Descriptions.Item label="Confirmats"><Text type="success">{stats.confirmed}</Text></Descriptions.Item>
+              <Descriptions.Item label="Rebutjats"><Text type="danger">{stats.declined}</Text></Descriptions.Item>
+              <Descriptions.Item label="Pendents">{stats.pending}</Descriptions.Item>
+              <Descriptions.Item label="Invitacions totals">{stats.totalInvitations}</Descriptions.Item>
+              <Descriptions.Item label="Invitacions respostes">{stats.respondedInvitations}</Descriptions.Item>
+            </Descriptions>
+          </Card>
+
+          <Card className="manager-table-card">
+            {rows.length === 0 ? (
+              <Empty description="No hi ha convidats" />
+            ) : (
+              <Table
+                columns={columns}
+                dataSource={rows}
+                rowKey="guestId"
+                pagination={{ pageSize: 20 }}
+                locale={{ emptyText: 'No hi ha convidats' }}
+              />
+            )}
+          </Card>
+        </Space>
+        </div>
+      </Content>
+
+      {overlays}
     </Layout>
   );
 };

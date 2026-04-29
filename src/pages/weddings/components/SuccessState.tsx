@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Typography } from 'antd';
+import { Typography, Button } from 'antd';
 import { WeddingCard } from './WeddingCard';
 
 const { Title, Text } = Typography;
@@ -20,9 +20,10 @@ const iconStyle: React.CSSProperties = {
 interface SuccessStateProps {
   attendingCount: number;
   totalCount: number;
+  onReset?: () => void;
 }
 
-export const SuccessState: FC<SuccessStateProps> = ({ attendingCount, totalCount }) => {
+export const SuccessState: FC<SuccessStateProps> = ({ attendingCount, totalCount, onReset }) => {
   const allAttending = attendingCount === totalCount && totalCount > 0;
   const noneAttending = attendingCount === 0;
 
@@ -65,6 +66,16 @@ export const SuccessState: FC<SuccessStateProps> = ({ attendingCount, totalCount
       }}>
         Pots tancar aquesta finestra, si vols modificar la teva confirmació accedeix de nou amb el codi.
       </Text>
+      {onReset && (
+        <Button
+          type="primary"
+          size="large"
+          onClick={onReset}
+          style={{ marginTop: 20 }}
+        >
+          Tornar a introduir codi
+        </Button>
+      )}
     </WeddingCard>
   );
 };

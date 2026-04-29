@@ -12,10 +12,28 @@ import {
   ClosedState,
   FormState,
   SuccessState,
+  MobileLayout,
 } from './components';
 import type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
 
 export type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
+
+const MOBILE_BREAKPOINT = '(max-width: 768px)';
+
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(MOBILE_BREAKPOINT).matches : false
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_BREAKPOINT);
+    const update = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, []);
+
+  return isMobile;
+};
 
 const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
   const { pageState, wedding, invitation, manualCode, submitting, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;
@@ -59,6 +77,7 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
         <SuccessState
           attendingCount={attendingCount}
           totalCount={invitation?.guests.length ?? 0}
+          onReset={onReset}
         />
       );
     default:
@@ -66,8 +85,9 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
   }
 };
 
-export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
+export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCustom }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const isMobile = useIsMobile();
   const [pageState, setPageState] = useState<WeddingPageContext['pageState']>('loading');
   const [wedding, setWedding] = useState<Wedding | null>(null);
   const [invitation, setInvitation] = useState<Invitation | null>(null);
@@ -163,6 +183,10 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, renderCustom }) => {
 
   if (renderCustom) {
     return <>{renderCustom(ctx)}</>;
+  }
+
+  if (isMobile) {
+    return <MobileLayout {...ctx} images={images} attendingCount={attendingCount} />;
   }
 
   return (

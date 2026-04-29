@@ -30,5 +30,6 @@ export interface WeddingPageContext {
 
 export interface WeddingPageProps {
   slug: string;
+  images?: string[];
   renderCustom?: (context: WeddingPageContext) => ReactNode;
 }

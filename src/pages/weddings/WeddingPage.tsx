@@ -15,25 +15,9 @@ import {
   MobileLayout,
 } from './components';
 import type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
+import { useIsMobile } from './useIsMobile';
 
 export type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
-
-const MOBILE_BREAKPOINT = '(max-width: 768px)';
-
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== 'undefined' ? window.matchMedia(MOBILE_BREAKPOINT).matches : false
-  );
-
-  useEffect(() => {
-    const mql = window.matchMedia(MOBILE_BREAKPOINT);
-    const update = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mql.addEventListener('change', update);
-    return () => mql.removeEventListener('change', update);
-  }, []);
-
-  return isMobile;
-};
 
 const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
   const { pageState, wedding, invitation, manualCode, submitting, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;

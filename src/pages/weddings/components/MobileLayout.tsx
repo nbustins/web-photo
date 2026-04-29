@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import { Spin, Typography, Input, Button, Space, Form, Switch } from 'antd';
-import { motion } from 'framer-motion';
 import type { WeddingPageContext } from '../WeddingPage.types';
-import { MobileSwiper } from './MobileSwiper';
+import { MobileShell } from './MobileShell';
 
 const { Title, Text } = Typography;
 
@@ -328,52 +327,13 @@ export const MobileLayout: FC<MobileLayoutProps> = ({
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      background: '#f5f0ea',
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-    }}>
-      <div style={{
-        flex: 1,
-        minHeight: 0,
-        position: 'relative',
-      }}>
-        <MobileSwiper
-          images={images}
-          fallbackImage={wedding?.hero_image}
-          alt={weddingTitle}
-        />
-      </div>
-
-      <motion.div
-        initial={false}
-        animate={{ maxHeight: expanded ? '80vh' : '45vh' }}
-        transition={{ type: 'spring', stiffness: 220, damping: 28 }}
-        style={{
-          position: 'relative',
-          marginTop: -28,
-          background: 'rgba(255, 255, 255, 0.97)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderRadius: '24px 24px 0 0',
-          boxShadow: '0 -6px 24px rgba(124, 116, 88, 0.12)',
-          padding: '24px 22px calc(24px + env(safe-area-inset-bottom)) 22px',
-          overflowY: 'auto',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        <div style={{
-          width: 44,
-          height: 4,
-          borderRadius: 2,
-          background: 'rgba(124, 116, 88, 0.25)',
-          margin: '0 auto 18px',
-        }} />
-        {renderPanelContent()}
-      </motion.div>
-    </div>
+    <MobileShell
+      images={images}
+      fallbackImage={wedding?.hero_image}
+      alt={weddingTitle}
+      expanded={expanded}
+    >
+      {renderPanelContent()}
+    </MobileShell>
   );
 };

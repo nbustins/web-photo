@@ -6,6 +6,8 @@ import { guestService } from '../../services/wedding';
 import { login, logout } from '../../services/auth/auth.service';
 import { getUser } from '../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../model/wedding.types';
+import { useIsMobile } from './useIsMobile';
+import { MobileShell } from './components';
 import './manager.css';
 
 const { Header, Content } = Layout;
@@ -57,6 +59,7 @@ export const Manager: FC = () => {
   const [form] = Form.useForm<LoginFormValues>();
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
   const [noteModal, setNoteModal] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!slug) return;
@@ -190,31 +193,71 @@ export const Manager: FC = () => {
   ];
 
   if (state === 'login' || state === 'error') {
+    const loginForm = (
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleLogin}
+        requiredMark={false}
+      >
+        <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}>
+          <Input size="large" autoComplete="email" />
+        </Form.Item>
+        <Form.Item name="password" label="Contrasenya" rules={[{ required: true, message: 'Contrasenya requerida' }]}>
+          <Input.Password size="large" autoComplete="current-password" />
+        </Form.Item>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Button size="large" type="primary" htmlType="submit" loading={submitting} block>
+            Accedir
+          </Button>
+        </Form.Item>
+        {errorMessage && <Text type="danger" style={{ display: 'block', marginTop: 12 }}>{errorMessage}</Text>}
+      </Form>
+    );
+
+    if (isMobile) {
+      return (
+        <MobileShell fallbackImage={wedding?.hero_image} alt={weddingTitle} expanded>
+          <Title
+            level={2}
+            style={{
+              fontFamily: "'Italiana', Georgia, serif",
+              fontSize: 'clamp(1.6rem, 6vw, 2rem)',
+              fontWeight: 500,
+              color: '#7C7458',
+              margin: 0,
+              letterSpacing: '0.02em',
+              textAlign: 'center',
+            }}
+          >
+            {managerTitle}
+          </Title>
+          <Text
+            style={{
+              display: 'block',
+              fontFamily: "'Raleway', sans-serif",
+              fontSize: '0.78rem',
+              color: 'rgb(174, 142, 116)',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              textAlign: 'center',
+              marginTop: 6,
+              marginBottom: 20,
+            }}
+          >
+            Àrea privada
+          </Text>
+          {loginForm}
+        </MobileShell>
+      );
+    }
+
     return (
       <Layout className="manager-layout">
         <Content className="manager-content">
           <Card className="manager-card">
             <Title level={3} className="manager-title">{managerTitle}</Title>
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={handleLogin}
-              style={{ maxWidth: 320 }}
-              requiredMark={false}
-            >
-              <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}>
-                <Input size="large" autoComplete="email" />
-              </Form.Item>
-              <Form.Item name="password" label="Contrasenya" rules={[{ required: true, message: 'Contrasenya requerida' }]}>
-                <Input.Password size="large" autoComplete="current-password" />
-              </Form.Item>
-              <Form.Item>
-                <Button size="large" type="primary" htmlType="submit" loading={submitting} block>
-                  Accedir
-                </Button>
-              </Form.Item>
-              {errorMessage && <Text type="danger">{errorMessage}</Text>}
-            </Form>
+            <div style={{ maxWidth: 320 }}>{loginForm}</div>
           </Card>
         </Content>
       </Layout>

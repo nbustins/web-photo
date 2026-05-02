@@ -33,7 +33,6 @@ const guestRowStyle: React.CSSProperties = {
 interface FormStateProps {
   title: string;
   subtitle?: string;
-  heroImage?: string;
   invitation: Invitation;
   form: FormInstance<InvitationFormValues>;
   submitting: boolean;
@@ -43,7 +42,6 @@ interface FormStateProps {
 export const FormState: FC<FormStateProps> = ({
   title,
   subtitle,
-  heroImage,
   invitation,
   form,
   submitting,
@@ -55,7 +53,6 @@ export const FormState: FC<FormStateProps> = ({
         title={title}
         subtitle={subtitle}
         guestName={`Hola, ${invitation.label}!`}
-        heroImage={heroImage}
       />
 
       <Form

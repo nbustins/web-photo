@@ -7,7 +7,7 @@ import { login, logout } from '../../services/auth/auth.service';
 import { getUser } from '../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../model/wedding.types';
 import { useIsMobile } from './useIsMobile';
-import { MobileShell, ManagerMobile } from './components';
+import { DesktopSplitBackground, MobileShell, ManagerMobile, WeddingCard, WeddingCardHeader } from './components';
 import {
   COLOR_TEXT_DARK,
   COLOR_GREEN,
@@ -40,6 +40,19 @@ interface InvitationSummary {
   notes: string | null;
   guests: { id: number; name: string; isPredefined: boolean; attending: boolean | null }[];
 }
+
+const loginLabelStyle: React.CSSProperties = {
+  fontFamily: "'Raleway', sans-serif",
+  fontSize: 'clamp(0.85rem, 1.3vw, 0.9rem)',
+  fontWeight: 500,
+  color: '#5a5a5a',
+  letterSpacing: '0.02em',
+};
+
+const loginInputStyle: React.CSSProperties = {
+  fontFamily: "'Raleway', sans-serif",
+  borderRadius: 8,
+};
 
 const buildSummary = (rows: ConfirmationRow[], invitationId: number): InvitationSummary | null => {
   const matching = rows.filter(r => r.invitationId === invitationId);
@@ -243,11 +256,19 @@ export const Manager: FC = () => {
         onFinish={handleLogin}
         requiredMark={false}
       >
-        <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}>
-          <Input size="large" autoComplete="email" />
+        <Form.Item
+          name="email"
+          label={<span style={loginLabelStyle}>Email</span>}
+          rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}
+        >
+          <Input size="large" autoComplete="email" style={loginInputStyle} />
         </Form.Item>
-        <Form.Item name="password" label="Contrasenya" rules={[{ required: true, message: 'Contrasenya requerida' }]}>
-          <Input.Password size="large" autoComplete="current-password" />
+        <Form.Item
+          name="password"
+          label={<span style={loginLabelStyle}>Contrasenya</span>}
+          rules={[{ required: true, message: 'Contrasenya requerida' }]}
+        >
+          <Input.Password size="large" autoComplete="current-password" style={loginInputStyle} />
         </Form.Item>
         <Form.Item style={{ marginBottom: 0 }}>
           <Button size="large" type="primary" htmlType="submit" loading={submitting} block>
@@ -296,14 +317,33 @@ export const Manager: FC = () => {
     }
 
     return (
-      <Layout className="manager-layout">
-        <Content className="manager-content">
-          <Card className="manager-card">
-            <Title level={3} className="manager-title">{managerTitle}</Title>
-            <div style={{ maxWidth: 320 }}>{loginForm}</div>
-          </Card>
-        </Content>
-      </Layout>
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+        backgroundColor: 'rgb(246, 244, 240)',
+        padding: '40px 16px',
+        boxSizing: 'border-box',
+      }}>
+        <DesktopSplitBackground images={weddingImages} fallbackImage={wedding?.background_image} />
+
+        <div style={{
+          position: 'relative',
+          zIndex: 1,
+          width: '100%',
+          maxWidth: 520,
+          margin: 'auto',
+        }}>
+          <WeddingCard>
+            <WeddingCardHeader title={managerTitle} subtitle="Àrea privada" />
+            <div style={{ maxWidth: 320, margin: '0 auto', textAlign: 'left' }}>
+              {loginForm}
+            </div>
+          </WeddingCard>
+        </div>
+      </div>
     );
   }
 

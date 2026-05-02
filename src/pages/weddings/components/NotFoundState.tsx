@@ -19,18 +19,17 @@ const iconStyle: React.CSSProperties = {
 
 interface NotFoundStateProps {
   title?: string;
-  heroImage?: string;
   onReset: () => void;
 }
 
-export const NotFoundState: FC<NotFoundStateProps> = ({ title, heroImage, onReset }) => {
+export const NotFoundState: FC<NotFoundStateProps> = ({ title, onReset }) => {
   return (
     <WeddingCard
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {title && <WeddingCardHeader title={title} heroImage={heroImage} />}
+      {title && <WeddingCardHeader title={title} />}
       <div style={iconStyle}>✕</div>
       <Typography.Title
         level={3}

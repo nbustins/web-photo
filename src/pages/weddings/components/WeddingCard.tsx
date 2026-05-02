@@ -1,7 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { motion, MotionProps } from 'framer-motion';
 import { Typography, Divider } from 'antd';
-import { getPublicPath } from '../../../utils/pathUtils';
 import { radii } from '../../../styles/tokens/radii';
 
 const { Title, Text } = Typography;
@@ -38,31 +37,15 @@ interface WeddingCardHeaderProps {
   title: string;
   subtitle?: string;
   guestName?: string;
-  heroImage?: string;
 }
 
 export const WeddingCardHeader: FC<WeddingCardHeaderProps> = ({
   title,
   subtitle,
   guestName,
-  heroImage,
 }) => {
   return (
     <div style={{ marginBottom: 8 }}>
-      {heroImage && (
-        <img
-          src={getPublicPath(heroImage)}
-          alt={title}
-          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-          style={{
-            width: '100%',
-            maxHeight: 200,
-            objectFit: 'cover',
-            borderRadius: radii.md,
-            marginBottom: 16,
-          }}
-        />
-      )}
       <Title
         level={2}
         style={{

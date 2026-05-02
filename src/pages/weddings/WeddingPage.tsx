@@ -3,9 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import { message } from 'antd';
 import { Form } from 'antd';
 import { guestService } from '../../services/wedding';
-import { getPublicPath } from '../../utils/pathUtils';
 import type { Wedding, Invitation, ConfirmInvitationPayload } from '../../model/wedding.types';
 import {
+  DesktopSplitBackground,
   LoadingState,
   EnterCodeState,
   NotFoundState,
@@ -24,7 +24,6 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
 
   const weddingTitle = wedding?.title ?? '';
   const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
-  const heroImage = wedding?.hero_image;
 
   switch (pageState) {
     case 'loading':
@@ -34,22 +33,20 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
         <EnterCodeState
           title={weddingTitle}
           subtitle={weddingSubtitle}
-          heroImage={heroImage}
           value={manualCode}
           onChange={onCodeChange}
           onSubmit={onCodeSubmit}
         />
       );
     case 'not-found':
-      return <NotFoundState title={weddingTitle} heroImage={heroImage} onReset={onReset} />;
+      return <NotFoundState title={weddingTitle} onReset={onReset} />;
     case 'closed':
-      return <ClosedState title={weddingTitle} heroImage={heroImage} />;
+      return <ClosedState title={weddingTitle} />;
     case 'form':
       return invitation ? (
         <FormState
           title={weddingTitle}
           subtitle={weddingSubtitle}
-          heroImage={heroImage}
           invitation={invitation}
           form={form}
           submitting={submitting}
@@ -198,25 +195,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCus
       padding: '40px 16px',
       boxSizing: 'border-box',
     }}>
-      {wedding?.background_image ? (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 0,
-          backgroundImage: `url(${getPublicPath(wedding.background_image)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(20px) brightness(0.9)',
-          transform: 'scale(1.1)',
-        }} />
-      ) : (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 0,
-          backgroundColor: 'rgb(246, 244, 240)',
-        }} />
-      )}
+      <DesktopSplitBackground images={ctx.images} fallbackImage={wedding?.background_image} />
 
       <div style={{
         position: 'relative',

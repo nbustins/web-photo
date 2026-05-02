@@ -7,12 +7,13 @@ import {
   ClosedState,
   FormState,
   SuccessState,
+  DesktopSplitBackground,
 } from '../../components';
-import { getPublicPath } from '../../../../utils/pathUtils';
 
 export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
   pageState,
   wedding,
+  images,
   invitation,
   manualCode,
   submitting,
@@ -24,7 +25,6 @@ export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
 }) => {
   const weddingTitle = wedding?.title ?? '';
   const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
-  const heroImage = wedding?.hero_image;
 
   const guestValues: { attending: boolean }[] = form.getFieldValue('guests') ?? [];
   const attendingCount = guestValues.filter(g => g.attending).length;
@@ -43,22 +43,20 @@ export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
           <EnterCodeState
             title={weddingTitle}
             subtitle={weddingSubtitle}
-            heroImage={heroImage}
             value={manualCode}
             onChange={onCodeChange}
             onSubmit={onCodeSubmit}
           />
         );
       case 'not-found':
-        return <NotFoundState title={weddingTitle} heroImage={heroImage} onReset={onReset} />;
+        return <NotFoundState title={weddingTitle} onReset={onReset} />;
       case 'closed':
-        return <ClosedState title={weddingTitle} heroImage={heroImage} />;
+        return <ClosedState title={weddingTitle} />;
       case 'form':
         return invitation ? (
           <FormState
             title={weddingTitle}
             subtitle={weddingSubtitle}
-            heroImage={heroImage}
             invitation={invitation}
             form={form}
             submitting={submitting}
@@ -83,25 +81,7 @@ export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
       padding: '40px 16px',
       boxSizing: 'border-box',
     }}>
-      {wedding?.background_image ? (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 0,
-          backgroundImage: `url(${getPublicPath(wedding.background_image)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(20px) brightness(0.9)',
-          transform: 'scale(1.1)',
-        }} />
-      ) : (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 0,
-          backgroundColor: 'rgb(246, 244, 240)',
-        }} />
-      )}
+      <DesktopSplitBackground images={images} fallbackImage={wedding?.background_image} />
 
       <div style={{
         position: 'relative',

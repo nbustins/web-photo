@@ -1,4 +1,5 @@
 export { WeddingCard, WeddingCardHeader } from './WeddingCard';
+export { DesktopSplitBackground } from './DesktopSplitBackground';
 export { LoadingState } from './LoadingState';
 export { EnterCodeState } from './EnterCodeState';
 export { NotFoundState } from './NotFoundState';

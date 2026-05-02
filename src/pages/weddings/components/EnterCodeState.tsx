@@ -5,7 +5,6 @@ import { WeddingCard, WeddingCardHeader } from './WeddingCard';
 interface EnterCodeStateProps {
   title: string;
   subtitle?: string;
-  heroImage?: string;
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
@@ -14,7 +13,6 @@ interface EnterCodeStateProps {
 export const EnterCodeState: FC<EnterCodeStateProps> = ({
   title,
   subtitle,
-  heroImage,
   value,
   onChange,
   onSubmit,
@@ -24,7 +22,6 @@ export const EnterCodeState: FC<EnterCodeStateProps> = ({
       <WeddingCardHeader
         title={title}
         subtitle={subtitle}
-        heroImage={heroImage}
       />
       <div style={{
         display: 'flex',

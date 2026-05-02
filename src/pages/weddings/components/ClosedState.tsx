@@ -19,17 +19,16 @@ const iconStyle: React.CSSProperties = {
 
 interface ClosedStateProps {
   title?: string;
-  heroImage?: string;
 }
 
-export const ClosedState: FC<ClosedStateProps> = ({ title, heroImage }) => {
+export const ClosedState: FC<ClosedStateProps> = ({ title }) => {
   return (
     <WeddingCard
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {title && <WeddingCardHeader title={title} heroImage={heroImage} />}
+      {title && <WeddingCardHeader title={title} />}
       <div style={iconStyle}>ℹ</div>
       <Title
         level={3}

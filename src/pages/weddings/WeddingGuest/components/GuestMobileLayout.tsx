@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { Spin, Typography, Input, Button, Space, Form, Switch } from 'antd';
-import type { WeddingPageContext } from '../WeddingPage.types';
-import { MobileShell } from './MobileShell';
+import type { WeddingGuestPageContext } from '../WeddingGuestPage.types';
+import { MobileShell } from '../../common';
 
 const { Title, Text } = Typography;
 
-interface MobileLayoutProps extends WeddingPageContext {
+interface MobileLayoutProps extends WeddingGuestPageContext {
   images: string[];
   attendingCount: number;
 }
@@ -69,7 +69,7 @@ const iconStyle = (gradient: string): React.CSSProperties => ({
   margin: '0 auto 16px',
 });
 
-export const MobileLayout: FC<MobileLayoutProps> = ({
+export const GuestMobileLayout: FC<MobileLayoutProps> = ({
   pageState,
   wedding,
   invitation,

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button, Typography } from 'antd';
-import { WeddingCard, WeddingCardHeader } from './WeddingCard';
+import { WeddingCard, WeddingCardHeader } from '../../common';
 
 const { Text } = Typography;
 
@@ -22,7 +22,7 @@ interface NotFoundStateProps {
   onReset: () => void;
 }
 
-export const NotFoundState: FC<NotFoundStateProps> = ({ title, onReset }) => {
+export const GuestNotFoundState: FC<NotFoundStateProps> = ({ title, onReset }) => {
   return (
     <WeddingCard
       initial={{ opacity: 0, scale: 0.95 }}

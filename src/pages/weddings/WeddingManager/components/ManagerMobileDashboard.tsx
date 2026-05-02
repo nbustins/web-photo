@@ -1,8 +1,8 @@
 import { FC, useMemo, useState } from 'react';
 import { Input, Button, Dropdown } from 'antd';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import type { ConfirmationRow } from '../../../model/wedding.types';
-import { radii } from '../../../styles/tokens/radii';
+import type { ConfirmationRow } from '../../../../model/wedding.types';
+import { radii } from '../../../../styles/tokens/radii';
 import {
   COLOR_BG,
   COLOR_HEADER,
@@ -14,7 +14,7 @@ import {
   StatusPill,
   LabelTag,
   StatCell,
-} from './manager-shared';
+} from './ManagerShared';
 
 type StatusFilter = 'all' | 'confirmed' | 'declined' | 'pending';
 
@@ -25,7 +25,7 @@ interface Stats {
   pending: number;
 }
 
-interface ManagerMobileProps {
+interface ManagerMobileDashboardProps {
   weddingTitle: string;
   rows: ConfirmationRow[];
   stats: Stats;
@@ -36,7 +36,7 @@ interface ManagerMobileProps {
 
 const NOTES_TRUNCATE = 90;
 
-export const ManagerMobile: FC<ManagerMobileProps> = ({
+export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
   weddingTitle,
   rows,
   stats,

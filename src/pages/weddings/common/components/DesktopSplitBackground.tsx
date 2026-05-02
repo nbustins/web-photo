@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { getPublicPath } from '../../../utils/pathUtils';
+import { getPublicPath } from '../../../../utils/pathUtils';
 
 interface DesktopSplitBackgroundProps {
   images: string[];

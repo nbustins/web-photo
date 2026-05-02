@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { getPublicPath } from '../../../utils/pathUtils';
+import { getPublicPath } from '../../../../utils/pathUtils';
 
 interface MobileSwiperProps {
   images: string[];

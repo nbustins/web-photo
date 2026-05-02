@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { FormInstance } from 'antd';
-import type { Wedding, Invitation } from '../../model/wedding.types';
+import type { Wedding, Invitation } from '../../../model/wedding.types';
 
 export type PageState = 'loading' | 'enter-code' | 'not-found' | 'closed' | 'form' | 'success';
 
@@ -15,7 +15,7 @@ export interface InvitationFormValues {
   guests: GuestFormValue[];
 }
 
-export interface WeddingPageContext {
+export interface WeddingGuestPageContext {
   pageState: PageState;
   wedding: Wedding | null;
   images: string[];
@@ -29,8 +29,8 @@ export interface WeddingPageContext {
   onReset: () => void;
 }
 
-export interface WeddingPageProps {
+export interface WeddingGuestPageProps {
   slug: string;
   images?: string[];
-  renderCustom?: (context: WeddingPageContext) => ReactNode;
+  renderCustom?: (context: WeddingGuestPageContext) => ReactNode;
 }

@@ -1,16 +1,16 @@
 import { FC } from 'react';
 import { Spin } from 'antd';
-import type { WeddingPageContext } from '../../WeddingPage.types';
+import type { WeddingGuestPageContext } from '../../WeddingGuestPage.types';
+import { DesktopSplitBackground } from '../../../common';
 import {
-  EnterCodeState,
-  NotFoundState,
-  ClosedState,
-  FormState,
-  SuccessState,
-  DesktopSplitBackground,
+  GuestCodeEntry,
+  GuestNotFoundState,
+  GuestClosedState,
+  GuestConfirmationForm,
+  GuestSuccessState,
 } from '../../components';
 
-export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
+export const CarlaJoelGuestLayout: FC<WeddingGuestPageContext> = ({
   pageState,
   wedding,
   images,
@@ -40,7 +40,7 @@ export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
         );
       case 'enter-code':
         return (
-          <EnterCodeState
+          <GuestCodeEntry
             title={weddingTitle}
             subtitle={weddingSubtitle}
             value={manualCode}
@@ -49,12 +49,12 @@ export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
           />
         );
       case 'not-found':
-        return <NotFoundState title={weddingTitle} onReset={onReset} />;
+        return <GuestNotFoundState title={weddingTitle} onReset={onReset} />;
       case 'closed':
-        return <ClosedState title={weddingTitle} />;
+        return <GuestClosedState title={weddingTitle} />;
       case 'form':
         return invitation ? (
-          <FormState
+          <GuestConfirmationForm
             title={weddingTitle}
             subtitle={weddingSubtitle}
             invitation={invitation}
@@ -64,7 +64,7 @@ export const CarlaJoelCustomLayout: FC<WeddingPageContext> = ({
           />
         ) : null;
       case 'success':
-        return <SuccessState attendingCount={attendingCount} totalCount={totalCount} />;
+        return <GuestSuccessState attendingCount={attendingCount} totalCount={totalCount} />;
       default:
         return null;
     }

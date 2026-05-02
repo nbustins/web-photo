@@ -2,24 +2,24 @@ import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { message } from 'antd';
 import { Form } from 'antd';
-import { guestService } from '../../services/wedding';
-import type { Wedding, Invitation, ConfirmInvitationPayload } from '../../model/wedding.types';
+import { guestService } from '../../../services/wedding';
+import type { Wedding, Invitation, ConfirmInvitationPayload } from '../../../model/wedding.types';
+import { DesktopSplitBackground } from '../common';
 import {
-  DesktopSplitBackground,
-  LoadingState,
-  EnterCodeState,
-  NotFoundState,
-  ClosedState,
-  FormState,
-  SuccessState,
-  MobileLayout,
+  GuestLoadingState,
+  GuestCodeEntry,
+  GuestNotFoundState,
+  GuestClosedState,
+  GuestConfirmationForm,
+  GuestSuccessState,
+  GuestMobileLayout,
 } from './components';
-import type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
-import { useIsMobile } from './useIsMobile';
+import type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
+import { useIsMobile } from '../common';
 
-export type { WeddingPageProps, WeddingPageContext, InvitationFormValues } from './WeddingPage.types';
+export type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
 
-const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
+const renderDefault = (ctx: WeddingGuestPageContext, attendingCount: number) => {
   const { pageState, wedding, invitation, manualCode, submitting, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;
 
   const weddingTitle = wedding?.title ?? '';
@@ -27,10 +27,10 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
 
   switch (pageState) {
     case 'loading':
-      return <LoadingState />;
+      return <GuestLoadingState />;
     case 'enter-code':
       return (
-        <EnterCodeState
+        <GuestCodeEntry
           title={weddingTitle}
           subtitle={weddingSubtitle}
           value={manualCode}
@@ -39,12 +39,12 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
         />
       );
     case 'not-found':
-      return <NotFoundState title={weddingTitle} onReset={onReset} />;
+      return <GuestNotFoundState title={weddingTitle} onReset={onReset} />;
     case 'closed':
-      return <ClosedState title={weddingTitle} />;
+      return <GuestClosedState title={weddingTitle} />;
     case 'form':
       return invitation ? (
-        <FormState
+        <GuestConfirmationForm
           title={weddingTitle}
           subtitle={weddingSubtitle}
           invitation={invitation}
@@ -55,7 +55,7 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
       ) : null;
     case 'success':
       return (
-        <SuccessState
+        <GuestSuccessState
           attendingCount={attendingCount}
           totalCount={invitation?.guests.length ?? 0}
           onReset={onReset}
@@ -66,10 +66,10 @@ const renderDefault = (ctx: WeddingPageContext, attendingCount: number) => {
   }
 };
 
-export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCustom }) => {
+export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [], renderCustom }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
-  const [pageState, setPageState] = useState<WeddingPageContext['pageState']>('loading');
+  const [pageState, setPageState] = useState<WeddingGuestPageContext['pageState']>('loading');
   const [wedding, setWedding] = useState<Wedding | null>(null);
   const [weddingImages, setWeddingImages] = useState<string[]>([]);
   const [invitation, setInvitation] = useState<Invitation | null>(null);
@@ -162,7 +162,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCus
     }
   };
 
-  const ctx: WeddingPageContext = {
+  const ctx: WeddingGuestPageContext = {
     pageState,
     wedding,
     images: weddingImages.length > 0 ? weddingImages : images,
@@ -181,7 +181,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCus
   }
 
   if (isMobile) {
-    return <MobileLayout {...ctx} images={ctx.images} attendingCount={attendingCount} />;
+    return <GuestMobileLayout {...ctx} images={ctx.images} attendingCount={attendingCount} />;
   }
 
   return (

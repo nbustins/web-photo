@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { radii } from '../../../styles/tokens/radii';
+import { radii } from '../../../../styles/tokens/radii';
 
 export const COLOR_BG = '#f5f0ea';
 export const COLOR_HEADER = '#5C5440';

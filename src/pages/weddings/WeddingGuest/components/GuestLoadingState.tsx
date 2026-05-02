@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Spin } from 'antd';
 
-export const LoadingState: FC = () => {
+export const GuestLoadingState: FC = () => {
   return (
     <div style={{
       display: 'flex',

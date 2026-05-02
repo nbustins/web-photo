@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Typography, Button } from 'antd';
-import { WeddingCard } from './WeddingCard';
+import { WeddingCard } from '../../common';
 
 const { Title, Text } = Typography;
 
@@ -17,13 +17,13 @@ const iconStyle: React.CSSProperties = {
   margin: '0 auto 20px',
 };
 
-interface SuccessStateProps {
+interface GuestSuccessStateProps {
   attendingCount: number;
   totalCount: number;
   onReset?: () => void;
 }
 
-export const SuccessState: FC<SuccessStateProps> = ({ attendingCount, totalCount, onReset }) => {
+export const GuestSuccessState: FC<GuestSuccessStateProps> = ({ attendingCount, totalCount, onReset }) => {
   const allAttending = attendingCount === totalCount && totalCount > 0;
   const noneAttending = attendingCount === 0;
 

@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Input, Button, Space } from 'antd';
-import { WeddingCard, WeddingCardHeader } from './WeddingCard';
+import { WeddingCard, WeddingCardHeader } from '../../common';
 
-interface EnterCodeStateProps {
+interface GuestCodeEntryProps {
   title: string;
   subtitle?: string;
   value: string;
@@ -10,7 +10,7 @@ interface EnterCodeStateProps {
   onSubmit: () => void;
 }
 
-export const EnterCodeState: FC<EnterCodeStateProps> = ({
+export const GuestCodeEntry: FC<GuestCodeEntryProps> = ({
   title,
   subtitle,
   value,

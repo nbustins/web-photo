@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { motion, MotionProps } from 'framer-motion';
 import { Typography, Divider } from 'antd';
-import { radii } from '../../../styles/tokens/radii';
+import { radii } from '../../../../styles/tokens/radii';
 
 const { Title, Text } = Typography;
 

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Typography } from 'antd';
-import { WeddingCard, WeddingCardHeader } from './WeddingCard';
+import { WeddingCard, WeddingCardHeader } from '../../common';
 
 const { Title, Text } = Typography;
 
@@ -21,7 +21,7 @@ interface ClosedStateProps {
   title?: string;
 }
 
-export const ClosedState: FC<ClosedStateProps> = ({ title }) => {
+export const GuestClosedState: FC<ClosedStateProps> = ({ title }) => {
   return (
     <WeddingCard
       initial={{ opacity: 0, scale: 0.95 }}

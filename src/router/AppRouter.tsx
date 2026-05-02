@@ -15,8 +15,8 @@ import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
 import { Workshop } from '../pages/workshop/workshop.page';
 
-import { GenericWedding } from '../pages/weddings/weddingpages/GenericWedding';
-import { Manager } from '../pages/weddings/manager';
+import { GenericWedding } from '../pages/weddings/WeddingGuest/custom/GenericWedding';
+import { WeddingManagerPage } from '../pages/weddings/WeddingManager/WeddingManagerPage';
 
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
@@ -49,7 +49,7 @@ export const AppRouter: FC = () => {
           ))}
         </Route>
         <Route path="/weddings/:slug" element={<GenericWedding />} />
-        <Route path="/weddings/:slug/manager" element={<Manager />} />
+        <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />} />
 
         /* Custom wedding routes */
         {/* <Route path="/weddings/carla-joel" element={<CarlaJoelCustomWedding />} /> */}

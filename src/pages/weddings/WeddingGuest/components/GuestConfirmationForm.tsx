@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Form, Input, Switch, Button, FormInstance, Typography } from 'antd';
-import { WeddingCard, WeddingCardHeader } from './WeddingCard';
-import type { Invitation } from '../../../model/wedding.types';
-import type { InvitationFormValues } from '../WeddingPage.types';
+import { WeddingCard, WeddingCardHeader } from '../../common';
+import type { Invitation } from '../../../../model/wedding.types';
+import type { InvitationFormValues } from '../WeddingGuestPage.types';
 
 const { Text } = Typography;
 
@@ -30,7 +30,7 @@ const guestRowStyle: React.CSSProperties = {
   background: 'rgba(255,255,255,0.6)',
 };
 
-interface FormStateProps {
+interface GuestConfirmationFormProps {
   title: string;
   subtitle?: string;
   invitation: Invitation;
@@ -39,7 +39,7 @@ interface FormStateProps {
   onFinish: (values: InvitationFormValues) => void;
 }
 
-export const FormState: FC<FormStateProps> = ({
+export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
   title,
   subtitle,
   invitation,

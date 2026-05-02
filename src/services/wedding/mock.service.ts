@@ -60,6 +60,16 @@ export class MockGuestService implements GuestServiceProvider {
     return slug === mockWedding.slug ? mockWedding : null;
   }
 
+  async getWeddingPhotos(slug: string): Promise<string[]> {
+    await this.delay(200);
+    return slug === mockWedding.slug
+      ? [
+          'https://res.cloudinary.com/djxytedne/image/upload/v1777734451/joel_i_carla-5_egd7ni.jpg',
+          'https://res.cloudinary.com/djxytedne/image/upload/v1777734451/joel_i_carla-13_xpncpa.jpg',
+        ]
+      : [];
+  }
+
   async getInvitation(slug: string, code: string): Promise<Invitation | null> {
     await this.delay(300);
     const inv = [...invitationStore.values()].find(i => i.slug === slug && i.inviteCode === code);

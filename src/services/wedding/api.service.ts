@@ -1,12 +1,16 @@
 import type { Wedding, Invitation, ConfirmationRow, ConfirmInvitationPayload } from '../../model/wedding.types';
 import type { GuestServiceProvider } from './types';
-import { fetchPublicWedding, fetchAuthWeddingBySlug } from './api/public-wedding.api';
+import { fetchPublicWedding, fetchPublicWeddingPhotos, fetchAuthWeddingBySlug } from './api/public-wedding.api';
 import { fetchGuestInvite, postConfirmInvite } from './api/guest-invite.api';
 import { fetchConfirmations } from './api/confirmations.api';
 
 export class ApiGuestService implements GuestServiceProvider {
   getWeddingBySlug(slug: string): Promise<Wedding | null> {
     return fetchPublicWedding(slug);
+  }
+
+  getWeddingPhotos(slug: string): Promise<string[]> {
+    return fetchPublicWeddingPhotos(slug);
   }
 
   getInvitation(slug: string, code: string): Promise<Invitation | null> {

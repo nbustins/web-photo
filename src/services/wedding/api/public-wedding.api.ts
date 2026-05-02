@@ -27,6 +27,20 @@ export async function fetchPublicWedding(slug: string): Promise<Wedding | null> 
   }
 }
 
+interface WeddingPhotoDto {
+  url: string;
+}
+
+export async function fetchPublicWeddingPhotos(slug: string): Promise<string[]> {
+  try {
+    const photos = await apiGet<WeddingPhotoDto[]>(`/api/public/weddings/${encodeURIComponent(slug)}/photos`);
+    return photos.map(photo => photo.url).filter(Boolean);
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 404) return [];
+    throw err;
+  }
+}
+
 interface WeddingSummaryDto {
   id: number;
   slug: string;

@@ -18,6 +18,7 @@ export interface InvitationFormValues {
 export interface WeddingPageContext {
   pageState: PageState;
   wedding: Wedding | null;
+  images: string[];
   invitation: Invitation | null;
   manualCode: string;
   submitting: boolean;

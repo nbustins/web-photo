@@ -74,6 +74,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCus
   const isMobile = useIsMobile();
   const [pageState, setPageState] = useState<WeddingPageContext['pageState']>('loading');
   const [wedding, setWedding] = useState<Wedding | null>(null);
+  const [weddingImages, setWeddingImages] = useState<string[]>([]);
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   const [manualCode, setManualCode] = useState('');
   const [form] = Form.useForm<InvitationFormValues>();
@@ -84,8 +85,20 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCus
 
   useEffect(() => {
     const init = async () => {
-      const weddingData = await guestService.getWeddingBySlug(slug);
-      setWedding(weddingData);
+      const [weddingData, photoUrls] = await Promise.all([
+        guestService.getWeddingBySlug(slug),
+        guestService.getWeddingPhotos(slug),
+      ]);
+      setWedding(
+        weddingData && photoUrls.length > 0
+          ? {
+              ...weddingData,
+              hero_image: weddingData.hero_image ?? photoUrls[0],
+              background_image: weddingData.background_image ?? photoUrls[0],
+            }
+          : weddingData
+      );
+      setWeddingImages(photoUrls);
 
       if (code) {
         validateCode(code);
@@ -155,6 +168,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCus
   const ctx: WeddingPageContext = {
     pageState,
     wedding,
+    images: weddingImages.length > 0 ? weddingImages : images,
     invitation,
     manualCode,
     submitting,
@@ -170,7 +184,7 @@ export const WeddingPage: FC<WeddingPageProps> = ({ slug, images = [], renderCus
   }
 
   if (isMobile) {
-    return <MobileLayout {...ctx} images={images} attendingCount={attendingCount} />;
+    return <MobileLayout {...ctx} images={ctx.images} attendingCount={attendingCount} />;
   }
 
   return (

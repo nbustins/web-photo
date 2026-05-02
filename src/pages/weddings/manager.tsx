@@ -59,6 +59,7 @@ export const Manager: FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [state, setState] = useState<ManagerState>(() => (getUser() ? 'loading' : 'login'));
   const [wedding, setWedding] = useState<Wedding | null>(null);
+  const [weddingImages, setWeddingImages] = useState<string[]>([]);
   const [weddingNotFound, setWeddingNotFound] = useState(false);
   const [rows, setRows] = useState<ConfirmationRow[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -70,10 +71,7 @@ export const Manager: FC = () => {
 
   useEffect(() => {
     if (!slug) return;
-    guestService.getWeddingBySlug(slug).then(w => {
-      setWedding(w);
-      setWeddingNotFound(w === null);
-    });
+    loadWeddingVisuals();
   }, [slug]);
 
   useEffect(() => {
@@ -84,6 +82,7 @@ export const Manager: FC = () => {
     if (!slug) return;
     setState('loading');
     try {
+      await loadWeddingVisuals();
       const data = await guestService.getConfirmations(slug);
       setRows(data);
       setState('data');
@@ -91,6 +90,27 @@ export const Manager: FC = () => {
       setErrorMessage(error instanceof Error ? error.message : 'Error desconegut');
       setState('error');
     }
+  };
+
+  const loadWeddingVisuals = async () => {
+    if (!slug) return;
+
+    const [weddingData, photoUrls] = await Promise.all([
+      guestService.getWeddingBySlug(slug),
+      guestService.getWeddingPhotos(slug),
+    ]);
+
+    setWedding(
+      weddingData && photoUrls.length > 0
+        ? {
+            ...weddingData,
+            hero_image: weddingData.hero_image ?? photoUrls[0],
+            background_image: weddingData.background_image ?? photoUrls[0],
+          }
+        : weddingData
+    );
+    setWeddingImages(photoUrls);
+    setWeddingNotFound(weddingData === null);
   };
 
   const handleLogin = async ({ email, password }: LoginFormValues) => {
@@ -240,7 +260,7 @@ export const Manager: FC = () => {
 
     if (isMobile) {
       return (
-        <MobileShell fallbackImage={wedding?.hero_image} alt={weddingTitle} expanded>
+        <MobileShell images={weddingImages} fallbackImage={wedding?.hero_image} alt={weddingTitle} expanded>
           <Title
             level={2}
             style={{

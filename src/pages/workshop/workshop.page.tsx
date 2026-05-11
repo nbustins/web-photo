@@ -34,7 +34,7 @@ const galleryImages = [
 ];
 
 const bookingUrl =
-  "https://docs.google.com/forms/d/1d5KnwhBY1n8aI6SL5pv1cbFb9lnZAKyM5nLcCdeEMHU/preview";
+  "https://docs.google.com/forms/d/e/1FAIpQLSfyVezcLi0cFX52yqKiPdbcY6Ly66BzsoaaaFhTlXmqye4-vQ/viewform?usp=preview";
 
 const heroImage =
   "https://res.cloudinary.com/djxytedne/image/upload/v1775818510/TALLER-22_rbyaxb.jpg";

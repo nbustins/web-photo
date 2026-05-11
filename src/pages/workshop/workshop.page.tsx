@@ -2,43 +2,42 @@ import { Button, Col, Row } from "antd";
 import { motion } from "framer-motion";
 import { CustomTitle } from "../../components/customTitle";
 
-
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
-const scheduleItems = [
-  {
-    day: "Divendres 1/5:",
-    shifts: [
-      { label: "Matí", time: "10:30 - 13:00", full: false },
-      { label: "Tarda", time: "16:30 - 19:00", full: false },
-    ],
-  },
-  {
-    day: "Dissabte 2/5:",
-    shifts: [
-      { label: "Matí", time: "10:30 - 13:00", full: false },
-      { label: "Tarda", time: "16:30 - 19:00", full: true },
-    ],
-  },
-  {
-    day: "Diumenge 3/5:",
-    shifts: [
-      { label: "Matí", time: "10:30 - 13:00", full: false },
-      { label: "Tarda", time: "16:30 - 19:00", full: false },
-    ],
-  },
-  {
-    day: "Dissabte 9/5:",
-    shifts: [
-      { label: "Matí", time: "10:30 - 13:00", full: false },
-      { label: "Tarda", time: "16:30 - 19:00", full: false },
-    ],
-  },
+const introParagraphs = [
+  "Vols celebrar un aniversari? Passar una bona estona amb amics/amigues o familiars? Una despedida?",
+  "Veniu al taller a brodar la vostra pròpia foto!",
+  "A l'estudi us ho preparo tot, l'únic que heu de fer és reservar un matí o una tarda contestant el formulari!",
 ];
 
+const shifts = [
+  { label: "Matí", time: "10:30 - 13:00" },
+  { label: "Tarda", time: "16:30 - 19:00" },
+];
+
+const includes = [
+  "Una foto impresa per persona",
+  "Un marc de fotos per persona",
+  "Tot el material per brodar (fils, agulles, tisores, punxó, etc.)",
+  "Berenar o esmorzar",
+  "Estudi ambientat en la temàtica (en cas d'aniversari o despedida)",
+];
+
+const galleryImages = [
+  "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-3_r0bzip.jpg",
+  "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-2_jicr0x.jpg",
+  "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-4_nqtmlx.jpg",
+  "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4_bitwm5.jpg",
+];
+
+const bookingUrl =
+  "https://docs.google.com/forms/d/1d5KnwhBY1n8aI6SL5pv1cbFb9lnZAKyM5nLcCdeEMHU/preview";
+
+const heroImage =
+  "https://res.cloudinary.com/djxytedne/image/upload/v1775818510/TALLER-22_rbyaxb.jpg";
 
 export const Workshop = () => {
   return (
@@ -56,21 +55,9 @@ export const Workshop = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          style={{ textAlign: "center", marginBottom: 8 }}
+          style={{ textAlign: "center", marginBottom: 20 }}
         >
           <CustomTitle label="TALLER" title="BRODA RECORDS" />
-          <p
-            style={{
-              fontFamily: "Italiana, serif",
-              fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)",
-              color: "#666",
-              fontStyle: "italic",
-              margin: "4px 0 20px",
-              letterSpacing: "0.05rem",
-            }}
-          >
-            Celebrem el primer any de l'estudi
-          </p>
         </motion.div>
 
         {/* Main two-column section */}
@@ -85,14 +72,20 @@ export const Workshop = () => {
               style={{ flex: 1 }}
             >
               <img
-                src="https://res.cloudinary.com/djxytedne/image/upload/v1775818510/TALLER-22_rbyaxb.jpg"
+                src={heroImage}
                 alt="Taller lateral"
-                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "0.3rem", display: "block" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "0.3rem",
+                  display: "block",
+                }}
               />
             </motion.div>
           </Col>
 
-          {/* Right: text + schedule */}
+          {/* Right: copy + shifts + price + includes + book */}
           <Col xs={24} md={14}>
             <motion.div
               variants={fadeUp}
@@ -101,133 +94,163 @@ export const Workshop = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.15 }}
             >
-              {/* Intro paragraph */}
-              <p
-                style={{
-                  fontFamily: "Raleway, sans-serif",
-                  fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
-                  color: "#444",
-                  lineHeight: 1.75,
-                  marginBottom: 14,
-                  textAlign: "justify",
-                  hyphens: "auto",
-                }}
-              >
-                L'estudi fa un any i vull celebrar-ho amb tots/es vosaltres! 
-                Vine amb el teu grup d'amics o amigues, amb la teva família 
-                o amb qui tinguis ganes de passar una bona estona a fer un taller 
-                per brodar la vostra pròpia fotografia.
-              </p>
+              {/* Intro */}
+              {introParagraphs.map((paragraph, i) => (
+                <p
+                  key={i}
+                  style={{
+                    fontFamily: "Raleway, sans-serif",
+                    fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
+                    color: "#444",
+                    lineHeight: 1.75,
+                    marginBottom: 12,
+                    textAlign: "justify",
+                    hyphens: "auto",
+                  }}
+                >
+                  {paragraph}
+                </p>
+              ))}
 
-              {/* Taller note */}
+              {/* TALLER block */}
               <p
                 style={{
                   fontFamily: "Raleway, sans-serif",
                   fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
                   color: "#444",
                   lineHeight: 1.75,
-                  marginBottom: 14,
+                  marginTop: 18,
+                  marginBottom: 12,
                 }}
               >
-                <strong>TALLER:</strong> El taller es fa per grups privats
+                El taller es fa per grups privats
                 d'entre 5 i 10 persones i per torns.
               </p>
 
-              {/* Schedule */}
               <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  gap: 8,
-                  marginTop: 4,
+                  gap: 12,
+                  marginBottom: 20,
                 }}
               >
-                {scheduleItems.map(({ day, shifts }) => {
-                  const allFull = shifts.every((s) => s.full);
-                  return (
+                {shifts.map((shift) => (
                   <div
-                    key={day}
+                    key={shift.label}
                     style={{
                       background: "rgba(255,255,255,0.55)",
                       border: "1px solid #e2ddd7",
                       borderRadius: "0.3rem",
-                      padding: "10px 14px",
-                      opacity: allFull ? 0.6 : 1,
+                      padding: "12px 14px",
                     }}
                   >
-                    <p
+                    <span
+                      style={{
+                        display: "block",
+                        fontFamily: "Raleway, sans-serif",
+                        fontSize: "0.65rem",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#a09890",
+                        marginBottom: 4,
+                      }}
+                    >
+                      {shift.label}
+                    </span>
+                    <span
                       style={{
                         fontFamily: "Raleway, sans-serif",
-                        fontSize: "clamp(0.85rem, 1.3vw, 1rem)",
-                        fontWeight: 700,
-                        color: "#333",
-                        margin: "0 0 6px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
+                        fontSize: "clamp(0.9rem, 1.3vw, 1rem)",
+                        color: "#444",
                       }}
                     >
-                      {day}
-                      {allFull && (
-                        <span style={{ fontSize: "0.6rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#b05050" }}>
-                          Complet
-                        </span>
-                      )}
-                    </p>
-                    <div
-                      style={{
-                        borderTop: "1px solid #e2ddd7",
-                        paddingTop: 10,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 8,
-                      }}
-                    >
-                      {shifts.map((shift) => (
-                        <div key={shift.label}>
-                          <span
-                            style={{
-                              display: "block",
-                              fontFamily: "Raleway, sans-serif",
-                              fontSize: "0.65rem",
-                              letterSpacing: "0.08em",
-                              textTransform: "uppercase",
-                              color: "#a09890",
-                              marginBottom: 2,
-                            }}
-                          >
-                            {shift.label}
-                            {shift.full && !allFull && (
-                              <span style={{ marginLeft: 6, color: "#b05050" }}>· Complet</span>
-                            )}
-                          </span>
-                          <span
-                            style={{
-                              fontFamily: "Raleway, sans-serif",
-                              fontSize: "clamp(0.85rem, 1.3vw, 1rem)",
-                              color: shift.full ? "#999" : "#444",
-                              textDecoration: shift.full ? "line-through" : "none",
-                            }}
-                          >
-                            {shift.time}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                      {shift.time}
+                    </span>
                   </div>
-                  );
-                })}
+                ))}
               </div>
 
-              {/* Reserva button */}
-              <div style={{ textAlign: "center", marginTop: 20 }}>
+              {/* PREU */}
+              <p
+                style={{
+                  textAlign: "center",
+                  fontFamily: "Italiana, serif",
+                  fontSize: "clamp(1.4rem, 2.4vw, 1.9rem)",
+                  color: "#333",
+                  letterSpacing: "0.04em",
+                  margin: "0 0 20px",
+                }}
+              >
+                28&nbsp;€ / persona
+              </p>
+
+              {/* INCLOU */}
+              <div style={{ marginBottom: 24 }}>
+                <p
+                  style={{
+                    fontFamily: "Raleway, sans-serif",
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color: "#a09890",
+                    margin: "0 0 8px",
+                  }}
+                >
+                  Inclou
+                </p>
+                <ul
+                  style={{
+                    listStyle: "none",
+                    padding: 0,
+                    margin: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 6,
+                  }}
+                >
+                  {includes.map((item, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        fontFamily: "Raleway, sans-serif",
+                        fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
+                        color: "#444",
+                        lineHeight: 1.6,
+                        paddingLeft: 16,
+                        position: "relative",
+                      }}
+                    >
+                      <span
+                        style={{
+                          position: "absolute",
+                          left: 0,
+                          top: 0,
+                          color: "#a09890",
+                        }}
+                      >
+                        —
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Reserva */}
+              <div style={{ textAlign: "center" }}>
                 <Button
                   type="primary"
                   size="large"
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfyVezcLi0cFX52yqKiPdbcY6Ly66BzsoaaaFhTlXmqye4-vQ/viewform?usp=header"
+                  href={bookingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ padding: "0 64px", height: 56, fontSize: "1.1rem", width: "100%" }}
+                  style={{
+                    padding: "0 64px",
+                    height: 56,
+                    fontSize: "1.1rem",
+                    width: "100%",
+                  }}
                 >
                   Reserva
                 </Button>
@@ -242,20 +265,21 @@ export const Workshop = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 24 }}
         >
           <Row gutter={[16, 16]}>
-            {[
-              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-3_r0bzip.jpg",
-              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-2_jicr0x.jpg",
-              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4-4_nqtmlx.jpg",
-              "https://res.cloudinary.com/djxytedne/image/upload/v1775818356/TALLER_4_bitwm5.jpg",
-            ].map((src, i) => (
+            {galleryImages.map((src, i) => (
               <Col xs={12} md={6} key={i}>
                 <img
                   src={src}
                   alt={`Taller ${i + 1}`}
-                  style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", borderRadius: "0.3rem", display: "block" }}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "3/2",
+                    objectFit: "cover",
+                    borderRadius: "0.3rem",
+                    display: "block",
+                  }}
                 />
               </Col>
             ))}

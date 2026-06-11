@@ -157,11 +157,11 @@ export const PregnantPage = () => (
               "Vestuari inclòs",
               "Sessió familiar i individual",
               "Galeria Online",
-              "Entrega de 20 fotos editades (galeria completa +60€)",
-              "5 Fotos impreses 18x13",
+              "Entrega de 15 fotos editades (galeria completa +60€)",
+              <br />,
               <br />,
             ]}
-            price="200€"
+            price="210€"
           />
        </Col>
         <Col xs ={24} md={8}>
@@ -178,7 +178,7 @@ export const PregnantPage = () => (
               <br />,
               <br />,
             ]}
-            price="215€"
+            price="235€"
           />
         </Col>
 
@@ -191,11 +191,11 @@ export const PregnantPage = () => (
               "Vestuari inclòs",
               "Sessió familiar i individual",
               "Galeria Online",
-              "Entrega de 20 fotos editades (galeria completa +60€)",
-              "5 Fotos impreses 18x13",
+              "Galeria completa",
               "Sessió de maquillatge i perruqueria",
+              "5 Fotos impreses 18x13",
             ]}
-            price="260€"
+            price="290€"
           />
         </Col>
       </Row>

@@ -213,8 +213,6 @@ export const NewBornPage = () => (
               "Galeria completa",
               "Sessió maquillatge i pentinat",
               "5 fotos impresses de 18x13",
-              <br/>,
-              
             ]}
             price="280€"
           />

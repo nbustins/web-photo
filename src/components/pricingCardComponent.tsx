@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { Button, Card, Typography } from "antd";
 import { radii } from "../styles/tokens/radii";
 import { useNavigate } from "react-router";
-import { AppRoutes } from "../model/routes.model";
+import { AppRoutes, bookSessionPath } from "../model/routes.model";
 
 const { Title, Text } = Typography;
 
@@ -10,9 +10,10 @@ interface PricingCardProps {
   title: string;
   features: (string | JSX.Element)[];
   price: string;
+  sessionTypeId?: number;
 }
 
-const PricingCard = ({ title, features, price } : PricingCardProps) => {
+const PricingCard = ({ title, features, price, sessionTypeId } : PricingCardProps) => {
 
   const navigate = useNavigate();
 
@@ -66,7 +67,7 @@ const PricingCard = ({ title, features, price } : PricingCardProps) => {
       <Button
         style={{ width: 150 }}
           type="primary"
-          onClick={() => navigate(AppRoutes.bookSession)}
+          onClick={() => navigate(sessionTypeId ? bookSessionPath(sessionTypeId) : AppRoutes.bookSession)}
         >
         Reserva
       </Button>

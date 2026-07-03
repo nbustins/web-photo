@@ -24,5 +24,6 @@ export const appRoutesTitle: Partial<Record<AppRoutes, string>> = {
     [AppRoutes.workshop] : "Taller"
   };
 
+export const bookSessionPath = (sessionTypeId: number) => `${AppRoutes.bookSession}/${sessionTypeId}`;
 export const weddingPath = (slug: string) => `/weddings/${slug}`;
 export const weddingManagerPath = (slug: string) => `/weddings/${slug}/manager`;

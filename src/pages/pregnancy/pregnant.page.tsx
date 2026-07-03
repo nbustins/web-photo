@@ -150,6 +150,7 @@ export const PregnantPage = () => (
        <Col xs ={24} md={8}>
        
           <PricingCard
+            sessionTypeId={4}
             title="Bàsica"
             features={[
               "45 minuts de sessió",
@@ -167,6 +168,7 @@ export const PregnantPage = () => (
         <Col xs ={24} md={8}>
 
           <PricingCard
+            sessionTypeId={5}
             title="Exterior"
             features={[
               "45 minuts de sessió",
@@ -184,6 +186,7 @@ export const PregnantPage = () => (
 
         <Col xs ={24} md={8}>
           <PricingCard
+            sessionTypeId={6}
             title="Completa"
             features={[
               "45 minuts de sessió",

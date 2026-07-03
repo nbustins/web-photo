@@ -176,6 +176,7 @@ export const NewBornPage = () => (
       <Row gutter={[24, 24]} justify="center" >
         <Col xs={24} md={8}>
             <PricingCard
+                  sessionTypeId={1}
                   title="Bàsica"
                   features={[
                     "90 minuts de sessió",
@@ -191,6 +192,7 @@ export const NewBornPage = () => (
         </Col>
         <Col xs={24} md={8}>
             <PricingCard
+              sessionTypeId={2}
               title="Domicili"
               features={[
                 "90 minuts de sessió",
@@ -205,6 +207,7 @@ export const NewBornPage = () => (
         </Col>
         <Col xs={24} md={8}>
           <PricingCard
+            sessionTypeId={3}
             title="Completa"
             features={[
               "90 minuts de sessió",

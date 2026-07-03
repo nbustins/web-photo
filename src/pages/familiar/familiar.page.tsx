@@ -115,6 +115,7 @@ export const FamiliarPage = () => (
               <Row gutter={[24, 24]} justify="center" >
                 <Col xs={24} md={8}>
                     <PricingCard
+                          sessionTypeId={7}
                           title="Estudi"
                           features={[
                             "45 minuts de sessió",
@@ -129,6 +130,7 @@ export const FamiliarPage = () => (
                 </Col>
                 <Col xs={24} md={8}>
                     <PricingCard
+                      sessionTypeId={8}
                       title="Exterior"
                       features={[
                         "45 minuts de sessió",

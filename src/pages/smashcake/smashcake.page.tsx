@@ -169,6 +169,7 @@ export const SmashCakePage = () => (
       <Row gutter={[24, 24]} justify="center" >
         <Col xs={24} md={8}>
             <PricingCard
+                  sessionTypeId={9}
                   title="Estudi"
                   features={[
                     "45 minuts de sessió",
@@ -185,6 +186,7 @@ export const SmashCakePage = () => (
         </Col>
         <Col xs={24} md={8}>
           <PricingCard
+             sessionTypeId={10}
              title="Estudi"
             features={[
                 "45 minuts de sessió",

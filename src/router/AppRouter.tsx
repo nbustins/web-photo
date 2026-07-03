@@ -47,6 +47,7 @@ export const AppRouter: FC = () => {
               element={<Component />} 
             />
           ))}
+          <Route path={`${AppRoutes.bookSession}/:sessionTypeId`} element={<BookSession />} />
         </Route>
         <Route path="/weddings/:slug" element={<GenericWedding />} />
         <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />} />

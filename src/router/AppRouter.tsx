@@ -17,6 +17,9 @@ import { Workshop } from '../pages/workshop/workshop.page';
 
 import { GenericWedding } from '../pages/weddings/WeddingGuest/custom/GenericWedding';
 import { WeddingManagerPage } from '../pages/weddings/WeddingManager/WeddingManagerPage';
+import { AdminLogin } from '../pages/admin/AdminLogin';
+import { AdminPanel } from '../pages/admin/AdminPanel';
+import { RequireAuth } from '../pages/admin/RequireAuth';
 
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
@@ -51,6 +54,9 @@ export const AppRouter: FC = () => {
         </Route>
         <Route path="/weddings/:slug" element={<GenericWedding />} />
         <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />} />
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<RequireAuth><AdminPanel /></RequireAuth>} />
 
         /* Custom wedding routes */
         {/* <Route path="/weddings/carla-joel" element={<CarlaJoelCustomWedding />} /> */}

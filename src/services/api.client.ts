@@ -60,3 +60,21 @@ export function apiPost<T, B = unknown>(path: string, body?: B): Promise<T> {
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 }
+
+export function apiPut<T, B = unknown>(path: string, body?: B): Promise<T> {
+  return request<T>(path, {
+    method: 'PUT',
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  });
+}
+
+export function apiPatch<T, B = unknown>(path: string, body?: B): Promise<T> {
+  return request<T>(path, {
+    method: 'PATCH',
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  });
+}
+
+export function apiDelete<T = void>(path: string): Promise<T> {
+  return request<T>(path, { method: 'DELETE' });
+}

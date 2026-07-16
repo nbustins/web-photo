@@ -1,20 +1,25 @@
 import { FC } from 'react';
 import { Button, Form, FormInstance, Input, Typography } from 'antd';
-import { DesktopSplitBackground, MobileShell, WeddingCard, WeddingCardHeader } from '../../common';
-import type { LoginFormValues } from '../WeddingManager.types';
+import { DesktopSplitBackground, MobileShell, WeddingCard, WeddingCardHeader } from '../pages/weddings/common';
 
 const { Title, Text } = Typography;
 
-interface ManagerLoginCardProps {
-  form: FormInstance<LoginFormValues>;
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
+interface LoginCardProps {
   title: string;
-  weddingTitle: string;
-  images: string[];
+  subtitle?: string;
+  images?: string[];
   fallbackImage?: string;
+  alt?: string;
   isMobile: boolean;
   submitting: boolean;
   errorMessage?: string;
   onFinish: (values: LoginFormValues) => void;
+  form?: FormInstance<LoginFormValues>;
 }
 
 const labelStyle: React.CSSProperties = {
@@ -30,16 +35,17 @@ const inputStyle: React.CSSProperties = {
   borderRadius: 8,
 };
 
-export const ManagerLoginCard: FC<ManagerLoginCardProps> = ({
-  form,
+export const LoginCard: FC<LoginCardProps> = ({
   title,
-  weddingTitle,
-  images,
+  subtitle = 'Àrea privada',
+  images = [],
   fallbackImage,
+  alt,
   isMobile,
   submitting,
   errorMessage,
   onFinish,
+  form,
 }) => {
   const loginForm = (
     <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
@@ -68,7 +74,7 @@ export const ManagerLoginCard: FC<ManagerLoginCardProps> = ({
 
   if (isMobile) {
     return (
-      <MobileShell images={images} fallbackImage={fallbackImage} alt={weddingTitle} expanded>
+      <MobileShell images={images} fallbackImage={fallbackImage} alt={alt ?? title} expanded>
         <Title
           level={2}
           style={{
@@ -96,7 +102,7 @@ export const ManagerLoginCard: FC<ManagerLoginCardProps> = ({
             marginBottom: 20,
           }}
         >
-          Àrea privada
+          {subtitle}
         </Text>
         {loginForm}
       </MobileShell>
@@ -124,7 +130,7 @@ export const ManagerLoginCard: FC<ManagerLoginCardProps> = ({
         margin: 'auto',
       }}>
         <WeddingCard>
-          <WeddingCardHeader title={title} subtitle="Àrea privada" />
+          <WeddingCardHeader title={title} subtitle={subtitle} />
           <div style={{ maxWidth: 320, margin: '0 auto', textAlign: 'left' }}>
             {loginForm}
           </div>

@@ -6,11 +6,11 @@ import { login, logout } from '../../../services/auth/auth.service';
 import { getUser } from '../../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../../model/wedding.types';
 import { useIsMobile } from '../common';
+import { LoginCard } from '../../../common';
 import type { InvitationSummary, LoginFormValues, ManagerStats } from './WeddingManager.types';
 import {
   ManagerDesktopDashboard,
   ManagerInvitationDrawer,
-  ManagerLoginCard,
   ManagerMobileDashboard,
   ManagerNotesModal,
 } from './components';
@@ -137,10 +137,10 @@ export const WeddingManagerPage: FC = () => {
 
   if (state === 'login' || state === 'error') {
     return (
-      <ManagerLoginCard
+      <LoginCard
         form={form}
         title={managerTitle}
-        weddingTitle={weddingTitle}
+        alt={weddingTitle}
         images={weddingImages}
         fallbackImage={isMobile ? wedding?.hero_image : wedding?.background_image}
         isMobile={isMobile}

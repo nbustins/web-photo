@@ -36,10 +36,19 @@ export interface SessionGroup {
 // API serializes System.DayOfWeek as its name (global JsonStringEnumConverter).
 export type Weekday = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 
+// Every range belongs to exactly one session type — there are no global ranges (API 001 §16).
 export interface WeeklyAvailability {
   id: number;
+  sessionTypeId: number;
   weekday: Weekday;
   startTime: string; // 'HH:mm:ss'
+  endTime: string;
+}
+
+export interface WeeklyAvailabilityPayload {
+  sessionTypeId: number;
+  weekday: Weekday;
+  startTime: string;
   endTime: string;
 }
 
@@ -121,23 +130,20 @@ export function deleteSessionType(id: number): Promise<void> {
 
 // --- Weekly availability ---
 
-export function fetchAvailabilityRanges(): Promise<WeeklyAvailability[]> {
-  return apiGet<WeeklyAvailability[]>('/api/admin/availability');
+export function fetchAvailabilityRanges(sessionTypeId?: number): Promise<WeeklyAvailability[]> {
+  const qs = sessionTypeId ? `?sessionTypeId=${sessionTypeId}` : '';
+  return apiGet<WeeklyAvailability[]>(`/api/admin/availability${qs}`);
 }
 
-export function createAvailabilityRange(payload: {
-  weekday: Weekday;
-  startTime: string;
-  endTime: string;
-}): Promise<WeeklyAvailability> {
-  return apiPost<WeeklyAvailability, typeof payload>('/api/admin/availability', payload);
+export function createAvailabilityRange(payload: WeeklyAvailabilityPayload): Promise<WeeklyAvailability> {
+  return apiPost<WeeklyAvailability, WeeklyAvailabilityPayload>('/api/admin/availability', payload);
 }
 
 export function updateAvailabilityRange(
   id: number,
-  payload: { weekday: Weekday; startTime: string; endTime: string },
+  payload: WeeklyAvailabilityPayload,
 ): Promise<WeeklyAvailability> {
-  return apiPut<WeeklyAvailability, typeof payload>(`/api/admin/availability/${id}`, payload);
+  return apiPut<WeeklyAvailability, WeeklyAvailabilityPayload>(`/api/admin/availability/${id}`, payload);
 }
 
 export function deleteAvailabilityRange(id: number): Promise<void> {

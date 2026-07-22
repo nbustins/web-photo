@@ -1,17 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Alert, Button, Card, Empty, Form, Input, InputNumber, Modal, Popconfirm,
+  Alert, Button, Card, DatePicker, Divider, Empty, Form, Input, InputNumber, Modal, Popconfirm,
   Select, Space, Switch, Table, Tag,
 } from 'antd';
+import dayjs from 'dayjs';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  SessionGroup, SessionTypePayload,
+  BookingSession, SessionGroup, SessionTypePayload,
   createSessionGroup, createSessionType, deleteSessionGroup, deleteSessionType,
-  fetchSessionGroups, fetchSessionTypes, updateSessionGroup, updateSessionType,
+  fetchBookingSessions, fetchSessionGroups, fetchSessionTypes, updateSessionGroup,
+  updateSessionType, upsertBookingSession,
 } from '../../../services/booking/booking.admin.api';
 import type { SessionType } from '../../../services/booking/booking.api';
 import { useApiError } from '../useApiError';
 import { FeaturesEditor } from '../components/FeaturesEditor';
+
+const { RangePicker } = DatePicker;
 
 const priceFormat = new Intl.NumberFormat('ca-ES', { style: 'currency', currency: 'EUR' });
 
@@ -19,6 +23,9 @@ export const SessionsTab: FC = () => {
   const onError = useApiError();
   const [groups, setGroups] = useState<SessionGroup[]>([]);
   const [types, setTypes] = useState<SessionType[]>([]);
+  // The API splits a session in two (catalog + agenda, specs 007/008). That boundary is ours,
+  // not the user's: here they are one row and one dialog.
+  const [agenda, setAgenda] = useState<Record<number, BookingSession>>({});
   const [loading, setLoading] = useState(false);
   const [activeGroup, setActiveGroup] = useState<string>();
 
@@ -33,9 +40,10 @@ export const SessionsTab: FC = () => {
   const load = async () => {
     setLoading(true);
     try {
-      const [g, t] = await Promise.all([fetchSessionGroups(), fetchSessionTypes()]);
+      const [g, t, a] = await Promise.all([fetchSessionGroups(), fetchSessionTypes(), fetchBookingSessions()]);
       setGroups(g);
       setTypes(t);
+      setAgenda(Object.fromEntries(a.map((s) => [s.sessionTypeId, s])));
       // Keep the selected tab if it survived the reload, otherwise fall back to the first group.
       setActiveGroup((current) =>
         current && g.some((x) => String(x.id) === current) ? current : g[0] ? String(g[0].id) : undefined);
@@ -80,9 +88,20 @@ export const SessionsTab: FC = () => {
 
   const openTypeModal = (t: SessionType | null) => {
     setEditingType(t);
+    const booking = t ? agenda[t.id] : undefined;
     form.setFieldsValue(t
-      ? { ...t, features: [...t.features] }
+      ? {
+          ...t,
+          features: [...t.features],
+          bufferMinutes: booking?.bufferMinutes ?? 0,
+          window: booking?.bookableFrom || booking?.bookableTo
+            ? [booking.bookableFrom ? dayjs(booking.bookableFrom) : null,
+               booking.bookableTo ? dayjs(booking.bookableTo) : null]
+            : null,
+        }
       : {
+          bufferMinutes: 0,
+          window: null,
           isActive: true,
           durationMinutes: 60,
           price: 0,
@@ -105,8 +124,18 @@ export const SessionsTab: FC = () => {
       features: (v.features ?? []).map((x: string) => x.trim()).filter(Boolean),
     };
     try {
-      if (editingType) await updateSessionType(editingType.id, payload);
-      else await createSessionType(payload);
+      const saved = editingType
+        ? await updateSessionType(editingType.id, payload)
+        : await createSessionType(payload);
+
+      // Second call, because the agenda side lives in another module. A failure here leaves the
+      // type published but not bookable — the table says so rather than hiding it.
+      await upsertBookingSession(saved.id, {
+        bufferMinutes: v.bufferMinutes ?? 0,
+        bookableFrom: v.window?.[0] ? v.window[0].format('YYYY-MM-DD') : null,
+        bookableTo: v.window?.[1] ? v.window[1].format('YYYY-MM-DD') : null,
+      });
+
       setTypeModalOpen(false);
       // A type can be moved to another group from the modal; follow it there.
       setActiveGroup(String(payload.sessionGroupId));
@@ -132,6 +161,18 @@ export const SessionsTab: FC = () => {
         { title: 'Preu', dataIndex: 'price', render: (v: number) => priceFormat.format(v) },
         { title: 'Features', dataIndex: 'features', render: (v: string[]) => v.length },
         { title: 'Publicat', dataIndex: 'isActive', render: (v: boolean) => v ? <Tag color="green">Sí</Tag> : <Tag>No</Tag> },
+        {
+          title: 'Marge',
+          render: (_, t) => agenda[t.id] ? `${agenda[t.id].bufferMinutes} min` : <Tag color="red">No reservable</Tag>,
+        },
+        {
+          title: 'Temporada',
+          render: (_, t) => {
+            const a = agenda[t.id];
+            if (!a) return '—';
+            return a.bookableFrom || a.bookableTo ? `${a.bookableFrom ?? '…'} → ${a.bookableTo ?? '…'}` : 'Tot l\'any';
+          },
+        },
         {
           title: '',
           render: (_, t) => (
@@ -240,6 +281,19 @@ export const SessionsTab: FC = () => {
           </Form.Item>
           <Form.Item name="isActive" label="Publicat al web" valuePropName="checked">
             <Switch />
+          </Form.Item>
+
+          <Divider orientation="left" plain>Agenda</Divider>
+          <Form.Item
+            name="bufferMinutes"
+            label="Marge entre sessions (min)"
+            rules={[{ required: true }]}
+            extra="Temps que queda ocupat després de la sessió. El client no el veu."
+          >
+            <InputNumber min={0} style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="window" label="Temporada (opcional)" extra="Buit = reservable tot l'any.">
+            <RangePicker style={{ width: '100%' }} allowEmpty={[true, true]} />
           </Form.Item>
         </Form>
       </Modal>

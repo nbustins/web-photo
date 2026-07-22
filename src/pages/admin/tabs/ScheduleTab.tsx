@@ -1,14 +1,13 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import {
-  Alert, Badge, Button, Card, DatePicker, Form, Input, InputNumber, Modal, Popconfirm, Select,
-  Space, Table, Tag, TimePicker, Typography, message,
+  Alert, Badge, Button, Card, DatePicker, Input, Popconfirm, Select, Space, Table, TimePicker,
+  Typography, message,
 } from 'antd';
 import dayjs from 'dayjs';
 import {
-  BlockedPeriod, BookingSession, SessionGroup, Weekday, WeeklyAvailability,
+  BlockedPeriod, SessionGroup, Weekday, WeeklyAvailability,
   createAvailabilityRange, createBlockedPeriod, deleteAvailabilityRange, deleteBlockedPeriod,
-  fetchAvailabilityRanges, fetchBlockedPeriods, fetchBookingSessions, fetchSessionGroups,
-  fetchSessionTypes, upsertBookingSession,
+  fetchAvailabilityRanges, fetchBlockedPeriods, fetchSessionGroups, fetchSessionTypes,
 } from '../../../services/booking/booking.admin.api';
 import type { SessionType } from '../../../services/booking/booking.api';
 import { WEEKDAYS_MON_FIRST, WEEKDAY_LABEL } from '../labels';
@@ -24,12 +23,8 @@ export const ScheduleTab: FC = () => {
   const [blocks, setBlocks] = useState<BlockedPeriod[]>([]);
   const [sessionTypes, setSessionTypes] = useState<SessionType[]>([]);
   const [groups, setGroups] = useState<SessionGroup[]>([]);
-  const [bookingSessions, setBookingSessions] = useState<BookingSession[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Buffer + bookable window live here, not in the catalog: they are agenda config (API spec 008).
-  const [editingSession, setEditingSession] = useState<BookingSession | null>(null);
-  const [sessionForm] = Form.useForm();
 
   // Ranges belong to one session type (API 001 §16); nothing is editable until one is picked.
   const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
@@ -51,13 +46,10 @@ export const ScheduleTab: FC = () => {
 
   const loadCatalog = async () => {
     try {
-      const [t, g, b, s] = await Promise.all([
-        fetchSessionTypes(), fetchSessionGroups(), fetchBlockedPeriods(), fetchBookingSessions(),
-      ]);
+      const [t, g, b] = await Promise.all([fetchSessionTypes(), fetchSessionGroups(), fetchBlockedPeriods()]);
       setSessionTypes(t);
       setGroups(g);
       setBlocks(b);
-      setBookingSessions(s);
     } catch (err) {
       onError(err, 'No s\'ha pogut carregar el catàleg de sessions');
     }
@@ -126,71 +118,8 @@ export const ScheduleTab: FC = () => {
     try { await deleteBlockedPeriod(id); reloadBlocks(); } catch (err) { onError(err); }
   };
 
-  const openSessionModal = (s: BookingSession) => {
-    setEditingSession(s);
-    sessionForm.setFieldsValue({
-      bufferMinutes: s.bufferMinutes,
-      window: s.bookableFrom || s.bookableTo
-        ? [s.bookableFrom ? dayjs(s.bookableFrom) : null, s.bookableTo ? dayjs(s.bookableTo) : null]
-        : null,
-    });
-  };
-
-  const submitSession = async () => {
-    if (!editingSession) return;
-    const v = await sessionForm.validateFields();
-    try {
-      await upsertBookingSession(editingSession.sessionTypeId, {
-        bufferMinutes: v.bufferMinutes,
-        bookableFrom: v.window?.[0] ? v.window[0].format('YYYY-MM-DD') : null,
-        bookableTo: v.window?.[1] ? v.window[1].format('YYYY-MM-DD') : null,
-      });
-      setEditingSession(null);
-      loadCatalog();
-    } catch (err) { onError(err); }
-  };
-
   return (
     <Space direction="vertical" size="large" style={{ width: '100%' }}>
-      <Card size="small" title="Sessions a l'agenda">
-        <Text type="secondary">
-          Publicar un tipus al catàleg no el fa reservable: també ha d&apos;estar a l&apos;agenda,
-          amb el seu marge entre sessions i, si escau, la seva temporada.
-        </Text>
-        <Table
-          style={{ marginTop: 12 }}
-          rowKey="sessionTypeId"
-          size="small"
-          pagination={false}
-          dataSource={bookingSessions}
-          columns={[
-            { title: 'Tipus', dataIndex: 'sessionTypeName' },
-            {
-              title: 'A l\'agenda',
-              dataIndex: 'onAgenda',
-              render: (v: boolean) => v ? <Tag color="green">Sí</Tag> : <Tag color="red">No reservable</Tag>,
-            },
-            {
-              title: 'Marge',
-              render: (_, s) => s.onAgenda ? `${s.bufferMinutes} min` : '—',
-            },
-            {
-              title: 'Temporada',
-              render: (_, s) => !s.onAgenda ? '—'
-                : s.bookableFrom || s.bookableTo ? `${s.bookableFrom ?? '…'} → ${s.bookableTo ?? '…'}` : 'Tot l\'any',
-            },
-            {
-              title: '',
-              render: (_, s) => (
-                <Button size="small" type={s.onAgenda ? 'default' : 'primary'} onClick={() => openSessionModal(s)}>
-                  {s.onAgenda ? 'Editar' : 'Posar a l\'agenda'}
-                </Button>
-              ),
-            },
-          ]}
-        />
-      </Card>
-
       <Card size="small" title="Horari setmanal per tipus de sessió" loading={loading}>
         <Space direction="vertical" style={{ width: '100%', marginBottom: 16 }}>
           <Text type="secondary">
@@ -294,27 +223,6 @@ export const ScheduleTab: FC = () => {
         />
       </Card>
 
-      <Modal
-        open={editingSession !== null}
-        title={editingSession?.sessionTypeName}
-        onCancel={() => setEditingSession(null)}
-        onOk={submitSession}
-        okText="Desar"
-      >
-        <Form form={sessionForm} layout="vertical">
-          <Form.Item
-            name="bufferMinutes"
-            label="Marge entre sessions (min)"
-            rules={[{ required: true }]}
-            extra="Temps que queda ocupat després de la sessió. El client no el veu."
-          >
-            <InputNumber min={0} style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item name="window" label="Temporada (opcional)" extra="Buit = reservable tot l'any.">
-            <RangePicker style={{ width: '100%' }} allowEmpty={[true, true]} />
-          </Form.Item>
-        </Form>
-      </Modal>
     </Space>
   );
 };

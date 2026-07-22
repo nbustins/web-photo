@@ -3,7 +3,7 @@ import { CustomTitle } from "../../components/customTitle";
 import { getPublicPath } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";
 import { pageBodyPadding, radii } from "../../styles/tokens/radii";
-import { ImageSlider, PricingCard } from "../../components";
+import { ImageSlider, SessionPricingCards } from "../../components";
 
 const fromIdx = 4;
 const toIdx = 12;
@@ -112,38 +112,7 @@ export const FamiliarPage = () => (
               </Row>
               
                {/*  Price List */}
-              <Row gutter={[24, 24]} justify="center" >
-                <Col xs={24} md={8}>
-                    <PricingCard
-                          sessionTypeId={7}
-                          title="Estudi"
-                          features={[
-                            "45 minuts de sessió",
-                            "Guia per anar preparats a la sessió",
-                            "Vestuari inclòs (un canvi de roba)",
-                            "Galeria Online",
-                            "Entrega de 20 fotos editades (galeria completa +60€)",
-                            "5 fotos impreses 10 x 15"
-                          ]}
-                          price="200€"
-                        />
-                </Col>
-                <Col xs={24} md={8}>
-                    <PricingCard
-                      sessionTypeId={8}
-                      title="Exterior"
-                      features={[
-                        "45 minuts de sessió",
-                        "Guia per anar preparats a la sessió",
-                        "Vestuari inclòs (un canvi de roba)",
-                        "Galeria Online",
-                        "Entrega de 20 fotos editades (galeria completa +60€)",
-                        <br/>,
-                      ]}
-                      price="220€"
-                    />
-                </Col>
-              </Row> 
+              <SessionPricingCards sessionGroupId={3} /> 
         </div>
     </>
 );

@@ -1,7 +1,7 @@
 import { Col, Row } from "antd";
 import { CustomTitle } from "../../components/customTitle";
 import { getPublicPath } from "../../utils/pathUtils";
-import { ImageSlider, PricingCard } from "../../components";
+import { ImageSlider, SessionPricingCards } from "../../components";
 import { motion } from "framer-motion";
 import { ThreePhotoRow } from "../../components/threePhotoComponent";
 import FAQs from "../../components/FAQs";
@@ -166,42 +166,7 @@ export const SmashCakePage = () => (
       </Row>
 
       {/*  Price List */}
-      <Row gutter={[24, 24]} justify="center" >
-        <Col xs={24} md={8}>
-            <PricingCard
-                  sessionTypeId={9}
-                  title="Estudi"
-                  features={[
-                    "45 minuts de sessió",
-                    "Guia per anar preparats a la sessió",
-                    "Vestuari inclòs",
-                    "Sessió familiar",
-                    "Pastís de @enrollate_bk",
-                    "Galeria Online",
-                    "Entrega de 20 fotos editades (galeria completa +60€)",
-                    "5 fotos impreses 10 x 15",
-                  ]}
-                  price="215€"
-                />
-        </Col>
-        <Col xs={24} md={8}>
-          <PricingCard
-             sessionTypeId={10}
-             title="Estudi"
-            features={[
-                "45 minuts de sessió",
-                "Guia per anar preparats a la sessió",
-                "Sessió familiar",
-                "Pastís de @enrollate_bk",
-                "Galeria Online",
-                "Entrega de 20 fotos editades (galeria completa +60€)",
-                <br></br>,
-                <br></br>
-            ]}
-            price="215€"
-          />
-        </Col>
-      </Row> 
+      <SessionPricingCards sessionGroupId={4} /> 
       </section>
     </div>
     

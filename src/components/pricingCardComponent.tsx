@@ -1,33 +1,43 @@
-import { JSX } from "react";
 import { Button, Card, Typography } from "antd";
 import { radii } from "../styles/tokens/radii";
 import { useNavigate } from "react-router";
 import { AppRoutes, bookSessionPath } from "../model/routes.model";
+import AdviceText from "./advicetext";
 
 const { Title, Text } = Typography;
 
+const priceFormat = new Intl.NumberFormat('ca-ES', {
+  style: 'currency',
+  currency: 'EUR',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+});
+
 interface PricingCardProps {
   title: string;
-  features: (string | JSX.Element)[];
-  price: string;
+  features: string[];
+  price: number;
+  adviceText?: string | null;
   sessionTypeId?: number;
 }
 
-const PricingCard = ({ title, features, price, sessionTypeId } : PricingCardProps) => {
+const PricingCard = ({ title, features, price, adviceText, sessionTypeId }: PricingCardProps) => {
 
   const navigate = useNavigate();
 
   return (<Card
+    // Full height + column layout so cards in a row line up their price and button regardless of
+    // how many features each has. This used to be faked with <br/> padding inside the feature list.
     style={{
-      display: 'flex',
-      flexDirection: 'column',
+      height: '100%',
       textAlign: 'center',
       boxShadow: 'none',
       borderRadius: radii.md,
     }}
+    styles={{ body: { display: 'flex', flexDirection: 'column', height: '100%' } }}
   >
     {/* Content above the price */}
-    <div style={{ flex: 1 }}> {/* This takes up all available space above the price */}
+    <div style={{ flex: 1 }}>
 
       <Title level={3} style={{ fontSize: "clamp(1.6rem, 3vw, 3rem)", marginBottom: '8px', fontFamily: 'Italiana'}}>
         SESSIÓ <br />
@@ -50,6 +60,13 @@ const PricingCard = ({ title, features, price, sessionTypeId } : PricingCardProp
           {item}
         </Text>
       ))}
+
+      {/* The asterisk is presentation, never stored with the text (API spec 007 QC10). */}
+      {adviceText && (
+        <div style={{ marginTop: '8px' }}>
+          <AdviceText>*{adviceText}</AdviceText>
+        </div>
+      )}
     </div>
 
     {/* Price */}
@@ -61,7 +78,7 @@ const PricingCard = ({ title, features, price, sessionTypeId } : PricingCardProp
         fontWeight: 400,
       }}
     >
-      {price}
+      {priceFormat.format(price)}
     </Title>
     <div style={{ width: "100%", marginTop:"25px" }}>
       <Button
@@ -72,7 +89,7 @@ const PricingCard = ({ title, features, price, sessionTypeId } : PricingCardProp
         Reserva
       </Button>
     </div>
-      
+
   </Card>)
 };
 export default PricingCard;

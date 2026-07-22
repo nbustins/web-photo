@@ -2,13 +2,16 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import {
-  fetchSessionGroups, fetchAvailability, SessionType, AvailabilitySlot,
+  fetchBookableSessionGroups, fetchAvailability, BookableSessionType, AvailabilitySlot,
 } from '../../services/booking/booking.api';
 
-/** Loads the session type (and its group name) from the route param. */
+/**
+ * Loads the session type (and its group name) from the route param, from the *bookable* catalog:
+ * a type published on the website is not necessarily reservable (API spec 008 QS5).
+ */
 export const useSessionType = (sessionTypeId: string | undefined) => {
   const typeId = Number(sessionTypeId);
-  const [sessionType, setSessionType] = useState<SessionType | null>(null);
+  const [sessionType, setSessionType] = useState<BookableSessionType | null>(null);
   const [groupName, setGroupName] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -19,10 +22,10 @@ export const useSessionType = (sessionTypeId: string | undefined) => {
       setError(true);
       return;
     }
-    fetchSessionGroups()
+    fetchBookableSessionGroups()
       .then(groups => {
         for (const group of groups) {
-          const type = group.sessionTypes.find(t => t.id === typeId && t.isActive);
+          const type = group.sessionTypes.find(t => t.id === typeId);
           if (type) {
             setSessionType(type);
             setGroupName(group.name);
@@ -39,7 +42,7 @@ export const useSessionType = (sessionTypeId: string | undefined) => {
 };
 
 /** Loads free slots for the visible month, keyed by YYYY-MM-DD. */
-export const useMonthAvailability = (sessionType: SessionType | null) => {
+export const useMonthAvailability = (sessionType: BookableSessionType | null) => {
   const [month, setMonth] = useState<Dayjs>(dayjs());
   const [slotsByDate, setSlotsByDate] = useState<Record<string, AvailabilitySlot[]>>({});
   const [loading, setLoading] = useState(false);

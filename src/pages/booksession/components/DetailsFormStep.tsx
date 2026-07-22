@@ -1,14 +1,14 @@
 import { Button, Col, Form, Input, InputNumber, Radio, Row } from 'antd';
 import dayjs from 'dayjs';
 import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
-import { AvailabilitySlot, SessionType } from '../../../services/booking/booking.api';
+import { AvailabilitySlot, BookableSessionType } from '../../../services/booking/booking.api';
 import { FormValues, IMAGE_RIGHTS_OPTIONS } from '../types';
 import { inputStyle, labelStyle } from '../styles';
 
 const DNI_REGEX = /^(\d{8}[A-Za-z]|[XYZxyz]\d{7}[A-Za-z])$/;
 
 interface DetailsFormStepProps {
-  sessionType: SessionType;
+  sessionType: BookableSessionType;
   slot: AvailabilitySlot;
   /** Previously entered values, restored when the user navigates back to this step. */
   initialValues: FormValues | null;

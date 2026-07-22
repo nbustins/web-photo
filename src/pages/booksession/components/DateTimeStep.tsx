@@ -2,11 +2,11 @@ import { Button, Calendar, Col, Row, Spin, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
-import { AvailabilitySlot, SessionType } from '../../../services/booking/booking.api';
+import { AvailabilitySlot, BookableSessionType } from '../../../services/booking/booking.api';
 import { bodyTextStyle, labelStyle } from '../styles';
 
 interface DateTimeStepProps {
-  sessionType: SessionType;
+  sessionType: BookableSessionType;
   groupName: string;
   month: Dayjs;
   onMonthChange: (month: Dayjs) => void;

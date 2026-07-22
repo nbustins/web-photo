@@ -1,7 +1,7 @@
 import { Button, Row } from 'antd';
 import dayjs from 'dayjs';
 import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
-import { AvailabilitySlot, SessionType } from '../../../services/booking/booking.api';
+import { AvailabilitySlot, BookableSessionType } from '../../../services/booking/booking.api';
 import { FormValues, IMAGE_RIGHTS_OPTIONS } from '../types';
 import { bodyTextStyle, labelStyle } from '../styles';
 
@@ -21,7 +21,7 @@ const SummaryRow = ({ label, value }: { label: string; value: string }) => (
 );
 
 interface SummaryStepProps {
-  sessionType: SessionType;
+  sessionType: BookableSessionType;
   groupName: string;
   slot: AvailabilitySlot;
   values: FormValues;

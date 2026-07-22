@@ -1,13 +1,13 @@
 import { Typography } from 'antd';
 import dayjs from 'dayjs';
-import { AvailabilitySlot, CreateBookingResult, SessionType } from '../../../services/booking/booking.api';
+import { AvailabilitySlot, CreateBookingResult, BookableSessionType } from '../../../services/booking/booking.api';
 import { bodyTextStyle } from '../styles';
 import { StatusCard } from './StatusCard';
 
 const { Text } = Typography;
 
 interface ConfirmationStepProps {
-  sessionType: SessionType;
+  sessionType: BookableSessionType;
   slot: AvailabilitySlot;
   reserverName: string;
   result: CreateBookingResult;

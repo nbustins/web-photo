@@ -1,6 +1,6 @@
 import { Row, Col } from "antd";
 import { motion } from "framer-motion";
-import {  AdviceText,PricingCard,ImageSlider  } from "../../components";
+import { ImageSlider, SessionPricingCards } from "../../components";
 import FAQs from "../../components/FAQs";
 import { getPublicPath } from "../../utils/pathUtils";
 import { CustomTitle } from "../../components/customTitle";
@@ -173,54 +173,7 @@ export const NewBornPage = () => (
       </Row>
 
       {/*  Price List */}
-      <Row gutter={[24, 24]} justify="center" >
-        <Col xs={24} md={8}>
-            <PricingCard
-                  sessionTypeId={1}
-                  title="Bàsica"
-                  features={[
-                    "90 minuts de sessió",
-                    "Guia per anar preparats a la sessió",
-                    "Vestuari inclòs",
-                    "Entrega de 15 fotos editades (galeria completa + 60€)",
-                    <br/>,
-                    <br/>,
-
-                  ]}
-                  price="220€"
-                />
-        </Col>
-        <Col xs={24} md={8}>
-            <PricingCard
-              sessionTypeId={2}
-              title="Domicili"
-              features={[
-                "90 minuts de sessió",
-                "Guia per anar preparats a la sessió",
-                "Vestuari inclòs",
-                "Entrega de 15 fotos editades (galeria completa + 60€)",
-                <br/>,
-                <AdviceText>*A partir de 35 km des de l’estudi, pot haver-hi cost extra per desplaçament</AdviceText>,
-              ]}
-              price="220€"
-            />
-        </Col>
-        <Col xs={24} md={8}>
-          <PricingCard
-            sessionTypeId={3}
-            title="Completa"
-            features={[
-              "90 minuts de sessió",
-              "Guia per anar preparats a la sessió",
-              "Vestuari inclòs",
-              "Galeria completa",
-              "Sessió maquillatge i pentinat",
-              "5 fotos impresses de 18x13",
-            ]}
-            price="280€"
-          />
-        </Col>
-      </Row> 
+      <SessionPricingCards sessionGroupId={1} /> 
       </section>
     </div>
     

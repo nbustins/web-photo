@@ -63,10 +63,29 @@ export interface SessionTypePayload {
   sessionGroupId: number;
   name: string;
   durationMinutes: number;
-  bufferMinutes: number;
   isActive: boolean;
-  availableFrom?: string | null;
-  availableTo?: string | null;
+  price: number;
+  adviceText?: string | null;
+  features: string[];
+}
+
+/**
+ * The agenda's half of a session type (API spec 008): buffer and bookable window. A published
+ * type with `onAgenda: false` has no row yet and cannot be reserved.
+ */
+export interface BookingSession {
+  sessionTypeId: number;
+  sessionTypeName: string;
+  bufferMinutes: number;
+  bookableFrom?: string | null;
+  bookableTo?: string | null;
+  onAgenda: boolean;
+}
+
+export interface BookingSessionPayload {
+  bufferMinutes: number;
+  bookableFrom?: string | null;
+  bookableTo?: string | null;
 }
 
 // --- Bookings ---
@@ -126,6 +145,19 @@ export function updateSessionType(id: number, payload: SessionTypePayload): Prom
 
 export function deleteSessionType(id: number): Promise<void> {
   return apiDelete(`/api/admin/session-types/${id}`);
+}
+
+// --- Booking sessions (agenda side of a session type) ---
+
+export function fetchBookingSessions(): Promise<BookingSession[]> {
+  return apiGet<BookingSession[]>('/api/admin/booking-sessions');
+}
+
+export function upsertBookingSession(
+  sessionTypeId: number,
+  payload: BookingSessionPayload,
+): Promise<BookingSession> {
+  return apiPut<BookingSession, BookingSessionPayload>(`/api/admin/booking-sessions/${sessionTypeId}`, payload);
 }
 
 // --- Weekly availability ---

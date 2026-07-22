@@ -1,10 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Alert, Button, Card, DatePicker, Divider, Empty, Form, Input, InputNumber, Modal, Popconfirm,
+  Alert, Card, DatePicker, Divider, Empty, Form, Input, InputNumber, Modal, Popconfirm,
   Select, Space, Switch, Table, Tag,
 } from 'antd';
 import dayjs from 'dayjs';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   BookingSession, SessionGroup, SessionTypePayload,
   createSessionGroup, createSessionType, deleteSessionGroup, deleteSessionType,
@@ -14,6 +13,7 @@ import {
 import type { SessionType } from '../../../services/booking/booking.api';
 import { useApiError } from '../useApiError';
 import { FeaturesEditor } from '../components/FeaturesEditor';
+import { IconButton } from '../icons';
 
 const { RangePicker } = DatePicker;
 
@@ -177,9 +177,9 @@ export const SessionsTab: FC = () => {
           title: '',
           render: (_, t) => (
             <Space>
-              <Button size="small" onClick={() => openTypeModal(t)}>Editar</Button>
+              <IconButton icon="edit" label="Editar" size="small" onClick={() => openTypeModal(t)} />
               <Popconfirm title="Retirar del catàleg? Deixarà de sortir al web." onConfirm={() => removeType(t)}>
-                <Button size="small" danger>Retirar</Button>
+                <IconButton icon="retire" label="Retirar del catàleg" size="small" danger />
               </Popconfirm>
             </Space>
           ),
@@ -191,9 +191,11 @@ export const SessionsTab: FC = () => {
   const current = groups.find((g) => String(g.id) === activeGroup);
 
   const addGroupButton = (
-    <Button icon={<PlusOutlined />} onClick={() => { setGroupName(''); setGroupDialog({ mode: 'create' }); }}>
-      Nou grup
-    </Button>
+    <IconButton
+      icon="create"
+      label="Nou grup"
+      onClick={() => { setGroupName(''); setGroupDialog({ mode: 'create' }); }}
+    />
   );
 
   return (
@@ -212,17 +214,14 @@ export const SessionsTab: FC = () => {
         {current ? (
           <>
             <Space style={{ marginBottom: 12, width: '100%', justifyContent: 'flex-end' }}>
-              <Button
+              <IconButton
+                icon="edit"
+                label="Reanomenar grup"
                 size="small"
-                icon={<EditOutlined />}
                 onClick={() => { setGroupName(current.name); setGroupDialog({ mode: 'rename', group: current }); }}
-              >
-                Reanomenar
-              </Button>
-              <Button size="small" danger icon={<DeleteOutlined />} onClick={() => removeGroup(current)}>
-                Esborrar grup
-              </Button>
-              <Button type="primary" size="small" onClick={() => openTypeModal(null)}>Nou tipus</Button>
+              />
+              <IconButton icon="remove" label="Esborrar grup" size="small" danger onClick={() => removeGroup(current)} />
+              <IconButton icon="create" label="Nou tipus de sessió" type="primary" size="small" onClick={() => openTypeModal(null)} />
             </Space>
             {typesTable(current.id)}
           </>
@@ -231,7 +230,7 @@ export const SessionsTab: FC = () => {
             type="info"
             showIcon
             message="Encara no hi ha cap grup"
-            description="Els grups són les pàgines de servei del web (Recent Nascut, Embaràs…). Crea'n un amb «Nou grup»."
+            description="Els grups són les pàgines de servei del web (Recent Nascut, Embaràs…). Crea'n un amb el botó +."
           />
         )}
       </Card>

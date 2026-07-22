@@ -11,6 +11,7 @@ import {
 } from '../../../services/booking/booking.admin.api';
 import type { SessionType } from '../../../services/booking/booking.api';
 import { WEEKDAYS_MON_FIRST, WEEKDAY_LABEL } from '../labels';
+import { IconButton } from '../icons';
 import { useApiError } from '../useApiError';
 
 const { RangePicker } = DatePicker;
@@ -179,7 +180,7 @@ export const ScheduleTab: FC = () => {
                 <div key={r.id} style={{ display: 'grid', gridTemplateColumns: '120px 100px', gap: 8, alignItems: 'center' }}>
                   <Text>{r.startTime.slice(0, 5)} – {r.endTime.slice(0, 5)}</Text>
                   <Popconfirm title="Esborrar franja?" onConfirm={() => removeRange(r.id)}>
-                    <Button size="small" danger block>Esborrar</Button>
+                    <IconButton icon="remove" label="Esborrar franja" size="small" danger block />
                   </Popconfirm>
                 </div>
               ))}
@@ -190,7 +191,7 @@ export const ScheduleTab: FC = () => {
                   value={draft[selectedDay] ?? null}
                   onChange={(v) => setDraft((s) => ({ ...s, [selectedDay]: v as [dayjs.Dayjs, dayjs.Dayjs] | null }))}
                 />
-                <Button type="primary" onClick={() => addRange(selectedDay)}>Afegir franja</Button>
+                <IconButton icon="create" label="Afegir franja" type="primary" onClick={() => addRange(selectedDay)} />
               </Space>
             </Space>
           </div>
@@ -201,7 +202,7 @@ export const ScheduleTab: FC = () => {
         <Space wrap style={{ marginBottom: 12 }}>
           <RangePicker onChange={(_, ds) => setBlockRange({ from: ds?.[0] || undefined, to: ds?.[1] || undefined })} />
           <Input placeholder="Motiu (opcional)" value={blockReason} onChange={(e) => setBlockReason(e.target.value)} style={{ width: 220 }} />
-          <Button type="primary" onClick={addBlock} disabled={!blockRange.from}>Bloquejar</Button>
+          <IconButton icon="block" label="Bloquejar aquests dies" type="primary" onClick={addBlock} disabled={!blockRange.from} />
         </Space>
         <Table
           rowKey="id"
@@ -215,7 +216,7 @@ export const ScheduleTab: FC = () => {
               title: '',
               render: (_, b) => (
                 <Popconfirm title="Desbloquejar?" onConfirm={() => removeBlock(b.id)}>
-                  <Button size="small" danger>Esborrar</Button>
+                  <IconButton icon="remove" label="Desbloquejar" size="small" danger />
                 </Popconfirm>
               ),
             },

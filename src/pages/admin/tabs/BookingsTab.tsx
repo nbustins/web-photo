@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Button, DatePicker, Descriptions, Drawer, Select, Space, Table, Tag, message } from 'antd';
+import { IconButton } from '../icons';
 import {
   AdminBooking,
   BookingStatus,
@@ -92,7 +93,7 @@ export const BookingsTab: FC = () => {
         <RangePicker
           onChange={(_, ds) => setRange({ from: ds?.[0] || undefined, to: ds?.[1] || undefined })}
         />
-        <Button onClick={load}>Actualitzar</Button>
+        <IconButton icon="refresh" label="Actualitzar" onClick={load} />
       </Space>
 
       <Table

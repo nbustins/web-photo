@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button, Input, Space } from 'antd';
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { AdminIcons, IconButton } from '../icons';
 
 /**
  * Ordered feature list of a pricing card (API spec 007 QC5): add / remove / move up-down.
@@ -30,12 +30,12 @@ export const FeaturesEditor: FC<{
       {value.map((item, index) => (
         <Space.Compact key={index} style={{ width: '100%' }}>
           <Input value={item} onChange={(e) => setAt(index, e.target.value)} />
-          <Button icon={<ArrowUpOutlined />} disabled={index === 0} onClick={() => move(index, -1)} />
-          <Button icon={<ArrowDownOutlined />} disabled={index === value.length - 1} onClick={() => move(index, 1)} />
-          <Button icon={<DeleteOutlined />} danger onClick={() => emit(value.filter((_, i) => i !== index))} />
+          <IconButton icon="moveUp" label="Puja" disabled={index === 0} onClick={() => move(index, -1)} />
+          <IconButton icon="moveDown" label="Baixa" disabled={index === value.length - 1} onClick={() => move(index, 1)} />
+          <IconButton icon="remove" label="Esborrar línia" danger onClick={() => emit(value.filter((_, i) => i !== index))} />
         </Space.Compact>
       ))}
-      <Button icon={<PlusOutlined />} onClick={() => emit([...value, ''])} block>
+      <Button icon={<AdminIcons.create />} onClick={() => emit([...value, ''])} block>
         Afegir línia
       </Button>
     </Space>

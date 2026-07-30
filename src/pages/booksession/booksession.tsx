@@ -136,6 +136,7 @@ export const BookSession = () => {
       {step === 1 && selectedSlot && (
         <DetailsFormStep
           sessionType={sessionType}
+          groupName={groupName}
           slot={selectedSlot}
           initialValues={formValues}
           onBack={() => setStep(0)}
@@ -158,6 +159,7 @@ export const BookSession = () => {
       {step === 3 && selectedSlot && formValues && result && (
         <ConfirmationStep
           sessionType={sessionType}
+          groupName={groupName}
           slot={selectedSlot}
           reserverName={formValues.name}
           result={result}

@@ -2,7 +2,7 @@ import { Button, Calendar, Col, Row, Spin, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
-import { AvailabilitySlot, BookableSessionType } from '../../../services/booking/booking.api';
+import { AvailabilitySlot, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
 import { bodyTextStyle, labelStyle } from '../styles';
 
 interface DateTimeStepProps {
@@ -29,8 +29,8 @@ export const DateTimeStep = ({
   return (
     <WeddingCard>
       <WeddingCardHeader
-        title={`Reserva ${sessionType.name}`}
-        subtitle={`${groupName} · ${sessionType.durationMinutes} min`}
+        title={`Reserva ${sessionDisplayName(groupName, sessionType.name)}`}
+        subtitle={`${sessionType.durationMinutes} min`}
       />
       <Row gutter={[24, 24]} style={{ textAlign: 'left' }}>
         <Col xs={24} md={13}>

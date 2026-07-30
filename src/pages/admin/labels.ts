@@ -56,3 +56,45 @@ export function formatInstant(iso: string): string {
     minute: '2-digit',
   });
 }
+
+/**
+ * What an admin is agreeing to before a status change: what it triggers and whether it can be
+ * undone. Cancelling is terminal (API 001 §7) and confirming sends the client an email, so
+ * neither should happen on a stray click.
+ */
+/** Button copy for a transition: the action to take, not the state it lands on. */
+export const STATUS_ACTION_LABEL: Record<BookingStatus, string> = {
+  Requested: 'Tornar a pendent',
+  Confirmed: 'Confirmar',
+  Paid: 'Marcar pagada',
+  Cancelled: 'Cancel·lar',
+};
+
+export const STATUS_CONFIRM: Record<BookingStatus, {
+  title: string;
+  description: string;
+  okText: string;
+  danger?: boolean;
+}> = {
+  Requested: {
+    title: 'Tornar a sol·licitada?',
+    description: 'La reserva torna a quedar pendent de revisar.',
+    okText: 'Sí, tornar-hi',
+  },
+  Confirmed: {
+    title: 'Confirmar la reserva?',
+    description: "S'enviarà l'email de confirmació a la clienta automàticament.",
+    okText: 'Sí, confirmar',
+  },
+  Paid: {
+    title: 'Marcar com a pagada?',
+    description: 'No s\'envia cap email: només queda registrat que ja has cobrat.',
+    okText: 'Sí, està pagada',
+  },
+  Cancelled: {
+    title: 'Cancel·lar la reserva?',
+    description: "L'hora torna a quedar lliure i una reserva cancel·lada ja no es pot reactivar.",
+    okText: 'Sí, cancel·lar',
+    danger: true,
+  },
+};

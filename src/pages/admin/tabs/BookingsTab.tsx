@@ -1,18 +1,27 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Button, DatePicker, Descriptions, Drawer, Select, Space, Table, Tag, message } from 'antd';
-import { IconButton } from '../icons';
+import { Button, Collapse, DatePicker, Descriptions, Drawer, Popconfirm, Select, Space, Table, Tag, Typography, message } from 'antd';
+import { AdminIcons, IconButton } from '../icons';
+import { ResendEmailButtons } from '../components/ResendEmailButtons';
 import {
   AdminBooking,
   BookingStatus,
+  fetchAdminContractPdf,
   fetchBookings,
+  fetchSessionGroups,
   fetchSessionTypes,
   resendBookingEmail,
   updateBookingStatus,
 } from '../../../services/booking/booking.admin.api';
-import { STATUS_COLOR, STATUS_LABEL, STATUS_TRANSITIONS, IMAGE_RIGHTS_LABEL, formatInstant } from '../labels';
+import { sessionDisplayName } from '../../../services/booking/booking.api';
+import { bookingContractPath } from '../../../model/routes.model';
+import { STATUS_ACTION_LABEL, STATUS_COLOR, STATUS_CONFIRM, STATUS_LABEL, STATUS_TRANSITIONS, IMAGE_RIGHTS_LABEL, formatInstant } from '../labels';
 import { useApiError } from '../useApiError';
 
 const { RangePicker } = DatePicker;
+
+// The app is a HashRouter SPA, so the shareable link carries the route after the '#'.
+const contractLink = (token: string) =>
+  `${window.location.origin}${window.location.pathname}#${bookingContractPath(token)}`;
 
 const STATUS_OPTIONS = (Object.keys(STATUS_LABEL) as BookingStatus[]).map((s) => ({
   value: s,
@@ -44,9 +53,15 @@ export const BookingsTab: FC = () => {
 
   useEffect(() => { load(); }, [load]);
 
+  // A type is named by its group plus its own name: "Bàsica editada" alone is ambiguous.
   useEffect(() => {
-    fetchSessionTypes()
-      .then((types) => setTypeNames(Object.fromEntries(types.map((t) => [t.id, t.name]))))
+    Promise.all([fetchSessionTypes(), fetchSessionGroups()])
+      .then(([types, groups]) => {
+        const groupNames = Object.fromEntries(groups.map((g) => [g.id, g.name]));
+        setTypeNames(Object.fromEntries(
+          types.map((t) => [t.id, sessionDisplayName(groupNames[t.sessionGroupId] ?? '', t.name)]),
+        ));
+      })
       .catch((err) => onError(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -63,6 +78,20 @@ export const BookingsTab: FC = () => {
       load();
     } finally {
       setActing(false);
+    }
+  };
+
+  const downloadContract = async (booking: AdminBooking) => {
+    try {
+      const blob = await fetchAdminContractPdf(booking.id);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `contracte-${booking.id}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      onError(err, 'No s\'ha pogut descarregar el contracte');
     }
   };
 
@@ -110,6 +139,12 @@ export const BookingsTab: FC = () => {
             dataIndex: 'status',
             render: (s: BookingStatus) => <Tag color={STATUS_COLOR[s]}>{STATUS_LABEL[s]}</Tag>,
           },
+          {
+            title: 'Contracte',
+            dataIndex: 'contractSignedAt',
+            render: (signedAt: string | null) =>
+              signedAt ? <Tag color="green">Signat</Tag> : <Tag>Pendent</Tag>,
+          },
         ]}
       />
 
@@ -122,13 +157,24 @@ export const BookingsTab: FC = () => {
         {selected && (
           <>
             <Space wrap style={{ marginBottom: 16 }}>
-              {STATUS_TRANSITIONS[selected.status].map((next) => (
-                <Button key={next} type="primary" loading={acting} onClick={() => changeStatus(selected, next)}>
-                  → {STATUS_LABEL[next]}
-                </Button>
-              ))}
-              <Button loading={acting} onClick={() => resend(selected, 'requested')}>Reenviar sol·licitud</Button>
-              <Button loading={acting} onClick={() => resend(selected, 'confirmed')}>Reenviar confirmació</Button>
+              {STATUS_TRANSITIONS[selected.status].map((next) => {
+                const confirm = STATUS_CONFIRM[next];
+                return (
+                  <Popconfirm
+                    key={next}
+                    title={confirm.title}
+                    description={confirm.description}
+                    okText={confirm.okText}
+                    cancelText="Deixa-ho estar"
+                    okButtonProps={{ danger: confirm.danger }}
+                    onConfirm={() => changeStatus(selected, next)}
+                  >
+                    <Button type="primary" danger={confirm.danger} loading={acting}>
+                      {STATUS_ACTION_LABEL[next]}
+                    </Button>
+                  </Popconfirm>
+                );
+              })}
             </Space>
 
             <Descriptions column={1} size="small" bordered>
@@ -148,8 +194,55 @@ export const BookingsTab: FC = () => {
                 {selected.participants.map((p) => `${p.name}${p.age != null ? ` (${p.age})` : ''}`).join(', ') || '—'}
               </Descriptions.Item>
               <Descriptions.Item label="Notes">{selected.notes || '—'}</Descriptions.Item>
+              <Descriptions.Item label="Contracte">
+                {selected.contractSignedAt ? (
+                  <Tag color="green">Signat el {formatInstant(selected.contractSignedAt)}</Tag>
+                ) : (
+                  <Tag>Pendent de signar</Tag>
+                )}
+              </Descriptions.Item>
               <Descriptions.Item label="Token">{selected.confirmationToken}</Descriptions.Item>
             </Descriptions>
+
+            <Space direction="vertical" size={16} style={{ display: 'flex', marginTop: 24 }}>
+              {selected.contractSignedAt && (
+                <Button icon={<AdminIcons.download />} onClick={() => downloadContract(selected)}>
+                  Descarregar contracte
+                </Button>
+              )}
+
+              {/* Resending is a rescue action, not part of the daily flow: folded away by default. */}
+              <Collapse
+                ghost
+                size="small"
+                items={[
+                  {
+                    key: 'emails',
+                    label: 'Correus',
+                    children: (
+                      <Space wrap>
+                        <ResendEmailButtons booking={selected} loading={acting} onResend={(kind) => resend(selected, kind)} />
+                      </Space>
+                    ),
+                  },
+                  {
+                    key: 'contract-link',
+                    label: 'Link al contracte',
+                    children: (
+                      <>
+                        <Typography.Paragraph type="secondary" style={{ marginBottom: 8 }}>
+                          La pàgina on la clienta llegeix i signa el contracte. Es pot passar per WhatsApp
+                          o com convingui: el token ja hi dona accés, no cal cap contrasenya.
+                        </Typography.Paragraph>
+                        <Typography.Text copyable={{ text: contractLink(selected.confirmationToken) }} code>
+                          {contractLink(selected.confirmationToken)}
+                        </Typography.Text>
+                      </>
+                    ),
+                  },
+                ]}
+              />
+            </Space>
           </>
         )}
       </Drawer>

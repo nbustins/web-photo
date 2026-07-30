@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, InputNumber, Radio, Row } from 'antd';
 import dayjs from 'dayjs';
 import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
-import { AvailabilitySlot, BookableSessionType } from '../../../services/booking/booking.api';
+import { AvailabilitySlot, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
 import { FormValues, IMAGE_RIGHTS_OPTIONS } from '../types';
 import { inputStyle, labelStyle } from '../styles';
 
@@ -9,6 +9,7 @@ const DNI_REGEX = /^(\d{8}[A-Za-z]|[XYZxyz]\d{7}[A-Za-z])$/;
 
 interface DetailsFormStepProps {
   sessionType: BookableSessionType;
+  groupName: string;
   slot: AvailabilitySlot;
   /** Previously entered values, restored when the user navigates back to this step. */
   initialValues: FormValues | null;
@@ -16,11 +17,11 @@ interface DetailsFormStepProps {
   onSubmit: (values: FormValues) => void;
 }
 
-export const DetailsFormStep = ({ sessionType, slot, initialValues, onBack, onSubmit }: DetailsFormStepProps) => (
+export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, onBack, onSubmit }: DetailsFormStepProps) => (
   <WeddingCard>
     <WeddingCardHeader
       title="Les teves dades"
-      subtitle={`${sessionType.name} · ${dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')}`}
+      subtitle={`${sessionDisplayName(groupName, sessionType.name)} · ${dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')}`}
     />
     <Form<FormValues>
       layout="vertical"

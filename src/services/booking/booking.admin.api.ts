@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPut, apiPatch, apiDelete } from '../api.client';
+import { apiGet, apiGetBlob, apiPost, apiPut, apiPatch, apiDelete } from '../api.client';
 import type { ImageRightsConsent, SessionType } from './booking.api';
 
 export type BookingStatus = 'Requested' | 'Confirmed' | 'Paid' | 'Cancelled';
@@ -23,6 +23,8 @@ export interface AdminBooking {
   imageRights: ImageRightsConsent;
   notes?: string | null;
   confirmationToken: string;
+  /** Null while the client has not signed: an attribute of the booking, not a status (API 010 FR-6). */
+  contractSignedAt: string | null;
   createdAt: string;
   updatedAt: string;
   participants: AdminBookingParticipant[];
@@ -105,6 +107,10 @@ export function fetchBookings(filter: {
 
 export function updateBookingStatus(id: number, status: BookingStatus): Promise<AdminBooking> {
   return apiPatch<AdminBooking, { status: BookingStatus }>(`/api/admin/bookings/${id}`, { status });
+}
+
+export function fetchAdminContractPdf(bookingId: number): Promise<Blob> {
+  return apiGetBlob(`/api/admin/bookings/${bookingId}/contract/pdf`);
 }
 
 export function resendBookingEmail(id: number, kind: 'requested' | 'confirmed'): Promise<{ delivered: boolean }> {

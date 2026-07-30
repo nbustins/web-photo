@@ -54,6 +54,24 @@ export function apiGet<T>(path: string): Promise<T> {
   return request<T>(path, { method: 'GET' });
 }
 
+/** Binary GET (PDF downloads): same auth handling as request(), but no JSON parsing. */
+export async function apiGetBlob(path: string): Promise<Blob> {
+  if (!baseUrl) {
+    throw new ApiError(0, 'VITE_API_BASE_URL no està configurat');
+  }
+
+  const headers = new Headers();
+  const token = getToken();
+  if (token) headers.set('Authorization', `Bearer ${token}`);
+
+  const response = await fetch(`${baseUrl}${path}`, { headers });
+  if (!response.ok) {
+    throw new ApiError(response.status, response.statusText);
+  }
+
+  return response.blob();
+}
+
 export function apiPost<T, B = unknown>(path: string, body?: B): Promise<T> {
   return request<T>(path, {
     method: 'POST',

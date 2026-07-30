@@ -1,7 +1,7 @@
 import { Button, Row } from 'antd';
 import dayjs from 'dayjs';
 import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
-import { AvailabilitySlot, BookableSessionType } from '../../../services/booking/booking.api';
+import { AvailabilitySlot, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
 import { FormValues, IMAGE_RIGHTS_OPTIONS } from '../types';
 import { bodyTextStyle, labelStyle } from '../styles';
 
@@ -37,7 +37,7 @@ export const SummaryStep = ({ sessionType, groupName, slot, values, submitting, 
       subtitle="Revisa les dades abans de confirmar"
     />
     <div style={{ textAlign: 'left', marginTop: 8 }}>
-      <SummaryRow label="Sessió" value={`${sessionType.name} · ${groupName}`} />
+      <SummaryRow label="Sessió" value={sessionDisplayName(groupName, sessionType.name)} />
       <SummaryRow label="Data i hora" value={dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')} />
       <SummaryRow label="Nom i cognoms" value={values.name} />
       <SummaryRow label="Telèfon" value={values.phone} />

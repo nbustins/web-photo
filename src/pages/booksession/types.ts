@@ -2,7 +2,7 @@ import { ImageRightsConsent } from '../../services/booking/booking.api';
 
 export interface FormValues {
   name: string;
-  email?: string;
+  email: string;
   phone: string;
   dni: string;
   address: string;

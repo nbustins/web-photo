@@ -20,9 +20,10 @@ export const bodyTextStyle: React.CSSProperties = {
   lineHeight: 1.7,
 };
 
+// No minHeight: MainLayout's Content already has flex:1 inside a 100vh column, and a
+// hardcoded calc() here ignored the footer, forcing a scrollbar on every page using it.
 export const pageStyle: React.CSSProperties = {
   padding: pageBodyPadding,
   maxWidth: 820,
   margin: '0 auto',
-  minHeight: 'calc(100vh - 130px)',
 };

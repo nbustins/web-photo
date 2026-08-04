@@ -50,7 +50,7 @@ export const BookSession = () => {
         startAt: selectedSlot.startAt,
         reserver: {
           name: formValues.name,
-          email: formValues.email || undefined,
+          email: formValues.email,
           phone: formValues.phone,
           dni: formValues.dni,
           address: formValues.address,
@@ -110,8 +110,9 @@ export const BookSession = () => {
 
   return (
     <div style={pageStyle}>
-      {step === 0 && (
-        <div style={{ marginBottom: 24 }}>
+      {/* Arriving with the type in the URL (pricing card) means the choice is already made. */}
+      {!sessionTypeId && step === 0 && (
+        <div style={{ margin: 'clamp(8px, 2vw, 24px) 0 24px' }}>
           <SessionTypePicker
             groups={groups}
             value={sessionType?.id}
@@ -128,8 +129,8 @@ export const BookSession = () => {
         current={step}
         responsive={false}
         size="small"
-        style={{ maxWidth: 600, margin: '0 auto 32px', fontFamily: "'Raleway', sans-serif" }}
-        items={[{ title: 'Data i hora' }, { title: 'Les teves dades' }, { title: 'Resum' }, { title: 'Confirmació' }]}
+        style={{ maxWidth: 600, margin: 'clamp(8px, 2vw, 24px) auto 32px', fontFamily: "'Raleway', sans-serif" }}
+        items={[{ title: 'Data' }, { title: 'Dades' }, { title: 'Resum' }, { title: 'Confirmació' }]}
       />
 
       {submitError && (

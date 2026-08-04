@@ -41,7 +41,7 @@ export const SummaryStep = ({ sessionType, groupName, slot, values, submitting, 
       <SummaryRow label="Data i hora" value={dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')} />
       <SummaryRow label="Nom i cognoms" value={values.name} />
       <SummaryRow label="Telèfon" value={values.phone} />
-      {values.email && <SummaryRow label="Email" value={values.email} />}
+      <SummaryRow label="Email" value={values.email} />
       <SummaryRow label="DNI / NIE" value={values.dni} />
       <SummaryRow label="Adreça" value={values.address} />
       <SummaryRow

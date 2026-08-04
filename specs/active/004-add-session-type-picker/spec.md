@@ -37,16 +37,16 @@ same page — no dead end, no second page.
 ## 4. User stories
 
 - As a client arriving from the menu, I want to choose the session type on the booking page, so that I can book without hunting for the right service page.
-- As a client arriving from a pricing card, I want the type preselected but changeable, so that I can switch without going back.
+- As a client arriving from a pricing card, I want to go straight to the calendar with no selector in the way, so that the choice I already made is not asked again.
 
 ## 5. Functional requirements
 
 - FR-1: `/book-session` (no route param) renders the booking flow with no session type selected and no error state.
 - FR-2: A selector at the top of step 0 lists every **bookable** session type from `GET /api/booking/session-groups`, grouped by session group, labelled `sessionDisplayName(group, type)`.
-- FR-3: `/book-session/:sessionTypeId` preselects that type in the selector; the flow behaves exactly as today.
+- FR-3: `/book-session/:sessionTypeId` hides the selector entirely and behaves exactly as today — the type came with the link, it is not asked again. Presence of the route param is the switch; no prop, no route config.
 - FR-4: With no type selected, step 0 shows an informative empty state ("Selecciona una sessió") instead of the calendar; steps 1–3 are unreachable.
 - FR-5: Choosing a type loads its availability for the visible month and clears any previously selected date and slot.
-- FR-6: The selector is visible only on step 0. From step 1 on it is hidden, so the type cannot change under a half-filled form.
+- FR-6: The selector is visible only on step 0 of the param-less route. From step 1 on it is hidden, so the type cannot change under a half-filled form.
 - FR-7: A route param that is not a bookable type keeps today's error card ("Sessió no disponible"). Absent param ≠ invalid param.
 - FR-8: If the bookable catalog is empty or fails to load, step 0 shows the existing error card, not an empty selector.
 
@@ -127,7 +127,7 @@ hores lliures", `bodyTextStyle`) — no separate `Alert`, no empty calendar card
 
 6. `const [typeId, setTypeId] = useState<number | undefined>(sessionTypeId ? Number(sessionTypeId) : undefined)` — route param seeds the state (FR-3), the picker owns it afterwards.
 7. `useSessionType(typeId)`; `groups` comes back from the hook.
-8. Render `<SessionTypePicker />` above `<Steps>` when `step === 0` (FR-6), `onChange` → `setTypeId(id)` + `setSelectedDate(null)` + `setSelectedSlot(null)` (FR-5). No `navigate`, the URL never changes.
+8. Render `<SessionTypePicker />` above `<Steps>` when `!sessionTypeId && step === 0` — the route param, not a prop, decides whether the picker exists (FR-3, FR-6), `onChange` → `setTypeId(id)` + `setSelectedDate(null)` + `setSelectedSlot(null)` (FR-5). No `navigate`, the URL never changes.
 9. Step 0 body: `sessionType && <DateTimeStep …/>` — nothing selected means only the picker card is on screen (FR-4).
 10. The loading spinner and the error card (`booksession.tsx:80-103`) stay, now gated on the FR-7/FR-8 conditions only.
 
@@ -152,7 +152,7 @@ and the old file re-exports it under the old names. No other file changes.
 - [ ] Menu "Reservar Sessió" opens a usable booking page (no "Sessió no disponible").
 - [ ] Selector lists every bookable type, grouped by session group, with the group in the label.
 - [ ] Picking a type loads that type's availability; a previously picked date/slot is cleared.
-- [ ] `/book-session/:id` from a pricing card still lands on step 0 with the type preselected in the selector.
+- [ ] `/book-session/:id` from a pricing card lands straight on the calendar, with no selector on screen.
 - [ ] Selector hidden on steps 1, 2 and 3.
 - [ ] URL stays `/book-session` while picking; browser back leaves the page, it does not step through selections.
 - [ ] `/book-session/999999` (unknown id) still shows the error card.

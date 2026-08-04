@@ -59,7 +59,7 @@ export interface CreateBookingRequest {
   startAt: string;
   reserver: {
     name: string;
-    email?: string;
+    email: string;
     phone: string;
     dni: string;
     address: string;

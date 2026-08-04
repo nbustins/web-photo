@@ -50,8 +50,11 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
         <Col xs={24} sm={12}>
           <Form.Item
             name="email"
-            label={<span style={labelStyle}>Email (recomanat per rebre la confirmació)</span>}
-            rules={[{ type: 'email', message: 'Email no vàlid' }]}
+            label={<span style={labelStyle}>Email</span>}
+            rules={[
+              { required: true, message: 'Escriu el teu email' },
+              { type: 'email', message: 'Email no vàlid' },
+            ]}
           >
             <Input type="email" style={inputStyle} />
           </Form.Item>

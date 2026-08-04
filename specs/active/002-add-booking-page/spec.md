@@ -33,7 +33,7 @@ create a booking — no Google Forms.
 - FR-1: Page receives the session type id as a route parameter; resolves its name/group via `GET /api/session-groups` (unknown or inactive id → error state, no flow).
 - FR-2: Page loads slots from `GET /api/bookings/availability?sessionTypeId=&from=&to=`.
 - FR-3: Client picks day, then slot (start time) from the availability response.
-- FR-4: Form collects reserver (name, email optional, phone, DNI/NIE, address), participants (name, age only for minors 0–17, min 1), image-rights consent (3 options), optional notes.
+- FR-4: Form collects reserver (name, email, phone, DNI/NIE, address — all required), participants (name, age only for minors 0–17, min 1), image-rights consent (3 options), optional notes.
 - FR-5: Submit calls `POST /api/bookings`; on 201 show confirmation with the returned data.
 - FR-6: Client-side validation mirrors API rules (DNI/NIE regex `^(\d{8}[A-Za-z]|[XYZxyz]\d{7}[A-Za-z])$`, email format, required fields) before submit.
 - FR-7: API errors surface in-page: 404 (type gone), 422 (slot taken → refresh slots), 409 (conflict), 429 (rate-limited → "try later").
@@ -52,7 +52,7 @@ Client-side types mirror API DTOs:
 - `SessionGroupWithTypes { id, name, sessionTypes: SessionType[] }`
 - `SessionType { id, sessionGroupId, name, durationMinutes, bufferMinutes, isActive, availableFrom?, availableTo? }`
 - `AvailabilityResponse { sessionTypeId, durationMinutes, timezone, days: [{ date, slots: [{ startAt, endAt }] }] }`
-- `CreateBookingRequest { sessionTypeId, startAt, reserver { name, email?, phone, dni, address }, participants [{ name, age? }], imageRights, notes? }`
+- `CreateBookingRequest { sessionTypeId, startAt, reserver { name, email, phone, dni, address }, participants [{ name, age? }], imageRights, notes? }`
 - `ImageRightsConsent`: `GrantAll` | `DenyAll` | `GrantMineDenyMinors`
 - `CreateBookingResult { id, confirmationToken }`
 
@@ -82,10 +82,10 @@ States:
 - Error: fetch fail → retry message; submit fail → per-FR-7 handling, form data preserved.
 - Success: confirmation screen — booking summary (session, date/time, reserver
   name) + `confirmationToken` visible and copyable, with note to keep it to
-  manage the booking (email is optional, token is the only recovery path).
+  manage the booking (the token is the recovery path if the email is lost).
 
-Email field: optional (mirrors API) but nudged — label notes "recomanat per
-rebre confirmació".
+Email field: **required** (API booking spec QA9) — plain "Email" label, no nudge
+text; the confirmation and the contract are sent there.
 
 Image-rights consent: radio group with 3 options, labels fixed (map 1:1 to
 `ImageRightsConsent` enum):

@@ -170,4 +170,4 @@ export function fetchContractPdf(token: string): Promise<Blob> {
  * carries half the meaning ("Bàsica editada" alone says nothing). Mirrors the API's
  * SessionTypeInfo.DisplayName, used where the API sends the two parts separately.
  */
-export const sessionDisplayName = (groupName: string, typeName: string) => `${groupName} · ${typeName}`;
+export const sessionDisplayName = (groupName: string, typeName: string) => `${groupName} ${typeName}`;

@@ -11,6 +11,7 @@ import { FormValues } from './types';
 import { bodyTextStyle, inputStyle, pageStyle } from './styles';
 import { useMonthAvailability, useSessionType } from './hooks';
 import { StatusCard } from './components/StatusCard';
+import { SessionTypePicker } from './components/SessionTypePicker';
 import { DateTimeStep } from './components/DateTimeStep';
 import { DetailsFormStep } from './components/DetailsFormStep';
 import { SummaryStep } from './components/SummaryStep';
@@ -22,7 +23,12 @@ export const BookSession = () => {
   const { sessionTypeId } = useParams();
   const navigate = useNavigate();
 
-  const { sessionType, groupName, loading, error, setError } = useSessionType(sessionTypeId);
+  // The route param only seeds the choice; from there the picker owns it and the URL stays put.
+  const [typeId, setTypeId] = useState<number | undefined>(
+    sessionTypeId ? Number(sessionTypeId) : undefined,
+  );
+
+  const { groups, sessionType, groupName, loading, error, setError } = useSessionType(typeId);
   const { month, setMonth, slotsByDate, loading: loadingSlots, reload } = useMonthAvailability(sessionType);
 
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
@@ -85,7 +91,7 @@ export const BookSession = () => {
     );
   }
 
-  if (error || !sessionType) {
+  if (error) {
     return (
       <div style={pageStyle}>
         <StatusCard variant="error" title="Sessió no disponible">
@@ -104,6 +110,20 @@ export const BookSession = () => {
 
   return (
     <div style={pageStyle}>
+      {step === 0 && (
+        <div style={{ marginBottom: 24 }}>
+          <SessionTypePicker
+            groups={groups}
+            value={sessionType?.id}
+            onChange={id => {
+              setTypeId(id);
+              setSelectedDate(null);
+              setSelectedSlot(null);
+            }}
+          />
+        </div>
+      )}
+
       <Steps
         current={step}
         responsive={false}
@@ -117,7 +137,7 @@ export const BookSession = () => {
           onClose={() => setSubmitError(null)} style={{ marginBottom: 24, ...inputStyle }} />
       )}
 
-      {step === 0 && (
+      {step === 0 && sessionType && (
         <DateTimeStep
           sessionType={sessionType}
           groupName={groupName}
@@ -133,7 +153,7 @@ export const BookSession = () => {
         />
       )}
 
-      {step === 1 && selectedSlot && (
+      {step === 1 && sessionType && selectedSlot && (
         <DetailsFormStep
           sessionType={sessionType}
           groupName={groupName}
@@ -144,7 +164,7 @@ export const BookSession = () => {
         />
       )}
 
-      {step === 2 && selectedSlot && formValues && (
+      {step === 2 && sessionType && selectedSlot && formValues && (
         <SummaryStep
           sessionType={sessionType}
           groupName={groupName}
@@ -156,7 +176,7 @@ export const BookSession = () => {
         />
       )}
 
-      {step === 3 && selectedSlot && formValues && result && (
+      {step === 3 && sessionType && selectedSlot && formValues && result && (
         <ConfirmationStep
           sessionType={sessionType}
           groupName={groupName}

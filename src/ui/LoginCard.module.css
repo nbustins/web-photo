@@ -1,9 +1,9 @@
 .screen {
-  composes: splitScreen from '../pageContainer.module.css';
+  composes: splitScreen from './pageContainer.module.css';
 }
 
 .panel {
-  composes: splitPanel from '../pageContainer.module.css';
+  composes: splitPanel from './pageContainer.module.css';
 }
 
 .formWrap {

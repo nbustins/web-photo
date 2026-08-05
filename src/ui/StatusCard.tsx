@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { Typography } from 'antd';
-import { SurfaceCard } from '../SurfaceCard';
+import { SurfaceCard } from './SurfaceCard';
 import styles from './StatusCard.module.css';
 
 const { Title } = Typography;

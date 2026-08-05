@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { primitives } from '@styles/tokens';
 import styles from './SignaturePad.module.css';
 
-// Canvas 2D strokeStyle no pot llegir custom properties CSS: tinta de la signatura, valor original.
-const INK = '#3f3a30';
+// Canvas 2D strokeStyle no pot llegir custom properties CSS: cal el valor real.
+const INK = primitives.ink800;
 
 interface SignaturePadProps {
   /** Fires with the PNG data URL after each stroke, and with null when cleared. */

@@ -39,9 +39,8 @@ d'afegir-ne un.
 ## Espaiat, radis, ombres, contenidors, motion
 
 Tots vénen de `tokens.css` (`--lt-space-*`, `--lt-radius-*`, `--lt-shadow-*`,
-`--lt-container-*`, `--lt-duration-*`, `--lt-ease-out`). `src/styles/tokens/radii.ts`
-és un re-export `@deprecated` de compatibilitat — no l'ampliïs, importa de
-`@styles/tokens`.
+`--lt-container-*`, `--lt-duration-*`, `--lt-ease-out`). Des de TypeScript,
+importa'ls de `@styles/tokens`.
 
 Row gutters d'antd i marges de secció: fes-los servir de manera consistent amb
 el que ja hi ha a la pàgina veïna, no inventis un valor nou.
@@ -120,9 +119,14 @@ const src = getPublicPath("session-name/1.jpg");
 ## Ant Design
 
 - `Row` / `Col` per a tot el grid.
-- `Typography.Title` / `Typography.Text` amb moderació — la majoria del text es
-  gestiona per `.module.css`, no per `style` inline (F4 en curs, veure
-  `specs/`).
+- `Typography.Title` / `Typography.Text` amb moderació — el text es gestiona
+  per `.module.css`, no per `style` inline.
+- Per estilitzar un `Typography.Title` des d'un `.module.css`, el selector ha de
+  portar l'element davant (`h2.title`, `h3.title`): antd fixa la mida amb
+  `h2.ant-typography` (0,1,1) i una classe sola hi perdria. Amb `Text` no cal.
+- Les classes pròpies guanyen a les d'antd amb la mateixa especificitat: antd
+  injecta els seus estils al principi del `<head>` (`prepend`), i el CSS de
+  l'app hi va darrere. Per això no cal cap `!important`.
 - Mai importis de rutes internes d'antd (`antd/es/**`) — regla forçada per
   ESLint. Importa sempre de `"antd"`.
 - Mai barregis el grid d'antd amb flexbox/grid CSS cru per a la mateixa graella

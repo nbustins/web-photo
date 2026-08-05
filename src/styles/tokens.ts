@@ -12,6 +12,7 @@ export const primitives = {
   olive300: '#A09880',
   sand500: 'rgb(174,142,116)',
   ink900: '#231F20',
+  ink800: '#3F3A30',
   ink700: '#3D3228',
   ink500: '#4A4539',
   grey600: '#5A5A5A',

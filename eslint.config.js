@@ -23,9 +23,9 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      // Eix I2 (analysis.md §3.9). warn fins que F4 acabi la migració; puja a error a T4.10.
+      // Eix I2 (analysis.md §3.9).
       'no-restricted-syntax': [
-        'warn',
+        'error',
         {
           selector: "Property[key.name='fontFamily']",
           message: 'Usa var(--lt-font-*) en un .module.css, no fontFamily inline.',
@@ -40,7 +40,7 @@ export default tseslint.config(
         },
       ],
       'no-restricted-imports': [
-        'warn',
+        'error',
         {
           patterns: [
             { group: ['**/pages/*/**'], message: "Un mòdul no importa d'un altre mòdul. Puja-ho a src/ui." },
@@ -51,8 +51,9 @@ export default tseslint.config(
     },
   },
   {
-    // Font única dels valors del sistema: aquí SÍ hi ha d'haver literals de color.
-    files: ['src/styles/tokens.ts'],
+    // Font única dels valors del sistema i pont cap a antd: aquí SÍ hi ha
+    // d'haver literals de color i fontFamily.
+    files: ['src/styles/tokens.ts', 'src/styles/antd-theme.ts'],
     rules: {
       'no-restricted-syntax': 'off',
     },
@@ -62,6 +63,13 @@ export default tseslint.config(
     files: ['src/ui/hooks/useIsMobile.ts'],
     rules: {
       'no-restricted-syntax': 'off',
+    },
+  },
+  {
+    // El router és qui coneix totes les pàgines: és la seva feina importar-les.
+    files: ['src/router/**'],
+    rules: {
+      'no-restricted-imports': 'off',
     },
   },
 )

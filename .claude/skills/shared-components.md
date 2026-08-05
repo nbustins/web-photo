@@ -195,7 +195,19 @@ No específiques de marketing però reutilitzades arreu — vegeu
 
 - `SurfaceCard`, `SurfaceCardHeader` — targeta de vidre amb capçalera (abans
   `GlassCard`/`WeddingCard`).
+- `StatusCard` — resultat amb icona rodona i títol; `tone="success|error|info"`.
+  Reserves i confirmació de bodes.
+- `AppBar` — capçalera fosca enganxada a dalt de les zones d'aplicació (panell
+  d'admin, gestor de bodes); accions a la dreta via `actions`.
 - `MobileShell`, `MobileSwiper`, `DesktopSplitBackground` — layout de
   login/formularis amb imatge.
 - `LoginCard` — formulari de login complet (admin, gestor de boda).
 - `useIsMobile` — únic hook de breakpoint.
+
+Fulls compartits (no components), per fer-hi `composes` des d'un `.module.css`
+amb **path relatiu** (l'àlies `@ui` no funciona dins `composes`):
+
+- `@ui/text.module.css` — `.body`, `.caption`.
+- `@ui/formStyles.module.css` — `.label`, `.input`.
+- `@ui/pageContainer.module.css` — `.page` (820), `.pageWide` (1200, sota
+  `AppBar`), `.splitScreen` + `.splitPanel` (pantalla amb fons partit).

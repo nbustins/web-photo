@@ -6,6 +6,7 @@ import { logout } from '../../services/auth/auth.service';
 import { BookingsTab } from './tabs/BookingsTab';
 import { SessionsTab } from './tabs/SessionsTab';
 import { ScheduleTab } from './tabs/ScheduleTab';
+import { WeddingsTab } from './tabs/WeddingsTab';
 import styles from './AdminPanel.module.css';
 
 const { Content } = Layout;
@@ -36,6 +37,7 @@ export const AdminPanel: FC = () => {
             { key: 'bookings', label: 'Reserves', children: <BookingsTab /> },
             { key: 'sessions', label: 'Sessions', children: <SessionsTab /> },
             { key: 'schedule', label: 'Horaris', children: <ScheduleTab /> },
+            { key: 'weddings', label: 'Casaments', children: <WeddingsTab /> },
           ]}
         />
       </Content>

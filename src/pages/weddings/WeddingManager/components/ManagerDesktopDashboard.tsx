@@ -16,6 +16,7 @@ interface ManagerDesktopDashboardProps {
   rows: ConfirmationRow[];
   stats: ManagerStats;
   onLogout: () => void;
+  exitLabel?: string;
   onSelectInvitation: (invitationId: number) => void;
   onShowNote: (note: string) => void;
 }
@@ -25,6 +26,7 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
   rows,
   stats,
   onLogout,
+  exitLabel = 'Tancar sessió',
   onSelectInvitation,
   onShowNote,
 }) => {
@@ -94,7 +96,7 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
         title={weddingTitle}
         contentClassName={styles.headerContent}
         actions={
-          <Button className={styles.logoutButton} onClick={onLogout}>Tancar sessió</Button>
+          <Button className={styles.logoutButton} onClick={onLogout}>{exitLabel}</Button>
         }
       />
       <Content className={styles.scrollArea}>

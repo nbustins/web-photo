@@ -7,7 +7,8 @@ import { getUser } from '../../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../../model/wedding.types';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import { LoginCard } from '@ui/LoginCard';
-import type { InvitationSummary, LoginFormValues, ManagerStats } from './WeddingManager.types';
+import type { InvitationSummary, LoginFormValues } from './WeddingManager.types';
+import { buildSummary, computeStats } from './manager.utils';
 import {
   ManagerDesktopDashboard,
   ManagerInvitationDrawer,
@@ -20,20 +21,6 @@ const { Content } = Layout;
 const { Title, Text } = Typography;
 
 type ManagerState = 'login' | 'loading' | 'error' | 'data';
-
-const buildSummary = (rows: ConfirmationRow[], invitationId: number): InvitationSummary | null => {
-  const matching = rows.filter(r => r.invitationId === invitationId);
-  if (!matching.length) return null;
-  const first = matching[0];
-  return {
-    invitationId: first.invitationId,
-    label: first.label,
-    inviteCode: first.inviteCode,
-    maxAddedGuests: first.maxAddedGuests,
-    notes: first.notes,
-    guests: matching.map(r => ({ id: r.guestId, name: r.guestName, isPredefined: r.isPredefined, attending: r.guestAttending })),
-  };
-};
 
 export const WeddingManagerPage: FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -125,16 +112,6 @@ export const WeddingManagerPage: FC = () => {
     );
   }
 
-  const getStats = (): ManagerStats => {
-    const totalGuests = rows.length;
-    const confirmed = rows.filter(r => r.guestAttending === true).length;
-    const declined = rows.filter(r => r.guestAttending === false).length;
-    const pending = rows.filter(r => r.guestAttending === null).length;
-    const invitationIds = new Set(rows.map(r => r.invitationId));
-    const respondedIds = new Set(rows.filter(r => r.guestAttending !== null).map(r => r.invitationId));
-    return { totalGuests, confirmed, declined, pending, totalInvitations: invitationIds.size, respondedInvitations: respondedIds.size };
-  };
-
   if (state === 'login' || state === 'error') {
     return (
       <LoginCard
@@ -161,7 +138,7 @@ export const WeddingManagerPage: FC = () => {
     );
   }
 
-  const stats = getStats();
+  const stats = computeStats(rows);
 
   const overlays = (
     <>

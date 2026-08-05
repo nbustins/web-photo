@@ -1,0 +1,8 @@
+/* Covers the whole admin panel (AppBar is z-index 100) while a wedding is open. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow-y: auto;
+  background: var(--lt-color-surface-page);
+}

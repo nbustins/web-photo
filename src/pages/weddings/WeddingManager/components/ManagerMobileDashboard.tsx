@@ -20,6 +20,7 @@ interface ManagerMobileDashboardProps {
   rows: ConfirmationRow[];
   stats: Stats;
   onLogout: () => void;
+  exitLabel?: string;
   onSelectInvitation: (invitationId: number) => void;
   onShowNote: (note: string) => void;
 }
@@ -31,6 +32,7 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
   rows,
   stats,
   onLogout,
+  exitLabel = 'Tancar sessió',
   onSelectInvitation,
   onShowNote,
 }) => {
@@ -60,7 +62,7 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
       <header className={styles.header}>
         <span className={styles.headerTitle}>{weddingTitle}</span>
         <button onClick={onLogout} className={styles.logoutButton}>
-          Tancar sessió
+          {exitLabel}
         </button>
       </header>
 

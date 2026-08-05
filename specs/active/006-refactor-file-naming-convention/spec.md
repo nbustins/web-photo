@@ -1,6 +1,6 @@
 # 006 — Refactor the file naming convention
 
-- **Status:** draft
+- **Status:** in-progress (F2 T2.1–T2.2 done; F1 pending)
 - **Owner:** Narcís
 - **Created:** 2026-08-05
 - **Updated:** 2026-08-05
@@ -170,11 +170,25 @@ from `.claude/skills/design-system.md` so it is found when a new file is added.
 
 Split into commits by area so a mistake is cheap to revert:
 
-- **T2.1** `src/ui/` → flat layout, category-D files renamed (§7.1)
-- **T2.2** the other `index` files: `services/wedding`, `ui/hooks`, `carla-joel` (§7.2)
+- **T2.1** ✅ `src/ui/` → flat layout, category-D files renamed (§7.1) — `bcc04d9`
+- **T2.2** ✅ the other `index` files: `services/wedding`, `ui/hooks`, `carla-joel` (§7.2) — `95c7900`
 - **T2.3** `src/components/` renames (name ≠ export, §1.3)
 - **T2.4** casing pass over the rest, per the T1.1 rule
 - **T2.5** documentation updated, spec moved to `specs/done/`
+
+> **T2.1 and T2.2 were executed ahead of F1**, on request: they only depend on
+> decisions already resolved (§12 Q1–Q3), not on the casing rule. T2.3 and T2.4
+> do depend on it and stay blocked until F1 is approved.
+>
+> Verified after them: `find src -name "index.*"` returns exactly the three
+> category-A barrels; no `@ui/*` import string changed; `git diff --name-status`
+> shows `R100` on both renames, so history follows; `tsc -b`, `npm run build`,
+> `npm run lint` (0 errors) and `check-tokens.sh` clean.
+>
+> One deviation from §7.2: `hooks/` now holds a single file. Keeping it as a
+> folder is deliberate — it separates hooks from components in a `src/ui/` that
+> is otherwise flat, and `@ui/hooks/useIsMobile` reads better than
+> `@ui/useIsMobile`. Revisit if no second hook ever appears.
 
 ---
 

@@ -1,0 +1,77 @@
+.layout {
+  min-height: 100vh;
+  min-width: 99vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+}
+
+.footer {
+  text-align: center;
+  padding: var(--lt-space-3) var(--lt-space-6);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 0 var(--lt-space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 80px;
+}
+
+/* Mida reservada abans que carregui la imatge (666x375): sense això el menú
+   d'antd mesurava l'amplada disponible amb el logo encara a 0 i plegava els
+   ítems dins el "...". Abans es corregia remuntant els menús a l'onLoad. */
+.logo {
+  height: 64px;
+  aspect-ratio: 666 / 375;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+  display: block;
+}
+
+.burger {
+  margin-left: auto;
+}
+
+.burgerIcon {
+  font-size: 26px;
+}
+
+.desktopBar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px; /* separació entre logo i menús */
+  height: 100%;
+}
+
+/* min-width igual als dos costats perquè el logo quedi centrat de debò. */
+.sideMenu {
+  border-bottom: none;
+  font-size: 18px;
+  color: #333;
+  background: transparent;
+  min-width: 400px;
+}
+
+.sideMenuLeft {
+  composes: sideMenu;
+  flex-direction: row-reverse;
+}
+
+.sideMenuRight {
+  composes: sideMenu;
+  flex-direction: row;
+}

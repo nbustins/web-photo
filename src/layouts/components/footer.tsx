@@ -1,4 +1,5 @@
 import { Layout } from "antd";
+import styles from "../layout.module.css";
 
 type FooterProps = {
   author: string;
@@ -7,7 +8,7 @@ type FooterProps = {
 
 export function Footer({ author, year = new Date().getFullYear() }: FooterProps) {
   return (
-    <Layout.Footer style={{ textAlign: 'center', padding: '12px 24px' }}>
+    <Layout.Footer className={styles.footer}>
       © {year} {author} — All rights reserved.
     </Layout.Footer>
   );

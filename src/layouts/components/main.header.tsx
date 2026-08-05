@@ -1,40 +1,12 @@
-import { Button, Drawer, Grid, Menu, MenuProps } from "antd";
-import { Header } from "antd/es/layout/layout";
+import { Button, Drawer, Grid, Layout, Menu, MenuProps } from "antd";
 import { AppRoutes } from "../../model/routes.model";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getPublicPath } from "../../utils/pathUtils";
 import { MenuOutlined } from "@ant-design/icons";
+import styles from "../layout.module.css";
 
-const headerStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  background: "#fff",
-  padding: "0 20px",
-  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-  width: "100%",
-  position: "sticky",
-  top: 0,
-  zIndex: 1000,
-  height: 80,
-};
-
-const sideMenuStyle: React.CSSProperties = {
-  borderBottom: "none",
-  fontSize: "18px",
-  color: "#333",
-  background: "transparent",
-  minWidth: '400px',
-  flexDirection: 'row-reverse'
-};
-
-const logoStyle: React.CSSProperties = {
-  maxHeight: 64,
-  width: "auto",
-  objectFit: "contain",
-  cursor: "pointer",
-  display: "block",
-};
+const { Header } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -89,34 +61,23 @@ export const MainHeader = () => {
   const leftItems: MenuItem[] = items.slice(0, 2);
   const rightItems: MenuItem[] = items.slice(2, 5);
 
-  // Forçar recarrega de menu al carregar el logo
-  const [menuKeyRight, setMenuKeyRight] = useState(0);
-  const [menuKeyLeft, setMenuKeyLeft] = useState(0);
-
-  const forceMenuRecalc = () => {
-    setMenuKeyRight((k) => k + 1);
-    setMenuKeyLeft((k) => k + 2);
-  }
-  // Fallback recalcul de menu (proteccio per si de cas)
-  useEffect(() => forceMenuRecalc(), []);
-
   return (
-    <Header style={headerStyle}>
+    <Header className={styles.header}>
       {isMobile ? (
         <>
           {/* Mobile: logo esquerra + burger dreta (igual que abans) */}
           <img
             src={getPublicPath("Logo.png")}
             alt="Logo"
-            style={logoStyle}
+            className={styles.logo}
             onClick={() => navigate(AppRoutes.home)}
           />
 
           <Button
             type="text"
-            icon={<MenuOutlined style={{ fontSize: 26 }} />}
+            icon={<MenuOutlined className={styles.burgerIcon} />}
             onClick={() => setDrawerOpen(true)}
-            style={{ marginLeft: "auto" }}
+            className={styles.burger}
           />
 
           <Drawer
@@ -136,49 +97,29 @@ export const MainHeader = () => {
         </>
       ) : (
         // Desktop: 2 botons esquerra, logo centrat, 2 botons dreta
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 18, // separació entre logo i menus (ajusta al gust)
-            height: "100%",
-          }}
-        >
+        <div className={styles.desktopBar}>
           <Menu
-            key={menuKeyLeft}
             theme="light"
             mode="horizontal"
             selectedKeys={[selectedKey]}
             onClick={handleMenuClick}
-            style={{
-              ...sideMenuStyle,
-              flexDirection: 'row-reverse'
-
-            }}
+            className={styles.sideMenuLeft}
             items={[...leftItems].reverse()}
           />
 
           <img
             src={getPublicPath("Logo.png")}
             alt="Logo"
-            style={logoStyle}
+            className={styles.logo}
             onClick={() => navigate(AppRoutes.home)}
-            onLoad={forceMenuRecalc}
           />
 
           <Menu
-            key={menuKeyRight}
             theme="light"
             mode="horizontal"
             selectedKeys={[selectedKey]}
             onClick={handleMenuClick}
-            style={{
-              ...sideMenuStyle,
-              flexDirection: 'row'
-
-            }}
+            className={styles.sideMenuRight}
             items={rightItems}
           />
         </div>

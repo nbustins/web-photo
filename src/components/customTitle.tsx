@@ -1,5 +1,6 @@
 import { Typography } from "antd";
 import { motion } from "framer-motion";
+import styles from "./blocks.module.css";
 
 const { Title } = Typography;
 
@@ -18,18 +19,9 @@ const titleFade = {
 
 export function CustomTitle({ label, title }: { label: string; title: string }) {
   return (
-    <div style={{ textAlign: "center", marginBottom: "0px" }}>
+    <div className={styles.titleBlock}>
       {/* Label apareix directament */}
-      <div
-        style={{
-          fontSize: "clamp(1.6rem, 3vw, 3rem)",
-          letterSpacing: "0.2rem",
-          marginBottom: "clamp(-0.4rem, -3vw, -1rem)",
-          fontFamily: "Italiana",
-        }}
-      >
-        {label}
-      </div>
+      <div className={styles.titleLabel}>{label}</div>
 
       {/* Title amb fade in */}
       <motion.div
@@ -38,17 +30,7 @@ export function CustomTitle({ label, title }: { label: string; title: string }) 
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <Title
-          level={1}
-          style={{
-            fontSize: "clamp(3rem,6vw,6rem)",
-            fontWeight: 700,
-            lineHeight: "1.1",
-            margin: 0,
-            fontFamily: "Italiana",
-            letterSpacing: "0.3rem",
-          }}
-        >
+        <Title level={1} className={styles.titleMain}>
           {title}
         </Title>
       </motion.div>

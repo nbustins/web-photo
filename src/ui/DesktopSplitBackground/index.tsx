@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { getPublicPath } from '../../utils/pathUtils';
+import styles from './DesktopSplitBackground.module.css';
 
 interface DesktopSplitBackgroundProps {
   images: string[];
@@ -10,43 +11,22 @@ export const DesktopSplitBackground: FC<DesktopSplitBackgroundProps> = ({ images
   const sources = images.length > 0 ? images : fallbackImage ? [fallbackImage] : [];
 
   if (sources.length === 0) {
-    return (
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 0,
-        backgroundColor: 'rgb(246, 244, 240)',
-      }} />
-    );
+    return <div className={styles.plain} />;
   }
 
   const leftImage = sources[0];
   const rightImage = sources[1] ?? sources[0];
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 0,
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      backgroundColor: 'rgb(246, 244, 240)',
-    }}>
+    <div className={styles.split}>
       {[leftImage, rightImage].map((src, index) => (
         <div
           key={`${src}-${index}`}
-          style={{
-            backgroundImage: `url(${getPublicPath(src)})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
+          className={styles.half}
+          style={{ backgroundImage: `url(${getPublicPath(src)})` }}
         />
       ))}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'rgba(246, 244, 240, 0.18)',
-      }} />
+      <div className={styles.veil} />
     </div>
   );
 };

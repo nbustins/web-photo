@@ -4,6 +4,7 @@ import { DesktopSplitBackground } from '@ui/DesktopSplitBackground';
 import { MobileShell } from '@ui/MobileShell';
 import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import formStyles from '@ui/formStyles.module.css';
+import styles from './LoginCard.module.css';
 
 const { Title, Text } = Typography;
 
@@ -53,75 +54,35 @@ export const LoginCard: FC<LoginCardProps> = ({
       >
         <Input.Password size="large" autoComplete="current-password" className={formStyles.input} />
       </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
+      <Form.Item className={styles.submitItem}>
         <Button size="large" type="primary" htmlType="submit" loading={submitting} block>
           Accedir
         </Button>
       </Form.Item>
-      {errorMessage && <Text type="danger" style={{ display: 'block', marginTop: 12 }}>{errorMessage}</Text>}
+      {errorMessage && <Text type="danger" className={styles.error}>{errorMessage}</Text>}
     </Form>
   );
 
   if (isMobile) {
     return (
       <MobileShell images={images} fallbackImage={fallbackImage} alt={alt ?? title} expanded>
-        <Title
-          level={2}
-          style={{
-            fontFamily: "'Italiana', Georgia, serif",
-            fontSize: 'clamp(1.6rem, 6vw, 2rem)',
-            fontWeight: 500,
-            color: '#7C7458',
-            margin: 0,
-            letterSpacing: '0.02em',
-            textAlign: 'center',
-          }}
-        >
+        <Title level={2} className={styles.mobileTitle}>
           {title}
         </Title>
-        <Text
-          style={{
-            display: 'block',
-            fontFamily: "'Raleway', sans-serif",
-            fontSize: '0.78rem',
-            color: 'rgb(174, 142, 116)',
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            textAlign: 'center',
-            marginTop: 6,
-            marginBottom: 20,
-          }}
-        >
-          {subtitle}
-        </Text>
+        <Text className={styles.mobileSubtitle}>{subtitle}</Text>
         {loginForm}
       </MobileShell>
     );
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      position: 'relative',
-      backgroundColor: 'rgb(246, 244, 240)',
-      padding: '40px 16px',
-      boxSizing: 'border-box',
-    }}>
+    <div className={styles.screen}>
       <DesktopSplitBackground images={images} fallbackImage={fallbackImage} />
 
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        width: '100%',
-        maxWidth: 520,
-        margin: 'auto',
-      }}>
+      <div className={styles.panel}>
         <SurfaceCard>
           <SurfaceCardHeader title={title} subtitle={subtitle} />
-          <div style={{ maxWidth: 320, margin: '0 auto', textAlign: 'left' }}>
+          <div className={styles.formWrap}>
             {loginForm}
           </div>
         </SurfaceCard>

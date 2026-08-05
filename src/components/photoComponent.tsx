@@ -1,12 +1,12 @@
 import React from "react";
 import { Col } from "antd";
 import { motion } from "framer-motion";
-import { radii } from "../styles/tokens/radii";
+import styles from "./blocks.module.css";
 
 interface PhotoItemProps {
   src: string;
   alt: string;
-  style?: React.CSSProperties;
+  className?: string;
 }
 
 const itemVariants = {
@@ -14,20 +14,13 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 1.5 } },
 };
 
-
-const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt, style }) => (
+const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt, className }) => (
   <Col>
     <motion.div variants={itemVariants}>
       <img
         src={src}
-        alt = {alt}
-        style={{
-        width: "100%",
-        aspectRatio: "2 / 3",
-        overflow: "hidden",
-        borderRadius: radii.md,
-        ...style,
-      }}
+        alt={alt}
+        className={className ? `${styles.photo} ${className}` : styles.photo}
       />
     </motion.div>
   </Col>

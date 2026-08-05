@@ -1,0 +1,44 @@
+.screen {
+  composes: splitScreen from '../pageContainer.module.css';
+}
+
+.panel {
+  composes: splitPanel from '../pageContainer.module.css';
+}
+
+.formWrap {
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.submitItem {
+  margin-bottom: 0;
+}
+
+.error {
+  display: block;
+  margin-top: var(--lt-space-3);
+}
+
+h2.mobileTitle {
+  font-family: var(--lt-font-display);
+  font-size: clamp(1.6rem, 6vw, 2rem);
+  font-weight: 500;
+  color: var(--lt-color-brand);
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.mobileSubtitle {
+  display: block;
+  font-family: var(--lt-font-body);
+  font-size: 0.78rem;
+  color: var(--lt-color-accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: var(--lt-space-5);
+}

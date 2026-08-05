@@ -1,21 +1,10 @@
 /* Marc d'escriptori compartit entre el layout per defecte i els personalitzats. */
 .screen {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  background-color: var(--lt-color-surface-page);
-  padding: 40px var(--lt-space-4);
-  box-sizing: border-box;
+  composes: splitScreen from '../../../ui/pageContainer.module.css';
 }
 
 .panel {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: var(--lt-container-form);
-  margin: auto;
+  composes: splitPanel from '../../../ui/pageContainer.module.css';
 }
 
 .customLoading {

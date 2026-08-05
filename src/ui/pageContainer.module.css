@@ -4,6 +4,26 @@
   margin: 0 auto;
 }
 
+/* Pantalla d'accés/convidat: fons partit a darrere i una targeta centrada. */
+.splitScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-color: var(--lt-color-surface-page);
+  padding: 40px var(--lt-space-4);
+  box-sizing: border-box;
+}
+
+.splitPanel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--lt-container-form);
+  margin: auto;
+}
+
 /* Cos de les zones d'aplicació (admin, gestor), sota una AppBar. */
 .pageWide {
   padding: var(--lt-space-page);

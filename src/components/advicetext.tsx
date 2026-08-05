@@ -1,9 +1,8 @@
 import { FC, ReactNode } from "react";
+import styles from "./blocks.module.css";
 
 export const AdviceText: FC<{ children: ReactNode }> = ({ children }) => (
-  <span style={{ fontStyle: "italic", fontSize: "0.7rem", color: "var(--lt-color-text-muted)" }}>
-    {children}
-  </span>
+  <span className={styles.advice}>{children}</span>
 );
 
 export default AdviceText;

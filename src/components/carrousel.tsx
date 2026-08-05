@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { radii } from "../styles/tokens/radii";
+import React, { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "../ui/hooks";
+import styles from "./blocks.module.css";
 
 interface CarouselProps {
   images: string[];
@@ -52,16 +52,10 @@ const RotatingImageCarousel = ({
   const renderItems = [...items, items[0]];
 
   return (
-    <div
-      style={{
-        width: "100%",
-        overflow: "hidden",
-      }}
-    >
+    <div className={styles.carousel}>
       <div
+        className={styles.carouselTrack}
         style={{
-          display: "flex",
-          willChange: "transform",
           transform: `translate3d(-${(100 / count) * offset}%, 0, 0)`,
           transition:
             offset === 0
@@ -72,29 +66,11 @@ const RotatingImageCarousel = ({
         {renderItems.map((image, i) => (
           <div
             key={`${image}-${i}`}
-            style={{
-              flex: `0 0 ${100 / count}%`,
-              padding: "0.35em",
-            }}
+            className={styles.carouselSlot}
+            style={{ "--carousel-count": count } as React.CSSProperties}
           >
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "2 / 3",
-                borderRadius: radii.md,
-                overflow: "hidden",
-              }}
-            >
-              <img
-                src={image}
-                alt={`carousel-${i}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
+            <div className={styles.carouselFrame}>
+              <img src={image} alt={`carousel-${i}`} className={styles.carouselImage} />
             </div>
           </div>
         ))}

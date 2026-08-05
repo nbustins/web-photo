@@ -3,16 +3,11 @@ import { CustomTitle, ImageSlider, SessionPricingCards } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";
 import { pageBodyPadding, radii } from "../../styles/tokens/radii";
+import blocks from "@components/blocks.module.css";
 
 const fromIdx = 4;
 const toIdx = 12;
 const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`familiar/${fromIdx + i}.jpg`));
-
-const rowStyle = {
-  padding: "30px",
-  width: '100%',
-  display : "flex"
-}
 
 export const containerVariants = {
   hidden: {
@@ -52,7 +47,7 @@ export const FamiliarPage = () => (
              <ThreePhotoRow/>
 
               {/* Text decriptiu */}
-              <Row justify="center" style={rowStyle}> 
+              <Row justify="center" className={blocks.sectionRow}> 
                 <Col
                   style={{
                     maxWidth: "1200px",
@@ -67,7 +62,7 @@ export const FamiliarPage = () => (
               </Row>
               
               {/* Photo kids */}
-              <Row justify="center" style={rowStyle}>
+              <Row justify="center" className={blocks.sectionRow}>
                 <div
                   style={{
                     width: "100%",

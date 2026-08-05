@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { getPublicPath } from "../utils/pathUtils";
 import { useIsMobile } from "../ui/hooks";
+import styles from "./blocks.module.css";
 
 const uris = [
   {
@@ -30,14 +31,8 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
 
   return (
     <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height,
-        overflow: "hidden",
-        background: "#000",
-        backgroundImage: `url(${getPublicPath("main/fons_video.jpg")})`,
-      }}
+      className={styles.promo}
+      style={{ height, backgroundImage: `url(${getPublicPath("main/fons_video.jpg")})` }}
     >
 
       {/* vídeo principal */}
@@ -47,12 +42,7 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
         muted
         playsInline
         poster={video_data.poster}
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-        }}
+        className={styles.promoVideo}
       >
         <source src={video_data.video} />
       </video>

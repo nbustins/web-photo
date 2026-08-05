@@ -2,12 +2,7 @@ import { Row, Col } from "antd";
 import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, WhyDoSession, ThreePhotoRow } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
 import { pageBodyPadding } from "../../styles/tokens/radii";
-
-const rowStyle = {
-  padding: "3rem",
-  width: "100%",
-  display: "flex",
-};
+import blocks from "@components/blocks.module.css";
 
 const photoPaths: string[] = Array.from({ length: 3 }, (_, i) =>
   getPublicPath(`pregnancy/${i + 1}.jpg`)
@@ -104,7 +99,7 @@ export const PregnantPage = () => (
       
       <ThreePhotoRow
         photoPaths={[photoPaths[0], photoPaths[1], photoPaths[2]]}
-        rowStyle={rowStyle}
+        rowClassName={blocks.sectionRowLoose}
       />
 
       {/* Text why to do this session */}
@@ -120,7 +115,7 @@ export const PregnantPage = () => (
       </Row>
 
       {/* Big quote */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.sectionRowLoose}>
         <Col
           style={{
             fontSize: "clamp(1.2rem, 4vw, 2.5rem)",

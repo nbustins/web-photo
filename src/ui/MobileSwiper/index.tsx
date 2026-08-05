@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { getPublicPath } from '../../utils/pathUtils';
+import styles from './MobileSwiper.module.css';
 
 interface MobileSwiperProps {
   images: string[];
@@ -25,40 +26,17 @@ export const MobileSwiper: FC<MobileSwiperProps> = ({ images, fallbackImage, alt
   }, []);
 
   if (sources.length === 0) {
-    return (
-      <div style={{
-        width: '100%',
-        height: '100%',
-        background: 'linear-gradient(135deg, #c2ae95 0%, #ddd4c8 100%)',
-      }} />
-    );
+    return <div className={styles.placeholder} />;
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-      <div
-        ref={trackRef}
-        style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          scrollbarWidth: 'none',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
+    <div className={styles.root}>
+      <div ref={trackRef} className={styles.track}>
         {sources.map((src, i) => (
           <div
             key={i}
-            style={{
-              flex: '0 0 100%',
-              height: '100%',
-              scrollSnapAlign: 'start',
-              backgroundImage: `url(${getPublicPath(src)})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
+            className={styles.slide}
+            style={{ backgroundImage: `url(${getPublicPath(src)})` }}
             role="img"
             aria-label={alt}
           />
@@ -66,26 +44,11 @@ export const MobileSwiper: FC<MobileSwiperProps> = ({ images, fallbackImage, alt
       </div>
 
       {sources.length > 1 && (
-        <div style={{
-          position: 'absolute',
-          bottom: 16,
-          left: 0,
-          right: 0,
-          display: 'flex',
-          justifyContent: 'center',
-          gap: 6,
-          pointerEvents: 'none',
-        }}>
+        <div className={styles.dots}>
           {sources.map((_, i) => (
             <span
               key={i}
-              style={{
-                width: i === activeIndex ? 20 : 6,
-                height: 6,
-                borderRadius: 3,
-                background: i === activeIndex ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.55)',
-                transition: 'width 0.3s ease, background 0.3s ease',
-              }}
+              className={i === activeIndex ? `${styles.dot} ${styles.dotActive}` : styles.dot}
             />
           ))}
         </div>

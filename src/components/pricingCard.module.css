@@ -1,0 +1,52 @@
+/* Alçada completa + columna perquè les targetes d'una fila alineïn preu i botó
+   encara que tinguin un nombre diferent de característiques. */
+.card {
+  height: 100%;
+  text-align: center;
+  box-shadow: none;
+  border-radius: var(--lt-radius-sm);
+}
+
+.body {
+  flex: 1;
+}
+
+h3.title {
+  font-size: var(--lt-text-title);
+  margin-bottom: var(--lt-space-2);
+  font-family: var(--lt-font-display);
+}
+
+.rule {
+  width: 40%;
+  margin: var(--lt-space-8) auto;
+  border: none;
+  height: 1.1px;
+  border-radius: 2px;
+  background-color: var(--lt-ink-900);
+}
+
+.feature {
+  font-size: 1rem;
+  display: block;
+  margin-bottom: var(--lt-space-2);
+}
+
+.advice {
+  margin-top: var(--lt-space-2);
+}
+
+h4.price {
+  margin-top: 1.5rem;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.actions {
+  width: 100%;
+  margin-top: 25px;
+}
+
+.bookButton {
+  width: 150px;
+}

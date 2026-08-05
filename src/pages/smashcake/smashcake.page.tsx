@@ -3,16 +3,11 @@ import { CustomTitle, ImageSlider, SessionPricingCards, ThreePhotoRow, FAQs } fr
 import { getPublicPath } from "../../utils/pathUtils";
 import { motion } from "framer-motion";
 import { pageBodyPadding, radii } from "../../styles/tokens/radii";
+import blocks from "@components/blocks.module.css";
 
 const fromIdx = 5;
 const toIdx = 12;
 const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`smashcake/${fromIdx + i}.jpg`));
-
-const rowStyle = {
-  padding: "30px",
-  width: '100%',
-  display : "flex"
-}
 
 const containerVariants = {
   hidden: {
@@ -139,13 +134,13 @@ export const SmashCakePage = () => (
       >
         <ThreePhotoRow
           photoPaths={[getPublicPath(`smashcake/2.jpg`), getPublicPath(`smashcake/3.jpg`), getPublicPath(`smashcake/4.jpg`)]}
-          rowStyle={rowStyle}
+          rowClassName={blocks.sectionRow}
         />
       </motion.div>
       
 
       {/* Descripció sessió */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.sectionRow}>
         <Col
           style={{
               maxWidth: "950px",

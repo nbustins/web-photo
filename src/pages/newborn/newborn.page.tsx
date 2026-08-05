@@ -3,16 +3,11 @@ import { motion } from "framer-motion";
 import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, ThreePhotoRow } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
 import { pageBodyPadding } from "../../styles/tokens/radii";
+import blocks from "@components/blocks.module.css";
 
 const fromIdx = 4;
 const toIdx = 13;
 const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`newborn/${fromIdx + i}.jpg`));
-
-const rowStyle = {
-  padding: "30px",
-  width: '100%',
-  display : "flex"
-}
 
 const containerVariants = {
   hidden: {
@@ -146,13 +141,13 @@ export const NewBornPage = () => (
       >
         <ThreePhotoRow
           photoPaths={[getPublicPath(`newborn/2.jpg`), getPublicPath(`newborn/3.jpg`), getPublicPath(`newborn/4.jpg`)]}
-          rowStyle={rowStyle}
+          rowClassName={blocks.sectionRow}
         />
       </motion.div>
       
 
       {/* Descripció sessió */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.sectionRow}>
         <Col
           style={{
               maxWidth: "950px",

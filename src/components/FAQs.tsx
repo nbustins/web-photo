@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Typography } from "antd";
-import { radii } from "../styles/tokens/radii";
+import styles from "./FAQs.module.css";
 
 const { Title, Text } = Typography;
 
@@ -14,87 +14,29 @@ interface FAQsProps {
   imageAlt?: string;
   faqs: FAQItem[];
   imageWidth?: string;
-
 }
 
 const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs, imageWidth = "100%" }: FAQsProps) => (
-  <div
-    style={{
-      background: "#FFF9E5", // cream yellow
-      padding: "2rem",
-      borderRadius: radii.md,
-      width: "100%",
-      boxSizing: "border-box",
-    }}
-  >
+  <div className={styles.block}>
     <Row gutter={[32, 32]} align="top" justify="center">
 
       {/* Left column: Title and image */}
-      <Col xs={24} md={8} 
-        style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center", 
-            flexGrow: 1,
-          }}>
-        <Title
-          level={2}
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 700,
-            fontSize: "3rem",
-            marginBottom: "2rem",
-            color: "black",
-          }}
-        >
+      <Col xs={24} md={8} className={styles.left}>
+        <Title level={2} className={styles.heading}>
           PREGUNTES<br />FREQÜENTS
-          <hr
-            style={{
-              border: "none",
-              height: "2px",
-              width: "60%",
-              margin: "1rem auto",
-              background: "black",
-              borderRadius: radii.md,
-            }}
-          />
+          <hr className={styles.rule} />
         </Title>
-        <img
-          src={imageSrc}
-          alt={imageAlt}
-          style={{
-            width: imageWidth,
-            borderRadius: radii.md,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-            display: "block",
-          }}
-        />
+        <img src={imageSrc} alt={imageAlt} className={styles.image} style={{ width: imageWidth }} />
       </Col>
-      
+
       {/* Right column: FAQ list */}
-      <Col xs={24} md={16} style={{maxWidth: "900px"}}>
+      <Col xs={24} md={16} className={styles.right}>
         {faqs.map((faq, idx) => (
-          <div key={idx} style={{ marginBottom: "2rem" }}>
-            <Title
-              level={4}
-              style={{
-                fontSize: "1.5rem",
-                marginBottom: "0.5rem",
-                fontFamily: "'Playfair Display', serif",
-                fontWeight: 800,
-              }}
-            >
+          <div key={idx} className={styles.item}>
+            <Title level={4} className={styles.itemTitle}>
               {faq.title}
             </Title>
-            <Text
-              style={{
-                fontSize: "1.2rem",
-                color: "#333",
-                textAlign: "justify",
-                display: "block",
-                hyphens: "auto",
-              }}
-        >
+            <Text className={styles.itemText}>
               {faq.text}
             </Text>
           </div>

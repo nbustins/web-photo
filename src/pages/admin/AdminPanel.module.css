@@ -7,6 +7,11 @@
   composes: pageWide from '../../ui/pageContainer.module.css';
 }
 
+/* On narrow screens the tab tables get wider than the viewport; scroll them instead of clipping. */
+.content :global(.ant-table-content) {
+  overflow-x: auto;
+}
+
 .logoutButton {
   border-color: rgba(255, 255, 255, 0.55);
   color: rgba(255, 255, 255, 0.9);

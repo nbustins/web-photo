@@ -20,7 +20,8 @@ interface ManagerMobileDashboardProps {
   rows: ConfirmationRow[];
   stats: Stats;
   onLogout: () => void;
-  exitLabel?: string;
+  /** Renders only the dashboard body, without its own header (for embedding in the admin panel). */
+  embedded?: boolean;
   onSelectInvitation: (invitationId: number) => void;
   onShowNote: (note: string) => void;
 }
@@ -32,7 +33,7 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
   rows,
   stats,
   onLogout,
-  exitLabel = 'Tancar sessió',
+  embedded = false,
   onSelectInvitation,
   onShowNote,
 }) => {
@@ -57,15 +58,7 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
     { key: 'declined', label: 'Rebutjats' },
   ];
 
-  return (
-    <div className={styles.screen}>
-      <header className={styles.header}>
-        <span className={styles.headerTitle}>{weddingTitle}</span>
-        <button onClick={onLogout} className={styles.logoutButton}>
-          {exitLabel}
-        </button>
-      </header>
-
+  const body = (
       <main className={styles.main}>
         <section className={styles.statsCard}>
           <StatCell value={stats.totalGuests} label="Total" />
@@ -131,6 +124,19 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
           </section>
         )}
       </main>
+  );
+
+  if (embedded) return body;
+
+  return (
+    <div className={styles.screen}>
+      <header className={styles.header}>
+        <span className={styles.headerTitle}>{weddingTitle}</span>
+        <button onClick={onLogout} className={styles.logoutButton}>
+          Tancar sessió
+        </button>
+      </header>
+      {body}
     </div>
   );
 };

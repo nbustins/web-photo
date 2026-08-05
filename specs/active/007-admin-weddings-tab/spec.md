@@ -37,9 +37,9 @@ L'admin veu tots els casaments en una tab "Weddings" de l'AdminPanel i, en clica
 ## 5. Functional requirements
 
 - FR-1: Nova tab "Weddings" a l'AdminPanel, després de les existents.
-- FR-2: La tab mostra la llista de weddings (`GET /api/weddings`): títol, data de l'esdeveniment, nº convidats, slug; ordenada per `eventDate` desc.
+- FR-2: La tab mostra la llista de weddings (`GET /api/weddings`): títol, data de l'esdeveniment, data de tancament de confirmacions, nº convidats i slug (etiquetat "Enllaç web" per a no-tècnics); ordenada per `eventDate` desc.
 - FR-3: Clicar un wedding mostra el dashboard de confirmacions d'aquell wedding (stats + taula + drawer + modal de notes), idèntic al del manager.
-- FR-4: Des del dashboard es pot tornar a la llista amb un botó "Tornar" (no fa logout de l'admin). El dashboard es renderitza a pantalla completa (tapa AppBar+tabs de l'admin), amb prop `exitLabel`/`onExit` als dashboards.
+- FR-4: Des del dashboard es pot tornar a la llista amb un botó "Tornar" (no fa logout de l'admin). El dashboard es renderitza **incrustat dins la tab** (AppBar i tabs de l'admin sempre visibles): prop `embedded` als dashboards que omet el seu chrome propi (AppBar/header) i la tab pinta capçalera pròpia (botó Tornar + títol).
 - FR-5: En mòbil es mostra `ManagerMobileDashboard` (mateix switch `useIsMobile` que `WeddingManagerPage`).
 - FR-6: La llista és només consulta: cap acció extra per fila.
 - FR-7: Errors d'API es mostren amb el patró existent d'admin (`useApiError`).
@@ -89,20 +89,20 @@ Ja existent — només client nou:
 
 - `AdminPanel.tsx` — afegir tab
 - `WeddingManagerPage.tsx` — extreure `getStats` i `buildSummary` a helper compartit (p. ex. `WeddingManager/manager.utils.ts`) perquè la tab admin els reutilitzi
-- `ManagerDesktopDashboard` / `ManagerMobileDashboard` — prop opcional `exitLabel` (default "Tancar sessió"); `onLogout` ja és genèric, es reutilitza com a `onExit`
+- `ManagerDesktopDashboard` / `ManagerMobileDashboard` — prop opcional `embedded` (default false): retorna només el cos (stats + taula/llista) sense Layout/AppBar/header propis
 
 **Estats:** loading (com `BookingsTab`), empty (`Empty` antd), error (`useApiError`).
 
 **Vista llista:** taula antd (patró `BookingsTab`) amb títol, data, convidats, slug.
 
-**Vista detall:** drilldown inline — estat local `selectedWedding` dins `WeddingsTab`; quan hi ha selecció es renderitza el dashboard a pantalla completa i "Tornar" reseteja l'estat. Cap ruta nova.
+**Vista detall:** drilldown inline — estat local `selected` dins `WeddingsTab`; quan hi ha selecció es renderitza capçalera (Tornar + títol) i el dashboard `embedded` sota les tabs de l'admin. "Tornar" reseteja l'estat. Cap ruta nova.
 
 ## 10. Edge cases
 
 - Wedding sense confirmacions → dashboard amb stats a 0 i `Empty` (ja gestionat pels components).
 - `eventDate` null → mostrar "—".
 - Token admin expira mentre navega → `useApiError` redirigeix a login (patró existent).
-- El dashboard tapa les tabs de l'admin mentre està obert — acceptat (decisió OQ-2): "Tornar" recupera la vista de tabs.
+- Els dashboards renderitzen chrome propi (AppBar/header) — resolt amb la prop `embedded`, que l'omet; la vista manager standalone no canvia.
 
 ## 11. Acceptance criteria
 
@@ -119,7 +119,7 @@ Ja existent — només client nou:
 Cap — resoltes 2026-08-05:
 
 - **OQ-1** → drilldown inline (estat local, sense ruta nova)
-- **OQ-2** → pantalla completa amb prop `exitLabel`; "Tornar" en context admin
+- **OQ-2** → primer pantalla completa; revisat 2026-08-05 a **incrustat** (prop `embedded`, capçalera pròpia de la tab amb "Tornar")
 - **OQ-3** → sí, variant mòbil via `useIsMobile` com el manager
 - **OQ-4** → només consulta
 

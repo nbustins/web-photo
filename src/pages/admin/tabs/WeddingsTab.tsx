@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { Empty, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import type { TableColumnsType } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import type { ConfirmationRow } from '../../../model/wedding.types';
 import type { InvitationSummary } from '../../weddings/WeddingManager/WeddingManager.types';
@@ -16,7 +17,7 @@ import { fetchConfirmations } from '../../../services/wedding/api/confirmations.
 import { useApiError } from '../useApiError';
 import styles from './WeddingsTab.module.css';
 
-const formatEventDate = (date: string | null) =>
+const formatDate = (date: string | null) =>
   date ? new Date(date).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—';
 
 export const WeddingsTab: FC = () => {
@@ -65,10 +66,16 @@ export const WeddingsTab: FC = () => {
       title: 'Data',
       key: 'eventDate',
       width: 130,
-      render: (_, w) => formatEventDate(w.eventDate),
+      render: (_, w) => formatDate(w.eventDate),
+    },
+    {
+      title: 'Tancament confirmacions',
+      key: 'closingDate',
+      width: 200,
+      render: (_, w) => formatDate(w.closingDate),
     },
     { title: 'Convidats', dataIndex: 'guestCount', key: 'guestCount', width: 110 },
-    { title: 'Slug', dataIndex: 'slug', key: 'slug', width: 180 },
+    { title: 'Enllaç web', dataIndex: 'slug', key: 'slug', width: 180 },
   ];
 
   if (selected && !rowsLoading) {
@@ -78,16 +85,20 @@ export const WeddingsTab: FC = () => {
       rows,
       stats,
       onLogout: closeWedding,
-      exitLabel: 'Tornar',
+      embedded: true,
       onSelectInvitation: (id: number) => setSelectedSummary(buildSummary(rows, id)),
       onShowNote: (note: string) => setNoteModal(note),
     };
     return (
-      <div className={styles.overlay}>
+      <>
+        <div className={styles.detailHeader}>
+          <Button icon={<ArrowLeftOutlined />} onClick={closeWedding}>Tornar</Button>
+          <h2 className={styles.detailTitle}>{selected.title}</h2>
+        </div>
         {isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} />}
         <ManagerNotesModal note={noteModal} onClose={() => setNoteModal(null)} />
         <ManagerInvitationDrawer summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
-      </div>
+      </>
     );
   }
 

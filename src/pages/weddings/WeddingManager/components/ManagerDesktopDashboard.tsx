@@ -16,7 +16,8 @@ interface ManagerDesktopDashboardProps {
   rows: ConfirmationRow[];
   stats: ManagerStats;
   onLogout: () => void;
-  exitLabel?: string;
+  /** Renders only the stats + table body, without its own AppBar/Layout (for embedding in the admin panel). */
+  embedded?: boolean;
   onSelectInvitation: (invitationId: number) => void;
   onShowNote: (note: string) => void;
 }
@@ -26,7 +27,7 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
   rows,
   stats,
   onLogout,
-  exitLabel = 'Tancar sessió',
+  embedded = false,
   onSelectInvitation,
   onShowNote,
 }) => {
@@ -90,44 +91,48 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
     },
   ];
 
+  const body = (
+    <Space direction="vertical" style={{ width: '100%' }} size="large">
+      <Card className={styles.statsCard}>
+        <div className={local.statsGrid}>
+          <StatCell value={stats.totalGuests} label="Total" />
+          <StatCell value={stats.confirmed} label="Confirmats" tone="success" />
+          <StatCell value={stats.pending} label="Pendents" />
+          <StatCell value={stats.declined} label="Rebutjats" tone="danger" />
+          <StatCell value={stats.totalInvitations} label="Invitacions" />
+          <StatCell value={stats.respondedInvitations} label="Respostes" />
+        </div>
+      </Card>
+
+      <Card className={styles.tableCard}>
+        {rows.length === 0 ? (
+          <Empty description="No hi ha convidats" />
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={rows}
+            rowKey="guestId"
+            pagination={{ pageSize: 20 }}
+            locale={{ emptyText: 'No hi ha convidats' }}
+          />
+        )}
+      </Card>
+    </Space>
+  );
+
+  if (embedded) return body;
+
   return (
     <Layout className={styles.layout}>
       <AppBar
         title={weddingTitle}
         contentClassName={styles.headerContent}
         actions={
-          <Button className={styles.logoutButton} onClick={onLogout}>{exitLabel}</Button>
+          <Button className={styles.logoutButton} onClick={onLogout}>Tancar sessió</Button>
         }
       />
       <Content className={styles.scrollArea}>
-        <div className={styles.content}>
-          <Space direction="vertical" style={{ width: '100%' }} size="large">
-            <Card className={styles.statsCard}>
-              <div className={local.statsGrid}>
-                <StatCell value={stats.totalGuests} label="Total" />
-                <StatCell value={stats.confirmed} label="Confirmats" tone="success" />
-                <StatCell value={stats.pending} label="Pendents" />
-                <StatCell value={stats.declined} label="Rebutjats" tone="danger" />
-                <StatCell value={stats.totalInvitations} label="Invitacions" />
-                <StatCell value={stats.respondedInvitations} label="Respostes" />
-              </div>
-            </Card>
-
-            <Card className={styles.tableCard}>
-              {rows.length === 0 ? (
-                <Empty description="No hi ha convidats" />
-              ) : (
-                <Table
-                  columns={columns}
-                  dataSource={rows}
-                  rowKey="guestId"
-                  pagination={{ pageSize: 20 }}
-                  locale={{ emptyText: 'No hi ha convidats' }}
-                />
-              )}
-            </Card>
-          </Space>
-        </div>
+        <div className={styles.content}>{body}</div>
       </Content>
     </Layout>
   );

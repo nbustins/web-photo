@@ -144,15 +144,19 @@ descriptiu i una imatge a sota.
 import { WhyDoSession } from "@components";
 
 <WhyDoSession
+  heading={<>Per què recomano fer<br />la sessió d’embaràs?</>}
   textWhyDoThisSession={<p>El text descriptiu, com a JSX.</p>}
+  image={getPublicPath("pregnancy/4.jpg")}
+  imageAlt="Imatge de la mare embarassada"
 />
 ```
 
-- Únic prop: `textWhyDoThisSession` (`ReactNode`). **No** accepta `heading`,
-  `text` ni `image`.
-- ⚠️ El titular ("Per què recomano fer la sessió d'embaràs?") i la imatge estan
-  **hardcodejats** dins el component. Només serveix per a la pàgina d'embaràs
-  tal com està; per fer-lo servir en una altra sessió cal parametritzar-lo abans.
+- Els quatre props són obligatoris: el component no sap de quina sessió parla.
+- `heading` i `textWhyDoThisSession` són `ReactNode`. El titular sol portar un
+  `<br />` triat a mà, per això no és una cadena.
+- `image` espera la ruta **ja resolta** amb `getPublicPath`. `imageAlt` és
+  obligatori: si canvies la imatge, el text alternatiu ha de canviar amb ella.
+- Serveix per a qualsevol sessió, no només embaràs.
 
 ---
 

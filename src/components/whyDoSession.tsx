@@ -1,26 +1,29 @@
 import { Col, Row } from "antd";
 import { ReactNode } from "react";
-import { getPublicPath } from "../utils/pathUtils";
 import styles from "./blocks.module.css";
 
-interface PregnancyWhySectionProps {
+interface WhyDoSessionProps {
+  /** ReactNode i no string: el titular sol portar un <br /> triat a mà. */
+  heading: ReactNode;
   textWhyDoThisSession: ReactNode;
+  /** Ruta ja resolta amb getPublicPath. */
+  image: string;
+  imageAlt: string;
 }
 
 export function WhyDoSession({
+  heading,
   textWhyDoThisSession,
-}: PregnancyWhySectionProps) {
+  image,
+  imageAlt,
+}: WhyDoSessionProps) {
   return (
     <div className={styles.whySection}>
 
       {/* Text */}
       <Row gutter={[48, 48]} justify="center" align="middle" className={styles.whyRow}>
         <Col xs={24} md={12}>
-          <span className={styles.whyHeading}>
-            Per què recomano fer
-            <br />
-            la sessió d’embaràs?
-          </span>
+          <span className={styles.whyHeading}>{heading}</span>
         </Col>
 
         <Col xs={24} md={12}>
@@ -35,8 +38,8 @@ export function WhyDoSession({
         <Col xs={24}>
           <div className={styles.whyImageWrap}>
             <img
-              src={getPublicPath("pregnancy/4.jpg")}
-              alt="Imatge de la mare embarassada"
+              src={image}
+              alt={imageAlt}
               className={styles.whyImage}
             />
           </div>

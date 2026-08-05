@@ -104,7 +104,12 @@ export const PregnantPage = () => (
 
       {/* Text why to do this session */}
       <Row gutter={[0, 24]} justify="center" className={styles.whyRow}>
-        <WhyDoSession textWhyDoThisSession={textWhyDoThisSession} />
+        <WhyDoSession
+          heading={<>Per què recomano fer<br />la sessió d’embaràs?</>}
+          textWhyDoThisSession={textWhyDoThisSession}
+          image={getPublicPath("pregnancy/4.jpg")}
+          imageAlt="Imatge de la mare embarassada"
+        />
       </Row>
 
       {/* Big quote */}

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/auth/auth.service';
 import { isAuthenticated } from '../../services/auth/auth.store';
 import { LoginCard, type LoginFormValues } from '@ui/LoginCard';
-import { useIsMobile } from '@ui/hooks';
+import { useIsMobile } from '@ui/hooks/useIsMobile';
 
 export const AdminLogin: FC = () => {
   const navigate = useNavigate();

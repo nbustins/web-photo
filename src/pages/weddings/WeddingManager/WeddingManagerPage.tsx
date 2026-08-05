@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout, Card, Typography, Form } from 'antd';
-import { guestService } from '../../../services/wedding';
+import { guestService } from '../../../services/wedding/guest.provider';
 import { login, logout } from '../../../services/auth/auth.service';
 import { getUser } from '../../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../../model/wedding.types';
-import { useIsMobile } from '@ui/hooks';
+import { useIsMobile } from '@ui/hooks/useIsMobile';
 import { LoginCard } from '@ui/LoginCard';
 import type { InvitationSummary, LoginFormValues, ManagerStats } from './WeddingManager.types';
 import {

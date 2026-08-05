@@ -62,7 +62,9 @@ export const AppRouter: FC = () => {
         <Route path="/admin" element={<RequireAuth><AdminPanel /></RequireAuth>} />
 
         /* Custom wedding routes */
-        {/* <Route path="/weddings/carla-joel" element={<CarlaJoelCustomWedding />} /> */}
+        {/* Per reactivar-la, importa CarlaJoelCustomWedding de
+            '../pages/weddings/WeddingGuest/custom/carla-joel/CarlaJoelCustomWedding':
+            <Route path="/weddings/carla-joel" element={<CarlaJoelCustomWedding />} /> */}
       </Routes>
     </HashRouter>
   );

@@ -2,7 +2,7 @@ import { Col, Row, Typography } from "antd";
 import { motion } from "framer-motion";
 import { getPublicPath } from "../../utils/pathUtils";
 import { AboutMeTitle } from "./components/aboutmeTitle";
-import { useIsMobile } from "../../ui/hooks";
+import { useIsMobile } from "../../ui/hooks/useIsMobile";
 import styles from "./aboutme.module.css";
 
 const { Text } = Typography;

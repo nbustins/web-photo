@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { getPublicPath } from "../utils/pathUtils";
-import { useIsMobile } from "../ui/hooks";
+import { useIsMobile } from "../ui/hooks/useIsMobile";
 import styles from "./blocks.module.css";
 
 const uris = [

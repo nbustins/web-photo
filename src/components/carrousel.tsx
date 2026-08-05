@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useIsMobile } from "../ui/hooks";
+import { useIsMobile } from "../ui/hooks/useIsMobile";
 import styles from "./blocks.module.css";
 
 interface CarouselProps {

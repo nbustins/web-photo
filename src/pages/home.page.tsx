@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ImageBackground, PromoVideoBackground } from "@components";
 import { getPublicPath } from "../utils/pathUtils";
-import { useIsMobile } from "@ui/hooks";
+import { useIsMobile } from "@ui/hooks/useIsMobile";
 
 export const HomePage: FC = () => {
   const isMobile = useIsMobile();

@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { message } from 'antd';
 import { Form } from 'antd';
-import { guestService } from '../../../services/wedding';
+import { guestService } from '../../../services/wedding/guest.provider';
 import type { Wedding, Invitation, ConfirmInvitationPayload } from '../../../model/wedding.types';
 import { DesktopSplitBackground } from '@ui/DesktopSplitBackground';
 import {
@@ -15,7 +15,7 @@ import {
   GuestMobileLayout,
 } from './components';
 import type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
-import { useIsMobile } from '@ui/hooks';
+import { useIsMobile } from '@ui/hooks/useIsMobile';
 import styles from './WeddingGuest.module.css';
 
 export type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';

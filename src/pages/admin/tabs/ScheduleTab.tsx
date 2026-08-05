@@ -155,7 +155,7 @@ export const ScheduleTab: FC = () => {
               {WEEKDAYS_MON_FIRST.map((wd) => {
                 const count = ranges.filter((r) => r.weekday === wd).length;
                 return (
-                  <Badge key={wd} count={count} size="small" style={{ backgroundColor: '#7C7458' }}>
+                  <Badge key={wd} count={count} size="small" style={{ backgroundColor: 'var(--lt-color-brand)' }}>
                     <Button
                       type={selectedDay === wd ? 'primary' : 'default'}
                       onClick={() => setSelectedDay((cur) => (cur === wd ? null : wd))}

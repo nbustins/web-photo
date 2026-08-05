@@ -1,0 +1,14 @@
+.layout {
+  min-height: 100vh;
+  background: var(--lt-color-surface-page);
+}
+
+.content {
+  composes: pageWide from '../../ui/pageContainer.module.css';
+}
+
+.logoutButton {
+  border-color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.06em;
+}

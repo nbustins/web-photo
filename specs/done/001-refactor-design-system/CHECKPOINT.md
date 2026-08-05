@@ -61,11 +61,28 @@ dinàmiques, `transform` animat, alçades per prop i props de layout d'antd
   `index.css`. Abans, amb el SO en fosc, les zones sense pintar es veien
   `#242424`.
 
+## Verificació feta
+
+Per tasca: `npx tsc -b`, `npm run build`, `npm run lint`, `tools/check-tokens.sh`
+i recompte de `style={{` / literals de color al mòdul.
+
+Al final, dues comprovacions automàtiques contra els modes de fallada silenciosos
+dels CSS Modules (no peten el build, només deixen d'aplicar estil):
+
+- totes les classes referenciades des d'un `.tsx` existeixen al `.module.css`
+  corresponent (seguint `composes` entre fitxers) — **cap error**;
+- tot `Typography.Title` amb `font-size` propi porta el selector d'element
+  (`h2.x`, `h3.x`) — **cap error**.
+
 ## Punts oberts
 
-Vegeu la llista al final de la conversa / `tasks.md`. En resum:
-
-1. `prefers-reduced-motion` per component (~14 components animats) — no s'ha fet
+1. **La QA visual no s'ha executat.** No hi havia extensió de navegador
+   disponible. Cal fer-la pàgina per pàgina amb `npm run dev`, especialment:
+   contracte (`bookingview`), els 4 passos de reserva, login d'admin i de
+   gestor, dashboard de bodes (escriptori i mòbil), i les pàgines de màrqueting.
+2. `prefers-reduced-motion` per component (~14 components animats) — no s'ha fet
    per decisió explícita: canvia el comportament real de les animacions.
-2. Revisió visual en dispositiu real del canvi 600px → 768px.
-3. Confirmar el menú d'escriptori sense `forceMenuRecalc()`.
+3. Revisió en dispositiu real del canvi de breakpoint 600px → 768px a `home`,
+   `aboutme` i `promoVideoBackground`.
+4. Confirmar el menú d'escriptori sense `forceMenuRecalc()`: si els ítems es
+   plegaven dins el "…", tornar a posar el remuntatge a `main.header.tsx`.

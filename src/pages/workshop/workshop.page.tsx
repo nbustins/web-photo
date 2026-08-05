@@ -1,6 +1,6 @@
 import { Button, Col, Row } from "antd";
 import { motion } from "framer-motion";
-import { CustomTitle } from "../../components/customTitle";
+import { CustomTitle } from "@components";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -152,7 +152,7 @@ export const Workshop = () => {
                         fontSize: "0.65rem",
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
-                        color: "#a09890",
+                        color: "var(--lt-color-text-muted)",
                         marginBottom: 4,
                       }}
                     >
@@ -193,7 +193,7 @@ export const Workshop = () => {
                     fontSize: "0.7rem",
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
-                    color: "#a09890",
+                    color: "var(--lt-color-text-muted)",
                     margin: "0 0 8px",
                   }}
                 >
@@ -226,7 +226,7 @@ export const Workshop = () => {
                           position: "absolute",
                           left: 0,
                           top: 0,
-                          color: "#a09890",
+                          color: "var(--lt-color-text-muted)",
                         }}
                       >
                         —

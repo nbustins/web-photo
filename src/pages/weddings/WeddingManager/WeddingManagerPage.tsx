@@ -5,8 +5,8 @@ import { guestService } from '../../../services/wedding';
 import { login, logout } from '../../../services/auth/auth.service';
 import { getUser } from '../../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../../model/wedding.types';
-import { useIsMobile } from '../common';
-import { LoginCard } from '../../../common';
+import { useIsMobile } from '@ui/hooks';
+import { LoginCard } from '@ui/LoginCard';
 import type { InvitationSummary, LoginFormValues, ManagerStats } from './WeddingManager.types';
 import {
   ManagerDesktopDashboard,

@@ -15,6 +15,22 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Alies (han de coincidir amb resolve.alias a vite.config.ts) */
+    "baseUrl": ".",
+    "paths": {
+      "@ui": ["src/ui"],
+      "@ui/*": ["src/ui/*"],
+      "@styles": ["src/styles"],
+      "@styles/*": ["src/styles/*"],
+      "@components": ["src/components"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"],
+      "@services/*": ["src/services/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

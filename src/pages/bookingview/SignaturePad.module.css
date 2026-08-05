@@ -1,0 +1,38 @@
+.canvas {
+  display: block;
+  width: 100%;
+  height: 120px;
+  touch-action: none;
+  cursor: crosshair;
+  border-bottom: 1px solid rgba(124, 116, 88, 0.45);
+}
+
+.canvasDisabled {
+  cursor: not-allowed;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 6px;
+  font-family: var(--lt-font-body);
+  font-size: 0.78rem;
+  color: var(--lt-color-text-muted);
+}
+
+.clearButton {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  /* Estat desactivat: ha de llegir-se apagat. WCAG exclou controls disabled del contrast AA. */
+  color: #c4c0b4;
+  cursor: default;
+  text-decoration: underline;
+}
+
+.clearButtonActive {
+  color: var(--lt-color-brand);
+  cursor: pointer;
+}

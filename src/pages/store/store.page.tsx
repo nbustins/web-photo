@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import { CustomTitle } from "../../components/customTitle";
+import { CustomTitle } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";

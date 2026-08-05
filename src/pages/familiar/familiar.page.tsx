@@ -1,9 +1,8 @@
 import { Col, Row } from "antd";
-import { CustomTitle } from "../../components/customTitle";
+import { CustomTitle, ImageSlider, SessionPricingCards } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";
 import { pageBodyPadding, radii } from "../../styles/tokens/radii";
-import { ImageSlider, SessionPricingCards } from "../../components";
 
 const fromIdx = 4;
 const toIdx = 12;

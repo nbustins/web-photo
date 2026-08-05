@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Typography, Button } from 'antd';
-import { WeddingCard } from '../../common';
+import { SurfaceCard } from '@ui/SurfaceCard';
 
 const { Title, Text } = Typography;
 
@@ -34,7 +34,7 @@ export const GuestSuccessState: FC<GuestSuccessStateProps> = ({ attendingCount, 
       : `${attendingCount} de ${totalCount} persones assistiran a la celebració. Gràcies per confirmar!`;
 
   return (
-    <WeddingCard
+    <SurfaceCard
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
@@ -61,7 +61,7 @@ export const GuestSuccessState: FC<GuestSuccessStateProps> = ({ attendingCount, 
       <Text style={{
         display: 'block',
         fontSize: 'clamp(0.8rem, 1.2vw, 0.85rem)',
-        color: '#9a9a9a',
+        color: 'var(--lt-color-text-muted)',
         marginTop: 16,
       }}>
         Pots tancar aquesta finestra, si vols modificar la teva confirmació accedeix de nou amb el codi.
@@ -76,6 +76,6 @@ export const GuestSuccessState: FC<GuestSuccessStateProps> = ({ attendingCount, 
           Tornar a introduir codi
         </Button>
       )}
-    </WeddingCard>
+    </SurfaceCard>
   );
 };

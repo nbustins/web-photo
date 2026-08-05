@@ -1,22 +1,14 @@
 import { Button, Row } from 'antd';
 import dayjs from 'dayjs';
-import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import { AvailabilitySlot, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
 import { FormValues, IMAGE_RIGHTS_OPTIONS } from '../types';
-import { bodyTextStyle, labelStyle } from '../styles';
+import styles from './SummaryStep.module.css';
 
 const SummaryRow = ({ label, value }: { label: string; value: string }) => (
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      gap: 16,
-      padding: '10px 0',
-      borderBottom: '1px solid #eceae2',
-    }}
-  >
-    <span style={{ ...labelStyle, flex: '0 0 auto' }}>{label}</span>
-    <span style={{ ...bodyTextStyle, textAlign: 'right', margin: 0 }}>{value}</span>
+  <div className={styles.row}>
+    <span className={styles.rowLabel}>{label}</span>
+    <span className={styles.rowValue}>{value}</span>
   </div>
 );
 
@@ -31,12 +23,12 @@ interface SummaryStepProps {
 }
 
 export const SummaryStep = ({ sessionType, groupName, slot, values, submitting, onBack, onConfirm }: SummaryStepProps) => (
-  <WeddingCard>
-    <WeddingCardHeader
+  <SurfaceCard>
+    <SurfaceCardHeader
       title="Resum de la reserva"
       subtitle="Revisa les dades abans de confirmar"
     />
-    <div style={{ textAlign: 'left', marginTop: 8 }}>
+    <div className={styles.list}>
       <SummaryRow label="Sessió" value={sessionDisplayName(groupName, sessionType.name)} />
       <SummaryRow label="Data i hora" value={dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')} />
       <SummaryRow label="Nom i cognoms" value={values.name} />
@@ -56,11 +48,11 @@ export const SummaryStep = ({ sessionType, groupName, slot, values, submitting, 
       />
       {values.notes && <SummaryRow label="Notes" value={values.notes} />}
     </div>
-    <Row justify="space-between" style={{ marginTop: 24 }}>
+    <Row justify="space-between" className={styles.actions}>
       <Button onClick={onBack}>Enrere</Button>
       <Button type="primary" size="large" onClick={onConfirm} loading={submitting}>
         Confirmar reserva
       </Button>
     </Row>
-  </WeddingCard>
+  </SurfaceCard>
 );

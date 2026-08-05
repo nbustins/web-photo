@@ -1,0 +1,108 @@
+/**
+ * Duplica els valors de tokens.ts com a custom properties.
+ * Mantingut a mà (equip petit, ~60 tokens); tools/check-tokens.sh
+ * falla si els NOMS divergeixen entre tokens.ts i aquest fitxer.
+ */
+:root {
+  /* primitives — color */
+  --lt-olive-700: #5C5440;
+  --lt-olive-600: #6A6450;
+  --lt-olive-500: #7C7458;
+  --lt-olive-300: #A09880;
+  --lt-sand-500: rgb(174, 142, 116);
+  --lt-ink-900: #231F20;
+  --lt-ink-700: #3D3228;
+  --lt-ink-500: #4A4539;
+  --lt-grey-600: #5A5A5A;
+  --lt-grey-500: #6A6A6A;
+  --lt-warm-400: #6E675A;
+  --lt-paper-100: #FFFDF7;
+  --lt-paper-200: #F6F4F0;
+  --lt-paper-300: #F5F0EA;
+  --lt-cream-100: #FFF9E5;
+  --lt-success-500: #5E8A4E;
+  --lt-danger-500: #B06A3A;
+
+  /* semàntics — color */
+  --lt-color-brand: var(--lt-olive-500);
+  --lt-color-brand-strong: var(--lt-olive-700);
+  --lt-color-accent: var(--lt-sand-500);
+  --lt-color-surface-page: var(--lt-paper-200);
+  --lt-color-surface-card: rgba(255, 255, 255, 0.9);
+  --lt-color-surface-inverse: var(--lt-ink-900);
+  --lt-color-text-primary: var(--lt-ink-500);
+  --lt-color-text-secondary: var(--lt-grey-500);
+  --lt-color-text-muted: var(--lt-warm-400);
+  --lt-color-text-brand: var(--lt-olive-600);
+  --lt-color-text-on-brand: #FFFFFF;
+  --lt-color-border-subtle: rgba(124, 116, 88, 0.25);
+  --lt-color-status-success: var(--lt-success-500);
+  --lt-color-status-danger: var(--lt-danger-500);
+  --lt-color-focus-ring: var(--lt-olive-700);
+
+  /* espaiat — base 4 */
+  --lt-space-1: 4px;
+  --lt-space-2: 8px;
+  --lt-space-3: 12px;
+  --lt-space-4: 16px;
+  --lt-space-5: 20px;
+  --lt-space-6: 24px;
+  --lt-space-8: 32px;
+  --lt-space-10: 40px;
+  --lt-space-12: 48px;
+  --lt-space-16: 64px;
+  --lt-space-page: var(--lt-space-6);
+  --lt-space-gutter: var(--lt-space-6);
+  --lt-space-section: var(--lt-space-12);
+  --lt-space-stack: var(--lt-space-4);
+
+  /* radis */
+  --lt-radius-xs: 0.1rem;
+  --lt-radius-sm: 0.3rem;
+  --lt-radius-md: 0.5rem;
+  --lt-radius-lg: 12px;
+  --lt-radius-sheet: 24px;
+  --lt-radius-pill: 999px;
+
+  /* ombres */
+  --lt-shadow-sm: 0 2px 8px rgba(0, 0, 0, .08);
+  --lt-shadow-md: 0 2px 12px rgba(124, 116, 88, .08);
+  --lt-shadow-lg: 0 10px 28px rgba(0, 0, 0, .12);
+  --lt-shadow-sheet: 0 10px 40px rgba(124, 116, 88, .12);
+
+  /* contenidors */
+  --lt-container-form: 520px;
+  --lt-container-text: 820px;
+  --lt-container-page: 1200px;
+  --lt-container-wide: 1500px;
+
+  /* motion */
+  --lt-duration-fast: 150ms;
+  --lt-duration-base: 300ms;
+  --lt-duration-slow: 800ms;
+  --lt-ease-out: cubic-bezier(.22, 1, .36, 1);
+
+  /* tipografia — famílies */
+  --lt-font-display: 'Italiana', Georgia, 'Times New Roman', serif;
+  --lt-font-body: 'Raleway', system-ui, -apple-system, sans-serif;
+  --lt-font-editorial: 'Playfair Display', Georgia, serif;
+  --lt-font-handwritten: 'Indie Flower', 'Segoe Script', cursive;
+  --lt-font-signature: 'Borel', 'Brush Script MT', cursive;
+
+  /* tipografia — escala fluida (7 passos) */
+  --lt-text-hero: clamp(3rem, 6vw, 6rem);
+  --lt-text-display: clamp(2rem, 5vw, 2.8rem);
+  --lt-text-title: clamp(1.6rem, 3vw, 3rem);
+  --lt-text-heading: clamp(1.4rem, 3vw, 1.8rem);
+  --lt-text-subheading: clamp(1.05rem, 2.2vw, 1.3rem);
+  --lt-text-body: clamp(0.9rem, 1.4vw, 1.05rem);
+  --lt-text-caption: clamp(0.85rem, 1.3vw, 0.9rem);
+
+  /* breakpoints (px, sense unitat perquè JS els pugui llegir igual) */
+  --lt-breakpoint-xs: 480;
+  --lt-breakpoint-sm: 576;
+  --lt-breakpoint-md: 768;
+  --lt-breakpoint-lg: 992;
+  --lt-breakpoint-xl: 1200;
+  --lt-breakpoint-xxl: 1600;
+}

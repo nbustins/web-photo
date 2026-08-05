@@ -1,9 +1,9 @@
 import { Button, Col, Form, Input, InputNumber, Radio, Row } from 'antd';
 import dayjs from 'dayjs';
-import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import { AvailabilitySlot, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
 import { FormValues, IMAGE_RIGHTS_OPTIONS } from '../types';
-import { inputStyle, labelStyle } from '../styles';
+import styles from './DetailsFormStep.module.css';
 
 const DNI_REGEX = /^(\d{8}[A-Za-z]|[XYZxyz]\d{7}[A-Za-z])$/;
 
@@ -18,8 +18,8 @@ interface DetailsFormStepProps {
 }
 
 export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, onBack, onSubmit }: DetailsFormStepProps) => (
-  <WeddingCard>
-    <WeddingCardHeader
+  <SurfaceCard>
+    <SurfaceCardHeader
       title="Les teves dades"
       subtitle={`${sessionDisplayName(groupName, sessionType.name)} · ${dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')}`}
     />
@@ -28,35 +28,35 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
       onFinish={onSubmit}
       initialValues={initialValues ?? { participants: [{ name: '' }] }}
       requiredMark={false}
-      style={{ textAlign: 'left', marginTop: 8 }}
+      className={styles.form}
     >
       <Form.Item
         name="name"
-        label={<span style={labelStyle}>Nom i cognoms</span>}
+        label={<span className={styles.label}>Nom i cognoms</span>}
         rules={[{ required: true, message: 'Escriu el teu nom' }]}
       >
-        <Input maxLength={200} style={inputStyle} />
+        <Input maxLength={200} className={styles.input} />
       </Form.Item>
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
             name="phone"
-            label={<span style={labelStyle}>Telèfon</span>}
+            label={<span className={styles.label}>Telèfon</span>}
             rules={[{ required: true, message: 'Escriu el teu telèfon' }]}
           >
-            <Input type="tel" style={inputStyle} />
+            <Input type="tel" className={styles.input} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>
           <Form.Item
             name="email"
-            label={<span style={labelStyle}>Email</span>}
+            label={<span className={styles.label}>Email</span>}
             rules={[
               { required: true, message: 'Escriu el teu email' },
               { type: 'email', message: 'Email no vàlid' },
             ]}
           >
-            <Input type="email" style={inputStyle} />
+            <Input type="email" className={styles.input} />
           </Form.Item>
         </Col>
       </Row>
@@ -64,27 +64,27 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
         <Col xs={24} sm={12}>
           <Form.Item
             name="dni"
-            label={<span style={labelStyle}>DNI / NIE</span>}
+            label={<span className={styles.label}>DNI / NIE</span>}
             rules={[
               { required: true, message: 'Escriu el teu DNI o NIE' },
               { pattern: DNI_REGEX, message: 'Format de DNI/NIE no vàlid' },
             ]}
           >
-            <Input maxLength={9} style={inputStyle} />
+            <Input maxLength={9} className={styles.input} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>
           <Form.Item
             name="address"
-            label={<span style={labelStyle}>Adreça</span>}
+            label={<span className={styles.label}>Adreça</span>}
             rules={[{ required: true, message: 'Escriu la teva adreça' }]}
           >
-            <Input maxLength={300} style={inputStyle} />
+            <Input maxLength={300} className={styles.input} />
           </Form.Item>
         </Col>
       </Row>
 
-      <Form.Item label={<span style={labelStyle}>Participants (edat només per menors)</span>} style={{ marginBottom: 8 }}>
+      <Form.Item label={<span className={styles.label}>Participants (edat només per menors)</span>} className={styles.participantsItem}>
         <Form.List
           name="participants"
           rules={[{
@@ -101,12 +101,12 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
                       name={[field.name, 'name']}
                       rules={[{ required: true, message: 'Nom del participant' }]}
                     >
-                      <Input placeholder="Nom" maxLength={200} style={inputStyle} />
+                      <Input placeholder="Nom" maxLength={200} className={styles.input} />
                     </Form.Item>
                   </Col>
                   <Col>
                     <Form.Item name={[field.name, 'age']}>
-                      <InputNumber placeholder="Edat" min={0} max={17} style={{ ...inputStyle, width: 90 }} />
+                      <InputNumber placeholder="Edat" min={0} max={17} className={styles.ageInput} />
                     </Form.Item>
                   </Col>
                   <Col>
@@ -116,7 +116,7 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
                   </Col>
                 </Row>
               ))}
-              <Button type="dashed" block onClick={() => add({ name: '' })} style={inputStyle}>
+              <Button type="dashed" block onClick={() => add({ name: '' })} className={styles.addParticipant}>
                 + Afegeix participant
               </Button>
               <Form.ErrorList errors={errors} />
@@ -127,7 +127,7 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
 
       <Form.Item
         name="imageRights"
-        label={<span style={labelStyle}>Drets d'imatge</span>}
+        label={<span className={styles.label}>Drets d'imatge</span>}
         rules={[{ required: true, message: 'Tria una opció' }]}
       >
         <Radio.Group>
@@ -135,7 +135,7 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
             <Radio
               key={option.value}
               value={option.value}
-              style={{ display: 'block', marginBottom: 8, fontFamily: "'Raleway', sans-serif" }}
+              className={styles.radioOption}
             >
               {option.label}
             </Radio>
@@ -143,8 +143,8 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
         </Radio.Group>
       </Form.Item>
 
-      <Form.Item name="notes" label={<span style={labelStyle}>Notes (opcional)</span>}>
-        <Input.TextArea rows={3} maxLength={1000} style={inputStyle} />
+      <Form.Item name="notes" label={<span className={styles.label}>Notes (opcional)</span>}>
+        <Input.TextArea rows={3} maxLength={1000} className={styles.input} />
       </Form.Item>
 
       <Row justify="space-between">
@@ -154,5 +154,5 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
         </Button>
       </Row>
     </Form>
-  </WeddingCard>
+  </SurfaceCard>
 );

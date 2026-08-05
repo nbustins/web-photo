@@ -1,7 +1,7 @@
 import { Select, Typography } from 'antd';
-import { GlassCard, GlassCardHeader } from '../../../components/glassCard';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import { BookableSessionGroup, sessionDisplayName } from '../../../services/booking/booking.api';
-import { bodyTextStyle, inputStyle } from '../styles';
+import styles from './SessionTypePicker.module.css';
 
 interface SessionTypePickerProps {
   groups: BookableSessionGroup[];
@@ -10,10 +10,10 @@ interface SessionTypePickerProps {
 }
 
 export const SessionTypePicker = ({ groups, value, onChange }: SessionTypePickerProps) => (
-  <GlassCard>
-    <GlassCardHeader title="Selecciona una sessió" />
+  <SurfaceCard>
+    <SurfaceCardHeader title="Selecciona una sessió" />
     <Select
-      style={{ ...inputStyle, width: '100%', maxWidth: 420 }}
+      className={styles.select}
       size="large"
       placeholder="Tria un tipus de sessió"
       value={value}
@@ -29,9 +29,9 @@ export const SessionTypePicker = ({ groups, value, onChange }: SessionTypePicker
       }))}
     />
     {!value && (
-      <Typography.Text style={{ ...bodyTextStyle, display: 'block', marginTop: 16 }}>
+      <Typography.Text className={styles.hint}>
         Selecciona una sessió per veure les hores lliures.
       </Typography.Text>
     )}
-  </GlassCard>
+  </SurfaceCard>
 );

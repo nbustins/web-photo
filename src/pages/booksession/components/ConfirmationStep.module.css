@@ -1,0 +1,17 @@
+.summary {
+  composes: bodyText from '../shared.module.css';
+  display: block;
+}
+
+.hint {
+  composes: bodyText from '../shared.module.css';
+  display: block;
+  font-size: clamp(0.8rem, 1.2vw, 0.85rem);
+  color: var(--lt-color-text-muted);
+  margin-top: 16px;
+}
+
+.token {
+  font-family: var(--lt-font-body);
+  font-size: 1.1rem;
+}

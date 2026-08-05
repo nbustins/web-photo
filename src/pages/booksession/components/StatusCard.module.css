@@ -1,0 +1,25 @@
+.icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  color: white;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.iconSuccess {
+  background: linear-gradient(135deg, var(--lt-color-brand) 0%, var(--lt-color-text-brand) 100%);
+}
+
+.iconError {
+  background: linear-gradient(135deg, #a09880 0%, #8a8070 100%);
+}
+
+.title {
+  font-family: var(--lt-font-display);
+  color: var(--lt-color-brand);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+}

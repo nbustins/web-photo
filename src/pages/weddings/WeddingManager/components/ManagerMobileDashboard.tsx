@@ -2,7 +2,7 @@ import { FC, useMemo, useState } from 'react';
 import { Input, Button, Dropdown } from 'antd';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import type { ConfirmationRow } from '../../../../model/wedding.types';
-import { radii } from '../../../../styles/tokens/radii';
+import { radii } from '@styles/tokens/radii';
 import {
   COLOR_BG,
   COLOR_HEADER,
@@ -167,7 +167,7 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
             borderRadius: radii.md,
             padding: 32,
             textAlign: 'center',
-            color: '#9a9a9a',
+            color: 'var(--lt-color-text-muted)',
             fontFamily: FONT_BODY,
           }}>
             No hi ha resultats

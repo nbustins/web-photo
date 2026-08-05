@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button, Typography } from 'antd';
-import { WeddingCard, WeddingCardHeader } from '../../common';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 
 const { Text } = Typography;
 
@@ -24,12 +24,12 @@ interface NotFoundStateProps {
 
 export const GuestNotFoundState: FC<NotFoundStateProps> = ({ title, onReset }) => {
   return (
-    <WeddingCard
+    <SurfaceCard
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {title && <WeddingCardHeader title={title} />}
+      {title && <SurfaceCardHeader title={title} />}
       <div style={iconStyle}>✕</div>
       <Typography.Title
         level={3}
@@ -56,6 +56,6 @@ export const GuestNotFoundState: FC<NotFoundStateProps> = ({ title, onReset }) =
       >
         Tornar a introduir codi
       </Button>
-    </WeddingCard>
+    </SurfaceCard>
   );
 };

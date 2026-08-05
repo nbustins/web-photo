@@ -1,0 +1,57 @@
+@import './tokens.css';
+@import '@fontsource/italiana/400.css';
+@import '@fontsource/raleway/300.css';
+@import '@fontsource/raleway/400.css';
+@import '@fontsource/raleway/500.css';
+@import '@fontsource/raleway/600.css';
+@import '@fontsource/playfair-display/400.css';
+@import '@fontsource/playfair-display/400-italic.css';
+@import '@fontsource/playfair-display/700.css';
+@import '@fontsource/playfair-display/700-italic.css';
+/* FAQs usa fontWeight:800; abans el <link> carregava Playfair variable 400..900. */
+@import '@fontsource/playfair-display/800.css';
+@import '@fontsource/indie-flower/400.css';
+@import '@fontsource/borel/400.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Italiana i altres display fonts només tenen pes 400: sense això el
+     navegador sintetitza una negreta falsa (es veu més gruixuda/borrosa)
+     quan un component demana fontWeight:700. */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lt-color-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

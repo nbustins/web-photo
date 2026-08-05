@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { Form } from 'antd';
 import { guestService } from '../../../services/wedding';
 import type { Wedding, Invitation, ConfirmInvitationPayload } from '../../../model/wedding.types';
-import { DesktopSplitBackground } from '../common';
+import { DesktopSplitBackground } from '@ui/DesktopSplitBackground';
 import {
   GuestLoadingState,
   GuestCodeEntry,
@@ -15,7 +15,7 @@ import {
   GuestMobileLayout,
 } from './components';
 import type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
-import { useIsMobile } from '../common';
+import { useIsMobile } from '@ui/hooks';
 
 export type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
 

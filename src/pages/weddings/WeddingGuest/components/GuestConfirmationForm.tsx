@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Form, Input, Switch, Button, FormInstance, Typography } from 'antd';
-import { WeddingCard, WeddingCardHeader } from '../../common';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import type { Invitation } from '../../../../model/wedding.types';
 import type { InvitationFormValues } from '../WeddingGuestPage.types';
 
@@ -48,8 +48,8 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
   onFinish,
 }) => {
   return (
-    <WeddingCard>
-      <WeddingCardHeader
+    <SurfaceCard>
+      <SurfaceCardHeader
         title={title}
         subtitle={subtitle}
         guestName={`Hola, ${invitation.label}!`}
@@ -123,6 +123,6 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
           </Button>
         </Form.Item>
       </Form>
-    </WeddingCard>
+    </SurfaceCard>
   );
 };

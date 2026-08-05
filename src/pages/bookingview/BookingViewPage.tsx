@@ -15,12 +15,10 @@ import {
   signBookingContract,
 } from '../../services/booking/booking.api';
 import { bookingContractPath } from '../../model/routes.model';
-import { pageStyle } from '../booksession/styles';
 import { ContractSheet } from './ContractSheet';
+import styles from './BookingViewPage.module.css';
 
 dayjs.locale('ca');
-
-const OLIVE = '#7C7458';
 
 const STATUS: Record<BookingStatus, { label: string; color: string }> = {
   Requested: { label: 'Pendent de confirmar', color: 'gold' },
@@ -96,7 +94,7 @@ export const BookingViewPage = ({ view }: BookingViewPageProps) => {
 
   if (loading) {
     return (
-      <div style={{ ...pageStyle, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div className={styles.loadingWrap}>
         <Spin size="large" />
       </div>
     );
@@ -104,7 +102,7 @@ export const BookingViewPage = ({ view }: BookingViewPageProps) => {
 
   if (notFound || !booking || !contract) {
     return (
-      <div style={pageStyle}>
+      <div className={styles.narrowPage}>
         <Alert
           type="warning"
           showIcon
@@ -118,33 +116,18 @@ export const BookingViewPage = ({ view }: BookingViewPageProps) => {
   const status = STATUS[booking.status];
 
   return (
-    <div style={{ ...pageStyle, maxWidth: 900 }}>
-      <header style={{ textAlign: 'center', marginBottom: 'clamp(24px, 5vw, 40px)' }}>
-        <div
-          style={{
-            fontFamily: "'Raleway', sans-serif",
-            fontSize: '0.75rem',
-            letterSpacing: '0.24em',
-            textTransform: 'uppercase',
-            color: '#a09880',
-          }}
-        >
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <div className={styles.eyebrow}>
           La teva reserva
         </div>
-        <h1
-          style={{
-            fontFamily: "'Italiana', Georgia, serif",
-            color: OLIVE,
-            fontSize: 'clamp(1.9rem, 5vw, 2.6rem)',
-            margin: '8px 0 12px',
-          }}
-        >
+        <h1 className={styles.title}>
           {contract.fields.packName}
         </h1>
-        <div style={{ fontFamily: "'Raleway', sans-serif", color: '#6a6a6a', fontSize: '0.98rem' }}>
+        <div className={styles.dateLine}>
           {dayjs(booking.startAt).format('dddd D [de] MMMM [de] YYYY · HH:mm')} h
         </div>
-        <div style={{ marginTop: 12 }}>
+        <div className={styles.statusRow}>
           <Tag color={status.color}>{status.label}</Tag>
           <Tag color={contract.signed ? 'green' : 'default'}>
             {contract.signed ? 'Contracte signat' : 'Contracte pendent de signar'}
@@ -168,14 +151,14 @@ export const BookingViewPage = ({ view }: BookingViewPageProps) => {
           error={signError}
         />
       ) : (
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ fontFamily: "'Raleway', sans-serif", color: '#6a6a6a', lineHeight: 1.8 }}>
+        <div className={styles.centerText}>
+          <p className={styles.bodyText}>
             {contract.signed
               ? 'El teu contracte ja està signat. En pots descarregar una còpia quan vulguis.'
               : 'Falta el contracte de la sessió. El pots llegir i signar des d\'aquí, en un minut.'}
           </p>
           {contract.signed ? (
-            <Button size="large" onClick={download} style={{ borderColor: OLIVE, color: OLIVE }}>
+            <Button size="large" onClick={download} className={styles.secondaryButton}>
               Descarrega el contracte signat
             </Button>
           ) : (
@@ -183,7 +166,7 @@ export const BookingViewPage = ({ view }: BookingViewPageProps) => {
               type="primary"
               size="large"
               onClick={() => navigate(bookingContractPath(token))}
-              style={{ background: OLIVE, borderColor: OLIVE, paddingInline: 32 }}
+              className={styles.primaryButton}
             >
               Llegeix i signa el contracte
             </Button>

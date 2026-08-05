@@ -3,7 +3,8 @@ import { Form } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/auth/auth.service';
 import { isAuthenticated } from '../../services/auth/auth.store';
-import { LoginCard, useIsMobile, type LoginFormValues } from '../../common';
+import { LoginCard, type LoginFormValues } from '@ui/LoginCard';
+import { useIsMobile } from '@ui/hooks';
 
 export const AdminLogin: FC = () => {
   const navigate = useNavigate();

@@ -1,6 +1,9 @@
 import { FC } from 'react';
 import { Button, Form, FormInstance, Input, Typography } from 'antd';
-import { DesktopSplitBackground, MobileShell, WeddingCard, WeddingCardHeader } from '../pages/weddings/common';
+import { DesktopSplitBackground } from '@ui/DesktopSplitBackground';
+import { MobileShell } from '@ui/MobileShell';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
+import formStyles from '@ui/formStyles.module.css';
 
 const { Title, Text } = Typography;
 
@@ -22,19 +25,6 @@ interface LoginCardProps {
   form?: FormInstance<LoginFormValues>;
 }
 
-const labelStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  fontSize: 'clamp(0.85rem, 1.3vw, 0.9rem)',
-  fontWeight: 500,
-  color: '#5a5a5a',
-  letterSpacing: '0.02em',
-};
-
-const inputStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  borderRadius: 8,
-};
-
 export const LoginCard: FC<LoginCardProps> = ({
   title,
   subtitle = 'Àrea privada',
@@ -51,17 +41,17 @@ export const LoginCard: FC<LoginCardProps> = ({
     <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
       <Form.Item
         name="email"
-        label={<span style={labelStyle}>Email</span>}
+        label={<span className={formStyles.label}>Email</span>}
         rules={[{ required: true, type: 'email', message: 'Email vàlid requerit' }]}
       >
-        <Input size="large" autoComplete="email" style={inputStyle} />
+        <Input size="large" autoComplete="email" className={formStyles.input} />
       </Form.Item>
       <Form.Item
         name="password"
-        label={<span style={labelStyle}>Contrasenya</span>}
+        label={<span className={formStyles.label}>Contrasenya</span>}
         rules={[{ required: true, message: 'Contrasenya requerida' }]}
       >
-        <Input.Password size="large" autoComplete="current-password" style={inputStyle} />
+        <Input.Password size="large" autoComplete="current-password" className={formStyles.input} />
       </Form.Item>
       <Form.Item style={{ marginBottom: 0 }}>
         <Button size="large" type="primary" htmlType="submit" loading={submitting} block>
@@ -129,12 +119,12 @@ export const LoginCard: FC<LoginCardProps> = ({
         maxWidth: 520,
         margin: 'auto',
       }}>
-        <WeddingCard>
-          <WeddingCardHeader title={title} subtitle={subtitle} />
+        <SurfaceCard>
+          <SurfaceCardHeader title={title} subtitle={subtitle} />
           <div style={{ maxWidth: 320, margin: '0 auto', textAlign: 'left' }}>
             {loginForm}
           </div>
-        </WeddingCard>
+        </SurfaceCard>
       </div>
     </div>
   );

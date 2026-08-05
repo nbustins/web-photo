@@ -1,10 +1,6 @@
 import { Row, Col } from "antd";
-import { ImageSlider, SessionPricingCards } from "../../components";
-import FAQs from "../../components/FAQs";
+import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, WhyDoSession, ThreePhotoRow } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
-import { CustomTitle } from "../../components/customTitle";
-import { WhyDoSession } from "../../components/whyDoSession";
-import { ThreePhotoRow } from "../../components/threePhotoComponent";
 import { pageBodyPadding } from "../../styles/tokens/radii";
 
 const rowStyle = {

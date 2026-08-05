@@ -2,7 +2,7 @@ import { Col, Row, Typography } from "antd";
 import { motion } from "framer-motion";
 import { getPublicPath } from "../../utils/pathUtils";
 import { AboutMeTitle } from "./components/aboutmeTitle";
-import { useEffect, useState } from "react";
+import { useIsMobile } from "../../ui/hooks";
 
 const { Text } = Typography;
 
@@ -37,15 +37,7 @@ const fadeRight = {
 };
 
 export const AboutMe = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 600px)");
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const isMobile = useIsMobile();
 
   return (
     <div style={{ backgroundColor: "rgb(246,244,240)" }}>

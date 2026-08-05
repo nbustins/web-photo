@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { radii } from '../../../../styles/tokens/radii';
+import { radii } from '@styles/tokens/radii';
 
 export const COLOR_BG = '#f5f0ea';
 export const COLOR_HEADER = '#5C5440';
@@ -7,7 +7,7 @@ export const COLOR_TEXT_DARK = '#3d3228';
 export const COLOR_OLIVE = '#7C7458';
 export const COLOR_GREEN = '#5e8a4e';
 export const COLOR_RUST = '#b06a3a';
-export const COLOR_MUTED = '#9a9080';
+export const COLOR_MUTED = 'var(--lt-color-text-muted)';
 
 export const FONT_TITLE = "'Italiana', Georgia, serif";
 export const FONT_BODY = "'Raleway', sans-serif";
@@ -39,7 +39,7 @@ export const LabelTag: FC<{ children: React.ReactNode; onClick?: () => void }> =
       display: 'inline-block',
       fontFamily: FONT_BODY,
       fontSize: 13,
-      color: COLOR_OLIVE,
+      color: 'var(--lt-color-text-brand)',
       border: '1px solid rgba(124,116,88,0.35)',
       borderRadius: radii.md,
       padding: '3px 10px',

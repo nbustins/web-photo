@@ -1,0 +1,67 @@
+/* La vista de contracte és més ampla (900); error i càrrega mantenen els 820 del contenidor. */
+.page {
+  composes: page from '../../ui/pageContainer.module.css';
+  max-width: 900px;
+}
+
+.narrowPage {
+  composes: page from '../../ui/pageContainer.module.css';
+}
+
+.loadingWrap {
+  composes: narrowPage;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: clamp(24px, 5vw, 40px);
+}
+
+.eyebrow {
+  font-family: var(--lt-font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--lt-color-text-muted);
+}
+
+.title {
+  font-family: var(--lt-font-display);
+  color: var(--lt-color-brand);
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  margin: 8px 0 12px;
+}
+
+.dateLine {
+  font-family: var(--lt-font-body);
+  color: var(--lt-color-text-secondary);
+  font-size: 0.98rem;
+}
+
+.statusRow {
+  margin-top: 12px;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.bodyText {
+  font-family: var(--lt-font-body);
+  color: var(--lt-color-text-secondary);
+  line-height: 1.8;
+}
+
+.secondaryButton {
+  border-color: var(--lt-color-brand);
+  color: var(--lt-color-brand);
+}
+
+.primaryButton {
+  background: var(--lt-color-brand);
+  border-color: var(--lt-color-brand);
+  padding-inline: 32px;
+}

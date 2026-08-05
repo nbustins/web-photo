@@ -6,7 +6,7 @@ import { HomePage } from '../pages/home.page';
 import { PregnantPage } from '../pages/pregnancy/pregnant.page';
 import { NewBornPage } from '../pages/newborn/newborn.page';
 import { UnderConstruction } from '../pages/under.construction';
-import { ScrollToTop } from '../components/scrollToTop';
+import { ScrollToTop } from '@components';
 import { FamiliarPage } from '../pages/familiar/familiar.page';
 import { SmashCakePage } from '../pages/smashcake/smashcake.page';
 import { BookSession } from '../pages/booksession/booksession';

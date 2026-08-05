@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { MobileSwiper } from './MobileSwiper';
+import { MobileSwiper } from '../MobileSwiper';
 
 interface MobileShellProps {
   images?: string[];

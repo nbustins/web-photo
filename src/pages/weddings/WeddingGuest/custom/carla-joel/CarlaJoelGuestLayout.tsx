@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Spin } from 'antd';
 import type { WeddingGuestPageContext } from '../../WeddingGuestPage.types';
-import { DesktopSplitBackground } from '../../../common';
+import { DesktopSplitBackground } from '@ui/DesktopSplitBackground';
 import {
   GuestCodeEntry,
   GuestNotFoundState,

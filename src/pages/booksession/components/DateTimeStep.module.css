@@ -1,0 +1,21 @@
+.row {
+  text-align: left;
+}
+
+.emptySlots {
+  composes: bodyText from '../shared.module.css';
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.dayLabel {
+  composes: label from '../shared.module.css';
+  display: block;
+  margin-bottom: 12px;
+}
+
+.nextButtonWrap {
+  margin-top: 24px;
+  text-align: right;
+}

@@ -8,7 +8,6 @@ import { AppRoutes } from '../../model/routes.model';
 import { ApiError } from '../../services/api.client';
 import { createBooking, AvailabilitySlot, CreateBookingResult } from '../../services/booking/booking.api';
 import { FormValues } from './types';
-import { bodyTextStyle, inputStyle, pageStyle } from './styles';
 import { useMonthAvailability, useSessionType } from './hooks';
 import { StatusCard } from './components/StatusCard';
 import { SessionTypePicker } from './components/SessionTypePicker';
@@ -16,6 +15,8 @@ import { DateTimeStep } from './components/DateTimeStep';
 import { DetailsFormStep } from './components/DetailsFormStep';
 import { SummaryStep } from './components/SummaryStep';
 import { ConfirmationStep } from './components/ConfirmationStep';
+import shared from './shared.module.css';
+import styles from './booksession.module.css';
 
 dayjs.locale('ca');
 
@@ -85,7 +86,7 @@ export const BookSession = () => {
 
   if (loading) {
     return (
-      <div style={{ ...pageStyle, textAlign: 'center', paddingTop: '20vh' }}>
+      <div className={styles.loadingWrap}>
         <Spin size="large" />
       </div>
     );
@@ -93,13 +94,13 @@ export const BookSession = () => {
 
   if (error) {
     return (
-      <div style={pageStyle}>
+      <div className={shared.page}>
         <StatusCard variant="error" title="Sessió no disponible">
-          <Typography.Text style={bodyTextStyle}>
+          <Typography.Text className={shared.bodyText}>
             Aquesta sessió no existeix o ja no s'ofereix. Tria una sessió des de la pàgina del servei.
           </Typography.Text>
           <div>
-            <Button type="primary" onClick={() => navigate(AppRoutes.home)} style={{ marginTop: 24 }}>
+            <Button type="primary" onClick={() => navigate(AppRoutes.home)} className={styles.backButton}>
               Torna a l'inici
             </Button>
           </div>
@@ -109,10 +110,10 @@ export const BookSession = () => {
   }
 
   return (
-    <div style={pageStyle}>
+    <div className={shared.page}>
       {/* Arriving with the type in the URL (pricing card) means the choice is already made. */}
       {!sessionTypeId && step === 0 && (
-        <div style={{ margin: 'clamp(8px, 2vw, 24px) 0 24px' }}>
+        <div className={styles.pickerWrap}>
           <SessionTypePicker
             groups={groups}
             value={sessionType?.id}
@@ -129,13 +130,13 @@ export const BookSession = () => {
         current={step}
         responsive={false}
         size="small"
-        style={{ maxWidth: 600, margin: 'clamp(8px, 2vw, 24px) auto 32px', fontFamily: "'Raleway', sans-serif" }}
+        className={styles.steps}
         items={[{ title: 'Data' }, { title: 'Dades' }, { title: 'Resum' }, { title: 'Confirmació' }]}
       />
 
       {submitError && (
         <Alert type="warning" showIcon message={submitError} closable
-          onClose={() => setSubmitError(null)} style={{ marginBottom: 24, ...inputStyle }} />
+          onClose={() => setSubmitError(null)} className={styles.alert} />
       )}
 
       {step === 0 && sessionType && (

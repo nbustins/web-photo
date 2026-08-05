@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { radii } from "../styles/tokens/radii";
+import { useIsMobile } from "../ui/hooks";
 
 interface CarouselProps {
   images: string[];
@@ -13,18 +14,12 @@ const RotatingImageCarousel = ({
   intervalMs = 2500,
   transitionMs = 800,
 }: CarouselProps) => {
-  const getCount = () => (window.innerWidth < 768 ? 1 : 4);
+  const isMobile = useIsMobile();
+  const count = isMobile ? 1 : 4;
 
   const [items, setItems] = useState(images);
   const [offset, setOffset] = useState(0);
   const animatingRef = useRef(false);
-  const [count, setCount] = useState(getCount);
-
-  useEffect(() => {
-    const onResize = () => setCount(getCount());
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
 
   useEffect(() => {
     setItems(images);

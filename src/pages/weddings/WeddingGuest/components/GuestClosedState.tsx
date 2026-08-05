@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Typography } from 'antd';
-import { WeddingCard, WeddingCardHeader } from '../../common';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 
 const { Title, Text } = Typography;
 
@@ -23,12 +23,12 @@ interface ClosedStateProps {
 
 export const GuestClosedState: FC<ClosedStateProps> = ({ title }) => {
   return (
-    <WeddingCard
+    <SurfaceCard
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {title && <WeddingCardHeader title={title} />}
+      {title && <SurfaceCardHeader title={title} />}
       <div style={iconStyle}>ℹ</div>
       <Title
         level={3}
@@ -48,6 +48,6 @@ export const GuestClosedState: FC<ClosedStateProps> = ({ title }) => {
       }}>
         La data límit per confirmar l'assistència ha passat. Si necessites fer algún canvi pots tornar a accedir amb el teu codi.
       </Text>
-    </WeddingCard>
+    </SurfaceCard>
   );
 };

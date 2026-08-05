@@ -1,11 +1,11 @@
 import { FC, ReactNode } from 'react';
 import { motion, MotionProps } from 'framer-motion';
 import { Typography, Divider } from 'antd';
-import { radii } from '../styles/tokens/radii';
+import { radius } from '@styles/tokens';
 
 const { Title, Text } = Typography;
 
-export const GlassCard: FC<MotionProps & { children: ReactNode }> = ({
+export const SurfaceCard: FC<MotionProps & { children: ReactNode }> = ({
   children,
   initial = { opacity: 0, y: 30 },
   animate = { opacity: 1, y: 0 },
@@ -21,7 +21,7 @@ export const GlassCard: FC<MotionProps & { children: ReactNode }> = ({
         background: 'rgba(255, 255, 255, 0.9)',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
-        borderRadius: radii.lg,
+        borderRadius: radius.md,
         padding: 'clamp(24px, 5vw, 40px) clamp(20px, 4vw, 32px)',
         boxShadow: '0 4px 20px rgba(124, 116, 88, 0.1), 0 0 0 1px rgba(124, 116, 88, 0.05)',
         textAlign: 'center',
@@ -33,13 +33,13 @@ export const GlassCard: FC<MotionProps & { children: ReactNode }> = ({
   );
 };
 
-interface GlassCardHeaderProps {
+interface SurfaceCardHeaderProps {
   title: string;
   subtitle?: string;
   guestName?: string;
 }
 
-export const GlassCardHeader: FC<GlassCardHeaderProps> = ({
+export const SurfaceCardHeader: FC<SurfaceCardHeaderProps> = ({
   title,
   subtitle,
   guestName,
@@ -80,7 +80,7 @@ export const GlassCardHeader: FC<GlassCardHeaderProps> = ({
             fontFamily: "'Italiana', Georgia, serif",
             fontSize: 'clamp(1.1rem, 2vw, 1.3rem)',
             fontStyle: 'italic',
-            color: '#9a9080',
+            color: 'var(--lt-color-text-muted)',
             marginTop: 16,
           }}
         >

@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { getPublicPath } from "../utils/pathUtils";
+import { useIsMobile } from "../ui/hooks";
 
 const uris = [
   {
@@ -21,15 +22,7 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
   height,
 }) => {
 
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 600px)");
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const isMobile = useIsMobile();
 
   const video_data = isMobile
     ? uris[0]

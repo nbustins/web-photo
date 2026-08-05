@@ -79,7 +79,7 @@
 
 .manager-title {
   font-family: 'Italiana', Georgia, serif !important;
-  color: #7C7458;
+  color: var(--lt-color-text-brand);
   margin-bottom: 24px !important;
 }
 

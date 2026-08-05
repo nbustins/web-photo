@@ -1,0 +1,18 @@
+.page {
+  composes: page from '../../ui/pageContainer.module.css';
+}
+
+.label {
+  composes: label from '../../ui/formStyles.module.css';
+}
+
+.input {
+  composes: input from '../../ui/formStyles.module.css';
+}
+
+.bodyText {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+  color: var(--lt-color-text-secondary);
+  line-height: 1.7;
+}

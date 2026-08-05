@@ -1,9 +1,9 @@
 import { Button, Calendar, Col, Row, Spin, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import { WeddingCard, WeddingCardHeader } from '../../weddings/common';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import { AvailabilitySlot, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
-import { bodyTextStyle, labelStyle } from '../styles';
+import styles from './DateTimeStep.module.css';
 
 interface DateTimeStepProps {
   sessionType: BookableSessionType;
@@ -27,12 +27,12 @@ export const DateTimeStep = ({
   const selectedDaySlots = selectedDate ? slotsByDate[selectedDate.format('YYYY-MM-DD')] ?? [] : [];
 
   return (
-    <WeddingCard>
-      <WeddingCardHeader
+    <SurfaceCard>
+      <SurfaceCardHeader
         title={`Reserva ${sessionDisplayName(groupName, sessionType.name)}`}
         subtitle={`${sessionType.durationMinutes} min`}
       />
-      <Row gutter={[24, 24]} style={{ textAlign: 'left' }}>
+      <Row gutter={[24, 24]} className={styles.row}>
         <Col xs={24} md={13}>
           <Spin spinning={loadingSlots}>
             <Calendar
@@ -55,13 +55,13 @@ export const DateTimeStep = ({
             />
           </Spin>
           {!loadingSlots && !hasAnySlots && (
-            <Typography.Text style={{ ...bodyTextStyle, display: 'block', textAlign: 'center', marginTop: 8 }}>
+            <Typography.Text className={styles.emptySlots}>
               Cap hora lliure aquest mes. Prova el mes següent.
             </Typography.Text>
           )}
         </Col>
         <Col xs={24} md={11}>
-          <Typography.Text style={{ ...labelStyle, display: 'block', marginBottom: 12 }}>
+          <Typography.Text className={styles.dayLabel}>
             {selectedDate
               ? selectedDate.format('dddd D MMMM')
               : 'Selecciona un dia al calendari per veure les hores lliures.'}
@@ -79,13 +79,13 @@ export const DateTimeStep = ({
               </Col>
             ))}
           </Row>
-          <div style={{ marginTop: 24, textAlign: 'right' }}>
+          <div className={styles.nextButtonWrap}>
             <Button type="primary" size="large" disabled={!selectedSlot} onClick={onNext}>
               Següent
             </Button>
           </div>
         </Col>
       </Row>
-    </WeddingCard>
+    </SurfaceCard>
   );
 };

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Input, Button, Space } from 'antd';
-import { WeddingCard, WeddingCardHeader } from '../../common';
+import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 
 interface GuestCodeEntryProps {
   title: string;
@@ -18,8 +18,8 @@ export const GuestCodeEntry: FC<GuestCodeEntryProps> = ({
   onSubmit,
 }) => {
   return (
-    <WeddingCard>
-      <WeddingCardHeader
+    <SurfaceCard>
+      <SurfaceCardHeader
         title={title}
         subtitle={subtitle}
       />
@@ -57,6 +57,6 @@ export const GuestCodeEntry: FC<GuestCodeEntryProps> = ({
           </Button>
         </Space.Compact>
       </div>
-    </WeddingCard>
+    </SurfaceCard>
   );
 };

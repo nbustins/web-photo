@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Spin, Typography, Input, Button, Space, Form, Switch } from 'antd';
 import type { WeddingGuestPageContext } from '../WeddingGuestPage.types';
-import { MobileShell } from '../../common';
+import { MobileShell } from '@ui/MobileShell';
 
 const { Title, Text } = Typography;
 
@@ -195,7 +195,7 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
               fontFamily: "'Italiana', Georgia, serif",
               fontSize: '1.1rem',
               fontStyle: 'italic',
-              color: '#9a9080',
+              color: 'var(--lt-color-text-muted)',
               textAlign: 'center',
               marginTop: 12,
               marginBottom: 8,
@@ -302,7 +302,7 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
               display: 'block',
               fontFamily: "'Raleway', sans-serif",
               fontSize: '0.8rem',
-              color: '#9a9a9a',
+              color: 'var(--lt-color-text-muted)',
               textAlign: 'center',
               marginTop: 12,
             }}>

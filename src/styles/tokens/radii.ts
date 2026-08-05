@@ -1,7 +1,11 @@
+import { radius, spaceAlias } from '../tokens';
+
+/** @deprecated Usa `radius` de `@styles/tokens`. Es manté per compatibilitat fins a F2/F4. */
 export const radii = {
-  sm: "0.1rem",
-  md: "0.3rem",
-  lg: "0.5rem",
+  sm: radius.xs,
+  md: radius.sm,
+  lg: radius.md,
 } as const;
 
-export const pageBodyPadding = "24px";
+/** @deprecated Usa `spaceAlias.page` de `@styles/tokens`. */
+export const pageBodyPadding = spaceAlias.page;

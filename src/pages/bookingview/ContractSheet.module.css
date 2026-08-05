@@ -1,0 +1,120 @@
+.sheet {
+  background: var(--lt-paper-100);
+  border: 1px solid var(--lt-color-border-subtle);
+  border-radius: 4px;
+  box-shadow: var(--lt-shadow-sheet);
+  padding: clamp(28px, 5vw, 56px) clamp(22px, 5vw, 60px);
+}
+
+.title {
+  font-family: var(--lt-font-display);
+  color: var(--lt-color-brand);
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin: 0;
+}
+
+.sectionTitle {
+  font-family: var(--lt-font-display);
+  color: var(--lt-color-brand);
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+}
+
+.signatureLabel {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.paragraph {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.88rem, 1.4vw, 0.95rem);
+  color: var(--lt-color-text-primary);
+  line-height: 1.8;
+  text-align: justify;
+  margin: 0 0 10px;
+}
+
+.paragraphChoice {
+  text-align: left;
+  margin: 0;
+}
+
+.dividerTop {
+  height: 1px;
+  background: var(--lt-color-border-subtle);
+  margin: 18px auto 32px;
+  max-width: 120px;
+}
+
+.dividerMid {
+  height: 1px;
+  background: var(--lt-color-border-subtle);
+  margin: 32px 0 24px;
+}
+
+.sectionBlock {
+  margin-bottom: 26px;
+}
+
+.radioGroup {
+  display: block;
+  margin: 4px 0 14px;
+}
+
+.signatureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+  align-items: end;
+}
+
+.signatureLine {
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--lt-color-border-subtle);
+}
+
+.signatureName {
+  font-family: var(--lt-font-signature);
+  color: var(--lt-color-text-primary);
+  font-size: 1.1rem;
+  padding-bottom: 6px;
+}
+
+.signatureMeta {
+  font-family: var(--lt-font-body);
+  font-size: 0.78rem;
+  color: var(--lt-color-text-muted);
+  margin-top: 6px;
+}
+
+.alertSpacing {
+  margin-top: 24px;
+}
+
+.actions {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.secondaryButton {
+  border-color: var(--lt-color-brand);
+  color: var(--lt-color-brand);
+}
+
+.primaryButton {
+  background: var(--lt-color-brand);
+  border-color: var(--lt-color-brand);
+  padding-inline: 36px;
+}
+
+.signHint {
+  font-family: var(--lt-font-body);
+  font-size: 0.78rem;
+  color: var(--lt-color-text-muted);
+  margin-top: 10px;
+}

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import styles from './SignaturePad.module.css';
 
+// Canvas 2D strokeStyle no pot llegir custom properties CSS: tinta de la signatura, valor original.
 const INK = '#3f3a30';
 
 interface SignaturePadProps {
@@ -87,40 +89,15 @@ export const SignaturePad = ({ onChange, disabled }: SignaturePadProps) => {
         onPointerUp={end}
         onPointerLeave={end}
         aria-label="Àrea per signar amb el dit o el ratolí"
-        style={{
-          display: 'block',
-          width: '100%',
-          height: 120,
-          touchAction: 'none',
-          cursor: disabled ? 'not-allowed' : 'crosshair',
-          borderBottom: '1px solid rgba(124, 116, 88, 0.45)',
-        }}
+        className={disabled ? `${styles.canvas} ${styles.canvasDisabled}` : styles.canvas}
       />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-          marginTop: 6,
-          fontFamily: "'Raleway', sans-serif",
-          fontSize: '0.78rem',
-          color: '#9a9a9a',
-        }}
-      >
+      <div className={styles.footer}>
         <span>{hasInk ? 'Signatura del client' : 'Signa aquí amb el dit o el ratolí'}</span>
         <button
           type="button"
           onClick={clear}
           disabled={!hasInk}
-          style={{
-            border: 'none',
-            background: 'none',
-            padding: 0,
-            font: 'inherit',
-            color: hasInk ? '#7C7458' : '#c4c0b4',
-            cursor: hasInk ? 'pointer' : 'default',
-            textDecoration: 'underline',
-          }}
+          className={hasInk ? `${styles.clearButton} ${styles.clearButtonActive}` : styles.clearButton}
         >
           Esborra
         </button>

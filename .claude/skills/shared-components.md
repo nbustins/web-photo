@@ -17,6 +17,9 @@ ESLint (`no-restricted-imports`). Si un component encara no és a
 Aquest document no conté valors de disseny (colors, mides, escala tipogràfica)
 — per a això, `.claude/skills/design-system.md` i `src/styles/tokens.ts`.
 
+Per entendre **quan** crear un component nou i a quina capa va,
+`.claude/skills/styling-guide.md` §2.
+
 ---
 
 ## CustomTitle
@@ -41,14 +44,18 @@ Tres fotos esglaonades en fila amb animació d'aparició en scroll.
 import { ThreePhotoRow } from "@components";
 
 <ThreePhotoRow
-  photos={[
+  photoPaths={[
     getPublicPath("session/2.jpg"),
     getPublicPath("session/3.jpg"),
     getPublicPath("session/4.jpg"),
   ]}
+  rowClassName={blocks.sectionRow}
 />
 ```
 
+- El prop és `photoPaths` (tupla de 3), **no** `photos`.
+- `rowClassName` és opcional: normalment `blocks.sectionRow` de
+  `@components/blocks.module.css`, o `sectionRowLoose` si la pàgina vol més aire.
 - La foto central és més gran que les laterals.
 - S'apila a amplada completa en mòbil.
 - Relació d'aspecte retrat forçada per foto.
@@ -65,11 +72,15 @@ import { PricingCard } from "@components";
 <PricingCard
   title="Bàsica"
   features={["10 fotos editades", "2 hores de sessió"]}
-  price="250€"
+  price={250}
+  adviceText="Preus orientatius"
   sessionTypeId={sessionType.id}
 />
 ```
 
+- `price` és un **número**, no una cadena: el component el formata amb
+  `Intl.NumberFormat('ca-ES')` en euros. No hi posis el símbol.
+- `adviceText` és opcional; l'asterisc el posa el component, no l'escriguis.
 - El prop és `sessionTypeId` (numèric, opcional) — **no** `onBook`. Amb
   `sessionTypeId`, el botó navega directament al pas de reserva d'aquell
   tipus de sessió; sense ell, cau a la ruta genèrica de reserva.
@@ -117,7 +128,9 @@ import { FAQs } from "@components";
 ```
 
 - El prop és `imageSrc` — **no** `image`.
-- `faqs`: array de `{ title: string, text: string }`.
+- `faqs`: array de `{ title: string, text: ReactNode }` — el text sol ser JSX
+  (`<p>…</p>`), no una cadena.
+- `imageWidth` opcional (per defecte `"100%"`), útil per acotar la foto.
 - Fons de secció a amplada completa.
 
 ---
@@ -131,13 +144,15 @@ descriptiu i una imatge a sota.
 import { WhyDoSession } from "@components";
 
 <WhyDoSession
-  heading="Per què fer una sessió de maternitat?"
-  text="Lorem ipsum descriptive text here."
-  image={getPublicPath("session/why.jpg")}
+  textWhyDoThisSession={<p>El text descriptiu, com a JSX.</p>}
 />
 ```
 
-- Usat a la pàgina d'embaràs — opcional per a la resta.
+- Únic prop: `textWhyDoThisSession` (`ReactNode`). **No** accepta `heading`,
+  `text` ni `image`.
+- ⚠️ El titular ("Per què recomano fer la sessió d'embaràs?") i la imatge estan
+  **hardcodejats** dins el component. Només serveix per a la pàgina d'embaràs
+  tal com està; per fer-lo servir en una altra sessió cal parametritzar-lo abans.
 
 ---
 
@@ -165,8 +180,12 @@ Text d'avís petit i en cursiva.
 ```typescript
 import { AdviceText } from "@components";
 
-<AdviceText text="* Preus orientatius, consulta disponibilitat." />
+<AdviceText>* Preus orientatius, consulta disponibilitat.</AdviceText>
 ```
+
+- El contingut va com a **children**, no com a prop `text`.
+- Dins d'una `PricingCard`, l'asterisc el posa la targeta: passa-hi
+  `adviceText` i no facis servir `AdviceText` directament.
 
 ---
 

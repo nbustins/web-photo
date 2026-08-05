@@ -2,6 +2,11 @@
 
 Reference this skill when making UI decisions, styling components, or ensuring visual consistency.
 
+> **Si és el primer cop que toques estils en aquest projecte, llegeix
+> `.claude/skills/styling-guide.md`**: explica la jerarquia (capes, nivells de
+> color, escales) i quan fer servir cada cosa. Aquest document d'aquí és el
+> resum de regles, per consultar-lo ràpid quan ja saps com funciona.
+
 **Regla mestra:** aquest document conté regles i punters, mai valors. Els valors
 viuen en un sol lloc — `src/styles/tokens.ts` (autoria) i `src/styles/tokens.css`
 (`--lt-*`, consumit per CSS i pel tema d'antd). Si aquest fitxer i el codi

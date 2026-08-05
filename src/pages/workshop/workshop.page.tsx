@@ -1,6 +1,7 @@
 import { Button, Col, Row } from "antd";
 import { motion } from "framer-motion";
 import { CustomTitle } from "@components";
+import styles from "./workshop.module.css";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -41,21 +42,15 @@ const heroImage =
 
 export const Workshop = () => {
   return (
-    <div style={{ backgroundColor: "rgb(246,244,240)", minHeight: "100%" }}>
-      <div
-        style={{
-          maxWidth: 1100,
-          margin: "0 auto",
-          padding: "20px 32px 28px",
-        }}
-      >
+    <div className={styles.page}>
+      <div className={styles.container}>
         {/* Title */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          style={{ textAlign: "center", marginBottom: 20 }}
+          className={styles.titleBlock}
         >
           <CustomTitle label="TALLER" title="BRODA RECORDS" />
         </motion.div>
@@ -63,25 +58,15 @@ export const Workshop = () => {
         {/* Main two-column section */}
         <Row gutter={[40, 32]} align="stretch">
           {/* Left: portrait photo */}
-          <Col xs={24} md={10} style={{ display: "flex" }}>
+          <Col xs={24} md={10} className={styles.photoColumn}>
             <motion.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              style={{ flex: 1 }}
+              className={styles.photoFill}
             >
-              <img
-                src={heroImage}
-                alt="Taller lateral"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "0.3rem",
-                  display: "block",
-                }}
-              />
+              <img src={heroImage} alt="Taller lateral" className={styles.heroImage} />
             </motion.div>
           </Col>
 
@@ -96,141 +81,38 @@ export const Workshop = () => {
             >
               {/* Intro */}
               {introParagraphs.map((paragraph, i) => (
-                <p
-                  key={i}
-                  style={{
-                    fontFamily: "Raleway, sans-serif",
-                    fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
-                    color: "#444",
-                    lineHeight: 1.75,
-                    marginBottom: 12,
-                    textAlign: "justify",
-                    hyphens: "auto",
-                  }}
-                >
+                <p key={i} className={styles.paragraph}>
                   {paragraph}
                 </p>
               ))}
 
               {/* TALLER block */}
-              <p
-                style={{
-                  fontFamily: "Raleway, sans-serif",
-                  fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
-                  color: "#444",
-                  lineHeight: 1.75,
-                  marginTop: 18,
-                  marginBottom: 12,
-                }}
-              >
+              <p className={styles.groupNote}>
                 El taller es fa per grups privats
                 d'entre 5 i 10 persones i per torns.
               </p>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                  marginBottom: 20,
-                }}
-              >
+              <div className={styles.shifts}>
                 {shifts.map((shift) => (
-                  <div
-                    key={shift.label}
-                    style={{
-                      background: "rgba(255,255,255,0.55)",
-                      border: "1px solid #e2ddd7",
-                      borderRadius: "0.3rem",
-                      padding: "12px 14px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "block",
-                        fontFamily: "Raleway, sans-serif",
-                        fontSize: "0.65rem",
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        color: "var(--lt-color-text-muted)",
-                        marginBottom: 4,
-                      }}
-                    >
-                      {shift.label}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "Raleway, sans-serif",
-                        fontSize: "clamp(0.9rem, 1.3vw, 1rem)",
-                        color: "#444",
-                      }}
-                    >
-                      {shift.time}
-                    </span>
+                  <div key={shift.label} className={styles.shift}>
+                    <span className={styles.shiftLabel}>{shift.label}</span>
+                    <span className={styles.shiftTime}>{shift.time}</span>
                   </div>
                 ))}
               </div>
 
               {/* PREU */}
-              <p
-                style={{
-                  textAlign: "center",
-                  fontFamily: "Italiana, serif",
-                  fontSize: "clamp(1.4rem, 2.4vw, 1.9rem)",
-                  color: "#333",
-                  letterSpacing: "0.04em",
-                  margin: "0 0 20px",
-                }}
-              >
+              <p className={styles.price}>
                 28&nbsp;€ / persona
               </p>
 
               {/* INCLOU */}
-              <div style={{ marginBottom: 24 }}>
-                <p
-                  style={{
-                    fontFamily: "Raleway, sans-serif",
-                    fontSize: "0.7rem",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: "var(--lt-color-text-muted)",
-                    margin: "0 0 8px",
-                  }}
-                >
-                  Inclou
-                </p>
-                <ul
-                  style={{
-                    listStyle: "none",
-                    padding: 0,
-                    margin: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 6,
-                  }}
-                >
+              <div className={styles.includes}>
+                <p className={styles.includesLabel}>Inclou</p>
+                <ul className={styles.includesList}>
                   {includes.map((item, i) => (
-                    <li
-                      key={i}
-                      style={{
-                        fontFamily: "Raleway, sans-serif",
-                        fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
-                        color: "#444",
-                        lineHeight: 1.6,
-                        paddingLeft: 16,
-                        position: "relative",
-                      }}
-                    >
-                      <span
-                        style={{
-                          position: "absolute",
-                          left: 0,
-                          top: 0,
-                          color: "var(--lt-color-text-muted)",
-                        }}
-                      >
-                        —
-                      </span>
+                    <li key={i} className={styles.includesItem}>
+                      <span className={styles.dash}>—</span>
                       {item}
                     </li>
                   ))}
@@ -238,19 +120,14 @@ export const Workshop = () => {
               </div>
 
               {/* Reserva */}
-              <div style={{ textAlign: "center" }}>
+              <div className={styles.bookWrap}>
                 <Button
                   type="primary"
                   size="large"
                   href={bookingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    padding: "0 64px",
-                    height: 56,
-                    fontSize: "1.1rem",
-                    width: "100%",
-                  }}
+                  className={styles.bookButton}
                 >
                   Reserva
                 </Button>
@@ -265,7 +142,7 @@ export const Workshop = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          style={{ marginTop: 24 }}
+          className={styles.gallery}
         >
           <Row gutter={[16, 16]}>
             {galleryImages.map((src, i) => (
@@ -273,13 +150,7 @@ export const Workshop = () => {
                 <img
                   src={src}
                   alt={`Taller ${i + 1}`}
-                  style={{
-                    width: "100%",
-                    aspectRatio: "3/2",
-                    objectFit: "cover",
-                    borderRadius: "0.3rem",
-                    display: "block",
-                  }}
+                  className={styles.galleryImage}
                 />
               </Col>
             ))}

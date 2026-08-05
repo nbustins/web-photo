@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { Button, Empty, Table } from 'antd';
-import type { TableColumnsType } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Drawer, Empty, Spin } from 'antd';
+import { ResponsiveTable, ResponsiveColumn } from '@ui/ResponsiveTable';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import type { ConfirmationRow } from '../../../model/wedding.types';
 import type { InvitationSummary } from '../../weddings/WeddingManager/WeddingManager.types';
@@ -15,7 +14,6 @@ import {
 import { AdminWedding, fetchAdminWeddings } from '../../../services/wedding/api/admin-wedding.api';
 import { fetchConfirmations } from '../../../services/wedding/api/confirmations.api';
 import { useApiError } from '../useApiError';
-import styles from './WeddingsTab.module.css';
 
 const formatDate = (date: string | null) =>
   date ? new Date(date).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—';
@@ -60,8 +58,8 @@ export const WeddingsTab: FC = () => {
     setNoteModal(null);
   };
 
-  const columns: TableColumnsType<AdminWedding> = [
-    { title: 'Casament', dataIndex: 'title', key: 'title' },
+  const columns: ResponsiveColumn<AdminWedding>[] = [
+    { title: 'Casament', dataIndex: 'title', key: 'title', mobileTitle: true },
     {
       title: 'Data',
       key: 'eventDate',
@@ -78,39 +76,44 @@ export const WeddingsTab: FC = () => {
     { title: 'Enllaç web', dataIndex: 'slug', key: 'slug', width: 180 },
   ];
 
-  if (selected && !rowsLoading) {
-    const stats = computeStats(rows);
-    const dashboardProps = {
-      weddingTitle: selected.title,
-      rows,
-      stats,
-      onLogout: closeWedding,
-      embedded: true,
-      onSelectInvitation: (id: number) => setSelectedSummary(buildSummary(rows, id)),
-      onShowNote: (note: string) => setNoteModal(note),
-    };
-    return (
-      <>
-        <div className={styles.detailHeader}>
-          <Button icon={<ArrowLeftOutlined />} onClick={closeWedding}>Tornar</Button>
-          <h2 className={styles.detailTitle}>{selected.title}</h2>
-        </div>
-        {isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} />}
-        <ManagerNotesModal note={noteModal} onClose={() => setNoteModal(null)} />
-        <ManagerInvitationDrawer summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
-      </>
-    );
-  }
+  const dashboardProps = selected && {
+    weddingTitle: selected.title,
+    rows,
+    stats: computeStats(rows),
+    onLogout: closeWedding,
+    embedded: true,
+    onSelectInvitation: (id: number) => setSelectedSummary(buildSummary(rows, id)),
+    onShowNote: (note: string) => setNoteModal(note),
+  };
 
   return (
-    <Table
-      columns={columns}
-      dataSource={[...weddings].sort((a, b) => (b.eventDate ?? '').localeCompare(a.eventDate ?? ''))}
-      rowKey="id"
-      loading={loading || rowsLoading}
-      pagination={false}
-      locale={{ emptyText: <Empty description="No hi ha casaments" /> }}
-      onRow={(wedding) => ({ onClick: () => openWedding(wedding), style: { cursor: 'pointer' } })}
-    />
+    <>
+      <ResponsiveTable
+        columns={columns}
+        dataSource={[...weddings].sort((a, b) => (b.eventDate ?? '').localeCompare(a.eventDate ?? ''))}
+        rowKey="id"
+        loading={loading}
+        pagination={false}
+        locale={{ emptyText: <Empty description="No hi ha casaments" /> }}
+        onRow={(wedding) => ({ onClick: () => openWedding(wedding), style: { cursor: 'pointer' } })}
+      />
+
+      <Drawer
+        width={isMobile ? '100%' : 900}
+        open={!!selected}
+        onClose={closeWedding}
+        title={selected?.title ?? ''}
+      >
+        {rowsLoading ? (
+          <Spin />
+        ) : (
+          dashboardProps &&
+          (isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} />)
+        )}
+      </Drawer>
+
+      <ManagerNotesModal note={noteModal} onClose={() => setNoteModal(null)} />
+      <ManagerInvitationDrawer summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
+    </>
   );
 };

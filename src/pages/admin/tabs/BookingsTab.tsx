@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Button, Collapse, DatePicker, Descriptions, Drawer, Popconfirm, Select, Space, Table, Tag, Typography, message } from 'antd';
+import { Button, Collapse, DatePicker, Descriptions, Drawer, Popconfirm, Select, Space, Tag, Typography, message } from 'antd';
+import { ResponsiveTable } from '@ui/ResponsiveTable';
 import { AdminIcons, IconButton } from '../icons';
 import { ResendEmailButtons } from '../components/ResendEmailButtons';
 import {
@@ -125,7 +126,7 @@ export const BookingsTab: FC = () => {
         <IconButton icon="refresh" label="Actualitzar" onClick={load} />
       </Space>
 
-      <Table
+      <ResponsiveTable
         rowKey="id"
         loading={loading}
         dataSource={bookings}
@@ -133,7 +134,7 @@ export const BookingsTab: FC = () => {
         columns={[
           { title: 'Data', dataIndex: 'startAt', render: (v: string) => formatInstant(v) },
           { title: 'Sessió', dataIndex: 'sessionTypeId', render: (id: number) => typeNames[id] ?? `#${id}` },
-          { title: 'Reserva', dataIndex: 'clientName' },
+          { title: 'Reserva', dataIndex: 'clientName', mobileTitle: true },
           {
             title: 'Estat',
             dataIndex: 'status',

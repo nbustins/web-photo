@@ -1,8 +1,9 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import {
-  Alert, Badge, Button, Card, DatePicker, Input, Popconfirm, Select, Space, Table, TimePicker,
+  Alert, Badge, Button, Card, DatePicker, Input, Popconfirm, Select, Space, TimePicker,
   Typography, message,
 } from 'antd';
+import { ResponsiveTable } from '@ui/ResponsiveTable';
 import dayjs from 'dayjs';
 import {
   BlockedPeriod, SessionGroup, Weekday, WeeklyAvailability,
@@ -204,12 +205,12 @@ export const ScheduleTab: FC = () => {
           <Input placeholder="Motiu (opcional)" value={blockReason} onChange={(e) => setBlockReason(e.target.value)} style={{ width: 220 }} />
           <IconButton icon="block" label="Bloquejar aquests dies" type="primary" onClick={addBlock} disabled={!blockRange.from} />
         </Space>
-        <Table
+        <ResponsiveTable
           rowKey="id"
           pagination={false}
           dataSource={blocks}
           columns={[
-            { title: 'Des de', dataIndex: 'from' },
+            { title: 'Des de', dataIndex: 'from', mobileTitle: true },
             { title: 'Fins a', dataIndex: 'to' },
             { title: 'Motiu', dataIndex: 'reason', render: (v?: string) => v || '—' },
             {

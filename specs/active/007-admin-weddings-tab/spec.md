@@ -39,7 +39,7 @@ L'admin veu tots els casaments en una tab "Weddings" de l'AdminPanel i, en clica
 - FR-1: Nova tab "Weddings" a l'AdminPanel, després de les existents.
 - FR-2: La tab mostra la llista de weddings (`GET /api/weddings`): títol, data de l'esdeveniment, data de tancament de confirmacions, nº convidats i slug (etiquetat "Enllaç web" per a no-tècnics); ordenada per `eventDate` desc.
 - FR-3: Clicar un wedding mostra el dashboard de confirmacions d'aquell wedding (stats + taula + drawer + modal de notes), idèntic al del manager.
-- FR-4: Des del dashboard es pot tornar a la llista amb un botó "Tornar" (no fa logout de l'admin). El dashboard es renderitza **incrustat dins la tab** (AppBar i tabs de l'admin sempre visibles): prop `embedded` als dashboards que omet el seu chrome propi (AppBar/header) i la tab pinta capçalera pròpia (botó Tornar + títol).
+- FR-4: El detall s'obre en un **Drawer lateral** (mateix patró que el detall de reserva a BookingsTab): títol = casament, tancar amb la ✕ o clic fora; la llista queda darrere. El dashboard va dins amb la prop `embedded` (sense el seu AppBar/header). Mòbil: drawer a amplada completa.
 - FR-5: En mòbil es mostra `ManagerMobileDashboard` (mateix switch `useIsMobile` que `WeddingManagerPage`).
 - FR-6: La llista és només consulta: cap acció extra per fila.
 - FR-7: Errors d'API es mostren amb el patró existent d'admin (`useApiError`).
@@ -95,7 +95,7 @@ Ja existent — només client nou:
 
 **Vista llista:** taula antd (patró `BookingsTab`) amb títol, data, convidats, slug.
 
-**Vista detall:** drilldown inline — estat local `selected` dins `WeddingsTab`; quan hi ha selecció es renderitza capçalera (Tornar + títol) i el dashboard `embedded` sota les tabs de l'admin. "Tornar" reseteja l'estat. Cap ruta nova.
+**Vista detall:** Drawer antd (900px desktop, 100% mòbil) obert amb estat local `selected`; dins, el dashboard `embedded` (variant desktop o mòbil segons `useIsMobile`) amb `Spin` mentre carreguen confirmacions. Cap ruta nova.
 
 ## 10. Edge cases
 
@@ -119,7 +119,7 @@ Ja existent — només client nou:
 Cap — resoltes 2026-08-05:
 
 - **OQ-1** → drilldown inline (estat local, sense ruta nova)
-- **OQ-2** → primer pantalla completa; revisat 2026-08-05 a **incrustat** (prop `embedded`, capçalera pròpia de la tab amb "Tornar")
+- **OQ-2** → iterat: pantalla completa → incrustat → **Drawer lateral** (patró BookingsTab), sempre via prop `embedded` dels dashboards
 - **OQ-3** → sí, variant mòbil via `useIsMobile` com el manager
 - **OQ-4** → només consulta
 

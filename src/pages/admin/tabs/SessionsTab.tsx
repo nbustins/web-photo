@@ -1,8 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Alert, Card, DatePicker, Divider, Empty, Form, Input, InputNumber, Modal, Popconfirm,
-  Select, Space, Switch, Table, Tag,
+  Alert, Button, Card, DatePicker, Divider, Drawer, Empty, Form, Input, InputNumber, Modal,
+  Popconfirm, Select, Space, Switch, Tag,
 } from 'antd';
+import { ResponsiveTable } from '@ui/ResponsiveTable';
+import { useIsMobile } from '@ui/hooks/useIsMobile';
 import dayjs from 'dayjs';
 import {
   BookingSession, SessionGroup, SessionTypePayload,
@@ -21,6 +23,7 @@ const priceFormat = new Intl.NumberFormat('ca-ES', { style: 'currency', currency
 
 export const SessionsTab: FC = () => {
   const onError = useApiError();
+  const isMobile = useIsMobile();
   const [groups, setGroups] = useState<SessionGroup[]>([]);
   const [types, setTypes] = useState<SessionType[]>([]);
   // The API splits a session in two (catalog + agenda, specs 007/008). That boundary is ours,
@@ -149,14 +152,14 @@ export const SessionsTab: FC = () => {
   };
 
   const typesTable = (groupId: number) => (
-    <Table
+    <ResponsiveTable
       rowKey="id"
       loading={loading}
       pagination={false}
       dataSource={types.filter((t) => t.sessionGroupId === groupId)}
       locale={{ emptyText: <Empty description="Cap tipus de sessió en aquest grup" /> }}
       columns={[
-        { title: 'Nom', dataIndex: 'name' },
+        { title: 'Nom', dataIndex: 'name', mobileTitle: true },
         { title: 'Durada', dataIndex: 'durationMinutes', render: (v: number) => `${v} min` },
         { title: 'Preu', dataIndex: 'price', render: (v: number) => priceFormat.format(v) },
         { title: 'Features', dataIndex: 'features', render: (v: string[]) => v.length },
@@ -252,12 +255,17 @@ export const SessionsTab: FC = () => {
         />
       </Modal>
 
-      <Modal
+      <Drawer
+        width={isMobile ? '100%' : 480}
         open={typeModalOpen}
         title={editingType ? 'Editar tipus' : 'Nou tipus'}
-        onCancel={() => setTypeModalOpen(false)}
-        onOk={submitType}
-        okText="Desar"
+        onClose={() => setTypeModalOpen(false)}
+        footer={
+          <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+            <Button onClick={() => setTypeModalOpen(false)}>Cancel·lar</Button>
+            <Button type="primary" onClick={submitType}>Desar</Button>
+          </Space>
+        }
       >
         <Form form={form} layout="vertical">
           <Form.Item name="name" label="Nom" rules={[{ required: true }]}>
@@ -295,7 +303,7 @@ export const SessionsTab: FC = () => {
             <RangePicker style={{ width: '100%' }} allowEmpty={[true, true]} />
           </Form.Item>
         </Form>
-      </Modal>
+      </Drawer>
     </>
   );
 };

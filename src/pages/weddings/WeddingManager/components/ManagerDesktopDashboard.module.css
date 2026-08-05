@@ -1,0 +1,6 @@
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--lt-space-2);
+  padding: var(--lt-space-2) 0;
+}

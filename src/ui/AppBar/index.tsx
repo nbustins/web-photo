@@ -7,13 +7,12 @@ const { Header } = Layout;
 interface AppBarProps {
   title: ReactNode;
   actions?: ReactNode;
-  /** Classes pròpies del consumidor (p.ex. regles responsive que no comparteixen totes les zones). */
-  headerClassName?: string;
+  /** Classe pròpia del consumidor (p.ex. regles responsive que no comparteixen totes les zones). */
   contentClassName?: string;
 }
 
-export const AppBar: FC<AppBarProps> = ({ title, actions, headerClassName, contentClassName }) => (
-  <Header className={headerClassName ? `${styles.header} ${headerClassName}` : styles.header}>
+export const AppBar: FC<AppBarProps> = ({ title, actions, contentClassName }) => (
+  <Header className={styles.header}>
     <div className={contentClassName ? `${styles.content} ${contentClassName}` : styles.content}>
       <span className={styles.title}>{title}</span>
       {actions}

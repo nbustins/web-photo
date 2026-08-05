@@ -14,7 +14,7 @@ import {
   ManagerMobileDashboard,
   ManagerNotesModal,
 } from './components';
-import './WeddingManager.css';
+import styles from './WeddingManager.module.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -114,10 +114,10 @@ export const WeddingManagerPage: FC = () => {
 
   if (weddingNotFound) {
     return (
-      <Layout className="manager-layout">
-        <Content className="manager-content">
-          <Card className="manager-card">
-            <Title level={3} className="manager-title">Boda no trobada</Title>
+      <Layout className={styles.layout}>
+        <Content className={styles.content}>
+          <Card className={styles.card}>
+            <Title level={3} className={styles.title}>Boda no trobada</Title>
             <Text type="secondary">No existeix cap boda amb el slug "{slug}".</Text>
           </Card>
         </Content>
@@ -153,9 +153,9 @@ export const WeddingManagerPage: FC = () => {
 
   if (state === 'loading') {
     return (
-      <Layout className="manager-layout">
-        <Content className="manager-content">
-          <Card className="manager-card"><Text>Carregant...</Text></Card>
+      <Layout className={styles.layout}>
+        <Content className={styles.content}>
+          <Card className={styles.card}><Text>Carregant...</Text></Card>
         </Content>
       </Layout>
     );

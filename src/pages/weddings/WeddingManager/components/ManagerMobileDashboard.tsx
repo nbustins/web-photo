@@ -2,19 +2,9 @@ import { FC, useMemo, useState } from 'react';
 import { Input, Button, Dropdown } from 'antd';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import type { ConfirmationRow } from '../../../../model/wedding.types';
-import { radii } from '@styles/tokens/radii';
-import {
-  COLOR_BG,
-  COLOR_HEADER,
-  COLOR_TEXT_DARK,
-  COLOR_GREEN,
-  COLOR_RUST,
-  FONT_TITLE,
-  FONT_BODY,
-  StatusPill,
-  LabelTag,
-  StatCell,
-} from './ManagerShared';
+import { StatusPill, LabelTag, StatCell } from './ManagerShared';
+import managerStyles from '../WeddingManager.module.css';
+import styles from './ManagerMobileDashboard.module.css';
 
 type StatusFilter = 'all' | 'confirmed' | 'declined' | 'pending';
 
@@ -66,88 +56,33 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
   ];
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: COLOR_BG,
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
-      <header style={{
-        background: COLOR_HEADER,
-        padding: '18px 20px calc(18px + env(safe-area-inset-top)) 20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 12,
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
-      }}>
-        <span style={{
-          fontFamily: FONT_TITLE,
-          fontStyle: 'italic',
-          fontSize: 26,
-          color: '#fff',
-          letterSpacing: '0.02em',
-          lineHeight: 1.1,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        }}>
-          {weddingTitle}
-        </span>
-        <button
-          onClick={onLogout}
-          style={{
-            background: 'transparent',
-            border: '1px solid rgba(255,255,255,0.65)',
-            color: '#fff',
-            fontFamily: FONT_BODY,
-            fontSize: 14,
-            padding: '10px 22px',
-            borderRadius: 999,
-            cursor: 'pointer',
-          }}
-        >
+    <div className={styles.screen}>
+      <header className={styles.header}>
+        <span className={styles.headerTitle}>{weddingTitle}</span>
+        <button onClick={onLogout} className={styles.logoutButton}>
           Tancar sessió
         </button>
       </header>
 
-      <main style={{ padding: 14, display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <section style={{
-          background: '#fff',
-          borderRadius: radii.md,
-          boxShadow: '0 2px 12px rgba(124, 116, 88, 0.08)',
-          padding: '18px 12px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 4,
-        }}>
-          <StatCell value={stats.totalGuests} label="Total" color={COLOR_TEXT_DARK} />
-          <StatCell value={stats.confirmed} label="Confirmats" color={COLOR_GREEN} />
-          <StatCell value={stats.pending} label="Pendents" color={COLOR_TEXT_DARK} />
-          <StatCell value={stats.declined} label="Rebutjats" color={COLOR_RUST} />
+      <main className={styles.main}>
+        <section className={styles.statsCard}>
+          <StatCell value={stats.totalGuests} label="Total" />
+          <StatCell value={stats.confirmed} label="Confirmats" tone="success" />
+          <StatCell value={stats.pending} label="Pendents" />
+          <StatCell value={stats.declined} label="Rebutjats" tone="danger" />
         </section>
 
-        <section style={{
-          background: '#fff',
-          borderRadius: radii.md,
-          boxShadow: '0 2px 12px rgba(124, 116, 88, 0.08)',
-          padding: 12,
-          display: 'flex',
-          gap: 10,
-          alignItems: 'center',
-        }}>
+        <section className={styles.searchCard}>
           <Input
             size="large"
             placeholder="Cerca..."
-            prefix={<SearchOutlined style={{ color: '#bfb8a8' }} />}
+            prefix={<SearchOutlined className={styles.searchIcon} />}
             value={search}
             onChange={e => setSearch(e.target.value)}
-            style={{ fontFamily: FONT_BODY, borderRadius: radii.md }}
+            className={styles.searchInput}
           />
           <Dropdown
-            overlayClassName="wedding-filter-dropdown"
+            overlayClassName={managerStyles.filterDropdown}
             menu={{
               items: filterItems,
               onClick: ({ key }) => setFilter(key as StatusFilter),
@@ -155,52 +90,24 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
             }}
             trigger={['click']}
           >
-            <Button size="large" icon={<FilterOutlined />} style={{ borderRadius: radii.md, fontFamily: FONT_BODY }}>
+            <Button size="large" icon={<FilterOutlined />} className={styles.filterButton}>
               Filtre
             </Button>
           </Dropdown>
         </section>
 
         {filtered.length === 0 ? (
-          <div style={{
-            background: '#fff',
-            borderRadius: radii.md,
-            padding: 32,
-            textAlign: 'center',
-            color: 'var(--lt-color-text-muted)',
-            fontFamily: FONT_BODY,
-          }}>
-            No hi ha resultats
-          </div>
+          <div className={styles.emptyState}>No hi ha resultats</div>
         ) : (
-          <section style={{
-            background: '#fff',
-            borderRadius: radii.md,
-            boxShadow: '0 2px 12px rgba(124, 116, 88, 0.08)',
-            overflow: 'hidden',
-          }}>
-            {filtered.map((r, i) => (
+          <section className={styles.list}>
+            {filtered.map((r) => (
               <article
                 key={r.guestId}
                 onClick={() => onSelectInvitation(r.invitationId)}
-                style={{
-                  padding: '16px 18px',
-                  borderTop: i === 0 ? 'none' : '1px solid rgba(124,116,88,0.12)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 8,
-                }}
+                className={styles.row}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
-                  <span style={{
-                    fontFamily: FONT_TITLE,
-                    fontSize: 19,
-                    color: COLOR_TEXT_DARK,
-                    letterSpacing: '0.01em',
-                  }}>
-                    {r.guestName}
-                  </span>
+                <div className={styles.rowHead}>
+                  <span className={styles.rowName}>{r.guestName}</span>
                   <StatusPill attending={r.guestAttending} />
                 </div>
                 <LabelTag>{r.label}</LabelTag>
@@ -212,12 +119,7 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
                         onShowNote(r.notes);
                       }
                     }}
-                    style={{
-                      fontFamily: FONT_BODY,
-                      fontSize: 14,
-                      color: '#8a8275',
-                      lineHeight: 1.5,
-                    }}
+                    className={styles.rowNotes}
                   >
                     {r.notes.length > NOTES_TRUNCATE ? `${r.notes.slice(0, NOTES_TRUNCATE)}…` : r.notes}
                   </span>

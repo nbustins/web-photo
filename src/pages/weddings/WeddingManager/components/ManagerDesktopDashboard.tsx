@@ -1,22 +1,15 @@
 import { FC } from 'react';
 import { Button, Card, Empty, Layout, Space, Table, Tag } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import type { TableColumnsType } from 'antd';
+import { AppBar } from '@ui/AppBar';
 import type { ConfirmationRow } from '../../../../model/wedding.types';
 import type { ManagerStats } from '../WeddingManager.types';
-import {
-  COLOR_GREEN,
-  COLOR_MUTED,
-  COLOR_OLIVE,
-  COLOR_RUST,
-  COLOR_TEXT_DARK,
-  FONT_BODY,
-  FONT_TITLE,
-  LabelTag,
-  StatCell,
-  StatusPill,
-} from './ManagerShared';
+import { LabelTag, StatCell, StatusPill } from './ManagerShared';
+import shared from './ManagerShared.module.css';
+import styles from '../WeddingManager.module.css';
+import local from './ManagerDesktopDashboard.module.css';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 interface ManagerDesktopDashboardProps {
   weddingTitle: string;
@@ -39,7 +32,7 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
     new Map(rows.map(row => [row.invitationId, row.label])).entries()
   ).map(([id, label]) => ({ text: label, value: id }));
 
-  const columns: ColumnsType<ConfirmationRow> = [
+  const columns: TableColumnsType<ConfirmationRow> = [
     {
       title: 'Invitació',
       key: 'invitation',
@@ -56,23 +49,8 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
       key: 'guest',
       render: (_, row) => (
         <Space size={6}>
-          <span style={{ fontFamily: FONT_TITLE, fontSize: 17, color: COLOR_TEXT_DARK, letterSpacing: '0.01em' }}>
-            {row.guestName}
-          </span>
-          {!row.isPredefined && (
-            <Tag
-              style={{
-                fontFamily: FONT_BODY,
-                fontSize: 11,
-                color: COLOR_OLIVE,
-                background: 'rgba(124,116,88,0.08)',
-                border: '1px solid rgba(124,116,88,0.35)',
-                borderRadius: 999,
-              }}
-            >
-              Afegit
-            </Tag>
-          )}
+          <span className={shared.guestName}>{row.guestName}</span>
+          {!row.isPredefined && <Tag className={shared.addedTag}>Afegit</Tag>}
         </Space>
       ),
     },
@@ -96,16 +74,11 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
       title: 'Notes',
       key: 'notes',
       render: (_, row) => {
-        if (!row.notes) return <span style={{ fontFamily: FONT_BODY, color: COLOR_MUTED }}>-</span>;
+        if (!row.notes) return <span className={shared.notesEmpty}>-</span>;
         const truncated = row.notes.length > 60;
         return (
           <span
-            style={{
-              fontFamily: FONT_BODY,
-              fontSize: 14,
-              color: '#8a8275',
-              cursor: truncated ? 'pointer' : 'default',
-            }}
+            className={truncated ? `${shared.notes} ${shared.notesClickable}` : shared.notes}
             onClick={truncated ? () => onShowNote(row.notes!) : undefined}
           >
             {truncated ? `${row.notes.slice(0, 60)}...` : row.notes}
@@ -116,28 +89,29 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
   ];
 
   return (
-    <Layout className="manager-layout">
-      <Header className="manager-header">
-        <div className="manager-header-content">
-          <span className="manager-header-name">{weddingTitle}</span>
-          <Button className="manager-logout-btn" onClick={onLogout}>Tancar sessió</Button>
-        </div>
-      </Header>
-      <Content className="manager-scroll-area">
-        <div className="manager-content">
+    <Layout className={styles.layout}>
+      <AppBar
+        title={weddingTitle}
+        contentClassName={styles.headerContent}
+        actions={
+          <Button className={styles.logoutButton} onClick={onLogout}>Tancar sessió</Button>
+        }
+      />
+      <Content className={styles.scrollArea}>
+        <div className={styles.content}>
           <Space direction="vertical" style={{ width: '100%' }} size="large">
-            <Card className="manager-stats-card">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, padding: '8px 0' }}>
-                <StatCell value={stats.totalGuests} label="Total" color={COLOR_TEXT_DARK} />
-                <StatCell value={stats.confirmed} label="Confirmats" color={COLOR_GREEN} />
-                <StatCell value={stats.pending} label="Pendents" color={COLOR_TEXT_DARK} />
-                <StatCell value={stats.declined} label="Rebutjats" color={COLOR_RUST} />
-                <StatCell value={stats.totalInvitations} label="Invitacions" color={COLOR_TEXT_DARK} />
-                <StatCell value={stats.respondedInvitations} label="Respostes" color={COLOR_TEXT_DARK} />
+            <Card className={styles.statsCard}>
+              <div className={local.statsGrid}>
+                <StatCell value={stats.totalGuests} label="Total" />
+                <StatCell value={stats.confirmed} label="Confirmats" tone="success" />
+                <StatCell value={stats.pending} label="Pendents" />
+                <StatCell value={stats.declined} label="Rebutjats" tone="danger" />
+                <StatCell value={stats.totalInvitations} label="Invitacions" />
+                <StatCell value={stats.respondedInvitations} label="Respostes" />
               </div>
             </Card>
 
-            <Card className="manager-table-card">
+            <Card className={styles.tableCard}>
               {rows.length === 0 ? (
                 <Empty description="No hi ha convidats" />
               ) : (

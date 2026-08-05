@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { getPublicPath } from "../../utils/pathUtils";
 import { AboutMeTitle } from "./components/aboutmeTitle";
 import { useIsMobile } from "../../ui/hooks";
+import styles from "./aboutme.module.css";
 
 const { Text } = Typography;
 
@@ -40,27 +41,18 @@ export const AboutMe = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div style={{ backgroundColor: "rgb(246,244,240)" }}>
+    <div className={styles.page}>
       {/* Contenidor central */}
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          padding: "10px 40px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0rem",
-        }}
-      >
+      <div className={styles.container}>
         <Row align="middle">
           {/* Columna text */}
-          <Col xs={24} md={14} style={{ paddingRight: "4rem" }}>
+          <Col xs={24} md={14} className={styles.textColumn}>
             <motion.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              style={{ maxWidth: 700 }}
+              className={styles.titleBlock}
             >
               <AboutMeTitle label="Hola!" title="Soc la LAURA" />
             </motion.div>
@@ -71,25 +63,16 @@ export const AboutMe = () => {
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              style={{ maxWidth: 600 }}
+              className={styles.textBlock}
             >
-              <Text
-                style={{
-                  fontSize: "1.2rem",
-                  color: "rgb(174,142,116)",
-                  textAlign: "justify",
-                  display: "block",
-                  hyphens: "auto",
-                  fontWeight: "400",
-                }}
-              >
+              <Text className={styles.presentation}>
                 {textPresentation()}
               </Text>
             </motion.div>
           </Col>
 
           {/* Columna imatge */}
-          <Col xs={24} md={10} style={{ marginTop: 40 }}>
+          <Col xs={24} md={10} className={styles.imageColumn}>
             <motion.img
               variants={fadeRight}
               initial="hidden"
@@ -98,31 +81,14 @@ export const AboutMe = () => {
               whileHover={{ scale: 1.02 }}
               src={getPublicPath("aboutme/1.jpg")}
               alt="Giftcard 1"
-              style={{
-                width: "100%",
-                maxWidth: 450,
-                height: "auto",
-                display: "block",
-                margin: "0 auto",
-                borderTopLeftRadius: 200,
-                borderTopRightRadius: 200,
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-              }}
+              className={styles.portrait}
             />
             {/* Imatge sobreposada */}
             {!isMobile && 
             <img
               src={getPublicPath("aboutme/logo.png")}
               alt="Overlay"
-              style={{
-                position: "absolute",
-                bottom: -80,
-                left: -220,
-                width: 500,
-                pointerEvents: "none",
-              }}
+              className={styles.logoOverlay}
             />}
           </Col>
         </Row>

@@ -1,8 +1,8 @@
 import { Row, Col } from "antd";
 import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, WhyDoSession, ThreePhotoRow } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
-import { pageBodyPadding } from "../../styles/tokens/radii";
 import blocks from "@components/blocks.module.css";
+import styles from "./pregnant.module.css";
 
 const photoPaths: string[] = Array.from({ length: 3 }, (_, i) =>
   getPublicPath(`pregnancy/${i + 1}.jpg`)
@@ -89,7 +89,7 @@ const faq6text = () => (
 
 export const PregnantPage = () => (
   <>
-    <div style={{ padding: pageBodyPadding }}>
+    <div className={blocks.pageBody}>
 
       <header>
         <CustomTitle label="SESSIÓ" title="EMBARÀS" />
@@ -103,36 +103,20 @@ export const PregnantPage = () => (
       />
 
       {/* Text why to do this session */}
-      <Row
-        gutter={[0, 24]}
-        justify="center"
-        style={{
-          marginLeft: -40,
-          marginRight: -40,
-        }}
-      >
+      <Row gutter={[0, 24]} justify="center" className={styles.whyRow}>
         <WhyDoSession textWhyDoThisSession={textWhyDoThisSession} />
       </Row>
 
       {/* Big quote */}
       <Row gutter={[24, 24]} justify="center" className={blocks.sectionRowLoose}>
-        <Col
-          style={{
-            fontSize: "clamp(1.2rem, 4vw, 2.5rem)",
-            textAlign: "center",
-            fontWeight: 600,
-            fontFamily: "Italiana",
-            letterSpacing: "0.1rem",
-            maxWidth: "2000px",
-          }}
-        >
+        <Col className={styles.quote}>
           “Una sessió perquè et sentis viva, única, delicada, natural, poderosa,
           lluminosa i estimada”
         </Col>
       </Row>
 
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={{ margin: "0 0 3rem 0" }}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.carouselRowLoose}>
         <ImageSlider images={rotPhotoPaths} />
       </Row>
 

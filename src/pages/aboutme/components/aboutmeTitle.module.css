@@ -1,0 +1,22 @@
+.block {
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: clamp(1.6rem, 3vw, 4rem);
+  letter-spacing: 0.2rem;
+  margin-bottom: clamp(-0.4rem, -3vw, -1rem);
+  font-family: var(--lt-font-display);
+  color: var(--lt-color-accent);
+}
+
+h1.title {
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  font-family: var(--lt-font-display);
+  letter-spacing: 0.3rem;
+  color: var(--lt-color-accent);
+}

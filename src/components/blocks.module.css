@@ -34,6 +34,52 @@
   width: 100%;
 }
 
+/* --- Peces compartides per les pàgines de màrqueting --- */
+
+.pageBody {
+  padding: var(--lt-space-page);
+}
+
+/* Frase destacada centrada; les mides concretes van a la classe derivada. */
+.lead {
+  text-align: center;
+  font-family: var(--lt-font-display);
+}
+
+.leadWide {
+  composes: lead;
+  max-width: 1500px;
+  font-size: 2rem;
+  padding: 0 1rem;
+}
+
+.leadNarrow {
+  composes: lead;
+  max-width: 950px;
+  font-size: 2.5rem;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.heroImageRounded {
+  composes: heroImage;
+  border-radius: var(--lt-radius-sm);
+}
+
+.carouselRow {
+  margin-bottom: var(--lt-space-6);
+}
+
+.carouselRowLoose {
+  margin: 0 0 3rem 0;
+}
+
 /* Fila de secció de les pàgines de màrqueting (abans `rowStyle` copiat a cada pàgina). */
 .sectionRow {
   padding: 30px;

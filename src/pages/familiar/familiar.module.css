@@ -1,0 +1,32 @@
+.lead {
+  composes: leadWide from '../../components/blocks.module.css';
+  max-width: 1200px;
+}
+
+.kidsFrame {
+  width: 100%;
+  max-width: 1500px;
+  height: 600px;
+  overflow: hidden;
+  border-radius: var(--lt-radius-sm);
+}
+
+.kidsImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quoteWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.quote {
+  max-width: 800px;
+  padding: 0 1rem;
+  font-size: 2rem;
+  text-align: center;
+  font-family: var(--lt-font-editorial);
+  letter-spacing: 0.2rem;
+}

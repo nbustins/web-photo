@@ -1,0 +1,6 @@
+.heroWrap {
+  width: 100%;
+  height: min(80vh, 1050px);
+  overflow: hidden;
+  margin-top: 30px;
+}

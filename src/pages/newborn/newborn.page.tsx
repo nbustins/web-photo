@@ -2,8 +2,8 @@ import { Row, Col } from "antd";
 import { motion } from "framer-motion";
 import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, ThreePhotoRow } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
-import { pageBodyPadding } from "../../styles/tokens/radii";
 import blocks from "@components/blocks.module.css";
+import styles from "./newborn.module.css";
 
 const fromIdx = 4;
 const toIdx = 13;
@@ -74,7 +74,7 @@ Que la Mireia formi part de l'estudi és molt important pel resultat de les imat
 
 export const NewBornPage = () => (
   <>
-    <div style={{ padding: pageBodyPadding }}>
+    <div className={blocks.pageBody}>
 
       <header>
           <CustomTitle label="SESSIÓ" title="RECENT NASCUT" />  
@@ -90,25 +90,11 @@ export const NewBornPage = () => (
           >
           <Row justify="center">
           <Col xs={24}>
-            <div
-              style={{
-                width: "100%",
-                height: "min(70vh, 750px)",
-                overflow: "hidden",
-                marginTop: "30px",
-              }}
-            >
+            <div className={styles.heroWrap}>
               <img
               src={getPublicPath("newborn/gran_new_born.jpg")}
                 alt="Imatge de la mare embarassada"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  display: "block",
-                  
-                }}
+                className={blocks.heroImage}
               />
             </div>
           </Col>
@@ -118,15 +104,7 @@ export const NewBornPage = () => (
 
       {/* Text decriptiu */}
       <Row justify="center">
-        <Col
-          style={{
-            maxWidth: "1500px",
-            fontSize: "2rem",
-            textAlign: "center",
-            fontFamily: "Italiana",
-            padding: "0 1rem"
-          }}
-        >
+        <Col className={blocks.leadWide}>
           {sessionDescription}
         </Col>
       </Row>
@@ -148,19 +126,13 @@ export const NewBornPage = () => (
 
       {/* Descripció sessió */}
       <Row gutter={[24, 24]} justify="center" className={blocks.sectionRow}>
-        <Col
-          style={{
-              maxWidth: "950px",
-              fontSize: "2.5rem",
-              textAlign: "center",
-              fontFamily: "Italiana",
-            }}>
+        <Col className={blocks.leadNarrow}>
           {sessionDescription2}
         </Col>
       </Row>
         
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={{marginBottom: '24px'}}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.carouselRow}>
         <ImageSlider images={rotPhotoPaths}/>
       </Row>
 

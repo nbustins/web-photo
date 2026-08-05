@@ -1,0 +1,14 @@
+/* WhyDoSession va a sang: contraresta el padding del cos de la pàgina. */
+.whyRow {
+  margin-left: -40px;
+  margin-right: -40px;
+}
+
+.quote {
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  text-align: center;
+  font-weight: 600;
+  font-family: var(--lt-font-display);
+  letter-spacing: 0.1rem;
+  max-width: 2000px;
+}

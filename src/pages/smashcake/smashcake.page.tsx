@@ -2,8 +2,8 @@ import { Col, Row } from "antd";
 import { CustomTitle, ImageSlider, SessionPricingCards, ThreePhotoRow, FAQs } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
 import { motion } from "framer-motion";
-import { pageBodyPadding, radii } from "../../styles/tokens/radii";
 import blocks from "@components/blocks.module.css";
+import styles from "./smashcake.module.css";
 
 const fromIdx = 5;
 const toIdx = 12;
@@ -66,7 +66,7 @@ const faq3text = () => (
 
 export const SmashCakePage = () => (
    <>
-    <div style={{ padding: pageBodyPadding }}>
+    <div className={blocks.pageBody}>
 
       <header>
           <CustomTitle label="SESSIÓ" title="SMASH CAKE" />  
@@ -82,26 +82,11 @@ export const SmashCakePage = () => (
           >
           <Row justify="center">
           <Col xs={24}>
-            <div
-              style={{
-                width: "100%",
-                height: "min(80vh, 1050px)",
-                overflow: "hidden",
-                marginTop: "30px",
-              }}
-            >
+            <div className={styles.heroWrap}>
               <img
               src={getPublicPath("smashcake/1.jpg")}
                 alt="Imatge de la mare embarassada"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  display: "block",
-                  borderRadius: radii.md,
-                  
-                }}
+                className={blocks.heroImageRounded}
               />
             </div>
           </Col>
@@ -111,15 +96,7 @@ export const SmashCakePage = () => (
 
       {/* Text decriptiu */}
       <Row justify="center">
-        <Col
-          style={{
-            maxWidth: "1500px",
-            fontSize: "2rem",
-            textAlign: "center",
-            fontFamily: "Italiana",
-            padding: "0 1rem"
-          }}
-        >
+        <Col className={blocks.leadWide}>
           {sessionDescription}
         </Col>
       </Row>
@@ -141,19 +118,13 @@ export const SmashCakePage = () => (
 
       {/* Descripció sessió */}
       <Row gutter={[24, 24]} justify="center" className={blocks.sectionRow}>
-        <Col
-          style={{
-              maxWidth: "950px",
-              fontSize: "2.5rem",
-              textAlign: "center",
-              fontFamily: "Italiana",
-            }}>
+        <Col className={blocks.leadNarrow}>
           {sessionDescription2}
         </Col>
       </Row>
         
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={{marginBottom:'24px'}}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.carouselRow}>
         <ImageSlider images={rotPhotoPaths}/>
       </Row>
 

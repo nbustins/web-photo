@@ -2,8 +2,8 @@ import { Col, Row } from "antd";
 import { CustomTitle, ImageSlider, SessionPricingCards } from "@components";
 import { getPublicPath } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";
-import { pageBodyPadding, radii } from "../../styles/tokens/radii";
 import blocks from "@components/blocks.module.css";
+import styles from "./familiar.module.css";
 
 const fromIdx = 4;
 const toIdx = 12;
@@ -39,7 +39,7 @@ const sessionDescription2 = (
 export const FamiliarPage = () => (
 
     <>
-        <div style={{padding : pageBodyPadding}}>
+        <div className={blocks.pageBody}>
             <header>
                 <CustomTitle label="SESSIÓ" title="FAMILIAR" />  
             </header>
@@ -48,60 +48,31 @@ export const FamiliarPage = () => (
 
               {/* Text decriptiu */}
               <Row justify="center" className={blocks.sectionRow}> 
-                <Col
-                  style={{
-                    maxWidth: "1200px",
-                    fontSize: "2rem",
-                    textAlign: "center",
-                    fontFamily: "Italiana",
-                    padding: "0 1rem"
-                  }}
-                >
+                <Col className={styles.lead}>
                   {sessionDescription}
                 </Col>
               </Row>
               
               {/* Photo kids */}
               <Row justify="center" className={blocks.sectionRow}>
-                <div
-                  style={{
-                    width: "100%",
-                    maxWidth: "1500px",
-                    height: "600px",
-                    overflow: "hidden",
-                    borderRadius: radii.md
-                  }}
-                >
+                <div className={styles.kidsFrame}>
                   <img
                     src={getPublicPath('familiar/4.jpg')}
                     alt="three kids photo"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover"
-                    }}
+                    className={styles.kidsImage}
                   />
                 </div>
               </Row>
               
               {/* Frase 2 */}
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <div
-                  style={{
-                    maxWidth: 800,
-                    padding: "0 1rem",
-                    fontSize: "2rem",
-                    textAlign: "center",
-                    fontFamily: "'Playfair Display'",
-                    letterSpacing: "0.2rem",
-                  }}
-                >
+              <div className={styles.quoteWrap}>
+                <div className={styles.quote}>
                   {sessionDescription2}
                 </div>
               </div>
 
               {/* Carrousel images */}
-              <Row gutter={[24, 24]} justify="center" style={{ marginBottom: 24 }}>
+              <Row gutter={[24, 24]} justify="center" className={blocks.carouselRow}>
                 <ImageSlider images={rotPhotoPaths}/>
               </Row>
               

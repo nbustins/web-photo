@@ -16,6 +16,7 @@ import {
 } from './components';
 import type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
 import { useIsMobile } from '@ui/hooks';
+import styles from './WeddingGuest.module.css';
 
 export type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
 
@@ -185,25 +186,10 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      position: 'relative',
-      backgroundColor: 'rgb(246, 244, 240)',
-      padding: '40px 16px',
-      boxSizing: 'border-box',
-    }}>
+    <div className={styles.screen}>
       <DesktopSplitBackground images={ctx.images} fallbackImage={wedding?.background_image} />
 
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        width: '100%',
-        maxWidth: 520,
-        margin: 'auto',
-      }}>
+      <div className={styles.panel}>
         {renderDefault(ctx, attendingCount)}
       </div>
     </div>

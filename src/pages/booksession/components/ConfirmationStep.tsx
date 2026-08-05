@@ -1,7 +1,7 @@
 import { Typography } from 'antd';
 import dayjs from 'dayjs';
 import { AvailabilitySlot, CreateBookingResult, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
-import { StatusCard } from './StatusCard';
+import { StatusCard } from '@ui/StatusCard';
 import styles from './ConfirmationStep.module.css';
 
 const { Text } = Typography;
@@ -15,7 +15,7 @@ interface ConfirmationStepProps {
 }
 
 export const ConfirmationStep = ({ sessionType, groupName, slot, reserverName, result }: ConfirmationStepProps) => (
-  <StatusCard variant="success" title="Reserva confirmada!">
+  <StatusCard tone="success" title="Reserva confirmada!">
     <Text className={styles.summary}>
       {sessionDisplayName(groupName, sessionType.name)} · {dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')}
       <br />

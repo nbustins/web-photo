@@ -1,0 +1,33 @@
+.resetButton {
+  margin-top: var(--lt-space-6);
+}
+
+.successHint {
+  composes: caption from '../../../../ui/text.module.css';
+  display: block;
+  margin-top: var(--lt-space-4);
+}
+
+.successButton {
+  margin-top: var(--lt-space-5);
+}
+
+.loadingWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.codeBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lt-space-4);
+  margin-top: var(--lt-space-6);
+}
+
+.codeField {
+  width: 100%;
+  max-width: 300px;
+}

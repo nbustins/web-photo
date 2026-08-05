@@ -9,6 +9,7 @@ import {
   GuestConfirmationForm,
   GuestSuccessState,
 } from '../../components';
+import styles from '../../WeddingGuest.module.css';
 
 export const CarlaJoelGuestLayout: FC<WeddingGuestPageContext> = ({
   pageState,
@@ -34,7 +35,7 @@ export const CarlaJoelGuestLayout: FC<WeddingGuestPageContext> = ({
     switch (pageState) {
       case 'loading':
         return (
-          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 80 }}>
+          <div className={styles.customLoading}>
             <Spin size="large" />
           </div>
         );
@@ -71,25 +72,10 @@ export const CarlaJoelGuestLayout: FC<WeddingGuestPageContext> = ({
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      position: 'relative',
-      backgroundColor: 'rgb(246, 244, 240)',
-      padding: '40px 16px',
-      boxSizing: 'border-box',
-    }}>
+    <div className={styles.screen}>
       <DesktopSplitBackground images={images} fallbackImage={wedding?.background_image} />
 
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        width: '100%',
-        maxWidth: 520,
-        margin: 'auto',
-      }}>
+      <div className={styles.panel}>
         {renderContent()}
       </div>
     </div>

@@ -11,8 +11,5 @@
 }
 
 .bodyText {
-  font-family: var(--lt-font-body);
-  font-size: clamp(0.9rem, 1.4vw, 1rem);
-  color: var(--lt-color-text-secondary);
-  line-height: 1.7;
+  composes: body from '../../ui/text.module.css';
 }

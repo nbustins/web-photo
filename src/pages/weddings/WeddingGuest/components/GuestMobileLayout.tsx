@@ -2,6 +2,8 @@ import { FC } from 'react';
 import { Spin, Typography, Input, Button, Space, Form, Switch } from 'antd';
 import type { WeddingGuestPageContext } from '../WeddingGuestPage.types';
 import { MobileShell } from '@ui/MobileShell';
+import shared from './GuestShared.module.css';
+import styles from './GuestMobileLayout.module.css';
 
 const { Title, Text } = Typography;
 
@@ -9,65 +11,6 @@ interface MobileLayoutProps extends WeddingGuestPageContext {
   images: string[];
   attendingCount: number;
 }
-
-const titleStyle: React.CSSProperties = {
-  fontFamily: "'Italiana', Georgia, serif",
-  fontSize: 'clamp(1.8rem, 7vw, 2.4rem)',
-  fontWeight: 500,
-  color: '#7C7458',
-  margin: 0,
-  letterSpacing: '0.02em',
-  textAlign: 'center',
-};
-
-const subtitleStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  fontSize: 'clamp(0.7rem, 2.8vw, 0.85rem)',
-  fontWeight: 400,
-  color: 'rgb(174, 142, 116)',
-  letterSpacing: '0.18em',
-  textTransform: 'uppercase',
-  display: 'block',
-  textAlign: 'center',
-  marginTop: 6,
-};
-
-const labelStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  fontSize: '0.85rem',
-  fontWeight: 500,
-  color: '#5a5a5a',
-  letterSpacing: '0.02em',
-};
-
-const guestRowStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '14px 16px',
-  borderRadius: 10,
-  border: '1px solid rgba(124, 116, 88, 0.2)',
-  marginBottom: 10,
-  background: 'rgba(255,255,255,0.6)',
-};
-
-const inputStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  borderRadius: 8,
-};
-
-const iconStyle = (gradient: string): React.CSSProperties => ({
-  width: 56,
-  height: 56,
-  borderRadius: '50%',
-  background: gradient,
-  color: 'white',
-  fontSize: 28,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 16px',
-});
 
 export const GuestMobileLayout: FC<MobileLayoutProps> = ({
   pageState,
@@ -92,7 +35,7 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
     switch (pageState) {
       case 'loading':
         return (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '24px 0' }}>
+          <div className={styles.spinnerWrap}>
             <Spin size="large" />
           </div>
         );
@@ -100,36 +43,18 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
       case 'enter-code':
         return (
           <>
-            <Title level={2} style={titleStyle}>{weddingTitle}</Title>
-            <Text style={subtitleStyle}>{weddingSubtitle}</Text>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 12,
-              marginTop: 20,
-            }}>
-              <span style={{
-                fontFamily: "'Raleway', sans-serif",
-                fontSize: '0.85rem',
-                fontWeight: 500,
-                color: '#5a5a5a',
-                letterSpacing: '0.02em',
-              }}>
-                Introdueix el teu codi d'invitació
-              </span>
-              <Space.Compact style={{ width: '100%' }}>
+            <Title level={2} className={styles.title}>{weddingTitle}</Title>
+            <Text className={styles.subtitle}>{weddingSubtitle}</Text>
+            <div className={styles.codeBlock}>
+              <span className={styles.label}>Introdueix el teu codi d'invitació</span>
+              <Space.Compact className={styles.codeField}>
                 <Input
                   size="large"
                   placeholder="Codi d'invitació"
                   value={manualCode}
                   onChange={(e) => onCodeChange(e.target.value.toUpperCase())}
                   onPressEnter={onCodeSubmit}
-                  style={{
-                    fontFamily: "'Raleway', sans-serif",
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                  }}
+                  className={shared.codeInput}
                 />
                 <Button size="large" type="primary" onClick={onCodeSubmit}>
                   Continuar
@@ -142,22 +67,14 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
       case 'not-found':
         return (
           <>
-            <div style={iconStyle('linear-gradient(135deg, #a09880 0%, #8a8070 100%)')}>✕</div>
-            <Title level={3} style={{ ...titleStyle, fontSize: '1.5rem' }}>
+            <div className={`${styles.icon} ${styles.iconError}`}>✕</div>
+            <Title level={3} className={styles.stateTitle}>
               Convidat no trobat
             </Title>
-            <Text style={{
-              display: 'block',
-              fontFamily: "'Raleway', sans-serif",
-              fontSize: '0.95rem',
-              color: '#6a6a6a',
-              lineHeight: 1.6,
-              textAlign: 'center',
-              marginTop: 12,
-            }}>
+            <Text className={styles.stateText}>
               No hem trobat cap convidat amb aquest codi. Si us plau, verifica el codi i torna-ho a intentar.
             </Text>
-            <Button type="primary" onClick={onReset} block style={{ marginTop: 20 }}>
+            <Button type="primary" onClick={onReset} block className={styles.actionButton}>
               Tornar a introduir codi
             </Button>
           </>
@@ -166,19 +83,11 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
       case 'closed':
         return (
           <>
-            <div style={iconStyle('linear-gradient(135deg, rgb(174, 142, 116) 0%, rgb(154, 122, 96) 100%)')}>ℹ</div>
-            <Title level={3} style={{ ...titleStyle, fontSize: '1.5rem' }}>
+            <div className={`${styles.icon} ${styles.iconInfo}`}>ℹ</div>
+            <Title level={3} className={styles.stateTitle}>
               Confirmació tancada
             </Title>
-            <Text style={{
-              display: 'block',
-              fontFamily: "'Raleway', sans-serif",
-              fontSize: '0.95rem',
-              color: '#6a6a6a',
-              lineHeight: 1.6,
-              textAlign: 'center',
-              marginTop: 12,
-            }}>
+            <Text className={styles.stateText}>
               La data límit per confirmar l'assistència ha passat. Si necessites fer algún canvi, contacta amb els nuvis.
             </Text>
           </>
@@ -188,18 +97,9 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
         if (!invitation) return null;
         return (
           <>
-            <Title level={2} style={titleStyle}>{weddingTitle}</Title>
-            <Text style={subtitleStyle}>{weddingSubtitle}</Text>
-            <Text style={{
-              display: 'block',
-              fontFamily: "'Italiana', Georgia, serif",
-              fontSize: '1.1rem',
-              fontStyle: 'italic',
-              color: 'var(--lt-color-text-muted)',
-              textAlign: 'center',
-              marginTop: 12,
-              marginBottom: 8,
-            }}>
+            <Title level={2} className={styles.title}>{weddingTitle}</Title>
+            <Text className={styles.subtitle}>{weddingSubtitle}</Text>
+            <Text className={styles.greeting}>
               Hola, {invitation.label}!
             </Text>
 
@@ -207,27 +107,23 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
               form={form}
               layout="vertical"
               onFinish={onFormSubmit}
-              style={{ textAlign: 'left', marginTop: 16 }}
+              className={styles.form}
             >
               <Form.Item
-                label={<span style={labelStyle}>Qui assistirà a la celebració?</span>}
-                style={{ marginBottom: 8 }}
+                label={<span className={styles.label}>Qui assistirà a la celebració?</span>}
+                className={styles.guestsItem}
               >
                 <Form.List name="guests">
                   {(fields) =>
                     fields.map((field) => (
-                      <div key={field.key} style={guestRowStyle}>
+                      <div key={field.key} className={shared.guestRow}>
                         <Form.Item name={[field.name, 'id']} hidden noStyle>
                           <input type="hidden" />
                         </Form.Item>
                         <Form.Item name={[field.name, 'name']} hidden noStyle>
                           <input type="hidden" />
                         </Form.Item>
-                        <Text style={{
-                          fontFamily: "'Raleway', sans-serif",
-                          fontSize: '0.95rem',
-                          color: '#333',
-                        }}>
+                        <Text className={styles.guestName}>
                           {form.getFieldValue(['guests', field.name, 'name'])}
                         </Text>
                         <Form.Item
@@ -245,25 +141,25 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
 
               <Form.Item
                 name="notes"
-                label={<span style={labelStyle}>Observacions (al·lèrgies, menú especial, etc.)</span>}
+                label={<span className={styles.label}>Observacions (al·lèrgies, menú especial, etc.)</span>}
               >
                 <Input.TextArea
                   rows={3}
                   placeholder="Escriu les teves observacions aquí..."
-                  style={inputStyle}
+                  className={shared.input}
                   showCount
                   maxLength={500}
                 />
               </Form.Item>
 
-              <Form.Item style={{ marginBottom: 0 }}>
+              <Form.Item className={styles.submitItem}>
                 <Button
                   type="primary"
                   htmlType="submit"
                   loading={submitting}
                   size="large"
                   block
-                  style={{ marginTop: 8 }}
+                  className={styles.submitButton}
                 >
                   Confirmar assistència
                 </Button>
@@ -283,29 +179,12 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
             : `${attendingCount} de ${totalCount} persones assistiran a la celebració. Gràcies per confirmar!`;
         return (
           <>
-            <div style={iconStyle('linear-gradient(135deg, #7C7458 0%, #6a6450 100%)')}>✓</div>
-            <Title level={3} style={{ ...titleStyle, fontSize: '1.5rem' }}>
+            <div className={`${styles.icon} ${styles.iconSuccess}`}>✓</div>
+            <Title level={3} className={styles.stateTitle}>
               Confirmació rebuda!
             </Title>
-            <Text style={{
-              display: 'block',
-              fontFamily: "'Raleway', sans-serif",
-              fontSize: '0.95rem',
-              color: '#6a6a6a',
-              lineHeight: 1.6,
-              textAlign: 'center',
-              marginTop: 12,
-            }}>
-              {message}
-            </Text>
-            <Text style={{
-              display: 'block',
-              fontFamily: "'Raleway', sans-serif",
-              fontSize: '0.8rem',
-              color: 'var(--lt-color-text-muted)',
-              textAlign: 'center',
-              marginTop: 12,
-            }}>
+            <Text className={styles.stateText}>{message}</Text>
+            <Text className={styles.successHint}>
               Pots tancar aquesta finestra, si vols modificar la teva confirmació accedeix de nou amb el codi.
             </Text>
             <Button
@@ -313,7 +192,7 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
               size="large"
               onClick={onReset}
               block
-              style={{ marginTop: 20 }}
+              className={styles.actionButton}
             >
               Tornar a introduir codi
             </Button>

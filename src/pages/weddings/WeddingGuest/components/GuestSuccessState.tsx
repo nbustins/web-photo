@@ -1,21 +1,10 @@
 import { FC } from 'react';
 import { Typography, Button } from 'antd';
-import { SurfaceCard } from '@ui/SurfaceCard';
+import { StatusCard } from '@ui/StatusCard';
+import shared from './GuestShared.module.css';
+import styles from './GuestStates.module.css';
 
-const { Title, Text } = Typography;
-
-const iconStyle: React.CSSProperties = {
-  width: 64,
-  height: 64,
-  borderRadius: '50%',
-  background: 'linear-gradient(135deg, #7C7458 0%, #6a6450 100%)',
-  color: 'white',
-  fontSize: 32,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 20px',
-};
+const { Text } = Typography;
 
 interface GuestSuccessStateProps {
   attendingCount: number;
@@ -34,48 +23,16 @@ export const GuestSuccessState: FC<GuestSuccessStateProps> = ({ attendingCount, 
       : `${attendingCount} de ${totalCount} persones assistiran a la celebració. Gràcies per confirmar!`;
 
   return (
-    <SurfaceCard
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div style={iconStyle}>✓</div>
-      <Title
-        level={3}
-        style={{
-          fontFamily: "'Italiana', Georgia, serif",
-          color: '#7C7458',
-          fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
-        }}
-      >
-        Confirmació rebuda!
-      </Title>
-      <Text style={{
-        fontFamily: "'Raleway', sans-serif",
-        fontSize: 'clamp(0.9rem, 1.4vw, 1rem)',
-        color: '#6a6a6a',
-        lineHeight: 1.7,
-      }}>
-        {message}
-      </Text>
-      <Text style={{
-        display: 'block',
-        fontSize: 'clamp(0.8rem, 1.2vw, 0.85rem)',
-        color: 'var(--lt-color-text-muted)',
-        marginTop: 16,
-      }}>
+    <StatusCard tone="success" title="Confirmació rebuda!">
+      <Text className={shared.bodyText}>{message}</Text>
+      <Text className={styles.successHint}>
         Pots tancar aquesta finestra, si vols modificar la teva confirmació accedeix de nou amb el codi.
       </Text>
       {onReset && (
-        <Button
-          type="primary"
-          size="large"
-          onClick={onReset}
-          style={{ marginTop: 20 }}
-        >
+        <Button type="primary" size="large" onClick={onReset} className={styles.successButton}>
           Tornar a introduir codi
         </Button>
       )}
-    </SurfaceCard>
+    </StatusCard>
   );
 };

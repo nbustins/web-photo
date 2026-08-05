@@ -3,32 +3,10 @@ import { Form, Input, Switch, Button, FormInstance, Typography } from 'antd';
 import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import type { Invitation } from '../../../../model/wedding.types';
 import type { InvitationFormValues } from '../WeddingGuestPage.types';
+import shared from './GuestShared.module.css';
+import styles from './GuestConfirmationForm.module.css';
 
 const { Text } = Typography;
-
-const labelStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  fontSize: 'clamp(0.85rem, 1.3vw, 0.9rem)',
-  fontWeight: 500,
-  color: '#5a5a5a',
-  letterSpacing: '0.02em',
-};
-
-const inputStyle: React.CSSProperties = {
-  fontFamily: "'Raleway', sans-serif",
-  borderRadius: 8,
-};
-
-const guestRowStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '14px 16px',
-  borderRadius: 10,
-  border: '1px solid rgba(124, 116, 88, 0.2)',
-  marginBottom: 10,
-  background: 'rgba(255,255,255,0.6)',
-};
 
 interface GuestConfirmationFormProps {
   title: string;
@@ -59,27 +37,23 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
         form={form}
         layout="vertical"
         onFinish={onFinish}
-        style={{ textAlign: 'left', marginTop: 8 }}
+        className={styles.form}
       >
         <Form.Item
-          label={<span style={labelStyle}>Qui assistirà a la celebració?</span>}
-          style={{ marginBottom: 8 }}
+          label={<span className={shared.label}>Qui assistirà a la celebració?</span>}
+          className={styles.guestsItem}
         >
           <Form.List name="guests">
             {(fields) =>
               fields.map((field) => (
-                <div key={field.key} style={guestRowStyle}>
+                <div key={field.key} className={shared.guestRow}>
                   <Form.Item name={[field.name, 'id']} hidden noStyle>
                     <input type="hidden" />
                   </Form.Item>
                   <Form.Item name={[field.name, 'name']} hidden noStyle>
                     <input type="hidden" />
                   </Form.Item>
-                  <Text style={{
-                    fontFamily: "'Raleway', sans-serif",
-                    fontSize: 'clamp(0.85rem, 1.3vw, 0.95rem)',
-                    color: '#333',
-                  }}>
+                  <Text className={styles.guestName}>
                     {form.getFieldValue(['guests', field.name, 'name'])}
                   </Text>
                   <Form.Item
@@ -100,12 +74,12 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
 
         <Form.Item
           name="notes"
-          label={<span style={labelStyle}>Observacions (al·lèrgies, menú especial, etc.)</span>}
+          label={<span className={shared.label}>Observacions (al·lèrgies, menú especial, etc.)</span>}
         >
           <Input.TextArea
             rows={3}
             placeholder="Escriu les teves observacions aquí..."
-            style={inputStyle}
+            className={shared.input}
             showCount
             maxLength={500}
           />
@@ -117,7 +91,7 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
             htmlType="submit"
             loading={submitting}
             size="large"
-            style={{ width: '100%', marginTop: 8 }}
+            className={styles.submitButton}
           >
             Confirmar assistència
           </Button>

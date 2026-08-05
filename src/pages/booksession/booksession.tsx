@@ -9,7 +9,7 @@ import { ApiError } from '../../services/api.client';
 import { createBooking, AvailabilitySlot, CreateBookingResult } from '../../services/booking/booking.api';
 import { FormValues } from './types';
 import { useMonthAvailability, useSessionType } from './hooks';
-import { StatusCard } from './components/StatusCard';
+import { StatusCard } from '@ui/StatusCard';
 import { SessionTypePicker } from './components/SessionTypePicker';
 import { DateTimeStep } from './components/DateTimeStep';
 import { DetailsFormStep } from './components/DetailsFormStep';
@@ -95,7 +95,7 @@ export const BookSession = () => {
   if (error) {
     return (
       <div className={shared.page}>
-        <StatusCard variant="error" title="Sessió no disponible">
+        <StatusCard tone="error" title="Sessió no disponible">
           <Typography.Text className={shared.bodyText}>
             Aquesta sessió no existeix o ja no s'ofereix. Tria una sessió des de la pàgina del servei.
           </Typography.Text>

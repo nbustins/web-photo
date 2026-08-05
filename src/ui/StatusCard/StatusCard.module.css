@@ -14,12 +14,19 @@
   background: linear-gradient(135deg, var(--lt-color-brand) 0%, var(--lt-color-text-brand) 100%);
 }
 
+/* Gradients de fons, no text: es queden literals (no hi ha token de degradat). */
 .iconError {
   background: linear-gradient(135deg, #a09880 0%, #8a8070 100%);
 }
 
-.title {
+.iconInfo {
+  background: linear-gradient(135deg, rgb(174, 142, 116) 0%, rgb(154, 122, 96) 100%);
+}
+
+/* h3 i no només .title: antd fixa la mida a `h3.ant-typography` (0,1,1) i
+   una classe sola perdria el font-size. */
+h3.title {
   font-family: var(--lt-font-display);
   color: var(--lt-color-brand);
-  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-size: var(--lt-text-heading);
 }

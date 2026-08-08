@@ -115,16 +115,16 @@ export const FamiliarPage = () => (
               <Row gutter={[24, 24]} justify="center" >
                 <Col xs={24} md={8}>
                     <PricingCard
-                          title="Estudi"
+                          title="Basic"
                           features={[
-                            "45 minuts de sessió",
+                            "30 minuts de sessió",
                             "Guia per anar preparats a la sessió",
-                            "Vestuari inclòs (un canvi de roba)",
                             "Galeria Online",
-                            "Entrega de 20 fotos editades (galeria completa +60€)",
-                            "5 fotos impreses 10 x 15"
+                            "Entrega de 15 fotos editades (galeria completa +60€)",
+                            <br/>,
+                            <br/>,
                           ]}
-                          price="200€"
+                          price="170€"
                         />
                 </Col>
                 <Col xs={24} md={8}>
@@ -140,6 +140,20 @@ export const FamiliarPage = () => (
                       ]}
                       price="220€"
                     />
+                </Col>
+                <Col xs={24} md={8}>
+                    <PricingCard
+                          title="Completa"
+                          features={[
+                            "45 minuts de sessió",
+                            "Guia per anar preparats a la sessió",
+                            "Vestuari inclòs (un canvi de roba)",
+                            "Galeria Online",
+                            "Galeria completa",
+                            "5 fotos impresses de 10x15",
+                          ]}
+                          price="220€"
+                        />
                 </Col>
               </Row> 
         </div>

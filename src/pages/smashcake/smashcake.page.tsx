@@ -177,26 +177,26 @@ export const SmashCakePage = () => (
                     "Sessió familiar",
                     "Pastís de @enrollate_bk",
                     "Galeria Online",
-                    "Entrega de 20 fotos editades (galeria completa +60€)",
+                    "Entrega de 15 fotos editades (galeria completa +60€)",
                     "5 fotos impreses 10 x 15",
                   ]}
-                  price="215€"
+                  price="230€"
                 />
         </Col>
         <Col xs={24} md={8}>
           <PricingCard
-             title="Estudi"
+             title="Exterior"
             features={[
                 "45 minuts de sessió",
                 "Guia per anar preparats a la sessió",
+                "Vestuari inclòs",
                 "Sessió familiar",
                 "Pastís de @enrollate_bk",
                 "Galeria Online",
-                "Entrega de 20 fotos editades (galeria completa +60€)",
-                <br></br>,
+                "Entrega de 15 fotos editades (galeria completa +60€)",
                 <br></br>
             ]}
-            price="215€"
+            price="250€"
           />
         </Col>
       </Row> 

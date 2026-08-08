@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Alert, Button, Spin, Steps, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ca';
 import { AppRoutes } from '../../model/routes.model';
 import { ApiError } from '../../services/api.client';
 import { createBooking, AvailabilitySlot, CreateBookingResult } from '../../services/booking/booking.api';
@@ -17,8 +16,6 @@ import { SummaryStep } from './components/SummaryStep';
 import { ConfirmationStep } from './components/ConfirmationStep';
 import shared from './shared.module.css';
 import styles from './booksession.module.css';
-
-dayjs.locale('ca');
 
 export const BookSession = () => {
   const { sessionTypeId } = useParams();

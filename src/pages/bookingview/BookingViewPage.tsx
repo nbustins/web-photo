@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Alert, Button, Spin, Tag } from 'antd';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ca';
 import { ApiError } from '../../services/api.client';
 import {
   BookingByToken,
@@ -17,8 +16,6 @@ import {
 import { bookingContractPath } from '../../model/routes.model';
 import { ContractSheet } from './ContractSheet';
 import styles from './BookingViewPage.module.css';
-
-dayjs.locale('ca');
 
 const STATUS: Record<BookingStatus, { label: string; color: string }> = {
   Requested: { label: 'Pendent de confirmar', color: 'gold' },

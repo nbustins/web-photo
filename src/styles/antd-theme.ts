@@ -38,6 +38,14 @@ export const antdTheme: ThemeConfig = {
       fontSize: 15,
       fontWeight: 600,
       primaryShadow: '0 10px 22px rgba(0,0,0,0.12)',
+      // antd aplica els tokens de botó per mida: `size="large"` llegeix
+      // borderRadiusLG/contentFontSizeLG/paddingInlineLG i `size="small"`
+      // llegeix borderRadiusSM — no els de dalt. Sense aquests, els botons
+      // large sortien amb radi 8px (quadrats) al costat dels default pill.
+      borderRadiusLG: 999,
+      borderRadiusSM: 999,
+      contentFontSizeLG: 15,
+      paddingInlineLG: 22,
     },
   },
 };

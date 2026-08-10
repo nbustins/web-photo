@@ -45,6 +45,24 @@ body,
   outline-offset: 2px;
 }
 
+/* Space.Compact enganxa input i botó en un sol bloc: el pill de 999px que el
+   tema posa als botons hi trenca la unió, i el botó ha de seguir el radi de
+   l'Input. Els valors van a pèl expressament: antd aplica els component
+   tokens redefinint les variables globals sobre el propi <button>
+   (.ant-btn { --ant-border-radius-lg: 999px }), o sigui que llegir
+   var(--ant-border-radius-lg) aquí dins tornaria el pill, no el 6/8px que
+   l'Input veu des de :root. Si algun dia es toca el borderRadius global
+   d'antd a antd-theme.ts, cal actualitzar aquests dos números.
+   Els corners interiors ja els anul·la antd amb longhands més específics:
+   això només toca els exteriors, i tant hi fa si el botó va davant o darrere. */
+.ant-space-compact .ant-btn {
+  border-radius: 6px;
+}
+
+.ant-space-compact .ant-btn-lg {
+  border-radius: var(--lt-radius-md);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Alert, Button, Spin, Steps, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
 import { AppRoutes } from '../../model/routes.model';
 import { ApiError } from '../../services/api.client';
 import { createBooking, AvailabilitySlot, CreateBookingResult } from '../../services/booking/booking.api';
@@ -27,7 +26,7 @@ export const BookSession = () => {
   );
 
   const { groups, sessionType, groupName, loading, error, setError } = useSessionType(typeId);
-  const { month, setMonth, slotsByDate, loading: loadingSlots, reload } = useMonthAvailability(sessionType);
+  const { month, setMonth, slotsByDate, bookableUntil, loading: loadingSlots, reload } = useMonthAvailability(sessionType);
 
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<AvailabilitySlot | null>(null);
@@ -143,6 +142,7 @@ export const BookSession = () => {
           month={month}
           onMonthChange={setMonth}
           slotsByDate={slotsByDate}
+          bookableUntil={bookableUntil}
           loadingSlots={loadingSlots}
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}

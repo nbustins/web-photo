@@ -49,6 +49,8 @@ export interface AvailabilityResponse {
   sessionTypeId: number;
   durationMinutes: number;
   timezone: string;
+  /** Last bookable date (YYYY-MM-DD). The API owns the horizon rule; don't recompute it here. */
+  bookableUntil: string;
   days: AvailabilityDay[];
 }
 

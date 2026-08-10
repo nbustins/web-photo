@@ -14,18 +14,15 @@ interface ConfirmationStepProps {
   result: CreateBookingResult;
 }
 
-export const ConfirmationStep = ({ sessionType, groupName, slot, reserverName, result }: ConfirmationStepProps) => (
-  <StatusCard tone="success" title="Reserva confirmada!">
+export const ConfirmationStep = ({ sessionType, groupName, slot, reserverName }: ConfirmationStepProps) => (
+  <StatusCard tone="success" title="Reserva sol·licitada!">
     <Text className={styles.summary}>
       {sessionDisplayName(groupName, sessionType.name)} · {dayjs(slot.startAt).format('dddd D MMMM YYYY · HH:mm')}
       <br />
       A nom de {reserverName}
     </Text>
     <Text className={styles.hint}>
-      Guarda aquest codi: el necessitaràs per consultar o cancel·lar la reserva.
-    </Text>
-    <Text copyable strong className={styles.token}>
-      {result.confirmationToken}
+      Rebràs un correu amb l'enllaç per firmar el contracte de la sessió. Un cop signat rebràs la confirmació de la reserva.    
     </Text>
   </StatusCard>
 );

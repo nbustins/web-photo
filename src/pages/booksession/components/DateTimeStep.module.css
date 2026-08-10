@@ -9,6 +9,14 @@
   margin-top: 8px;
 }
 
+.horizonNote {
+  composes: bodyText from '../shared.module.css';
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  opacity: 0.75;
+}
+
 .dayLabel {
   composes: label from '../shared.module.css';
   display: block;

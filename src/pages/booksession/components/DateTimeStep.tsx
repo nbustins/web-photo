@@ -11,6 +11,8 @@ interface DateTimeStepProps {
   month: Dayjs;
   onMonthChange: (month: Dayjs) => void;
   slotsByDate: Record<string, AvailabilitySlot[]>;
+  /** Last bookable date, from the API (booking spec §17). Null until the first load answers. */
+  bookableUntil: Dayjs | null;
   loadingSlots: boolean;
   selectedDate: Dayjs | null;
   onDateChange: (date: Dayjs | null) => void;
@@ -20,7 +22,7 @@ interface DateTimeStepProps {
 }
 
 export const DateTimeStep = ({
-  sessionType, groupName, month, onMonthChange, slotsByDate, loadingSlots,
+  sessionType, groupName, month, onMonthChange, slotsByDate, bookableUntil, loadingSlots,
   selectedDate, onDateChange, selectedSlot, onSlotChange, onNext,
 }: DateTimeStepProps) => {
   const hasAnySlots = Object.keys(slotsByDate).length > 0;
@@ -38,6 +40,7 @@ export const DateTimeStep = ({
             <Calendar
               fullscreen={false}
               value={selectedDate ?? month}
+              validRange={bookableUntil ? [dayjs(), bookableUntil] : undefined}
               disabledDate={current =>
                 current.isBefore(dayjs(), 'day') || !slotsByDate[current.format('YYYY-MM-DD')]
               }
@@ -56,7 +59,14 @@ export const DateTimeStep = ({
           </Spin>
           {!loadingSlots && !hasAnySlots && (
             <Typography.Text className={styles.emptySlots}>
-              Cap hora lliure aquest mes. Prova el mes següent.
+              {bookableUntil && !month.isBefore(bookableUntil, 'month')
+                ? 'Cap hora lliure aquest mes.'
+                : 'Cap hora lliure aquest mes. Prova el mes següent.'}
+            </Typography.Text>
+          )}
+          {bookableUntil && (
+            <Typography.Text className={styles.horizonNote}>
+              Pots reservar fins al {bookableUntil.format('D [de] MMMM')}. Obrim noves dates cada dia.
             </Typography.Text>
           )}
         </Col>

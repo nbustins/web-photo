@@ -44,6 +44,7 @@ export const useSessionType = (sessionTypeId: number | undefined) => {
 export const useMonthAvailability = (sessionType: BookableSessionType | null) => {
   const [month, setMonth] = useState<Dayjs>(dayjs());
   const [slotsByDate, setSlotsByDate] = useState<Record<string, AvailabilitySlot[]>>({});
+  const [bookableUntil, setBookableUntil] = useState<Dayjs | null>(null);
   const [loading, setLoading] = useState(false);
 
   const loadMonth = useCallback((target: Dayjs) => {
@@ -63,6 +64,7 @@ export const useMonthAvailability = (sessionType: BookableSessionType | null) =>
           if (day.slots.length > 0) byDate[day.date] = day.slots;
         }
         setSlotsByDate(byDate);
+        setBookableUntil(dayjs(availability.bookableUntil));
       })
       .catch(() => setSlotsByDate({}))
       .finally(() => setLoading(false));
@@ -72,5 +74,5 @@ export const useMonthAvailability = (sessionType: BookableSessionType | null) =>
     loadMonth(month);
   }, [loadMonth, month]);
 
-  return { month, setMonth, slotsByDate, loading, reload: () => loadMonth(month) };
+  return { month, setMonth, slotsByDate, bookableUntil, loading, reload: () => loadMonth(month) };
 };

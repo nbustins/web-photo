@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Alert, Button, Radio, Space } from 'antd';
 import dayjs from 'dayjs';
 import { BookingContract, ImageRightsConsent } from '../../services/booking/booking.api';
+import { getPublicPath } from '@utils/pathUtils';
 import { SignaturePad } from './SignaturePad';
 import styles from './ContractSheet.module.css';
 
@@ -71,9 +72,11 @@ export const ContractSheet = ({ contract, onSign, onDownload, signing, error }: 
         <div>
           <div className={`${styles.sectionTitle} ${styles.signatureLabel}`}>La Fotògrafa</div>
           <div className={styles.signatureLine}>
-            <span className={styles.signatureName}>
-              Laura Trias
-            </span>
+            <img
+              src={getPublicPath('Logo.png')}
+              alt="Signatura de Laura Trias"
+              className={styles.signatureImage}
+            />
           </div>
           <div className={styles.signatureMeta}>
             Laura Trias Corredor · DNI 41649068R
@@ -85,9 +88,13 @@ export const ContractSheet = ({ contract, onSign, onDownload, signing, error }: 
           {signed ? (
             <>
               <div className={styles.signatureLine}>
-                <span className={styles.signatureName}>
-                  {contract.fields.clientName}
-                </span>
+                {contract.signatureImageDataUrl && (
+                  <img
+                    src={contract.signatureImageDataUrl}
+                    alt={`Signatura de ${contract.fields.clientName}`}
+                    className={styles.signatureImage}
+                  />
+                )}
               </div>
               <div className={styles.signatureMeta}>
                 Signat el {dayjs(contract.signedAtUtc).format('D MMMM YYYY [a les] HH:mm')}

@@ -88,7 +88,6 @@
   --lt-font-body: 'Raleway', system-ui, -apple-system, sans-serif;
   --lt-font-editorial: 'Playfair Display', Georgia, serif;
   --lt-font-handwritten: 'Indie Flower', 'Segoe Script', cursive;
-  --lt-font-signature: 'Borel', 'Brush Script MT', cursive;
 
   /* tipografia — escala fluida (7 passos) */
   --lt-text-hero: clamp(3rem, 6vw, 6rem);

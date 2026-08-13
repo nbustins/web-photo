@@ -141,6 +141,8 @@ export interface BookingContract {
   signedAtUtc: string | null;
   templateVersion: string;
   imageRights: ImageRightsConsent;
+  /** El traç que va dibuixar el client, com a data URL. Null mentre no està signat. */
+  signatureImageDataUrl: string | null;
   fields: ContractFields;
   sections: ContractSection[];
 }

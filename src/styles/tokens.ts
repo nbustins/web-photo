@@ -99,7 +99,6 @@ export const font = {
   body: "'Raleway', system-ui, -apple-system, sans-serif",
   editorial: "'Playfair Display', Georgia, serif",
   handwritten: "'Indie Flower', 'Segoe Script', cursive",
-  signature: "'Borel', 'Brush Script MT', cursive",
 } as const;
 
 /** 31 clamp() històrics mapejats a 7 passos (analysis.md §5.3). */

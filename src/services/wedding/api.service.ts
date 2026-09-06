@@ -3,6 +3,7 @@ import type { GuestServiceProvider } from './types';
 import { fetchPublicWedding, fetchPublicWeddingPhotos, fetchAuthWeddingBySlug } from './api/public-wedding.api';
 import { fetchGuestInvite, postConfirmInvite } from './api/guest-invite.api';
 import { fetchConfirmations } from './api/confirmations.api';
+import { errorMessage } from '../error-messages';
 
 export class ApiGuestService implements GuestServiceProvider {
   getWeddingBySlug(slug: string): Promise<Wedding | null> {
@@ -27,7 +28,7 @@ export class ApiGuestService implements GuestServiceProvider {
     } catch (err) {
       return {
         success: false,
-        error: err instanceof Error ? err.message : 'Error al guardar la confirmació',
+        error: errorMessage(err, 'Error al guardar la confirmació'),
       };
     }
   }

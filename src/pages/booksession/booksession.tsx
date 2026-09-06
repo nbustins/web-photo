@@ -15,6 +15,7 @@ import { SummaryStep } from './components/SummaryStep';
 import { ConfirmationStep } from './components/ConfirmationStep';
 import shared from './shared.module.css';
 import styles from './booksession.module.css';
+import { errorMessage } from '../../services/error-messages';
 
 export const BookSession = () => {
   const { sessionTypeId } = useParams();
@@ -62,8 +63,12 @@ export const BookSession = () => {
       setResult(created);
       setStep(3);
     } catch (err) {
-      if (err instanceof ApiError && err.status === 422) {
-        setSubmitError('Aquesta hora ja no està disponible. Torna a triar una hora, les teves dades es conserven.');
+      // Slot no longer valid (422 SLOT_* or the 409 concurrency race): per-reason text, keep the
+      // form data, send the user back to re-pick a slot with fresh availability.
+      if (err instanceof ApiError && (err.code?.startsWith('SLOT_') || err.status === 422)) {
+        setSubmitError(
+          `${errorMessage(err, 'Aquesta hora ja no està disponible.')} Torna a triar una hora, les teves dades es conserven.`,
+        );
         setSelectedSlot(null);
         setSelectedDate(null);
         setStep(0);
@@ -71,9 +76,9 @@ export const BookSession = () => {
       } else if (err instanceof ApiError && err.status === 404) {
         setError(true);
       } else if (err instanceof ApiError && err.status === 429) {
-        setSubmitError('Massa intents. Espera uns minuts i torna-ho a provar.');
+        setSubmitError(errorMessage(err, 'Massa intents. Espera uns minuts i torna-ho a provar.'));
       } else {
-        setSubmitError(err instanceof ApiError ? err.message : "No s'ha pogut fer la reserva. Torna-ho a provar.");
+        setSubmitError(errorMessage(err, "No s'ha pogut fer la reserva. Torna-ho a provar."));
       }
     } finally {
       setSubmitting(false);

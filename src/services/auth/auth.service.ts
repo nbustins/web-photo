@@ -1,4 +1,5 @@
 import { apiPost, ApiError } from '../api.client';
+import { errorMessage } from '../error-messages';
 import { clearSession, setSession } from './auth.store';
 import type { AuthUser, LoginResponse } from './types';
 
@@ -15,11 +16,10 @@ export async function login(
     });
     return { success: true, user: response.user };
   } catch (err) {
-    if (err instanceof ApiError) {
-      const message = err.status === 401 ? 'Email o contrasenya incorrectes' : err.message;
-      return { success: false, error: message };
+    if (err instanceof ApiError && err.status === 401) {
+      return { success: false, error: 'Email o contrasenya incorrectes' };
     }
-    return { success: false, error: err instanceof Error ? err.message : 'Error desconegut' };
+    return { success: false, error: errorMessage(err, 'Error desconegut') };
   }
 }
 

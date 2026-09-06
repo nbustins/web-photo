@@ -2,11 +2,28 @@ import { getToken } from './auth/auth.store';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
+/** RFC 9457 body produced by wedding-manager-api (errorCode is our extension, spec 011). */
+export type ProblemDetails = {
+  type?: string;
+  title?: string;
+  status?: number;
+  detail?: string;
+  errorCode?: string;
+  traceId?: string;
+  errors?: Record<string, string[]>;
+};
+
 export class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(public status: number, message: string, public code?: string) {
     super(message);
     this.name = 'ApiError';
   }
+}
+
+function toApiError(status: number, data: unknown, statusText: string): ApiError {
+  const problem = (data && typeof data === 'object' ? data : {}) as ProblemDetails & { message?: string };
+  const message = problem.detail || problem.title || problem.message || statusText;
+  return new ApiError(status, message, problem.errorCode);
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
@@ -33,10 +50,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const data = text ? safeJson(text) : null;
 
   if (!response.ok) {
-    const message = (data && typeof data === 'object' && 'message' in data && typeof data.message === 'string')
-      ? data.message
-      : response.statusText;
-    throw new ApiError(response.status, message);
+    throw toApiError(response.status, data, response.statusText);
   }
 
   return data as T;
@@ -66,7 +80,8 @@ export async function apiGetBlob(path: string): Promise<Blob> {
 
   const response = await fetch(`${baseUrl}${path}`, { headers });
   if (!response.ok) {
-    throw new ApiError(response.status, response.statusText);
+    const text = await response.text();
+    throw toApiError(response.status, text ? safeJson(text) : null, response.statusText);
   }
 
   return response.blob();

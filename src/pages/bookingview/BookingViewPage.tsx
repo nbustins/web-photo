@@ -16,6 +16,7 @@ import {
 import { bookingContractPath } from '../../model/routes.model';
 import { ContractSheet } from './ContractSheet';
 import styles from './BookingViewPage.module.css';
+import { errorMessage } from '../../services/error-messages';
 
 const STATUS: Record<BookingStatus, { label: string; color: string }> = {
   Requested: { label: 'Pendent de confirmar', color: 'gold' },
@@ -67,12 +68,12 @@ export const BookingViewPage = ({ view }: BookingViewPageProps) => {
       await load();
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {
-        setSignError('Aquest contracte ja està signat.');
+        setSignError(errorMessage(err, 'Aquest contracte ja està signat.'));
         await load();
       } else if (err instanceof ApiError && err.status === 429) {
-        setSignError('Massa intents. Espera uns minuts i torna-ho a provar.');
+        setSignError(errorMessage(err, 'Massa intents. Espera uns minuts i torna-ho a provar.'));
       } else {
-        setSignError(err instanceof ApiError ? err.message : "No s'ha pogut signar el contracte. Torna-ho a provar.");
+        setSignError(errorMessage(err, "No s'ha pogut signar el contracte. Torna-ho a provar."));
       }
     } finally {
       setSigning(false);

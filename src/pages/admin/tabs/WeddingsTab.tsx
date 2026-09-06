@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { Drawer, Empty, Spin } from 'antd';
+import { Alert, App, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Space, Spin, Upload } from 'antd';
+import type { UploadFile } from 'antd';
+import type { Dayjs } from 'dayjs';
 import { ResponsiveTable, ResponsiveColumn } from '@ui/ResponsiveTable';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import type { ConfirmationRow } from '../../../model/wedding.types';
@@ -11,9 +13,19 @@ import {
   ManagerMobileDashboard,
   ManagerNotesModal,
 } from '../../weddings/WeddingManager/components';
-import { AdminWedding, fetchAdminWeddings } from '../../../services/wedding/api/admin-wedding.api';
+import { AdminWedding, createAdminWedding, fetchAdminWeddings } from '../../../services/wedding/api/admin-wedding.api';
 import { fetchConfirmations } from '../../../services/wedding/api/confirmations.api';
+import { errorMessage } from '../../../services/error-messages';
 import { useApiError } from '../useApiError';
+
+interface CreateWeddingFormValues {
+  title: string;
+  slug: string;
+  eventDate?: Dayjs;
+  closingDate?: Dayjs;
+  codeLength?: number;
+  guestFile: UploadFile[];
+}
 
 const formatDate = (date: string | null) =>
   date ? new Date(date).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—';
@@ -21,21 +33,58 @@ const formatDate = (date: string | null) =>
 export const WeddingsTab: FC = () => {
   const onError = useApiError();
   const isMobile = useIsMobile();
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [weddings, setWeddings] = useState<AdminWedding[]>([]);
+  const [creating, setCreating] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [createForm] = Form.useForm<CreateWeddingFormValues>();
   const [selected, setSelected] = useState<AdminWedding | null>(null);
   const [rows, setRows] = useState<ConfirmationRow[]>([]);
   const [rowsLoading, setRowsLoading] = useState(false);
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
   const [noteModal, setNoteModal] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadWeddings = () => {
     setLoading(true);
     fetchAdminWeddings()
       .then(list => setWeddings(list))
       .catch(onError)
       .finally(() => setLoading(false));
-  }, []);
+  };
+
+  useEffect(() => { loadWeddings(); }, []);
+
+  const closeCreate = () => {
+    setCreateOpen(false);
+    setCreateError(null);
+    createForm.resetFields();
+  };
+
+  const submitCreate = async (values: CreateWeddingFormValues) => {
+    setCreating(true);
+    setCreateError(null);
+    try {
+      await createAdminWedding(
+        {
+          title: values.title,
+          slug: values.slug,
+          eventDate: values.eventDate?.format('YYYY-MM-DD') ?? null,
+          closingDate: values.closingDate?.toISOString() ?? null,
+          codeLength: values.codeLength ?? 6,
+        },
+        values.guestFile[0].originFileObj as File,
+      );
+      message.success('Casament creat');
+      closeCreate();
+      loadWeddings();
+    } catch (err) {
+      setCreateError(errorMessage(err, "No s'ha pogut crear el casament. Torna-ho a provar."));
+    } finally {
+      setCreating(false);
+    }
+  };
 
   const openWedding = async (wedding: AdminWedding) => {
     setSelected(wedding);
@@ -88,6 +137,10 @@ export const WeddingsTab: FC = () => {
 
   return (
     <>
+      <Space style={{ marginBottom: 16 }}>
+        <Button type="primary" onClick={() => setCreateOpen(true)}>Nou casament</Button>
+      </Space>
+
       <ResponsiveTable
         columns={columns}
         dataSource={[...weddings].sort((a, b) => (b.eventDate ?? '').localeCompare(a.eventDate ?? ''))}
@@ -110,6 +163,61 @@ export const WeddingsTab: FC = () => {
           dashboardProps &&
           (isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} />)
         )}
+      </Drawer>
+
+      <Drawer
+        width={isMobile ? '100%' : 480}
+        open={createOpen}
+        onClose={closeCreate}
+        title="Nou casament"
+      >
+        <Form form={createForm} layout="vertical" onFinish={submitCreate} disabled={creating}>
+          <Form.Item name="title" label="Títol" rules={[{ required: true, message: 'Camp obligatori' }]}>
+            <Input placeholder="Carla & Joel" />
+          </Form.Item>
+          <Form.Item
+            name="slug"
+            label="Enllaç web (slug)"
+            rules={[
+              { required: true, message: 'Camp obligatori' },
+              { pattern: /^[a-z0-9-]+$/, message: 'Només minúscules, números i guions' },
+            ]}
+          >
+            <Input placeholder="carla-i-joel" />
+          </Form.Item>
+          <Form.Item name="eventDate" label="Data del casament">
+            <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
+          </Form.Item>
+          <Form.Item name="closingDate" label="Tancament de confirmacions">
+            <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
+          </Form.Item>
+          <Form.Item name="codeLength" label="Llargada del codi d'invitació" initialValue={6}>
+            <InputNumber min={6} max={12} style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item
+            label="Fitxer de convidats (Excel)"
+            name="guestFile"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e?.fileList}
+            rules={[{ required: true, message: 'Cal el fitxer de convidats' }]}
+          >
+            <Upload maxCount={1} accept=".xlsx,.xls" beforeUpload={() => false}>
+              <Button>Selecciona el fitxer</Button>
+            </Upload>
+          </Form.Item>
+
+          {createError && (
+            <Form.Item>
+              <Alert type="warning" showIcon message={createError} />
+            </Form.Item>
+          )}
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={creating} block>
+              Crear casament
+            </Button>
+          </Form.Item>
+        </Form>
       </Drawer>
 
       <ManagerNotesModal note={noteModal} onClose={() => setNoteModal(null)} />

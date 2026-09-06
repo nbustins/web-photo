@@ -17,6 +17,7 @@ export type ErrorCode =
   | 'WEDDING_NOT_FOUND'
   | 'WEDDING_SLUG_EXISTS'
   | 'WEDDING_CODE_TOO_SHORT'
+  | 'GUEST_FILE_REQUIRED'
   | 'INVITATION_NOT_FOUND'
   | 'GUEST_LIMIT_EXCEEDED'
   // sessions
@@ -62,6 +63,7 @@ export const ERROR_MESSAGE: Record<ErrorCode, string> = {
   WEDDING_NOT_FOUND: "No s'ha trobat la boda.",
   WEDDING_SLUG_EXISTS: 'Ja existeix una boda amb aquest slug.',
   WEDDING_CODE_TOO_SHORT: 'El codi ha de tenir com a mínim 6 caràcters.',
+  GUEST_FILE_REQUIRED: 'Cal el fitxer de convidats.',
   INVITATION_NOT_FOUND: "No s'ha trobat la invitació.",
   GUEST_LIMIT_EXCEEDED: "S'ha superat el nombre màxim de convidats.",
 

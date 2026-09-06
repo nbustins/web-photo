@@ -32,7 +32,8 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   }
 
   const headers = new Headers(init.headers);
-  if (!headers.has('Content-Type') && init.body) {
+  // FormData: the browser sets multipart/form-data with its boundary itself.
+  if (!headers.has('Content-Type') && init.body && !(init.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json');
   }
   const token = getToken();
@@ -92,6 +93,10 @@ export function apiPost<T, B = unknown>(path: string, body?: B): Promise<T> {
     method: 'POST',
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
+}
+
+export function apiPostForm<T>(path: string, form: FormData): Promise<T> {
+  return request<T>(path, { method: 'POST', body: form });
 }
 
 export function apiPut<T, B = unknown>(path: string, body?: B): Promise<T> {

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Form, Input, Switch, Button, FormInstance, Typography } from 'antd';
+import { Alert, Form, Input, Switch, Button, FormInstance, Typography } from 'antd';
 import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import type { Invitation } from '../../../../model/wedding.types';
 import type { InvitationFormValues } from '../WeddingGuestPage.types';
@@ -14,6 +14,7 @@ interface GuestConfirmationFormProps {
   invitation: Invitation;
   form: FormInstance<InvitationFormValues>;
   submitting: boolean;
+  submitError?: string | null;
   onFinish: (values: InvitationFormValues) => void;
 }
 
@@ -23,6 +24,7 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
   invitation,
   form,
   submitting,
+  submitError,
   onFinish,
 }) => {
   return (
@@ -84,6 +86,12 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
             maxLength={500}
           />
         </Form.Item>
+
+        {submitError && (
+          <Form.Item>
+            <Alert type="warning" showIcon message={submitError} />
+          </Form.Item>
+        )}
 
         <Form.Item>
           <Button

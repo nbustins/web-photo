@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Spin, Typography, Input, Button, Space, Form, Switch } from 'antd';
+import { Alert, Spin, Typography, Input, Button, Space, Form, Switch } from 'antd';
 import type { WeddingGuestPageContext } from '../WeddingGuestPage.types';
 import { MobileShell } from '@ui/MobileShell';
 import shared from './GuestShared.module.css';
@@ -21,6 +21,7 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
   form,
   onCodeChange,
   onCodeSubmit,
+  submitError,
   onFormSubmit,
   onReset,
   images,
@@ -151,6 +152,12 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
                   maxLength={500}
                 />
               </Form.Item>
+
+              {submitError && (
+                <Form.Item>
+                  <Alert type="warning" showIcon message={submitError} />
+                </Form.Item>
+              )}
 
               <Form.Item className={styles.submitItem}>
                 <Button

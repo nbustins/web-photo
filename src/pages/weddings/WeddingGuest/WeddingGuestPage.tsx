@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { message } from 'antd';
 import { Form } from 'antd';
 import { guestService } from '../../../services/wedding/guest.provider';
 import type { Wedding, Invitation, ConfirmInvitationPayload } from '../../../model/wedding.types';
@@ -21,7 +20,7 @@ import styles from './WeddingGuest.module.css';
 export type { WeddingGuestPageProps, WeddingGuestPageContext, InvitationFormValues } from './WeddingGuestPage.types';
 
 const renderDefault = (ctx: WeddingGuestPageContext, attendingCount: number) => {
-  const { pageState, wedding, invitation, manualCode, submitting, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;
+  const { pageState, wedding, invitation, manualCode, submitting, submitError, form, onCodeChange, onCodeSubmit, onFormSubmit, onReset } = ctx;
 
   const weddingTitle = wedding?.title ?? '';
   const weddingSubtitle = wedding?.subtitle ?? 'Confirma la teva assistència';
@@ -51,6 +50,7 @@ const renderDefault = (ctx: WeddingGuestPageContext, attendingCount: number) => 
           invitation={invitation}
           form={form}
           submitting={submitting}
+          submitError={submitError}
           onFinish={onFormSubmit}
         />
       ) : null;
@@ -77,6 +77,7 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
   const [manualCode, setManualCode] = useState('');
   const [form] = Form.useForm<InvitationFormValues>();
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [attendingCount, setAttendingCount] = useState(0);
 
   const code = searchParams.get('code');
@@ -144,6 +145,7 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
     if (!invitation) return;
 
     setSubmitting(true);
+    setSubmitError(null);
 
     const payload: ConfirmInvitationPayload = {
       slug,
@@ -159,7 +161,7 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
       setAttendingCount(values.guests.filter(g => g.attending).length);
       setPageState('success');
     } else {
-      message.error(result.error || 'Error al guardar la confirmació');
+      setSubmitError(result.error || 'Error al guardar la confirmació');
     }
   };
 
@@ -170,6 +172,7 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
     invitation,
     manualCode,
     submitting,
+    submitError,
     form,
     onCodeChange: setManualCode,
     onCodeSubmit: handleCodeSubmit,

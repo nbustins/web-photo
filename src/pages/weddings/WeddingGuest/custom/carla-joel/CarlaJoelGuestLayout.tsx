@@ -18,6 +18,7 @@ export const CarlaJoelGuestLayout: FC<WeddingGuestPageContext> = ({
   invitation,
   manualCode,
   submitting,
+  submitError,
   form,
   onCodeChange,
   onCodeSubmit,
@@ -61,6 +62,7 @@ export const CarlaJoelGuestLayout: FC<WeddingGuestPageContext> = ({
             invitation={invitation}
             form={form}
             submitting={submitting}
+            submitError={submitError}
             onFinish={onFormSubmit}
           />
         ) : null;

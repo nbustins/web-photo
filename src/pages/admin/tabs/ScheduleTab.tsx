@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import {
-  Alert, Badge, Button, Card, DatePicker, Input, Popconfirm, Select, Space, TimePicker,
-  Typography, message,
+  Alert, App, Badge, Button, Card, DatePicker, Input, Popconfirm, Select, Space, TimePicker,
+  Typography,
 } from 'antd';
 import { ResponsiveTable } from '@ui/ResponsiveTable';
 import dayjs from 'dayjs';
@@ -20,6 +20,7 @@ const { Text } = Typography;
 const TIME_FMT = 'HH:mm';
 
 export const ScheduleTab: FC = () => {
+  const { message } = App.useApp();
   const onError = useApiError();
   const [ranges, setRanges] = useState<WeeklyAvailability[]>([]);
   const [blocks, setBlocks] = useState<BlockedPeriod[]>([]);

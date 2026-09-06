@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Button, Collapse, DatePicker, Descriptions, Drawer, Popconfirm, Select, Space, Tag, Typography, message } from 'antd';
+import { App, Button, Collapse, DatePicker, Descriptions, Drawer, Popconfirm, Select, Space, Tag, Typography } from 'antd';
 import { ResponsiveTable } from '@ui/ResponsiveTable';
 import { AdminIcons, IconButton } from '../icons';
 import { ResendEmailButtons } from '../components/ResendEmailButtons';
@@ -30,6 +30,7 @@ const STATUS_OPTIONS = (Object.keys(STATUS_LABEL) as BookingStatus[]).map((s) =>
 }));
 
 export const BookingsTab: FC = () => {
+  const { message } = App.useApp();
   const onError = useApiError();
   const [loading, setLoading] = useState(false);
   const [bookings, setBookings] = useState<AdminBooking[]>([]);

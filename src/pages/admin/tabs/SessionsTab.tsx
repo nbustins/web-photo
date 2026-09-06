@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Alert, Button, Card, DatePicker, Divider, Drawer, Empty, Form, Input, InputNumber, Modal,
+  Alert, App, Button, Card, DatePicker, Divider, Drawer, Empty, Form, Input, InputNumber, Modal,
   Popconfirm, Select, Space, Switch, Tag,
 } from 'antd';
 import { ResponsiveTable } from '@ui/ResponsiveTable';
@@ -22,6 +22,7 @@ const { RangePicker } = DatePicker;
 const priceFormat = new Intl.NumberFormat('ca-ES', { style: 'currency', currency: 'EUR' });
 
 export const SessionsTab: FC = () => {
+  const { modal } = App.useApp();
   const onError = useApiError();
   const isMobile = useIsMobile();
   const [groups, setGroups] = useState<SessionGroup[]>([]);
@@ -76,7 +77,7 @@ export const SessionsTab: FC = () => {
   };
 
   const removeGroup = (g: SessionGroup) => {
-    Modal.confirm({
+    modal.confirm({
       title: `Esborrar el grup "${g.name}"?`,
       content: 'Només es pot esborrar si no té cap tipus de sessió.',
       okText: 'Esborrar',

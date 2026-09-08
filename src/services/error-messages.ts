@@ -1,6 +1,6 @@
 import { ApiError } from './api.client';
 
-// Mirror of the API error catalogs (spec 011): Shared/Errors/ErrorCodes.cs + Modules/*/​*ErrorCodes.cs.
+// Mirror of the API error catalogs (spec 011): Shared/Errors/ErrorCodes.cs + Modules/*/*ErrorCodes.cs.
 export type ErrorCode =
   // generic
   | 'VALIDATION_ERROR'

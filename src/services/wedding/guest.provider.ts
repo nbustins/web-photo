@@ -1,11 +1,10 @@
 import { GuestServiceProvider } from './types';
-import { MockGuestService } from './mock.service';
 import { ApiGuestService } from './api.service';
 
-const useMock = import.meta.env.VITE_USE_MOCK_DATA === 'true';
-
-export const guestService: GuestServiceProvider = useMock
-  ? new MockGuestService()
-  : new ApiGuestService();
+/**
+ * Mock data no longer lives behind this seam: `npm run dev:mock` intercepts the network
+ * with MSW (src/mocks/), which covers the whole API instead of just the guest surface.
+ */
+export const guestService: GuestServiceProvider = new ApiGuestService();
 
 export type { GuestServiceProvider } from './types';

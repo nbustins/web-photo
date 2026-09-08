@@ -28,7 +28,9 @@
       "@layouts/*": ["src/layouts/*"],
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@mocks": ["src/mocks"],
+      "@mocks/*": ["src/mocks/*"]
     },
 
     /* Linting */

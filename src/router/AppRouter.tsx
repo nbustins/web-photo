@@ -15,6 +15,7 @@ import { StorePage } from '../pages/store/store.page';
 import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
 import { Workshop } from '../pages/workshop/workshop.page';
+import { ChristmasPage } from '../pages/christmas/christmas.page';
 
 import { GenericWedding } from '../pages/weddings/WeddingGuest/custom/GenericWedding';
 import { WeddingManagerPage } from '../pages/weddings/WeddingManager/WeddingManagerPage';
@@ -34,7 +35,8 @@ const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.bookSession] : () => <BookSession/>,
     [AppRoutes.bookStore] : () => <BookStore/>,
     [AppRoutes.aboutMe] : () => <AboutMe/>,
-    [AppRoutes.workshop] : () => <Workshop/>
+    [AppRoutes.workshop] : () => <Workshop/>,
+    [AppRoutes.christmas] : () => <ChristmasPage/>
 
 };
 

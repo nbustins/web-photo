@@ -1,0 +1,11 @@
+/* Títols dels extres: petits, espaiats i en verd oliva, no els titulars serif de les FAQs.
+   Classe repetida a posta: FAQs.module.css defineix `h4.itemTitle` amb la mateixa
+   especificitat i l'ordre dels mòduls al bundle no està garantit. */
+h4.extraTitle.extraTitle {
+  font-family: var(--lt-font-editorial);
+  font-weight: 400;
+  font-size: var(--lt-text-body);
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--lt-color-text-brand);
+}

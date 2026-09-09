@@ -11,7 +11,8 @@ export enum AppRoutes {
     bookSession = "/book-session",
     bookStore = "/book-store",
     aboutMe = "/about-me",
-    workshop = "/workshop"
+    workshop = "/workshop",
+    christmas = "/christmas"
 
 }
 
@@ -21,7 +22,8 @@ export const appRoutesTitle: Partial<Record<AppRoutes, string>> = {
     [AppRoutes.newBorn]: 'Recent Nascut',
     [AppRoutes.smashCake] : "Smash Cake",
     [AppRoutes.bookSession] : "Reservar Sessió",
-    [AppRoutes.workshop] : "Taller"
+    [AppRoutes.workshop] : "Taller",
+    [AppRoutes.christmas] : "Nadal"
   };
 
 export const bookSessionPath = (sessionTypeId: number) => `${AppRoutes.bookSession}/${sessionTypeId}`;

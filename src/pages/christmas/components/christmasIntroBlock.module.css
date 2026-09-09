@@ -1,0 +1,18 @@
+.intro {
+  max-width: var(--lt-container-page);
+  margin: 0 auto;
+  padding: var(--lt-space-16) var(--lt-space-6);
+  color: #f5f1ee;
+  font-family: var(--lt-font-editorial);
+  font-size: 1.6rem;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.intro p {
+  margin: 0 0 1.5rem 0;
+}
+
+.intro p:last-child {
+  margin-bottom: 0;
+}

@@ -30,6 +30,10 @@ const items: MenuItem[] = [
     ],
   },
   {
+    label: "NADAL",
+    key: AppRoutes.christmas,
+  },
+  {
     label: "RESERVA",
     key: AppRoutes.bookSession,
   },
@@ -58,8 +62,9 @@ export const MainHeader = () => {
     if (isMobile) setDrawerOpen(false);
   };
 
-  const leftItems: MenuItem[] = items.slice(0, 2);
-  const rightItems: MenuItem[] = items.slice(2, 5);
+  // El logo va entre els dos menús: repartiment 3/3 perquè quedi centrat de debò.
+  const leftItems: MenuItem[] = items.slice(0, 3);
+  const rightItems: MenuItem[] = items.slice(3);
 
   return (
     <Header className={styles.header}>

@@ -1,0 +1,43 @@
+.block {
+  background: var(--lt-cream-100);
+  padding: var(--lt-space-16) var(--lt-space-6);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.heading {
+  text-align: center;
+  font-family: var(--lt-font-editorial);
+  font-size: var(--lt-text-subheading);
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+  color: var(--lt-color-text-brand);
+  margin-bottom: var(--lt-space-12);
+}
+
+.list {
+  max-width: var(--lt-container-text);
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--lt-space-6);
+  padding: var(--lt-space-2) 0;
+  font-family: var(--lt-font-editorial);
+  font-size: var(--lt-text-subheading);
+  color: var(--lt-color-text-primary);
+}
+
+/* dt/dd porten marges per defecte del navegador; els traiem.
+   El .list queda fora: té el seu `margin: 0 auto` i és el que el centra. */
+.row dt,
+.row dd {
+  margin: 0;
+}
+
+.price {
+  white-space: nowrap;
+}

@@ -3,7 +3,7 @@ import type { SessionGroup } from '../../services/booking/booking.admin.api';
 
 /**
  * The production catalog, copied from the API's seed
- * (Modules/Sessions/Data/Seed/001_session_catalog.sql). Ids 1-10 are hardcoded by the
+ * (Modules/Sessions/Data/Seed/001_session_catalog.sql). Ids 1-13 are hardcoded by the
  * service pages, so they have to match.
  */
 export const sessionGroupFixtures: SessionGroup[] = [
@@ -11,12 +11,14 @@ export const sessionGroupFixtures: SessionGroup[] = [
   { id: 2, name: 'Embaràs' },
   { id: 3, name: 'Familiar' },
   { id: 4, name: 'Smash Cake' },
+  { id: 5, name: 'Nadal' },
 ];
 
 const GUIDE = 'Guia per anar preparats a la sessió';
 const WARDROBE = 'Vestuari inclòs';
 const GALLERY = 'Galeria Online';
 const MAKEUP = 'Sessió de maquillatge i pentinat';
+const FAMILY = 'Sessió familiar';
 
 export const sessionTypeFixtures: SessionType[] = [
   {
@@ -171,6 +173,59 @@ export const sessionTypeFixtures: SessionType[] = [
       'Pastís de @enrollate_bk',
       GALLERY,
       'Entrega de 20 fotos editades (galeria completa +60€)',
+    ],
+  },
+  {
+    id: 11,
+    sessionGroupId: 5,
+    name: 'Estudi Completa',
+    durationMinutes: 30,
+    isActive: true,
+    price: 120.0,
+    adviceText: null,
+    features: [
+      '30 min. de sessió',
+      GUIDE,
+      FAMILY,
+      GALLERY,
+      'Entrega de 8 fotos editades (galeria completa +50€)',
+    ],
+  },
+  {
+    id: 12,
+    sessionGroupId: 5,
+    name: 'Estudi Bàsica',
+    durationMinutes: 30,
+    isActive: true,
+    price: 145.0,
+    adviceText: null,
+    features: [
+      '30 min. de sessió',
+      GUIDE,
+      FAMILY,
+      GALLERY,
+      'Entrega de 15 fotos editades (galeria completa +50€)',
+      '8 Postals impreses 10x15',
+      "Adorn per l'arbre de nadal amb fotografia",
+    ],
+  },
+  {
+    id: 13,
+    sessionGroupId: 5,
+    name: 'Exterior',
+    durationMinutes: 45,
+    isActive: true,
+    price: 185.0,
+    adviceText: null,
+    features: [
+      '45 min. de sessió',
+      GUIDE,
+      FAMILY,
+      GALLERY,
+      'Galeria completa',
+      '8 Postals impreses 10x15',
+      "Adorn de fusta per l'arbre de nadal amb doble fotografia",
+      'Carpeta amb 5 fotos impreses 15x20',
     ],
   },
 ];

@@ -1,9 +1,10 @@
 import { Button, Drawer, Grid, Layout, Menu, MenuProps } from "antd";
 import { AppRoutes } from "../../model/routes.model";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getPublicPath } from "../../utils/pathUtils";
 import { MenuOutlined } from "@ant-design/icons";
+import { SESSIONS } from "../../model/sessions";
 import styles from "../layout.module.css";
 
 const { Header } = Layout;
@@ -12,19 +13,17 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
   // TODO: enable when final photos are ready
-  // {
-  //   label: "NADAL",
-  //   key: AppRoutes.christmas,
-  // },
+  {
+    label: "NADAL",
+    key: AppRoutes.christmas,
+  },
   {
     label: "SESSIONS",
     key: "SESSIONS",
-    children: [
-      { label: "Embaràs", key: AppRoutes.pregnant },
-      { label: "Recent Nascut", key: AppRoutes.newBorn },
-      { label: "Familiar", key: AppRoutes.familiar },
-      { label: "Smash Cake", key: AppRoutes.smashCake },
-    ],
+    children: SESSIONS.filter((session) => session.inMenu).map((session) => ({
+      label: session.label,
+      key: session.key,
+    })),
   },
   {
     label: "BOTIGA",
@@ -55,10 +54,16 @@ export const MainHeader = () => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
-  const [selectedKey, setSelectedKey] = useState<string>(AppRoutes.home);
+  const { pathname } = useLocation();
+
+  // Derivat de la URL: abans era estat local i quedava obsolet amb enllaços
+  // directes o amb el botó enrere.
+  const selectedKey = pathname;
+
+  // A la home la foto ocupa tota la finestra, header inclòs.
+  const transparent = pathname === AppRoutes.home;
 
   const handleMenuClick = (e: { key: string }) => {
-    setSelectedKey(e.key);
     navigate(e.key);
     if (isMobile) setDrawerOpen(false);
   };
@@ -68,14 +73,14 @@ export const MainHeader = () => {
   const rightItems: MenuItem[] = items.slice(3);
 
   return (
-    <Header className={styles.header}>
+    <Header className={transparent ? styles.headerTransparent : styles.header}>
       {isMobile ? (
         <>
           {/* Mobile: logo esquerra + burger dreta (igual que abans) */}
           <img
             src={getPublicPath("Logo.png")}
             alt="Logo"
-            className={styles.logo}
+            className={transparent ? styles.logoOnPhoto : styles.logo}
             onClick={() => navigate(AppRoutes.home)}
           />
 
@@ -116,7 +121,7 @@ export const MainHeader = () => {
           <img
             src={getPublicPath("Logo.png")}
             alt="Logo"
-            className={styles.logo}
+            className={transparent ? styles.logoOnPhoto : styles.logo}
             onClick={() => navigate(AppRoutes.home)}
           />
 

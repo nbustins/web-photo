@@ -10,3 +10,4 @@ export { PromoVideoBackground } from "./promoVideoBackground";
 export { ScrollToTop } from "./scrollToTop";
 export { ThreePhotoRow } from "./threePhotoComponent";
 export { WhyDoSession } from "./whyDoSession";
+export { SessionStrip } from "./sessionStrip";

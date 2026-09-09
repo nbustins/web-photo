@@ -1,22 +1,39 @@
 import { FC } from "react";
-import { ImageBackground, PromoVideoBackground } from "@components";
+import { Button } from "antd";
+import { Link } from "react-router-dom";
+import { SessionStrip } from "@components";
+import { AppRoutes } from "../model/routes.model";
 import { getPublicPath } from "../utils/pathUtils";
-import { useIsMobile } from "@ui/hooks/useIsMobile";
+import styles from "./home.module.css";
 
-export const HomePage: FC = () => {
-  const isMobile = useIsMobile();
+// TODO: main.jpg és apaïsada (1200x800) i a mòbil es retalla molt.
+// Quan hi hagi una foto vertical, servir-la per sota de 768px.
+const HERO_IMAGE = "main/main.jpg";
 
-  const height = "calc(100vh - 180px)";
+export const HomePage: FC = () => (
+  <section
+    className={styles.hero}
+    style={{ backgroundImage: `url(${getPublicPath(HERO_IMAGE)})` }}
+  >
+    <div className={styles.scrim} />
 
-  const bgImage = isMobile
-    ? getPublicPath("main/main.jpg")
-    : getPublicPath("main/main.jpg");
+    <div className={styles.content}>
+      <div className={styles.copy}>
+        <h1 className={styles.title}>Fotografio els dies que no tornen</h1>
+        <p className={styles.subtitle}>
+          Embaràs, nadons i família — a l'estudi, a casa teva o a l'exterior
+        </p>
+        <Link to={AppRoutes.bookSession}>
+          <Button type="primary" size="large">
+            Reserva una sessió
+          </Button>
+        </Link>
+      </div>
 
-  const promoEnabled = false; 
-
-  return promoEnabled ? (
-    <PromoVideoBackground height={height} />
-  ) : (
-    <ImageBackground height={height} imageUrl={bgImage} />
-  );
-};
+      <div className={styles.sessions}>
+        <span className={styles.sessionsLabel}>Les sessions</span>
+        <SessionStrip />
+      </div>
+    </div>
+  </section>
+);

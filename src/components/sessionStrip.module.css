@@ -1,0 +1,132 @@
+/* Tira de sessions de la pàgina principal.
+   El patró de scroll-snap és el mateix que ui/MobileSwiper.module.css. */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-3);
+}
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--lt-space-5);
+}
+
+.card {
+  position: relative;
+  display: block;
+  height: 168px;
+  border-radius: var(--lt-radius-sm);
+  overflow: hidden;
+  background-color: var(--lt-paper-300);
+  background-size: cover;
+  background-position: center;
+  transition: transform var(--lt-duration-base) var(--lt-ease-out);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* Degradat de llegibilitat sota el nom: mateix idioma que el vel de
+   DesktopSplitBackground, però en negre perquè el text és blanc. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(35, 31, 32, 0) 40%, rgba(35, 31, 32, 0.72) 100%);
+}
+
+.label {
+  position: absolute;
+  left: var(--lt-space-4);
+  right: var(--lt-space-4);
+  bottom: var(--lt-space-3);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.name {
+  font-family: var(--lt-font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--lt-paper-100);
+}
+
+.caption {
+  font-family: var(--lt-font-body);
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: rgba(255, 253, 247, 0.85);
+}
+
+@media (max-width: 768px) {
+  .strip {
+    display: flex;
+    gap: var(--lt-space-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Sagnat a sang. El padding-inline-end d'una pista flex amb scroll no el
+       respecten tots els motors (Safari el descarta), així que l'aire de les
+       vores va com a marge de la primera i l'última targeta. */
+    padding-inline: 0;
+    margin-inline: calc(-1 * var(--lt-space-4));
+    scroll-padding-inline-start: var(--lt-space-4);
+  }
+
+  .card:first-child {
+    margin-inline-start: var(--lt-space-4);
+  }
+
+  .card:last-child {
+    margin-inline-end: var(--lt-space-4);
+  }
+
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    flex: 0 0 68%;
+    height: 210px;
+    scroll-snap-align: start;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+
+/* Punts: només a mòbil, mateix patró que ui/MobileSwiper.module.css. */
+.dots {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--lt-space-2);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--lt-radius-pill);
+    background: rgba(255, 253, 247, 0.45);
+    transition: width var(--lt-duration-base) var(--lt-ease-out),
+      background-color var(--lt-duration-base) var(--lt-ease-out);
+  }
+
+  .dotActive {
+    width: 20px;
+    background: var(--lt-paper-100);
+  }
+}

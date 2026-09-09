@@ -1,5 +1,6 @@
 .layout {
-  min-height: 100vh;
+  /* dvh: a mòbil 100vh compta la barra del navegador i afegia scroll fantasma */
+  min-height: 100dvh;
   min-width: 99vw;
   display: flex;
   flex-direction: column;
@@ -8,6 +9,14 @@
 .content {
   flex: 1;
   width: 100%;
+}
+
+/* A la home el header és fix: el contingut ha de poder omplir exactament
+   l'espai que queda (finestra menys footer) sense generar scroll. */
+.contentHome {
+  composes: content;
+  display: flex;
+  flex-direction: column;
 }
 
 .footer {
@@ -26,6 +35,24 @@
   top: 0;
   z-index: 1000;
   height: 80px;
+  transition: background-color var(--lt-duration-base) var(--lt-ease-out),
+    box-shadow var(--lt-duration-base) var(--lt-ease-out);
+}
+
+/* El vel de la home viu en un ::before perquè un degradat no es pot interpolar
+   des de #fff: així el canvi entre rutes es fon en comptes de saltar. */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background-image: linear-gradient(
+    180deg,
+    rgba(35, 31, 32, 0.45) 0%,
+    rgba(35, 31, 32, 0) 100%
+  );
+  transition: opacity var(--lt-duration-base) var(--lt-ease-out);
 }
 
 /* Mida reservada abans que carregui la imatge (666x375): sense això el menú
@@ -38,6 +65,7 @@
   object-fit: contain;
   cursor: pointer;
   display: block;
+  transition: filter var(--lt-duration-base) var(--lt-ease-out);
 }
 
 .burger {
@@ -74,4 +102,57 @@
 .sideMenuRight {
   composes: sideMenu;
   flex-direction: row;
+}
+
+/* Variant només per a la pàgina principal: la foto arriba a dalt de tot i el
+   header hi va a sobre. Fixed (no sticky) perquè no ocupi els seus 80px. */
+.headerTransparent {
+  composes: header;
+  position: fixed;
+  background: transparent;
+  box-shadow: none;
+}
+
+.headerTransparent::before {
+  opacity: 1;
+}
+
+/* El Logo.png és tinta fosca amb alfa: sobre la foto cal passar-lo a blanc. */
+.logoOnPhoto {
+  composes: logo;
+  filter: brightness(0) invert(1);
+}
+
+/* antd pinta el color de cada ítem a l'element mateix (custom property), així
+   que el `color` de .sideMenu no hi arriba: cal baixar amb :global, com ja es
+   fa a WeddingManager.module.css. Amb hashed:false les classes són estables. */
+.headerTransparent :global(.ant-menu-item),
+.headerTransparent :global(.ant-menu-submenu-title) {
+  color: rgba(255, 253, 247, 0.85);
+  text-shadow: 0 1px 3px rgba(35, 31, 32, 0.45);
+}
+
+.headerTransparent :global(.ant-menu-item:hover),
+.headerTransparent :global(.ant-menu-item-selected),
+.headerTransparent :global(.ant-menu-submenu:hover) :global(.ant-menu-submenu-title),
+.headerTransparent :global(.ant-menu-submenu-title:hover) {
+  color: var(--lt-paper-100);
+  /* Negreta falsa: engreixa el traç sense canviar la mètrica, així els ítems
+     del costat no ballen. Un font-weight real al hover els desplaçaria. */
+  text-shadow: 0 1px 3px rgba(35, 31, 32, 0.45), 0 0 0.4px currentColor;
+}
+
+/* La ratlla d'antd és colorPrimary (oliva): sobre la foto es llegeix com un
+   groc apagat. L'avantpassat .ant-menu-horizontal puja l'especificitat a 0,4,1
+   per guanyar sempre, tant si antd injecta el seu CSS abans com després. */
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-item:hover)::after,
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-item-selected)::after,
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-submenu:hover)::after,
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-submenu-selected)::after,
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-submenu-open)::after {
+  border-bottom-color: var(--lt-paper-100);
+}
+
+.headerTransparent .burgerIcon {
+  color: var(--lt-paper-100);
 }

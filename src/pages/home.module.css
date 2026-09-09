@@ -1,0 +1,107 @@
+/* Pàgina principal: foto a sang sota el header transparent. */
+
+.hero {
+  position: relative;
+  /* Omple l'espai que deixen header (fix) i footer: cap scroll innecessari. */
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* el header és fix a la home: reservem la seva alçada aquí */
+  padding-top: 80px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--lt-ink-900);
+}
+
+/* Vel de llegibilitat: fosc a dalt (menú blanc) i a baix (titular i tira). */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(35, 31, 32, 0.5) 0%,
+    rgba(35, 31, 32, 0.08) 32%,
+    rgba(35, 31, 32, 0.75) 100%
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--lt-space-12) var(--lt-space-8);
+}
+
+/* Marges automàtics: el titular queda centrat a l'espai lliure que deixa la
+   tira, i si no hi cap sobresurt per baix, mai per sota del header. */
+.copy {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lt-space-5);
+  text-align: center;
+  animation: fadeUp var(--lt-duration-slow) var(--lt-ease-out) both;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--lt-font-display);
+  font-size: var(--lt-text-hero);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--lt-paper-100);
+}
+
+.subtitle {
+  margin: 0;
+  font-family: var(--lt-font-editorial);
+  font-style: italic;
+  font-size: var(--lt-text-subheading);
+  line-height: 1.6;
+  color: rgba(255, 253, 247, 0.9);
+}
+
+.sessions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-3);
+}
+
+.sessionsLabel {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-caption);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 253, 247, 0.78);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 0 var(--lt-space-4) var(--lt-space-6);
+  }
+
+  .copy {
+    gap: var(--lt-space-4);
+  }
+}

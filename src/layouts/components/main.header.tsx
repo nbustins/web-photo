@@ -11,6 +11,11 @@ const { Header } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
+  // TODO: enable when final photos are ready
+  // {
+  //   label: "NADAL",
+  //   key: AppRoutes.christmas,
+  // },
   {
     label: "SESSIONS",
     key: "SESSIONS",
@@ -28,10 +33,6 @@ const items: MenuItem[] = [
       { label: "Informació", key: AppRoutes.store },
       { label: "Sol·licitud", key: AppRoutes.bookStore },
     ],
-  },
-  {
-    label: "NADAL",
-    key: AppRoutes.christmas,
   },
   {
     label: "RESERVA",

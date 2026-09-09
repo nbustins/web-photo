@@ -25,6 +25,9 @@
 }
 
 .header {
+  /* Múltiple de --lt-duration-base (300ms): el fos entre la home i la resta
+     de pàgines és un canvi de pantalla sencera, no una micro-interacció. */
+  --header-fade: calc(var(--lt-duration-base) * 3);
   display: flex;
   align-items: center;
   background: #fff;
@@ -35,8 +38,8 @@
   top: 0;
   z-index: 1000;
   height: 80px;
-  transition: background-color var(--lt-duration-base) var(--lt-ease-out),
-    box-shadow var(--lt-duration-base) var(--lt-ease-out);
+  transition: background-color var(--header-fade) var(--lt-ease-out),
+    box-shadow var(--header-fade) var(--lt-ease-out);
 }
 
 /* El vel de la home viu en un ::before perquè un degradat no es pot interpolar
@@ -52,7 +55,7 @@
     rgba(35, 31, 32, 0.45) 0%,
     rgba(35, 31, 32, 0) 100%
   );
-  transition: opacity var(--lt-duration-base) var(--lt-ease-out);
+  transition: opacity var(--header-fade) var(--lt-ease-out);
 }
 
 /* Mida reservada abans que carregui la imatge (666x375): sense això el menú
@@ -65,7 +68,7 @@
   object-fit: contain;
   cursor: pointer;
   display: block;
-  transition: filter var(--lt-duration-base) var(--lt-ease-out);
+  transition: filter var(--header-fade) var(--lt-ease-out);
 }
 
 .burger {
@@ -132,10 +135,18 @@
   text-shadow: 0 1px 3px rgba(35, 31, 32, 0.45);
 }
 
-.headerTransparent :global(.ant-menu-item:hover),
-.headerTransparent :global(.ant-menu-item-selected),
-.headerTransparent :global(.ant-menu-submenu:hover) :global(.ant-menu-submenu-title),
-.headerTransparent :global(.ant-menu-submenu-title:hover) {
+/* antd pinta el hover amb
+   .ant-menu-light .ant-menu-item:not(-selected):not(-submenu-selected):hover
+   = especificitat 0,5,0. Cal igualar-la o superar-la, si no els enllaços
+   directes (NADAL, TALLER, SOBRE MI...) es tornen negres en passar-hi el
+   ratolí. Els submenús no hi entren: aquella regla no arriba als seus títols. */
+.headerTransparent :global(.ant-menu-light.ant-menu-horizontal) :global(.ant-menu-item:not(.ant-menu-item-selected):hover),
+.headerTransparent :global(.ant-menu-light.ant-menu-horizontal) :global(.ant-menu-item:not(.ant-menu-item-selected):focus-visible),
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-item-selected),
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-item-active),
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-submenu:hover) :global(.ant-menu-submenu-title),
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-submenu-active) :global(.ant-menu-submenu-title),
+.headerTransparent :global(.ant-menu-horizontal) :global(.ant-menu-submenu-title:hover) {
   color: var(--lt-paper-100);
   /* Negreta falsa: engreixa el traç sense canviar la mètrica, així els ítems
      del costat no ballen. Un font-weight real al hover els desplaçaria. */

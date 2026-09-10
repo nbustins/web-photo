@@ -1,13 +1,13 @@
 import { Col, Row } from "antd";
 import { CustomTitle, ImageSlider, SessionPricingCards, ThreePhotoRow, FAQs } from "@components";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import { motion } from "framer-motion";
 import blocks from "@components/blocks.module.css";
 import styles from "./smashcake.module.css";
 
 const fromIdx = 5;
 const toIdx = 12;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`smashcake/${fromIdx + i}.jpg`));
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => imageUrl(`smashcake/${fromIdx + i}.jpg`));
 
 const containerVariants = {
   hidden: {
@@ -84,7 +84,7 @@ export const SmashCakePage = () => (
           <Col xs={24}>
             <div className={styles.heroWrap}>
               <img
-              src={getPublicPath("smashcake/1.jpg")}
+              src={imageUrl("smashcake/1.jpg")}
                 alt="Imatge de la mare embarassada"
                 className={blocks.heroImageRounded}
               />
@@ -110,7 +110,7 @@ export const SmashCakePage = () => (
       viewport={{ once: true, amount: 0.3 }}
       >
         <ThreePhotoRow
-          photoPaths={[getPublicPath(`smashcake/2.jpg`), getPublicPath(`smashcake/3.jpg`), getPublicPath(`smashcake/4.jpg`)]}
+          photoPaths={[imageUrl(`smashcake/2.jpg`), imageUrl(`smashcake/3.jpg`), imageUrl(`smashcake/4.jpg`)]}
           rowClassName={blocks.sectionRow}
         />
       </motion.div>
@@ -134,7 +134,7 @@ export const SmashCakePage = () => (
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("smashcake/12.jpg")}
+      imageSrc={imageUrl("smashcake/12.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

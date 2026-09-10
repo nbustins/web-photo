@@ -20,6 +20,8 @@ const PhotoItem: React.FC<PhotoItemProps> = ({ src, alt, className }) => (
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         className={className ? `${styles.photo} ${className}` : styles.photo}
       />
     </motion.div>

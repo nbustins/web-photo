@@ -2,7 +2,7 @@ import { Button, Drawer, Grid, Layout, Menu, MenuProps } from "antd";
 import { AppRoutes } from "../../model/routes.model";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import { MenuOutlined } from "@ant-design/icons";
 import { SESSIONS } from "../../model/sessions";
 import styles from "../layout.module.css";
@@ -78,7 +78,7 @@ export const MainHeader = () => {
         <>
           {/* Mobile: logo esquerra + burger dreta (igual que abans) */}
           <img
-            src={getPublicPath("Logo.png")}
+            src={imageUrl("Logo.png")}
             alt="Logo"
             className={transparent ? styles.logoOnPhoto : styles.logo}
             onClick={() => navigate(AppRoutes.home)}
@@ -119,7 +119,7 @@ export const MainHeader = () => {
           />
 
           <img
-            src={getPublicPath("Logo.png")}
+            src={imageUrl("Logo.png")}
             alt="Logo"
             className={transparent ? styles.logoOnPhoto : styles.logo}
             onClick={() => navigate(AppRoutes.home)}

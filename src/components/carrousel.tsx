@@ -70,7 +70,7 @@ const RotatingImageCarousel = ({
             style={{ "--carousel-count": count } as React.CSSProperties}
           >
             <div className={styles.carouselFrame}>
-              <img src={image} alt={`carousel-${i}`} className={styles.carouselImage} />
+              <img src={image} alt={`carousel-${i}`} className={styles.carouselImage} loading="lazy" decoding="async" />
             </div>
           </div>
         ))}

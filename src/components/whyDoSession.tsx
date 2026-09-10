@@ -6,7 +6,7 @@ interface WhyDoSessionProps {
   /** ReactNode i no string: el titular sol portar un <br /> triat a mà. */
   heading: ReactNode;
   textWhyDoThisSession: ReactNode;
-  /** Ruta ja resolta amb getPublicPath. */
+  /** Ruta ja resolta amb imageUrl. */
   image: string;
   imageAlt: string;
 }

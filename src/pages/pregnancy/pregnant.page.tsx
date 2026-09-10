@@ -1,11 +1,11 @@
 import { Row, Col } from "antd";
 import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, WhyDoSession, ThreePhotoRow } from "@components";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import blocks from "@components/blocks.module.css";
 import styles from "./pregnant.module.css";
 
 const photoPaths: string[] = Array.from({ length: 3 }, (_, i) =>
-  getPublicPath(`pregnancy/${i + 1}.jpg`)
+  imageUrl(`pregnancy/${i + 1}.jpg`)
 );
 
 const rot_ini = 5;
@@ -13,7 +13,7 @@ const rot_end = 16;
 
 const rotPhotoPaths: string[] = Array.from(
   { length: rot_end - rot_ini + 1 },
-  (_, i) => getPublicPath(`pregnancy/${rot_ini + i}.jpg`)
+  (_, i) => imageUrl(`pregnancy/${rot_ini + i}.jpg`)
 );
 
 const textWhyDoThisSession = (
@@ -107,7 +107,7 @@ export const PregnantPage = () => (
         <WhyDoSession
           heading={<>Per què recomano fer<br />la sessió d’embaràs?</>}
           textWhyDoThisSession={textWhyDoThisSession}
-          image={getPublicPath("pregnancy/4.jpg")}
+          image={imageUrl("pregnancy/4.jpg")}
           imageAlt="Imatge de la mare embarassada"
         />
       </Row>
@@ -130,7 +130,7 @@ export const PregnantPage = () => (
     </div>
 
     <FAQs
-      imageSrc={getPublicPath("pregnancy/16.jpg")}
+      imageSrc={imageUrl("pregnancy/16.jpg")}
       faqs={[
         { title: "QUINA SETMANA ÉS REALITZA LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

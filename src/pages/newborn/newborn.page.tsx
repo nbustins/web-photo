@@ -1,13 +1,13 @@
 import { Row, Col } from "antd";
 import { motion } from "framer-motion";
 import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, ThreePhotoRow } from "@components";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import blocks from "@components/blocks.module.css";
 import styles from "./newborn.module.css";
 
 const fromIdx = 4;
 const toIdx = 13;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`newborn/${fromIdx + i}.jpg`));
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => imageUrl(`newborn/${fromIdx + i}.jpg`));
 
 const containerVariants = {
   hidden: {
@@ -92,7 +92,7 @@ export const NewBornPage = () => (
           <Col xs={24}>
             <div className={styles.heroWrap}>
               <img
-              src={getPublicPath("newborn/gran_new_born.jpg")}
+              src={imageUrl("newborn/gran_new_born.jpg")}
                 alt="Imatge de la mare embarassada"
                 className={blocks.heroImage}
               />
@@ -118,7 +118,7 @@ export const NewBornPage = () => (
       viewport={{ once: true, amount: 0.3 }}
       >
         <ThreePhotoRow
-          photoPaths={[getPublicPath(`newborn/2.jpg`), getPublicPath(`newborn/3.jpg`), getPublicPath(`newborn/4.jpg`)]}
+          photoPaths={[imageUrl(`newborn/2.jpg`), imageUrl(`newborn/3.jpg`), imageUrl(`newborn/4.jpg`)]}
           rowClassName={blocks.sectionRow}
         />
       </motion.div>
@@ -142,7 +142,7 @@ export const NewBornPage = () => (
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("newborn/14.jpg")}
+      imageSrc={imageUrl("newborn/14.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { getPublicPath } from '../utils/pathUtils';
+import { imageUrl } from '../utils/pathUtils';
 import styles from './MobileSwiper.module.css';
 
 interface MobileSwiperProps {
@@ -36,7 +36,7 @@ export const MobileSwiper: FC<MobileSwiperProps> = ({ images, fallbackImage, alt
           <div
             key={i}
             className={styles.slide}
-            style={{ backgroundImage: `url(${getPublicPath(src)})` }}
+            style={{ backgroundImage: `url(${imageUrl(src)})` }}
             role="img"
             aria-label={alt}
           />

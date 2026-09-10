@@ -1,5 +1,5 @@
 import { CustomTitle, FAQs, SessionPricingCards, ThreePhotoRow } from "@components";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import { ChristmasIntroBlock } from "./components/christmasIntroBlock";
 import { ExtrasPriceList } from "./components/extrasPriceList";
 import blocks from "@components/blocks.module.css";
@@ -9,7 +9,7 @@ import styles from "./christmas.module.css";
 const CHRISTMAS_GROUP_ID = 5;
 
 //TODO: fotos de familiar/ com a placeholder fins que hi hagi public/christmas/.
-const photo = (name: string) => getPublicPath(`familiar/${name}`);
+const photo = (name: string) => imageUrl(`familiar/${name}`);
 
 const extras = [
   {

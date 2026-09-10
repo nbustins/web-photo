@@ -10,7 +10,7 @@ export interface SessionLink {
   label: string;
   /** Frase curta sota el nom a la tira de la home. */
   caption: string;
-  /** Ruta dins de public/, sense barra inicial (getPublicPath ja hi posa el base). */
+  /** Ruta dins de public/, sense barra inicial (imageUrl ja hi posa el base). */
   cover: string;
   /** false mentre la sessió no s'ha d'oferir al menú del header. */
   inMenu: boolean;
@@ -20,39 +20,37 @@ export const SESSIONS: readonly SessionLink[] = [
   {
     key: AppRoutes.pregnant,
     label: "Embaràs",
-    caption: "setmana 28 a 34",
-    cover: "pregnancy/3.jpg",
+    caption: "Recorda-ho per sempre",
+    cover: "https://res.cloudinary.com/djxytedne/image/upload/v1789070741/pregnancy_g6yz3d.jpg",
     inMenu: true,
   },
   {
     key: AppRoutes.newBorn,
     label: "Recent Nascut",
-    caption: "els primers 15 dies",
-    cover: "newborn/14.jpg",
+    caption: "Els seus primers dies",
+    cover: "https://res.cloudinary.com/djxytedne/image/upload/v1789070740/newborn_x8aa9z.jpg",
     inMenu: true,
   },
   {
     key: AppRoutes.familiar,
     label: "Familiar",
-    caption: "a casa o a l'exterior",
-    cover: "familiar/4.jpg",
+    caption: "iu una experiència en família",
+    cover: "https://res.cloudinary.com/djxytedne/image/upload/v1789070741/familiar_jpxpmu.jpg",
     inMenu: true,
   },
   {
     key: AppRoutes.smashCake,
     label: "Smash Cake",
-    caption: "el primer aniversari",
-    cover: "smashcake/4.jpg",
+    caption: "El seu primer aniversari",
+    cover: "https://res.cloudinary.com/djxytedne/image/upload/v1789070741/smashcake_ozgkqf.jpg",
     inMenu: true,
   },
   {
     key: AppRoutes.christmas,
     label: "Nadal",
-    caption: "sessions de temporada",
-    // ponytail: no hi ha public/christmas/ encara; foto manllevada de familiar,
-    // igual que fa christmas.page.tsx. Canviar quan arribin les fotos finals.
+    caption: "Un món ple de màgia",
+    //TODO
     cover: "familiar/2.jpg",
-    // inMenu queda a false fins que les fotos de Nadal siguin definitives.
-    inMenu: false,
+    inMenu: true,
   },
 ];

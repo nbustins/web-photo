@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { getPublicPath } from '../utils/pathUtils';
+import { imageUrl } from '../utils/pathUtils';
 import styles from './DesktopSplitBackground.module.css';
 
 interface DesktopSplitBackgroundProps {
@@ -23,7 +23,7 @@ export const DesktopSplitBackground: FC<DesktopSplitBackgroundProps> = ({ images
         <div
           key={`${src}-${index}`}
           className={styles.half}
-          style={{ backgroundImage: `url(${getPublicPath(src)})` }}
+          style={{ backgroundImage: `url(${imageUrl(src)})` }}
         />
       ))}
       <div className={styles.veil} />

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { getPublicPath } from "../utils/pathUtils";
+import { imageUrl } from "../utils/pathUtils";
 import { useIsMobile } from "../ui/hooks/useIsMobile";
 import styles from "./blocks.module.css";
 
@@ -32,7 +32,7 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
   return (
     <div
       className={styles.promo}
-      style={{ height, backgroundImage: `url(${getPublicPath("main/fons_video.jpg")})` }}
+      style={{ height, backgroundImage: `url(${imageUrl("main/fons_video.jpg")})` }}
     >
 
       {/* vídeo principal */}

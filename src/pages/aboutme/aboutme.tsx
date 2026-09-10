@@ -1,6 +1,6 @@
 import { Col, Row, Typography } from "antd";
 import { motion } from "framer-motion";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import { AboutMeTitle } from "./components/aboutmeTitle";
 import { useIsMobile } from "../../ui/hooks/useIsMobile";
 import styles from "./aboutme.module.css";
@@ -79,14 +79,14 @@ export const AboutMe = () => {
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.02 }}
-              src={getPublicPath("aboutme/1.jpg")}
+              src={imageUrl("aboutme/1.jpg")}
               alt="Giftcard 1"
               className={styles.portrait}
             />
             {/* Imatge sobreposada */}
             {!isMobile && 
             <img
-              src={getPublicPath("aboutme/logo.png")}
+              src={imageUrl("aboutme/logo.png")}
               alt="Overlay"
               className={styles.logoOverlay}
             />}

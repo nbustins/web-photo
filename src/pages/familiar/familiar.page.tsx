@@ -1,13 +1,13 @@
 import { Col, Row } from "antd";
 import { CustomTitle, ImageSlider, SessionPricingCards } from "@components";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";
 import blocks from "@components/blocks.module.css";
 import styles from "./familiar.module.css";
 
 const fromIdx = 4;
 const toIdx = 12;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`familiar/${fromIdx + i}.jpg`));
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => imageUrl(`familiar/${fromIdx + i}.jpg`));
 
 export const containerVariants = {
   hidden: {
@@ -57,7 +57,7 @@ export const FamiliarPage = () => (
               <Row justify="center" className={blocks.sectionRow}>
                 <div className={styles.kidsFrame}>
                   <img
-                    src={getPublicPath('familiar/4.jpg')}
+                    src={imageUrl('familiar/4.jpg')}
                     alt="three kids photo"
                     className={styles.kidsImage}
                   />

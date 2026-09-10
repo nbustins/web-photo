@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { SESSIONS } from "../model/sessions";
-import { getPublicPath } from "../utils/pathUtils";
+import { imageUrl } from "../utils/pathUtils";
 import styles from "./sessionStrip.module.css";
 
 /**
@@ -45,7 +45,7 @@ export const SessionStrip: FC = () => {
             key={session.key}
             to={session.key}
             className={styles.card}
-            style={{ backgroundImage: `url(${getPublicPath(session.cover)})` }}
+            style={{ backgroundImage: `url(${imageUrl(session.cover)})` }}
           >
             <span className={styles.label}>
               <span className={styles.name}>{session.label}</span>

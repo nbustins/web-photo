@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Alert, Button, Radio, Space } from 'antd';
 import dayjs from 'dayjs';
 import { BookingContract, ImageRightsConsent } from '../../services/booking/booking.api';
-import { getPublicPath } from '@utils/pathUtils';
+import { imageUrl } from '@utils/pathUtils';
 import { SignaturePad } from './SignaturePad';
 import styles from './ContractSheet.module.css';
 
@@ -73,7 +73,7 @@ export const ContractSheet = ({ contract, onSign, onDownload, signing, error }: 
           <div className={`${styles.sectionTitle} ${styles.signatureLabel}`}>La Fotògrafa</div>
           <div className={styles.signatureLine}>
             <img
-              src={getPublicPath('Logo.png')}
+              src={imageUrl('Logo.png')}
               alt="Signatura de Laura Trias"
               className={styles.signatureImage}
             />

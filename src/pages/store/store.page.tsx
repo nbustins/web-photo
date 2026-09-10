@@ -1,6 +1,6 @@
 import { Col, Row, Typography } from "antd";
 import { CustomTitle } from "@components";
-import { getPublicPath } from "../../utils/pathUtils";
+import { imageUrl } from "../../utils/pathUtils";
 import { StoreBook, StoreBookProps } from "./components/storeBook";
 import { motion } from "framer-motion";
 import styles from "./store.module.css";
@@ -114,13 +114,13 @@ export const StorePage = () => (
         <Col xs={24} md={7}>
           <div className={styles.giftStack}>
             <img
-              src={getPublicPath("giftcard/2.jpg")}
+              src={imageUrl("giftcard/2.jpg")}
               alt="Giftcard 1"
               className={styles.giftImageTall}
             />
 
             <img
-              src={getPublicPath("giftcard/3.jpg")}
+              src={imageUrl("giftcard/3.jpg")}
               alt="Giftcard 2"
               className={styles.giftImageShort}
             />
@@ -129,7 +129,7 @@ export const StorePage = () => (
 
         <Col xs={24} md={7}>
           <img
-            src={getPublicPath("giftcard/1.jpg")}
+            src={imageUrl("giftcard/1.jpg")}
             alt="Giftcard 1 gran"
             className={styles.giftImageHero}
           />

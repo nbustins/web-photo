@@ -1,6 +1,6 @@
 import { Row, Col } from "antd";
 import { motion } from "framer-motion";
-import { getPublicPath } from "../../../utils/pathUtils";
+import { imageUrl } from "../../../utils/pathUtils";
 import styles from "./threeFamiliarPhotos.module.css";
 
 const containerVariants = {
@@ -45,7 +45,7 @@ export function ThreePhotoRow() {
         <Col xs={24} md={7}>
           <motion.img
             variants={itemVariants}
-            src={getPublicPath("familiar/1.jpg")}
+            src={imageUrl("familiar/1.jpg")}
             alt="Fotografia newborn esquerra"
             className={styles.photo}
           />
@@ -54,7 +54,7 @@ export function ThreePhotoRow() {
         <Col xs={24} md={10}>
           <motion.img
             variants={itemVariants}
-            src={getPublicPath("familiar/2.jpg")}
+            src={imageUrl("familiar/2.jpg")}
             alt="Fotografia newborn central"
             className={styles.photo}
           />
@@ -63,7 +63,7 @@ export function ThreePhotoRow() {
         <Col xs={24} md={7}>
           <motion.img
             variants={itemVariants}
-            src={getPublicPath("familiar/3.jpg")}
+            src={imageUrl("familiar/3.jpg")}
             alt="Fotografia newborn dreta"
             className={styles.photo}
           />

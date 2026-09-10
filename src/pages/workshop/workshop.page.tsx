@@ -1,6 +1,7 @@
 import { Button, Col, Row } from "antd";
 import { motion } from "framer-motion";
 import { CustomTitle } from "@components";
+import { imageUrl } from "@utils/pathUtils";
 import styles from "./workshop.module.css";
 
 const fadeUp = {
@@ -66,7 +67,7 @@ export const Workshop = () => {
               viewport={{ once: true }}
               className={styles.photoFill}
             >
-              <img src={heroImage} alt="Taller lateral" className={styles.heroImage} />
+              <img src={imageUrl(heroImage, 1600)} alt="Taller lateral" className={styles.heroImage} fetchPriority="high" />
             </motion.div>
           </Col>
 
@@ -148,8 +149,10 @@ export const Workshop = () => {
             {galleryImages.map((src, i) => (
               <Col xs={12} md={6} key={i}>
                 <img
-                  src={src}
+                  src={imageUrl(src, 800)}
                   alt={`Taller ${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
                   className={styles.galleryImage}
                 />
               </Col>

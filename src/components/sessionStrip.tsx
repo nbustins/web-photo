@@ -45,7 +45,7 @@ export const SessionStrip: FC = () => {
             key={session.key}
             to={session.key}
             className={styles.card}
-            style={{ backgroundImage: `url(${imageUrl(session.cover)})` }}
+            style={{ backgroundImage: `url(${imageUrl(session.cover, 600)})` }}
           >
             <span className={styles.label}>
               <span className={styles.name}>{session.label}</span>

@@ -19,7 +19,7 @@ export const HomePage: FC = () => (
 
     <div className={styles.content}>
       <div className={styles.copy}>
-        {/* <h1 className={styles.title}>Fotografio els dies que no tornen</h1> */}
+        <h1 className={styles.title}>Estudi Fotogràfic</h1>
         <p className={styles.subtitle}>
           Embaràs, nadons i família — a l'estudi, a casa teva o a l'exterior
         </p>

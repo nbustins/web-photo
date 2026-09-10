@@ -11,9 +11,10 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--lt-space-5);
-  /* Portades quadrades: sense límit, a 1920px farien ~350px d'alt i la home
-     (sense scroll) no hi cabria. Amb 1100px queden de ~200px. */
-  max-width: 1100px;
+  /* Portades quadrades: l'alçada = l'amplada, així que la limitem per l'alçada
+     del viewport (màx. 30vh per targeta) perquè la home no faci scroll.
+     ponytail: 30vh a ull, ajustar si queda massa gran/petit. */
+  max-width: calc(5 * 30vh + 4 * var(--lt-space-5));
 }
 
 .card {
@@ -70,6 +71,7 @@
 @media (max-width: 768px) {
   .strip {
     display: flex;
+    max-width: none;
     gap: var(--lt-space-3);
     overflow-x: auto;
     scroll-snap-type: x mandatory;

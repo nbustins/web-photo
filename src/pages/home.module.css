@@ -78,7 +78,7 @@
 
 .sessionsLabel {
   font-family: var(--lt-font-body);
-  font-size: var(--lt-text-caption);
+  font-size: var(--lt-text-body);
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;

@@ -12,7 +12,7 @@ interface FAQItem {
 interface FAQsProps {
   imageSrc: string;
   imageAlt?: string;
-  faqs: FAQItem[];
+  faqs?: FAQItem[];
   imageWidth?: string;
   /**
    * ReactNode i no string: el titular porta el <br /> triat a mà.
@@ -22,15 +22,22 @@ interface FAQsProps {
   heading?: React.ReactNode;
   /** Classe extra per als títols dels ítems, quan una pàgina els vol amb un altre estil. */
   itemTitleClassName?: string;
+  /**
+   * Substitueix la llista d'ítems a la columna dreta. Per a les pàgines que reaprofiten el bloc
+   * (imatge + titular a l'esquerra) per a un contingut que no són preguntes: Nadal hi posa el
+   * llistat de preus dels extres.
+   */
+  children?: React.ReactNode;
 }
 
 const FAQs = ({
   imageSrc,
   imageAlt = "FAQ image",
-  faqs,
+  faqs = [],
   imageWidth = "100%",
   heading = <>PREGUNTES<br />FREQÜENTS</>,
   itemTitleClassName,
+  children,
 }: FAQsProps) => (
   <div className={styles.block}>
     <Row gutter={[32, 32]} align="top" justify="center">
@@ -44,9 +51,9 @@ const FAQs = ({
         <img src={imageSrc} alt={imageAlt} className={styles.image} style={{ width: imageWidth }} />
       </Col>
 
-      {/* Right column: FAQ list */}
+      {/* Right column: FAQ list, or whatever the page puts there instead */}
       <Col xs={24} md={16} className={styles.right}>
-        {faqs.map((faq, idx) => (
+        {children ?? faqs.map((faq, idx) => (
           <div key={idx} className={styles.item}>
             <Title level={4} className={`${styles.itemTitle} ${itemTitleClassName ?? ""}`}>
               {faq.title}

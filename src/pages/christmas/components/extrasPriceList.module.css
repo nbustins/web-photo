@@ -1,6 +1,5 @@
+/* Viu dins del bloc crema de FAQs, que ja hi posa fons i coixí: aquí, ni l'un ni l'altre. */
 .block {
-  background: var(--lt-cream-100);
-  padding: var(--lt-space-16) var(--lt-space-6);
   width: 100%;
   box-sizing: border-box;
 }

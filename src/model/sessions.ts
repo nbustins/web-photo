@@ -22,7 +22,7 @@ export const SESSIONS: readonly SessionLink[] = [
     label: "Nadal 2026",
     caption: "Un món ple de màgia",
     //TODO
-    cover: "familiar/2.jpg",
+    cover: "https://res.cloudinary.com/djxytedne/image/upload/v1789333582/nil_noa-10_sztdlu.jpg",
     inMenu: false, // ja té entrada pròpia "NADAL" al header
   },
   {

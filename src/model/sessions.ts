@@ -23,7 +23,7 @@ export const SESSIONS: readonly SessionLink[] = [
     caption: "Un món ple de màgia",
     //TODO
     cover: "familiar/2.jpg",
-    inMenu: true,
+    inMenu: false, // ja té entrada pròpia "NADAL" al header
   },
   {
     key: AppRoutes.pregnant,

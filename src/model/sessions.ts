@@ -18,6 +18,14 @@ export interface SessionLink {
 
 export const SESSIONS: readonly SessionLink[] = [
   {
+    key: AppRoutes.christmas,
+    label: "Nadal 2026",
+    caption: "Un món ple de màgia",
+    //TODO
+    cover: "familiar/2.jpg",
+    inMenu: true,
+  },
+  {
     key: AppRoutes.pregnant,
     label: "Embaràs",
     caption: "Recorda-ho per sempre",
@@ -42,15 +50,7 @@ export const SESSIONS: readonly SessionLink[] = [
     key: AppRoutes.smashCake,
     label: "Smash Cake",
     caption: "El seu primer aniversari",
-    cover: "https://res.cloudinary.com/djxytedne/image/upload/v1789070741/smashcake_ozgkqf.jpg",
-    inMenu: true,
-  },
-  {
-    key: AppRoutes.christmas,
-    label: "Nadal",
-    caption: "Un món ple de màgia",
-    //TODO
-    cover: "familiar/2.jpg",
+    cover: "https://res.cloudinary.com/djxytedne/image/upload/v1789070741/cake_kcimfc.jpg",
     inMenu: true,
   },
 ];

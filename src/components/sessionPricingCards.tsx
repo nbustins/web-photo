@@ -57,6 +57,7 @@ export const SessionPricingCards: FC<{ sessionGroupId: number }> = ({ sessionGro
   // page (Familiar, Smash Cake) does not look like a 3-card row missing one.
   const span = sessionTypes.length >= 3 ? 8 : 10;
 
+  //BUG: when using localhost as api in .env
   return (
     <Row gutter={[24, 24]} justify="center" align="stretch">
       {sessionTypes.map((type) => (

@@ -82,8 +82,13 @@ export function fetchSessionGroups(): Promise<SessionGroupWithTypes[]> {
 }
 
 /** One service page's pricing cards. */
-export function fetchSessionTypesByGroup(sessionGroupId: number): Promise<SessionType[]> {
-  return apiGet<SessionType[]>(`/api/session-groups/${sessionGroupId}/session-types`);
+export async function fetchSessionTypesByGroup(sessionGroupId: number): Promise<SessionType[]> {
+  const result = await apiGet<SessionType[]>(`/api/session-groups/${sessionGroupId}/session-types`);
+  if (!Array.isArray(result)) {
+    console.error('Expected array, got:', result);
+    throw "unexpected format received";
+  }
+  return result;
 }
 
 /**

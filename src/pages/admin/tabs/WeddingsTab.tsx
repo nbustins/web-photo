@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from 'react';
-import { Alert, App, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Space, Spin, Upload } from 'antd';
+import {
+  Alert, App, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Segmented, Spin, Tag, Upload,
+} from 'antd';
 import type { UploadFile } from 'antd';
-import type { Dayjs } from 'dayjs';
-import { ResponsiveTable, ResponsiveColumn } from '@ui/ResponsiveTable';
+import dayjs, { type Dayjs } from 'dayjs';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import type { ConfirmationRow } from '../../../model/wedding.types';
 import type { InvitationSummary } from '../../weddings/WeddingManager/WeddingManager.types';
@@ -16,7 +17,10 @@ import {
 import { AdminWedding, createAdminWedding, fetchAdminWeddings } from '../../../services/wedding/api/admin-wedding.api';
 import { fetchConfirmations } from '../../../services/wedding/api/confirmations.api';
 import { errorMessage } from '../../../services/error-messages';
+import { PageHeader } from '../components/PageHeader';
+import { AdminIcons } from '../icons';
 import { useApiError } from '../useApiError';
+import styles from '../admin.module.css';
 
 interface CreateWeddingFormValues {
   title: string;
@@ -27,8 +31,15 @@ interface CreateWeddingFormValues {
   guestFile: UploadFile[];
 }
 
+type WeddingFilter = 'all' | 'open' | 'closed';
+
 const formatDate = (date: string | null) =>
   date ? new Date(date).toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—';
+
+/** Guests can still answer: no closing date, or one still ahead. */
+const isOpen = (w: AdminWedding) => !w.closingDate || new Date(w.closingDate).getTime() > Date.now();
+/** Undated weddings count as upcoming: they're still being set up. */
+const isUpcoming = (w: AdminWedding) => !w.eventDate || w.eventDate.slice(0, 10) >= dayjs().format('YYYY-MM-DD');
 
 export const WeddingsTab: FC = () => {
   const onError = useApiError();
@@ -36,6 +47,8 @@ export const WeddingsTab: FC = () => {
   const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [weddings, setWeddings] = useState<AdminWedding[]>([]);
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState<WeddingFilter>('all');
   const [creating, setCreating] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
@@ -54,6 +67,7 @@ export const WeddingsTab: FC = () => {
       .finally(() => setLoading(false));
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { loadWeddings(); }, []);
 
   const closeCreate = () => {
@@ -107,23 +121,45 @@ export const WeddingsTab: FC = () => {
     setNoteModal(null);
   };
 
-  const columns: ResponsiveColumn<AdminWedding>[] = [
-    { title: 'Casament', dataIndex: 'title', key: 'title', mobileTitle: true },
-    {
-      title: 'Data',
-      key: 'eventDate',
-      width: 130,
-      render: (_, w) => formatDate(w.eventDate),
-    },
-    {
-      title: 'Tancament confirmacions',
-      key: 'closingDate',
-      width: 200,
-      render: (_, w) => formatDate(w.closingDate),
-    },
-    { title: 'Convidats', dataIndex: 'guestCount', key: 'guestCount', width: 110 },
-    { title: 'Enllaç web', dataIndex: 'slug', key: 'slug', width: 180 },
-  ];
+  const q = query.trim().toLowerCase();
+  const matching = weddings.filter((w) => !q || w.title.toLowerCase().includes(q) || w.slug.includes(q));
+  const openCount = matching.filter(isOpen).length;
+  const visible = matching.filter((w) => filter === 'all' || (filter === 'open') === isOpen(w));
+  const byDate = (a: AdminWedding, b: AdminWedding) => (a.eventDate ?? '').localeCompare(b.eventDate ?? '');
+  const upcoming = visible.filter(isUpcoming).sort(byDate);
+  const past = visible.filter((w) => !isUpcoming(w)).sort((a, b) => byDate(b, a));
+
+  const card = (w: AdminWedding) => (
+    <button
+      key={w.id}
+      type="button"
+      className={`${styles.surface} ${styles.weddingCard}${isUpcoming(w) ? '' : ` ${styles.past}`}`}
+      onClick={() => openWedding(w)}
+    >
+      <span className={styles.cardHead}>
+        <span className={styles.rowWho}>
+          <span className={styles.weddingTitle}>{w.title}</span>
+          <span className={styles.muted}>{formatDate(w.eventDate)}</span>
+        </span>
+        {isOpen(w) ? <Tag color="green">Confirmacions obertes</Tag> : <Tag>Tancat</Tag>}
+      </span>
+      <span className={styles.weddingMeta}>
+        <span className={styles.iconText}><AdminIcons.guests /> {w.guestCount} convidats</span>
+        {w.closingDate && <span className={styles.muted}>Tancament {formatDate(w.closingDate)}</span>}
+      </span>
+      <span className={styles.weddingFooter}>
+        <span className={styles.iconText}><AdminIcons.link /> /weddings/{w.slug}</span>
+        <span className={styles.iconText}>Veure confirmacions <AdminIcons.next /></span>
+      </span>
+    </button>
+  );
+
+  const section = (title: string, list: AdminWedding[]) => list.length > 0 && (
+    <section className={styles.dayGroup}>
+      <span className={styles.caption}>{title}</span>
+      <div className={`${styles.cardGrid} ${styles.cardGridWide}`}>{list.map(card)}</div>
+    </section>
+  );
 
   const dashboardProps = selected && {
     weddingTitle: selected.title,
@@ -135,21 +171,53 @@ export const WeddingsTab: FC = () => {
     onShowNote: (note: string) => setNoteModal(note),
   };
 
+  const countLabel = (label: string, n: number) => (
+    <span className={styles.segmentLabel}>{label}<span className={styles.count}>{n}</span></span>
+  );
+
   return (
     <>
-      <Space style={{ marginBottom: 16 }}>
-        <Button type="primary" onClick={() => setCreateOpen(true)}>Nou casament</Button>
-      </Space>
-
-      <ResponsiveTable
-        columns={columns}
-        dataSource={[...weddings].sort((a, b) => (b.eventDate ?? '').localeCompare(a.eventDate ?? ''))}
-        rowKey="id"
-        loading={loading}
-        pagination={false}
-        locale={{ emptyText: <Empty description="No hi ha casaments" /> }}
-        onRow={(wedding) => ({ onClick: () => openWedding(wedding), style: { cursor: 'pointer' } })}
+      <PageHeader
+        title="Casaments"
+        actions={[{ label: 'Nou casament', icon: 'create', primary: true, onClick: () => setCreateOpen(true) }]}
       />
+      <div className={styles.body}>
+        <div className={styles.toolbar}>
+          <Input
+            allowClear
+            prefix={<AdminIcons.search />}
+            placeholder="Cerca per nom de la parella o enllaç"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className={styles.search}
+          />
+          <div className={styles.segmentScroll}>
+            <Segmented<WeddingFilter>
+              value={filter}
+              onChange={setFilter}
+              options={[
+                { value: 'all', label: countLabel('Tots', matching.length) },
+                { value: 'open', label: countLabel(isMobile ? 'Oberts' : 'Confirmacions obertes', openCount) },
+                { value: 'closed', label: countLabel('Tancats', matching.length - openCount) },
+              ]}
+            />
+          </div>
+        </div>
+
+        <Spin spinning={loading}>
+          {visible.length === 0 ? (
+            <Empty
+              className={styles.empty}
+              description={weddings.length ? 'Cap casament amb aquests filtres' : 'No hi ha casaments'}
+            />
+          ) : (
+            <div className={styles.stack}>
+              {section('Propers', upcoming)}
+              {section('Passats', past)}
+            </div>
+          )}
+        </Spin>
+      </div>
 
       <Drawer
         width={isMobile ? '100%' : 900}

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AppRoutes, bookingContractPath, bookingPath } from '../model/routes.model';
 import { MainLayout } from '../layouts/main.layout';
 import { HomePage } from '../pages/home.page';
@@ -22,6 +22,11 @@ import { WeddingManagerPage } from '../pages/weddings/WeddingManager/WeddingMana
 import { AdminLogin } from '../pages/admin/AdminLogin';
 import { AdminPanel } from '../pages/admin/AdminPanel';
 import { RequireAuth } from '../pages/admin/RequireAuth';
+import { BookingsTab } from '../pages/admin/tabs/BookingsTab';
+import { SessionsTab } from '../pages/admin/tabs/SessionsTab';
+import { ScheduleTab } from '../pages/admin/tabs/ScheduleTab';
+import { BlockedTab } from '../pages/admin/tabs/BlockedTab';
+import { WeddingsTab } from '../pages/admin/tabs/WeddingsTab';
 
 
 const privateRoutes: Partial<Record<AppRoutes, FC>> = {
@@ -61,7 +66,15 @@ export const AppRouter: FC = () => {
         <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />} />
 
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<RequireAuth><AdminPanel /></RequireAuth>} />
+        <Route path="/admin" element={<RequireAuth><AdminPanel /></RequireAuth>}>
+          <Route index element={<Navigate to="bookings" replace />} />
+          <Route path="bookings" element={<BookingsTab />} />
+          <Route path="sessions" element={<SessionsTab />} />
+          <Route path="schedule" element={<ScheduleTab />} />
+          <Route path="blocked" element={<BlockedTab />} />
+          <Route path="weddings" element={<WeddingsTab />} />
+          <Route path="*" element={<Navigate to="bookings" replace />} />
+        </Route>
 
         /* Custom wedding routes */
         {/* Per reactivar-la, importa CarlaJoelCustomWedding de

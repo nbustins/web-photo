@@ -3,17 +3,78 @@
   background: var(--lt-color-surface-page);
 }
 
-.content {
-  composes: pageWide from '../../ui/pageContainer.module.css';
+/* The sidebar stays put while the section scrolls. Background inline-level here beats antd's
+   default dark sider colour. */
+.layout .sider {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--lt-olive-700);
 }
 
-/* On narrow screens the tab tables get wider than the viewport; scroll them instead of clipping. */
-.content :global(.ant-table-content) {
-  overflow-x: auto;
+.main {
+  min-width: 0;
+  background: transparent;
 }
 
-.logoutButton {
-  border-color: rgba(255, 255, 255, 0.55);
-  color: rgba(255, 255, 255, 0.9);
+.drawerBody {
+  padding: 0 !important;
+  background: var(--lt-olive-700);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-height: 100%;
+  padding: var(--lt-space-6) var(--lt-space-3);
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-1);
+  padding: 0 var(--lt-space-4);
+}
+
+.brandTitle {
+  font-family: var(--lt-font-display);
+  font-size: 26px;
+  color: var(--lt-color-text-on-brand);
+  letter-spacing: 0.02em;
+}
+
+.brandCaption {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
   letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.menu {
+  font-size: 15px;
+  border-inline-end: 0 !important;
+}
+
+.menuFooter {
+  margin-top: auto;
+}
+
+.menuLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lt-space-2);
+}
+
+.pendingBadge {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 0 8px;
+  border-radius: var(--lt-radius-pill);
+  background: var(--lt-color-accent);
+  color: var(--lt-color-text-on-brand);
 }

@@ -15,6 +15,14 @@ export const STATUS_COLOR: Record<BookingStatus, string> = {
   Cancelled: 'red',
 };
 
+/** Filter copy: a list of bookings in that state, so plural. */
+export const STATUS_FILTER_LABEL: Record<BookingStatus, string> = {
+  Requested: 'Pendents',
+  Confirmed: 'Confirmades',
+  Paid: 'Pagades',
+  Cancelled: 'Cancel·lades',
+};
+
 // Allowed admin transitions (API 001 §7). Cancelled is terminal.
 export const STATUS_TRANSITIONS: Record<BookingStatus, BookingStatus[]> = {
   Requested: ['Confirmed', 'Cancelled'],
@@ -40,11 +48,40 @@ export const WEEKDAY_LABEL: Record<Weekday, string> = {
   Sunday: 'Diumenge',
 };
 
+export const WEEKDAY_SHORT: Record<Weekday, string> = {
+  Monday: 'Dl',
+  Tuesday: 'Dt',
+  Wednesday: 'Dc',
+  Thursday: 'Dj',
+  Friday: 'Dv',
+  Saturday: 'Ds',
+  Sunday: 'Dg',
+};
+
 export const WEEKDAYS_MON_FIRST: Weekday[] = [
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
 ];
 
 const STUDIO_TZ = 'Europe/Madrid';
+
+/** 'YYYY-MM-DD' of an instant in the studio's timezone: the day a booking belongs to. */
+export function studioDay(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-CA', { timeZone: STUDIO_TZ });
+}
+
+export function formatTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString('ca-ES', { timeZone: STUDIO_TZ, hour: '2-digit', minute: '2-digit' });
+}
+
+/** "dissabte, 19 de setembre" */
+export function formatDayHeading(iso: string): string {
+  return new Date(iso).toLocaleDateString('ca-ES', {
+    timeZone: STUDIO_TZ,
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+}
 
 export function formatInstant(iso: string): string {
   return new Date(iso).toLocaleString('ca-ES', {

@@ -1,9 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Alert, App, Button, Card, DatePicker, Divider, Drawer, Empty, Form, Input, InputNumber, Modal,
-  Popconfirm, Select, Space, Switch, Tag,
+  Alert, App, Button, DatePicker, Divider, Drawer, Empty, Form, Input, InputNumber, Modal,
+  Popconfirm, Select, Space, Spin, Switch, Tag,
 } from 'antd';
-import { ResponsiveTable } from '@ui/ResponsiveTable';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import dayjs from 'dayjs';
 import {
@@ -15,7 +14,9 @@ import {
 import type { SessionType } from '../../../services/booking/booking.api';
 import { useApiError } from '../useApiError';
 import { FeaturesEditor } from '../components/FeaturesEditor';
-import { IconButton } from '../icons';
+import { PageHeader } from '../components/PageHeader';
+import { AdminIcons, IconButton } from '../icons';
+import styles from '../admin.module.css';
 
 const { RangePicker } = DatePicker;
 
@@ -28,7 +29,7 @@ export const SessionsTab: FC = () => {
   const [groups, setGroups] = useState<SessionGroup[]>([]);
   const [types, setTypes] = useState<SessionType[]>([]);
   // The API splits a session in two (catalog + agenda, specs 007/008). That boundary is ours,
-  // not the user's: here they are one row and one dialog.
+  // not the user's: here they are one card and one dialog.
   const [agenda, setAgenda] = useState<Record<number, BookingSession>>({});
   const [loading, setLoading] = useState(false);
   const [activeGroup, setActiveGroup] = useState<string>();
@@ -48,7 +49,7 @@ export const SessionsTab: FC = () => {
       setGroups(g);
       setTypes(t);
       setAgenda(Object.fromEntries(a.map((s) => [s.sessionTypeId, s])));
-      // Keep the selected tab if it survived the reload, otherwise fall back to the first group.
+      // Keep the selected group if it survived the reload, otherwise fall back to the first one.
       setActiveGroup((current) =>
         current && g.some((x) => String(x.id) === current) ? current : g[0] ? String(g[0].id) : undefined);
     } catch (err) {
@@ -133,7 +134,7 @@ export const SessionsTab: FC = () => {
         : await createSessionType(payload);
 
       // Second call, because the agenda side lives in another module. A failure here leaves the
-      // type published but not bookable — the table says so rather than hiding it.
+      // type published but not bookable — the card says so rather than hiding it.
       await upsertBookingSession(saved.id, {
         bufferMinutes: v.bufferMinutes ?? 0,
         bookableFrom: v.window?.[0] ? v.window[0].format('YYYY-MM-DD') : null,
@@ -141,7 +142,7 @@ export const SessionsTab: FC = () => {
       });
 
       setTypeModalOpen(false);
-      // A type can be moved to another group from the modal; follow it there.
+      // A type can be moved to another group from the drawer; follow it there.
       setActiveGroup(String(payload.sessionGroupId));
       load();
     } catch (err) { onError(err); }
@@ -152,92 +153,129 @@ export const SessionsTab: FC = () => {
     catch (err) { onError(err); }
   };
 
-  const typesTable = (groupId: number) => (
-    <ResponsiveTable
-      rowKey="id"
-      loading={loading}
-      pagination={false}
-      dataSource={types.filter((t) => t.sessionGroupId === groupId)}
-      locale={{ emptyText: <Empty description="Cap tipus de sessió en aquest grup" /> }}
-      columns={[
-        { title: 'Nom', dataIndex: 'name', mobileTitle: true },
-        { title: 'Durada', dataIndex: 'durationMinutes', render: (v: number) => `${v} min` },
-        { title: 'Preu', dataIndex: 'price', render: (v: number) => priceFormat.format(v) },
-        { title: 'Features', dataIndex: 'features', render: (v: string[]) => v.length },
-        { title: 'Publicat', dataIndex: 'isActive', render: (v: boolean) => v ? <Tag color="green">Sí</Tag> : <Tag>No</Tag> },
-        {
-          title: 'Marge',
-          render: (_, t) => agenda[t.id] ? `${agenda[t.id].bufferMinutes} min` : <Tag color="red">No reservable</Tag>,
-        },
-        {
-          title: 'Temporada',
-          render: (_, t) => {
-            const a = agenda[t.id];
-            if (!a) return '—';
-            return a.bookableFrom || a.bookableTo ? `${a.bookableFrom ?? '…'} → ${a.bookableTo ?? '…'}` : 'Tot l\'any';
-          },
-        },
-        {
-          title: '',
-          render: (_, t) => (
-            <Space>
-              <IconButton icon="edit" label="Editar" size="small" onClick={() => openTypeModal(t)} />
-              <Popconfirm title="Retirar del catàleg? Deixarà de sortir al web." onConfirm={() => removeType(t)}>
-                <IconButton icon="retire" label="Retirar del catàleg" size="small" danger />
-              </Popconfirm>
-            </Space>
-          ),
-        },
-      ]}
-    />
-  );
-
   const current = groups.find((g) => String(g.id) === activeGroup);
+  const currentTypes = current ? types.filter((t) => t.sessionGroupId === current.id) : [];
+  const typeCount = (g: SessionGroup) => types.filter((t) => t.sessionGroupId === g.id).length;
+  const newGroup = () => { setGroupName(''); setGroupDialog({ mode: 'create' }); };
 
-  const addGroupButton = (
-    <IconButton
-      icon="create"
-      label="Nou grup"
-      onClick={() => { setGroupName(''); setGroupDialog({ mode: 'create' }); }}
-    />
+  const season = (t: SessionType) => {
+    const a = agenda[t.id];
+    if (!a) return '—';
+    return a.bookableFrom || a.bookableTo ? `${a.bookableFrom ?? '…'} → ${a.bookableTo ?? '…'}` : 'Tot l\'any';
+  };
+
+  const groupNav = isMobile ? (
+    <div className={styles.chips}>
+      {groups.map((g) => {
+        const active = String(g.id) === activeGroup;
+        return (
+          <button
+            key={g.id}
+            type="button"
+            aria-pressed={active}
+            className={active ? `${styles.chip} ${styles.chipActive}` : styles.chip}
+            onClick={() => setActiveGroup(String(g.id))}
+          >
+            {g.name}
+          </button>
+        );
+      })}
+      <button type="button" className={styles.chip} onClick={newGroup}>+ Nou grup</button>
+    </div>
+  ) : (
+    <aside className={styles.groupPanel}>
+      <span className={styles.caption}>Grups</span>
+      {groups.length > 0 && (
+        <div className={`${styles.surface} ${styles.groupList}`}>
+          {groups.map((g) => {
+            const active = String(g.id) === activeGroup;
+            return (
+              <button
+                key={g.id}
+                type="button"
+                aria-current={active || undefined}
+                className={active ? `${styles.groupItem} ${styles.groupItemActive}` : styles.groupItem}
+                onClick={() => setActiveGroup(String(g.id))}
+              >
+                <span>{g.name}</span>
+                <span className={styles.muted}>{typeCount(g)}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+      <button type="button" className={styles.addDashed} onClick={newGroup}>
+        <AdminIcons.create /> Nou grup
+      </button>
+      <p className={styles.hint}>Cada grup és una pàgina de servei del web (Recent Nascut, Embaràs…).</p>
+    </aside>
   );
+
+  const typeCard = (t: SessionType) => {
+    const a = agenda[t.id];
+    return (
+      <article key={t.id} className={`${styles.surface} ${styles.typeCard}`}>
+        <div className={styles.cardHead}>
+          <h3 className={styles.cardTitle}>{t.name}</h3>
+          {t.isActive ? <Tag color="green">Publicat</Tag> : <Tag>No publicat</Tag>}
+        </div>
+        <span className={styles.price}>{priceFormat.format(t.price)}</span>
+        <dl className={styles.facts}>
+          <div><dt>Durada</dt><dd>{t.durationMinutes} min</dd></div>
+          <div><dt>Marge</dt><dd>{a ? `${a.bufferMinutes} min` : <Tag color="red">No reservable</Tag>}</dd></div>
+          <div><dt>Temporada</dt><dd>{season(t)}</dd></div>
+          <div><dt>Inclou</dt><dd>{t.features.length} {t.features.length === 1 ? 'element' : 'elements'}</dd></div>
+        </dl>
+        <div className={styles.cardFooter}>
+          <IconButton icon="edit" label="Editar" onClick={() => openTypeModal(t)} />
+          <Popconfirm title="Retirar del catàleg? Deixarà de sortir al web." onConfirm={() => removeType(t)}>
+            <IconButton icon="retire" label="Retirar del catàleg" danger />
+          </Popconfirm>
+        </div>
+      </article>
+    );
+  };
 
   return (
     <>
-      {/* Card's own tabs: the group bar sits in the card head and the list in its body, so the
-          whole thing reads as one surface instead of a tab strip floating above a separate box. */}
-      <Card
-        loading={loading && groups.length === 0}
-        tabList={groups.map((g) => ({ key: String(g.id), tab: g.name }))}
-        activeTabKey={activeGroup}
-        onTabChange={setActiveGroup}
-        tabBarExtraContent={groups.length > 0 ? addGroupButton : undefined}
-        title={groups.length === 0 ? 'Grups de sessions' : undefined}
-        extra={groups.length === 0 ? addGroupButton : undefined}
-      >
-        {current ? (
-          <>
-            <Space style={{ marginBottom: 12, width: '100%', justifyContent: 'flex-end' }}>
-              <IconButton
-                icon="edit"
-                label="Reanomenar grup"
-                size="small"
-                onClick={() => { setGroupName(current.name); setGroupDialog({ mode: 'rename', group: current }); }}
-              />
-              <IconButton icon="remove" label="Esborrar grup" size="small" danger onClick={() => removeGroup(current)} />
-              <IconButton icon="create" label="Nou tipus de sessió" type="primary" size="small" onClick={() => openTypeModal(null)} />
-            </Space>
-            {typesTable(current.id)}
-          </>
-        ) : (
-          <Alert
-            type="info"
-            showIcon
-            message="Encara no hi ha cap grup"
-            description="Els grups són les pàgines de servei del web (Recent Nascut, Embaràs…). Crea'n un amb el botó +."
-          />
-        )}
-      </Card>
+      <PageHeader
+        title="Sessions"
+        actions={[{ label: 'Nou tipus', icon: 'create', primary: true, onClick: () => openTypeModal(null) }]}
+      />
+      <div className={styles.body}>
+        <div className={styles.split}>
+          {groupNav}
+          <div className={styles.splitMain}>
+            {current && (
+              <div className={styles.sectionHead}>
+                <h2 className={styles.sectionTitle}>{current.name}</h2>
+                <IconButton
+                  icon="edit"
+                  label="Reanomenar grup"
+                  onClick={() => { setGroupName(current.name); setGroupDialog({ mode: 'rename', group: current }); }}
+                />
+                <IconButton icon="remove" label="Esborrar grup" danger onClick={() => removeGroup(current)} />
+              </div>
+            )}
+            <Spin spinning={loading}>
+              {!current ? (
+                !loading && (
+                  <Alert
+                    type="info"
+                    showIcon
+                    message="Encara no hi ha cap grup"
+                    description="Els grups són les pàgines de servei del web (Recent Nascut, Embaràs…). Crea'n un amb «Nou grup»."
+                  />
+                )
+              ) : currentTypes.length === 0 ? (
+                <Empty className={styles.empty} description="Cap tipus de sessió en aquest grup" />
+              ) : (
+                <div className={styles.cardGrid}>{currentTypes.map(typeCard)}</div>
+              )}
+            </Spin>
+          </div>
+        </div>
+      </div>
 
       <Modal
         open={groupDialog !== null}

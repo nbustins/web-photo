@@ -1,16 +1,28 @@
 import { FC } from 'react';
 import { Button, ButtonProps, Tooltip } from 'antd';
 import {
+  AppstoreOutlined,
   ArrowDownOutlined,
   ArrowUpOutlined,
+  CalendarOutlined,
+  ClockCircleOutlined,
   DeleteOutlined,
   DownloadOutlined,
   EditOutlined,
   EyeInvisibleOutlined,
+  HeartOutlined,
+  LeftOutlined,
+  LinkOutlined,
+  LogoutOutlined,
   MailOutlined,
+  MenuOutlined,
   PlusOutlined,
   ReloadOutlined,
+  RightOutlined,
+  SearchOutlined,
   StopOutlined,
+  TeamOutlined,
+  UnorderedListOutlined,
 } from '@ant-design/icons';
 
 /**
@@ -31,9 +43,22 @@ export const AdminIcons = {
   email: MailOutlined,
   moveUp: ArrowUpOutlined,
   moveDown: ArrowDownOutlined,
+  // Shell sections. `calendar` doubles as the bookings section: bookings are the calendar.
+  calendar: CalendarOutlined,
+  sessions: AppstoreOutlined,
+  schedule: ClockCircleOutlined,
+  weddings: HeartOutlined,
+  logout: LogoutOutlined,
+  menu: MenuOutlined,
+  list: UnorderedListOutlined,
+  search: SearchOutlined,
+  prev: LeftOutlined,
+  next: RightOutlined,
+  guests: TeamOutlined,
+  link: LinkOutlined,
 } as const;
 
-type IconName = keyof typeof AdminIcons;
+export type IconName = keyof typeof AdminIcons;
 
 /**
  * Icon-only button. `label` is mandatory: it is both the tooltip and the accessible name, so an

@@ -4,6 +4,7 @@ import { imageUrl } from "../../utils/pathUtils";
 import { AboutMeTitle } from "./components/aboutmeTitle";
 import { useIsMobile } from "../../ui/hooks/useIsMobile";
 import styles from "./aboutme.module.css";
+import { SocialLinks } from "@components";
 
 const { Text } = Typography;
 
@@ -68,6 +69,7 @@ export const AboutMe = () => {
               <Text className={styles.presentation}>
                 {textPresentation()}
               </Text>
+              <SocialLinks />
             </motion.div>
           </Col>
 

@@ -19,9 +19,32 @@
   flex-direction: column;
 }
 
+/* Footer prim: tot en una línia; a mòbil pot plegar però sense marges grans. */
 .footer {
-  text-align: center;
-  padding: var(--lt-space-3) var(--lt-space-6);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--lt-space-1) var(--lt-space-4);
+  padding: var(--lt-space-2) var(--lt-space-4);
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.footerLink {
+  color: var(--lt-color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: var(--lt-space-1) var(--lt-space-2);
+    font-size: 0.72rem;
+  }
+
+  .footerRights,
+  .footerSocial {
+    display: none;
+  }
 }
 
 .header {

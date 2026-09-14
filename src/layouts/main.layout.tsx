@@ -4,7 +4,10 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { MainHeader } from './components/main.header';
 import styles from './layout.module.css';
 import { Footer } from './components/footer';
-import { AppRoutes } from '../model/routes.model';
+import { ErrorBoundary } from '@components';
+import { AppRoutes, appRoutesTitle } from '../model/routes.model';
+
+const SITE_NAME = 'Laura Trias Fotografia';
 
 const { Content } = Layout;
 
@@ -13,15 +16,20 @@ export const MainLayout: React.FC = () => {
 
     // Només la home té el header fix i el contingut a pantalla completa.
     const isHome = pathname === AppRoutes.home;
+    const pageTitle = appRoutesTitle[pathname as AppRoutes];
 
     return (
           <Layout className={styles.layout}>
+            <title>{pageTitle && !isHome ? `${pageTitle} · ${SITE_NAME}` : SITE_NAME}</title>
             <MainHeader/>
             <Content className={isHome ? styles.contentHome : styles.content}>
-                <Outlet />
+                {/* key: en navegar a una altra pàgina es reinicia l'error. */}
+                <ErrorBoundary key={pathname}>
+                    <Outlet />
+                </ErrorBoundary>
             </Content>
 
-            <Footer author="Laura Trias Fotografia" />
+            <Footer author={SITE_NAME} />
 
           </Layout>
 )};

@@ -11,3 +11,5 @@ export { ScrollToTop } from "./scrollToTop";
 export { ThreePhotoRow } from "./threePhotoComponent";
 export { WhyDoSession } from "./whyDoSession";
 export { SessionStrip } from "./sessionStrip";
+export { ErrorBoundary } from "./errorBoundary";
+export { SocialLinks, CONTACT_EMAIL } from "./socialLinks";

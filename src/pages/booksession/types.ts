@@ -9,6 +9,7 @@ export interface FormValues {
   participants: { name: string; age?: number }[];
   imageRights: ImageRightsConsent;
   notes?: string;
+  acceptPrivacy: boolean;
 }
 
 export const IMAGE_RIGHTS_OPTIONS: { label: string; value: ImageRightsConsent }[] = [

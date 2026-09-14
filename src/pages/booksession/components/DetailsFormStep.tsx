@@ -1,5 +1,7 @@
-import { Button, Col, Form, Input, InputNumber, Radio, Row } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Radio, Row } from 'antd';
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../../../model/routes.model';
 import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import { AvailabilitySlot, BookableSessionType, sessionDisplayName } from '../../../services/booking/booking.api';
 import { FormValues, IMAGE_RIGHTS_OPTIONS } from '../types';
@@ -145,6 +147,21 @@ export const DetailsFormStep = ({ sessionType, groupName, slot, initialValues, o
 
       <Form.Item name="notes" label={<span className={styles.label}>Notes (opcional)</span>}>
         <Input.TextArea rows={3} maxLength={1000} className={styles.input} />
+      </Form.Item>
+
+      {/* ponytail: consentiment només al client; guardar-lo al backend quan l'API tingui camp. */}
+      <Form.Item
+        name="acceptPrivacy"
+        valuePropName="checked"
+        rules={[{
+          validator: (_, checked) =>
+            checked ? Promise.resolve() : Promise.reject(new Error('Cal acceptar la política de privacitat')),
+        }]}
+      >
+        <Checkbox>
+          He llegit i accepto la{' '}
+          <Link to={AppRoutes.privacitat} target="_blank">política de privacitat</Link>
+        </Checkbox>
       </Form.Item>
 
       <Row justify="space-between">

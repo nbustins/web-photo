@@ -12,7 +12,9 @@ export enum AppRoutes {
     bookStore = "/book-store",
     aboutMe = "/about-me",
     workshop = "/workshop",
-    christmas = "/christmas"
+    christmas = "/christmas",
+    avisLegal = "/avis-legal",
+    privacitat = "/privacitat"
 
 }
 
@@ -23,7 +25,13 @@ export const appRoutesTitle: Partial<Record<AppRoutes, string>> = {
     [AppRoutes.smashCake] : "Smash Cake",
     [AppRoutes.bookSession] : "Reservar Sessió",
     [AppRoutes.workshop] : "Taller",
-    [AppRoutes.christmas] : "Nadal"
+    [AppRoutes.christmas] : "Nadal",
+    [AppRoutes.familiar]: "Familiar",
+    [AppRoutes.store]: "Botiga",
+    [AppRoutes.bookStore]: "Comprar",
+    [AppRoutes.aboutMe]: "Sobre mi",
+    [AppRoutes.avisLegal]: "Avís legal",
+    [AppRoutes.privacitat]: "Privacitat"
   };
 
 export const bookSessionPath = (sessionTypeId: number) => `${AppRoutes.bookSession}/${sessionTypeId}`;

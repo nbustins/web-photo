@@ -5,6 +5,7 @@ import { useState } from "react";
 import { imageUrl } from "../../utils/pathUtils";
 import { MenuOutlined } from "@ant-design/icons";
 import { SESSIONS } from "../../model/sessions";
+import { SocialLinks } from "@components";
 import styles from "../layout.module.css";
 
 const { Header } = Layout;
@@ -95,7 +96,9 @@ export const MainHeader = () => {
             placement="right"
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
-            styles={{ body: { padding: 0 } }}
+            styles={{ body: { padding: 0 }, footer: { textAlign: 'center', fontSize: '1.1rem' } }}
+            // Contacte al menú mòbil: al footer mòbil les icones s'amaguen.
+            footer={<SocialLinks />}
           >
             <Menu
               theme="light"

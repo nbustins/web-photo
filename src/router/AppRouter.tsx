@@ -16,6 +16,8 @@ import { BookStore } from '../pages/bookstore/bookstore';
 import { AboutMe } from '../pages/aboutme/aboutme';
 import { Workshop } from '../pages/workshop/workshop.page';
 import { ChristmasPage } from '../pages/christmas/christmas.page';
+import { NotFoundPage } from '../pages/notfound.page';
+import { AvisLegalPage, PrivacitatPage } from '../pages/legal/legal.page';
 
 import { GenericWedding } from '../pages/weddings/WeddingGuest/custom/GenericWedding';
 import { WeddingManagerPage } from '../pages/weddings/WeddingManager/WeddingManagerPage';
@@ -41,7 +43,9 @@ const privateRoutes: Partial<Record<AppRoutes, FC>> = {
     [AppRoutes.bookStore] : () => <BookStore/>,
     [AppRoutes.aboutMe] : () => <AboutMe/>,
     [AppRoutes.workshop] : () => <Workshop/>,
-    [AppRoutes.christmas] : () => <ChristmasPage/>
+    [AppRoutes.christmas] : () => <ChristmasPage/>,
+    [AppRoutes.avisLegal] : () => <AvisLegalPage/>,
+    [AppRoutes.privacitat] : () => <PrivacitatPage/>
 
 };
 
@@ -61,6 +65,7 @@ export const AppRouter: FC = () => {
           <Route path={`${AppRoutes.bookSession}/:sessionTypeId`} element={<BookSession />} />
           <Route path={bookingPath(':token')} element={<BookingViewPage view="summary" />} />
           <Route path={bookingContractPath(':token')} element={<BookingViewPage view="contract" />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
         <Route path="/weddings/:slug" element={<GenericWedding />} />
         <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />} />
@@ -76,8 +81,8 @@ export const AppRouter: FC = () => {
           <Route path="*" element={<Navigate to="bookings" replace />} />
         </Route>
 
-        /* Custom wedding routes */
-        {/* Per reactivar-la, importa CarlaJoelCustomWedding de
+        {/* Custom wedding routes.
+            Per reactivar-la, importa CarlaJoelCustomWedding de
             '../pages/weddings/WeddingGuest/custom/carla-joel/CarlaJoelCustomWedding':
             <Route path="/weddings/carla-joel" element={<CarlaJoelCustomWedding />} /> */}
       </Routes>

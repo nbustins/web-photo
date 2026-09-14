@@ -1,30 +1,39 @@
-import { FC, useEffect, useState } from "react";
-import { ImageBackground } from "../components/imageBackground";
-import { PromoVideoBackground } from "../components/promoVideoBackground";
-import { getPublicPath } from "../utils/pathUtils";
+import { FC } from "react";
+import { Button } from "antd";
+import { Link } from "react-router-dom";
+import { SessionStrip } from "@components";
+import { AppRoutes } from "../model/routes.model";
+import { imageUrl } from "../utils/pathUtils";
+import styles from "./home.module.css";
 
-export const HomePage: FC = () => {
-  const [isMobile, setIsMobile] = useState(false);
+// TODO: main.jpg és apaïsada (1200x800) i a mòbil es retalla molt.
+// Quan hi hagi una foto vertical, servir-la per sota de 768px.
+const HERO_IMAGE = "main/main.jpg";
 
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 600px)");
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+export const HomePage: FC = () => (
+  <section
+    className={styles.hero}
+    style={{ backgroundImage: `url(${imageUrl(HERO_IMAGE)})` }}
+  >
+    <div className={styles.scrim} />
 
-  const height = "calc(100vh - 180px)";
+    <div className={styles.content}>
+      <div className={styles.copy}>
+        <h1 className={styles.title}>Estudi Fotogràfic</h1>
+        <p className={styles.subtitle}>
+          Embaràs, nadons i família — a l'estudi, a casa teva o a l'exterior
+        </p>
+        <Link to={AppRoutes.bookSession}>
+          <Button type="primary" size="large">
+            Reserva una sessió
+          </Button>
+        </Link>
+      </div>
 
-  const bgImage = isMobile
-    ? getPublicPath("main/main.jpg")
-    : getPublicPath("main/main.jpg");
-
-  const promoEnabled = false; 
-
-  return promoEnabled ? (
-    <PromoVideoBackground height={height} />
-  ) : (
-    <ImageBackground height={height} imageUrl={bgImage} />
-  );
-};
+      <div className={styles.sessions}>
+        <span className={styles.sessionsLabel}>Les sessions</span>
+        <SessionStrip />
+      </div>
+    </div>
+  </section>
+);

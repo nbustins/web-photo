@@ -1,0 +1,14 @@
+/* Marc d'escriptori compartit entre el layout per defecte i els personalitzats. */
+.screen {
+  composes: splitScreen from '../../../ui/pageContainer.module.css';
+}
+
+.panel {
+  composes: splitPanel from '../../../ui/pageContainer.module.css';
+}
+
+.customLoading {
+  display: flex;
+  justify-content: center;
+  padding-top: 80px;
+}

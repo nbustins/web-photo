@@ -1,0 +1,110 @@
+.pill {
+  display: inline-block;
+  font-family: var(--lt-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 14px;
+  border-radius: var(--lt-radius-pill);
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.pillConfirmed {
+  color: var(--lt-color-status-success);
+  border-color: rgba(94, 138, 78, 0.45);
+  background: rgba(94, 138, 78, 0.08);
+}
+
+.pillDeclined {
+  color: var(--lt-color-status-danger);
+  border-color: rgba(176, 106, 58, 0.45);
+  background: rgba(176, 106, 58, 0.08);
+}
+
+.pillPending {
+  color: var(--lt-color-brand);
+  border-color: rgba(124, 116, 88, 0.45);
+  background: rgba(124, 116, 88, 0.08);
+}
+
+.labelTag {
+  display: inline-block;
+  font-family: var(--lt-font-body);
+  font-size: 13px;
+  color: var(--lt-color-text-brand);
+  border: 1px solid rgba(124, 116, 88, 0.35);
+  border-radius: var(--lt-radius-sm);
+  padding: 3px 10px;
+  background: rgba(124, 116, 88, 0.04);
+  cursor: default;
+  transition: background var(--lt-duration-fast);
+}
+
+.labelTagClickable {
+  cursor: pointer;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.statValue {
+  font-family: var(--lt-font-display);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--lt-ink-700);
+  line-height: 1;
+}
+
+.statValueSuccess {
+  color: var(--lt-color-status-success);
+}
+
+.statValueDanger {
+  color: var(--lt-color-status-danger);
+}
+
+.statLabel {
+  font-family: var(--lt-font-body);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--lt-color-text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Reutilitzats pel dashboard d'escriptori, el mòbil i el calaix d'invitació. */
+.guestName {
+  font-family: var(--lt-font-display);
+  font-size: 17px;
+  color: var(--lt-ink-700);
+  letter-spacing: 0.01em;
+}
+
+.addedTag {
+  font-family: var(--lt-font-body);
+  font-size: 11px;
+  color: var(--lt-color-brand);
+  background: rgba(124, 116, 88, 0.08);
+  border: 1px solid rgba(124, 116, 88, 0.35);
+  border-radius: var(--lt-radius-pill);
+}
+
+.notes {
+  font-family: var(--lt-font-body);
+  font-size: 14px;
+  /* Gris càlid propi de les notes: no hi ha token semàntic per a text terciari. */
+  color: #8a8275;
+}
+
+.notesClickable {
+  cursor: pointer;
+}
+
+.notesEmpty {
+  font-family: var(--lt-font-body);
+  color: var(--lt-color-text-muted);
+}

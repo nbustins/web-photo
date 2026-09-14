@@ -1,0 +1,16 @@
+.summary {
+  composes: bodyText from '../shared.module.css';
+  display: block;
+}
+
+.hint {
+  composes: bodyText from '../shared.module.css';
+  composes: caption from '../../../ui/text.module.css';
+  display: block;
+  margin-top: 16px;
+}
+
+.token {
+  font-family: var(--lt-font-body);
+  font-size: 1.1rem;
+}

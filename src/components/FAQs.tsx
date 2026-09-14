@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Typography } from "antd";
-import { radii } from "../styles/tokens/radii";
+import styles from "./FAQs.module.css";
 
 const { Title, Text } = Typography;
 
@@ -12,89 +12,53 @@ interface FAQItem {
 interface FAQsProps {
   imageSrc: string;
   imageAlt?: string;
-  faqs: FAQItem[];
+  faqs?: FAQItem[];
   imageWidth?: string;
-
+  /**
+   * ReactNode i no string: el titular porta el <br /> triat a mà.
+   * Per defecte, preguntes freqüents; les pàgines que reaprofiten el bloc per a un llistat
+   * informatiu (Nadal) el sobreescriuen.
+   */
+  heading?: React.ReactNode;
+  /** Classe extra per als títols dels ítems, quan una pàgina els vol amb un altre estil. */
+  itemTitleClassName?: string;
+  /**
+   * Substitueix la llista d'ítems a la columna dreta. Per a les pàgines que reaprofiten el bloc
+   * (imatge + titular a l'esquerra) per a un contingut que no són preguntes: Nadal hi posa el
+   * llistat de preus dels extres.
+   */
+  children?: React.ReactNode;
 }
 
-const FAQs = ({ imageSrc, imageAlt = "FAQ image", faqs, imageWidth = "100%" }: FAQsProps) => (
-  <div
-    style={{
-      background: "#FFF9E5", // cream yellow
-      padding: "2rem",
-      borderRadius: radii.md,
-      width: "100%",
-      boxSizing: "border-box",
-    }}
-  >
+const FAQs = ({
+  imageSrc,
+  imageAlt = "FAQ image",
+  faqs = [],
+  imageWidth = "100%",
+  heading = <>PREGUNTES<br />FREQÜENTS</>,
+  itemTitleClassName,
+  children,
+}: FAQsProps) => (
+  <div className={styles.block}>
     <Row gutter={[32, 32]} align="top" justify="center">
 
       {/* Left column: Title and image */}
-      <Col xs={24} md={8} 
-        style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center", 
-            flexGrow: 1,
-          }}>
-        <Title
-          level={2}
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 700,
-            fontSize: "3rem",
-            marginBottom: "2rem",
-            color: "black",
-          }}
-        >
-          PREGUNTES<br />FREQÜENTS
-          <hr
-            style={{
-              border: "none",
-              height: "2px",
-              width: "60%",
-              margin: "1rem auto",
-              background: "black",
-              borderRadius: radii.md,
-            }}
-          />
+      <Col xs={24} md={8} className={styles.left}>
+        <Title level={2} className={styles.heading}>
+          {heading}
+          <hr className={styles.rule} />
         </Title>
-        <img
-          src={imageSrc}
-          alt={imageAlt}
-          style={{
-            width: imageWidth,
-            borderRadius: radii.md,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-            display: "block",
-          }}
-        />
+        <img src={imageSrc} alt={imageAlt} className={styles.image} style={{ width: imageWidth }} />
       </Col>
-      
-      {/* Right column: FAQ list */}
-      <Col xs={24} md={16} style={{maxWidth: "900px"}}>
-        {faqs.map((faq, idx) => (
-          <div key={idx} style={{ marginBottom: "2rem" }}>
-            <Title
-              level={4}
-              style={{
-                fontSize: "1.5rem",
-                marginBottom: "0.5rem",
-                fontFamily: "'Playfair Display', serif",
-                fontWeight: 800,
-              }}
-            >
+
+      {/* Right column: FAQ list, or whatever the page puts there instead */}
+      <Col xs={24} md={16} className={styles.right}>
+        {children ?? faqs.map((faq, idx) => (
+          <div key={idx} className={styles.item}>
+            <Title level={4} className={`${styles.itemTitle} ${itemTitleClassName ?? ""}`}>
               {faq.title}
             </Title>
-            <Text
-              style={{
-                fontSize: "1.2rem",
-                color: "#333",
-                textAlign: "justify",
-                display: "block",
-                hyphens: "auto",
-              }}
-        >
+            <Text className={styles.itemText}>
               {faq.text}
             </Text>
           </div>

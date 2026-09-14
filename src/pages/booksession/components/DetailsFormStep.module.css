@@ -1,0 +1,31 @@
+.form {
+  text-align: left;
+  margin-top: 8px;
+}
+
+.label {
+  composes: label from '../shared.module.css';
+}
+
+.input {
+  composes: input from '../shared.module.css';
+}
+
+.ageInput {
+  composes: input from '../shared.module.css';
+  width: 90px;
+}
+
+.addParticipant {
+  composes: input from '../shared.module.css';
+}
+
+.participantsItem {
+  margin-bottom: 8px;
+}
+
+.radioOption {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--lt-font-body);
+}

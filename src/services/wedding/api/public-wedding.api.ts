@@ -1,5 +1,6 @@
 import { apiGet, ApiError } from '../../api.client';
 import type { Wedding } from '../../../model/wedding.types';
+import { imageUrl } from '../../../utils/pathUtils';
 
 interface PublicWeddingDto {
   slug: string;
@@ -34,7 +35,7 @@ interface WeddingPhotoDto {
 export async function fetchPublicWeddingPhotos(slug: string): Promise<string[]> {
   try {
     const photos = await apiGet<WeddingPhotoDto[]>(`/api/public/weddings/${encodeURIComponent(slug)}/photos`);
-    return photos.map(photo => photo.url).filter(Boolean);
+    return photos.map(photo => photo.url).filter(Boolean).map(url => imageUrl(url, 1600));
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) return [];
     throw err;

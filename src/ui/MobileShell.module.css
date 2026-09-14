@@ -1,0 +1,35 @@
+.shell {
+  position: fixed;
+  inset: 0;
+  background: var(--lt-paper-300);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.media {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.sheet {
+  position: relative;
+  margin-top: -28px;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--lt-radius-sheet) var(--lt-radius-sheet) 0 0;
+  box-shadow: 0 -6px 24px rgba(124, 116, 88, 0.12);
+  padding: var(--lt-space-6) 22px calc(var(--lt-space-6) + env(safe-area-inset-bottom)) 22px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.handle {
+  width: 44px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--lt-color-border-subtle);
+  margin: 0 auto 18px;
+}

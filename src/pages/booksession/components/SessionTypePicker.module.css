@@ -1,0 +1,11 @@
+.select {
+  composes: input from '../../../ui/formStyles.module.css';
+  width: 100%;
+  max-width: 420px;
+}
+
+.hint {
+  composes: bodyText from '../shared.module.css';
+  display: block;
+  margin-top: 16px;
+}

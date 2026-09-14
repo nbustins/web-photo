@@ -1,17 +1,30 @@
 # Skill: Shared Components Reference
 
-Reference this when building pages to know which components already exist and how to use them.
-**Import paths:**
-- `CustomTitle` → `@components/customTitle`
-- `PricingCard`, `PhotoItem`, `ImageSlider`, `AdviceText` → `@components` (via index)
-- `Carrousel` → `@components/carrousel` (direct — not in index)
-- Other components (`FAQs`, `ThreePhotoRow`, `WhyDoSession`, `ImageBackground`) → import directly from their file path
+Reference this when building pages to know which components already exist and
+how to use them, abans de crear-ne un de nou o de dur-lo cap dins d'un mòdul.
+
+**Import paths:** tots els components de `src/components/` (capa 2, blocs
+editorials de marketing) s'importen des del barril:
+
+```typescript
+import { CustomTitle, PricingCard, FAQs, ImageSlider, /* … */ } from "@components";
+```
+
+Mai per ruta de fitxer directa (`@components/customTitle`) — regla forçada per
+ESLint (`no-restricted-imports`). Si un component encara no és a
+`src/components/index.ts`, afegeix-l'hi en lloc d'importar-lo per ruta.
+
+Aquest document no conté valors de disseny (colors, mides, escala tipogràfica)
+— per a això, `.claude/skills/design-system.md` i `src/styles/tokens.ts`.
+
+Per entendre **quan** crear un component nou i a quina capa va,
+`.claude/skills/styling-guide.md` §2.
 
 ---
 
 ## CustomTitle
 
-Animated page header with a small label above the main title.
+Capçalera de pàgina animada amb una etiqueta petita sobre el títol principal.
 
 ```typescript
 import { CustomTitle } from "@components";
@@ -19,37 +32,39 @@ import { CustomTitle } from "@components";
 <CustomTitle label="sessió de" title="Embaràs" />
 ```
 
-- Label: small uppercase text
-- Title: large Italiana serif with fade-in animation
-- Used at the top of every session page
+- Usat a la part superior de cada pàgina de sessió.
 
 ---
 
 ## ThreePhotoRow
 
-Three staggered photos in a row with scroll-triggered stagger animation.
+Tres fotos esglaonades en fila amb animació d'aparició en scroll.
 
 ```typescript
 import { ThreePhotoRow } from "@components";
 
 <ThreePhotoRow
-  photos={[
+  photoPaths={[
     getPublicPath("session/2.jpg"),
     getPublicPath("session/3.jpg"),
     getPublicPath("session/4.jpg"),
   ]}
+  rowClassName={blocks.sectionRow}
 />
 ```
 
-- Middle photo has larger max-width (430px vs 340px sides)
-- Stacks to full-width on mobile
-- Aspect ratio 2:3 enforced per photo
+- El prop és `photoPaths` (tupla de 3), **no** `photos`.
+- `rowClassName` és opcional: normalment `blocks.sectionRow` de
+  `@components/blocks.module.css`, o `sectionRowLoose` si la pàgina vol més aire.
+- La foto central és més gran que les laterals.
+- S'apila a amplada completa en mòbil.
+- Relació d'aspecte retrat forçada per foto.
 
 ---
 
 ## PricingCard
 
-A pricing tier card with feature list and book button.
+Targeta de tarifa amb llista de característiques i botó de reserva.
 
 ```typescript
 import { PricingCard } from "@components";
@@ -57,46 +72,54 @@ import { PricingCard } from "@components";
 <PricingCard
   title="Bàsica"
   features={["10 fotos editades", "2 hores de sessió"]}
-  price="250€"
-  onBook={() => navigate(AppRoutes.bookSession)}
+  price={250}
+  adviceText="Preus orientatius"
+  sessionTypeId={sessionType.id}
 />
 ```
 
-- "Reserva" button is bottom-aligned regardless of content height
-- Use inside `<Col xs={24} md={8}>` for 3-column or `md={12}` for 2-column layouts
-- Features accept strings or JSX elements
+- `price` és un **número**, no una cadena: el component el formata amb
+  `Intl.NumberFormat('ca-ES')` en euros. No hi posis el símbol.
+- `adviceText` és opcional; l'asterisc el posa el component, no l'escriguis.
+- El prop és `sessionTypeId` (numèric, opcional) — **no** `onBook`. Amb
+  `sessionTypeId`, el botó navega directament al pas de reserva d'aquell
+  tipus de sessió; sense ell, cau a la ruta genèrica de reserva.
+- Botó "Reserva" alineat a baix independentment de l'alçada del contingut.
+- `features` accepta strings o elements JSX.
+- Fer servir dins `<Col xs={24} md={8}>` per a 3 columnes o `md={12}` per a 2.
 
 ---
 
-## Carrousel
+## ImageSlider (carrousel)
 
-Auto-rotating image carousel (rotates every 2.5s).
+Carrusel d'imatges que rota automàticament.
 
 ```typescript
-import Carrousel from "@components/carrousel";
+import { ImageSlider } from "@components";
 
 const images = Array.from({ length: 12 }, (_, i) =>
   getPublicPath(`session/${i + 1}.jpg`)
 );
 
-<Carrousel images={images} />
+<ImageSlider images={images} />
 ```
 
-- Shows 4 images on desktop, 1 on mobile
-- Aspect ratio 2:3 per image
-- Smooth CSS transform transitions
+- Nombre d'imatges visibles depèn de `useIsMobile()` (1 en mòbil, més en
+  escriptori) — no d'un `matchMedia` propi.
+- Relació d'aspecte retrat per imatge.
 
 ---
 
 ## FAQs
 
-Two-column section: image on the left, Q&A list on the right. Cream background.
+Secció de dues columnes: imatge a l'esquerra, llista de preguntes/respostes a
+la dreta.
 
 ```typescript
 import { FAQs } from "@components";
 
 <FAQs
-  image={getPublicPath("session/faq.jpg")}
+  imageSrc={getPublicPath("session/faq.jpg")}
   faqs={[
     { title: "Quan és el millor moment?", text: "Entre les 28 i 34 setmanes." },
     { title: "Quant dura la sessió?", text: "Aproximadament 2 hores." },
@@ -104,76 +127,110 @@ import { FAQs } from "@components";
 />
 ```
 
-- `image`: path string (use `getPublicPath`)
-- `faqs`: array of `{ title: string, text: string }`
-- Playfair Display font for Q titles
-- Full-width cream background section
+- El prop és `imageSrc` — **no** `image`.
+- `faqs`: array de `{ title: string, text: ReactNode }` — el text sol ser JSX
+  (`<p>…</p>`), no una cadena.
+- `imageWidth` opcional (per defecte `"100%"`), útil per acotar la foto.
+- Fons de secció a amplada completa.
 
 ---
 
 ## WhyDoSession
 
-Dark full-width section with large handwritten heading, descriptive text, and an image below.
+Secció fosca a amplada completa amb un títol gran d'estil manuscrit, text
+descriptiu i una imatge a sota.
 
 ```typescript
 import { WhyDoSession } from "@components";
 
 <WhyDoSession
-  heading="Per què fer una sessió de maternitat?"
-  text="Lorem ipsum descriptive text here."
-  image={getPublicPath("session/why.jpg")}
+  heading={<>Per què recomano fer<br />la sessió d’embaràs?</>}
+  textWhyDoThisSession={<p>El text descriptiu, com a JSX.</p>}
+  image={getPublicPath("pregnancy/4.jpg")}
+  imageAlt="Imatge de la mare embarassada"
 />
 ```
 
-- Background: `#231f20`
-- Heading font: Indie Flower
-- Used in pregnancy page — optional for other pages
+- Els quatre props són obligatoris: el component no sap de quina sessió parla.
+- `heading` i `textWhyDoThisSession` són `ReactNode`. El titular sol portar un
+  `<br />` triat a mà, per això no és una cadena.
+- `image` espera la ruta **ja resolta** amb `getPublicPath`. `imageAlt` és
+  obligatori: si canvies la imatge, el text alternatiu ha de canviar amb ella.
+- Serveix per a qualsevol sessió, no només embaràs.
 
 ---
 
 ## ImageBackground
 
-Simple full-width background image section.
+Secció d'imatge de fons a amplada completa.
 
 ```typescript
 import { ImageBackground } from "@components";
 
 <ImageBackground
-  height="calc(100vh - 180px)"
+  height="80vh"
   imageUrl={getPublicPath("session/hero.jpg")}
 />
 ```
 
-- Useful for hero sections without an `<img>` tag
-- CSS `background-size: cover, center`
+- Útil per a seccions hero sense una etiqueta `<img>`.
 
 ---
 
 ## AdviceText
 
-Small italic gray disclaimer text.
+Text d'avís petit i en cursiva.
 
 ```typescript
 import { AdviceText } from "@components";
 
-<AdviceText text="* Preus orientatius, consulta disponibilitat." />
+<AdviceText>* Preus orientatius, consulta disponibilitat.</AdviceText>
 ```
+
+- El contingut va com a **children**, no com a prop `text`.
+- Dins d'una `PricingCard`, l'asterisc el posa la targeta: passa-hi
+  `adviceText` i no facis servir `AdviceText` directament.
 
 ---
 
 ## Utility: getPublicPath
 
-Always use this for image paths — it prepends Vite's `BASE_URL`.
+Fes-lo servir sempre per a paths d'imatge — anteposa el `BASE_URL` de Vite.
 
 ```typescript
 import { getPublicPath } from "@utils/pathUtils";
 
 const src = getPublicPath("newborn/1.jpg");
-// → "/newborn/1.jpg" (or prefixed base in production)
 ```
 
 ---
 
 ## Utility: ScrollToTop
 
-Already applied globally in `AppRouter.tsx`. Do not add it to individual pages.
+Ja aplicat globalment a `AppRouter.tsx`. No l'afegeixis a pàgines individuals.
+
+---
+
+## Primitives de `@ui` (capa 1, sense domini)
+
+No específiques de marketing però reutilitzades arreu — vegeu
+`.claude/skills/design-system.md` per a la regla de capes:
+
+- `SurfaceCard`, `SurfaceCardHeader` — targeta de vidre amb capçalera (abans
+  `GlassCard`/`WeddingCard`).
+- `StatusCard` — resultat amb icona rodona i títol; `tone="success|error|info"`.
+  Reserves i confirmació de bodes.
+- `AppBar` — capçalera fosca enganxada a dalt de les zones d'aplicació (panell
+  d'admin, gestor de bodes); accions a la dreta via `actions`.
+- `MobileShell`, `MobileSwiper`, `DesktopSplitBackground` — layout de
+  login/formularis amb imatge.
+- `LoginCard` — formulari de login complet (admin, gestor de boda).
+- `useIsMobile` — únic hook de breakpoint.
+
+Fulls compartits (no components), per fer-hi `composes` des d'un `.module.css`
+amb **path relatiu** (l'àlies `@ui` no funciona dins `composes`):
+
+- `@ui/text.module.css` — `.body`, `.caption`.
+- `@ui/formStyles.module.css` — `.label`, `.input`.
+- `@ui/pageContainer.module.css` — `.page` (820), `.pageWide` (1200, sota
+  `AppBar`), `.splitScreen` + `.splitPanel` (pantalla amb fons partit).

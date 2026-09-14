@@ -1,0 +1,130 @@
+.screen {
+  min-height: 100vh;
+  background: var(--lt-paper-300);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--lt-olive-700);
+  padding: 18px 20px calc(18px + env(safe-area-inset-top)) 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lt-space-3);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.headerTitle {
+  font-family: var(--lt-font-display);
+  font-style: italic;
+  font-size: 26px;
+  color: var(--lt-color-text-on-brand);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logoutButton {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  color: var(--lt-color-text-on-brand);
+  font-family: var(--lt-font-body);
+  font-size: 14px;
+  padding: 10px 22px;
+  border-radius: var(--lt-radius-pill);
+  cursor: pointer;
+}
+
+.main {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--lt-radius-sm);
+  box-shadow: var(--lt-shadow-md);
+}
+
+.statsCard {
+  composes: card;
+  padding: 18px var(--lt-space-3);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--lt-space-1);
+}
+
+.searchCard {
+  composes: card;
+  padding: var(--lt-space-3);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.searchIcon {
+  color: #bfb8a8;
+}
+
+.searchInput {
+  font-family: var(--lt-font-body);
+  border-radius: var(--lt-radius-sm);
+}
+
+.filterButton {
+  border-radius: var(--lt-radius-sm);
+  font-family: var(--lt-font-body);
+}
+
+.emptyState {
+  background: #fff;
+  border-radius: var(--lt-radius-sm);
+  padding: var(--lt-space-8);
+  text-align: center;
+  color: var(--lt-color-text-muted);
+  font-family: var(--lt-font-body);
+}
+
+.list {
+  composes: card;
+  overflow: hidden;
+}
+
+.row {
+  padding: var(--lt-space-4) 18px;
+  border-top: 1px solid rgba(124, 116, 88, 0.12);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-2);
+}
+
+.row:first-child {
+  border-top: none;
+}
+
+.rowHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.rowName {
+  font-family: var(--lt-font-display);
+  font-size: 19px;
+  color: var(--lt-ink-700);
+  letter-spacing: 0.01em;
+}
+
+.rowNotes {
+  composes: notes from './ManagerShared.module.css';
+  line-height: 1.5;
+}

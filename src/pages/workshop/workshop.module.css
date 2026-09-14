@@ -1,0 +1,148 @@
+.page {
+  background-color: var(--lt-color-surface-page);
+  min-height: 100%;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 32px 28px;
+}
+
+.titleBlock {
+  text-align: center;
+  margin-bottom: var(--lt-space-5);
+}
+
+.photoColumn {
+  display: flex;
+}
+
+.photoFill {
+  flex: 1;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--lt-radius-sm);
+  display: block;
+}
+
+.paragraph {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-body);
+  color: #444;
+  line-height: 1.75;
+  margin-bottom: var(--lt-space-3);
+  text-align: justify;
+  hyphens: auto;
+}
+
+.groupNote {
+  composes: paragraph;
+  margin-top: 18px;
+  text-align: left;
+  hyphens: manual;
+}
+
+.shifts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--lt-space-3);
+  margin-bottom: var(--lt-space-5);
+}
+
+.shift {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid #e2ddd7;
+  border-radius: var(--lt-radius-sm);
+  padding: 12px 14px;
+}
+
+.shiftLabel {
+  display: block;
+  font-family: var(--lt-font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lt-color-text-muted);
+  margin-bottom: var(--lt-space-1);
+}
+
+.shiftTime {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.9rem, 1.3vw, 1rem);
+  color: #444;
+}
+
+.price {
+  text-align: center;
+  font-family: var(--lt-font-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  color: #333;
+  letter-spacing: 0.04em;
+  margin: 0 0 var(--lt-space-5);
+}
+
+.includes {
+  margin-bottom: var(--lt-space-6);
+}
+
+.includesLabel {
+  font-family: var(--lt-font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lt-color-text-muted);
+  margin: 0 0 var(--lt-space-2);
+}
+
+.includesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.includesItem {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-body);
+  color: #444;
+  line-height: 1.6;
+  padding-left: var(--lt-space-4);
+  position: relative;
+}
+
+.dash {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--lt-color-text-muted);
+}
+
+.bookWrap {
+  text-align: center;
+}
+
+.bookButton {
+  padding: 0 64px;
+  height: 56px;
+  font-size: 1.1rem;
+  width: 100%;
+}
+
+.gallery {
+  margin-top: var(--lt-space-6);
+}
+
+.galleryImage {
+  width: 100%;
+  aspect-ratio: 3/2;
+  object-fit: cover;
+  border-radius: var(--lt-radius-sm);
+  display: block;
+}

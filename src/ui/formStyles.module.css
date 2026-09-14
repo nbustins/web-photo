@@ -1,0 +1,12 @@
+.label {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.85rem, 1.3vw, 0.9rem);
+  font-weight: 500;
+  color: var(--lt-grey-600);
+  letter-spacing: 0.02em;
+}
+
+.input {
+  font-family: var(--lt-font-body);
+  border-radius: 8px;
+}

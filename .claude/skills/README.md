@@ -9,7 +9,8 @@ Skills for the photographer studio website. Reference these when building new fe
 | [design-system.md](design-system.md) | Colors, typography, spacing, animation — check before adding any new styles |
 | [shared-components.md](shared-components.md) | API reference for all existing reusable components |
 | [reserva-button.md](reserva-button.md) | CTA "Reserva" button linking to an external URL (Google Forms, etc.) |
-| [new-wedding-page.md](new-wedding-page.md) | Adding a new wedding RSVP page (standalone, Supabase-backed) |
+| [new-wedding-page.md](new-wedding-page.md) | Adding a new wedding RSVP page (standalone) |
+| [mock-data.md](mock-data.md) | Running the UI without a backend (`npm run dev:mock`), and adding a handler when you add an endpoint |
 
 ## Tech stack summary
 
@@ -18,4 +19,5 @@ Skills for the photographer studio website. Reference these when building new fe
 - **Ant Design 5** for UI components and grid
 - **Framer Motion** for animations
 - Routes defined as enum in `src/model/routes.model.ts`
-- Aliases: `@components`, `@pages`, `@layouts`, `@utils`, `@hooks` 
+- Aliases: `@components`, `@pages`, `@layouts`, `@utils`, `@hooks`, `@services`, `@ui`, `@styles`, `@mocks`
+- Backend is a separate REST service (`wedding-manager-api`); `npm run dev:mock` replaces it with MSW 

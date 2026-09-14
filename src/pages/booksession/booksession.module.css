@@ -1,0 +1,24 @@
+.loadingWrap {
+  composes: page from './shared.module.css';
+  text-align: center;
+  padding-top: 20vh;
+}
+
+.pickerWrap {
+  margin: clamp(8px, 2vw, 24px) 0 24px;
+}
+
+.steps {
+  max-width: 600px;
+  margin: clamp(8px, 2vw, 24px) auto 32px;
+  font-family: var(--lt-font-body);
+}
+
+.alert {
+  composes: input from '../../ui/formStyles.module.css';
+  margin-bottom: 24px;
+}
+
+.backButton {
+  margin-top: 24px;
+}

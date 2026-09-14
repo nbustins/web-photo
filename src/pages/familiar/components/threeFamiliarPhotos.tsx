@@ -1,9 +1,7 @@
 import { Row, Col } from "antd";
 import { motion } from "framer-motion";
-import { getPublicPath } from "../../../utils/pathUtils";
-import { radii } from "../../../styles/tokens/radii";
-
-const IMAGE_HEIGHT = 500;
+import { imageUrl } from "../../../utils/pathUtils";
+import styles from "./threeFamiliarPhotos.module.css";
 
 const containerVariants = {
   hidden: {
@@ -43,46 +41,31 @@ export function ThreePhotoRow() {
       initial="hidden"
       animate="visible"
     >
-      <Row gutter={[24, 24]} justify="center" align="middle" style={{padding : "2rem"}}>
+      <Row gutter={[24, 24]} justify="center" align="middle" className={styles.row}>
         <Col xs={24} md={7}>
           <motion.img
             variants={itemVariants}
-            src={getPublicPath("familiar/1.jpg")}
+            src={imageUrl("familiar/1.jpg")}
             alt="Fotografia newborn esquerra"
-            style={{
-              width: "100%",
-              height: IMAGE_HEIGHT,
-              objectFit: "cover",
-              borderRadius: radii.md
-            }}
+            className={styles.photo}
           />
         </Col>
 
         <Col xs={24} md={10}>
           <motion.img
             variants={itemVariants}
-            src={getPublicPath("familiar/2.jpg")}
+            src={imageUrl("familiar/2.jpg")}
             alt="Fotografia newborn central"
-            style={{
-              width: "100%",
-              height: IMAGE_HEIGHT,
-              objectFit: "cover",
-              borderRadius: radii.md
-            }}
+            className={styles.photo}
           />
         </Col>
 
         <Col xs={24} md={7}>
           <motion.img
             variants={itemVariants}
-            src={getPublicPath("familiar/3.jpg")}
+            src={imageUrl("familiar/3.jpg")}
             alt="Fotografia newborn dreta"
-            style={{
-              width: "100%",
-              height: IMAGE_HEIGHT,
-              objectFit: "cover",
-              borderRadius: radii.md
-            }}
+            className={styles.photo}
           />
         </Col>
       </Row>

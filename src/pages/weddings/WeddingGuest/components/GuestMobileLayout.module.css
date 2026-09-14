@@ -1,0 +1,139 @@
+/* Amb l'element al davant: antd fixa la mida a `h2.ant-typography` (0,1,1)
+   i una classe sola perdria el font-size. */
+h2.title {
+  font-family: var(--lt-font-display);
+  font-size: clamp(1.8rem, 7vw, 2.4rem);
+  font-weight: 500;
+  color: var(--lt-color-brand);
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+/* Els estats (no trobat, tancat, èxit) fan servir el mateix títol a mida fixa. */
+h3.stateTitle {
+  font-family: var(--lt-font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--lt-color-brand);
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.subtitle {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.7rem, 2.8vw, 0.85rem);
+  font-weight: 400;
+  color: var(--lt-color-accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: block;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* Mòbil: mida fixa, no la fluida de @ui/formStyles. */
+.label {
+  composes: label from '../../../../ui/formStyles.module.css';
+  font-size: 0.85rem;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: white;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.iconSuccess {
+  background: linear-gradient(135deg, var(--lt-color-brand) 0%, var(--lt-color-text-brand) 100%);
+}
+
+.iconError {
+  background: linear-gradient(135deg, #a09880 0%, #8a8070 100%);
+}
+
+.iconInfo {
+  background: linear-gradient(135deg, rgb(174, 142, 116) 0%, rgb(154, 122, 96) 100%);
+}
+
+.stateText {
+  display: block;
+  font-family: var(--lt-font-body);
+  font-size: 0.95rem;
+  color: var(--lt-color-text-secondary);
+  line-height: 1.6;
+  text-align: center;
+  margin-top: var(--lt-space-3);
+}
+
+.successHint {
+  display: block;
+  font-family: var(--lt-font-body);
+  font-size: 0.8rem;
+  color: var(--lt-color-text-muted);
+  text-align: center;
+  margin-top: var(--lt-space-3);
+}
+
+.greeting {
+  display: block;
+  font-family: var(--lt-font-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--lt-color-text-muted);
+  text-align: center;
+  margin-top: var(--lt-space-3);
+  margin-bottom: var(--lt-space-2);
+}
+
+.spinnerWrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--lt-space-6) 0;
+}
+
+.codeBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lt-space-3);
+  margin-top: var(--lt-space-5);
+}
+
+.codeField {
+  width: 100%;
+}
+
+.form {
+  text-align: left;
+  margin-top: var(--lt-space-4);
+}
+
+.guestsItem {
+  margin-bottom: var(--lt-space-2);
+}
+
+.guestName {
+  font-family: var(--lt-font-body);
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.submitItem {
+  margin-bottom: 0;
+}
+
+.submitButton {
+  margin-top: var(--lt-space-2);
+}
+
+.actionButton {
+  margin-top: var(--lt-space-5);
+}

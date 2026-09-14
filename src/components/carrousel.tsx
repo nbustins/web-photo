@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { radii } from "../styles/tokens/radii";
+import React, { useEffect, useRef, useState } from "react";
+import { useIsMobile } from "../ui/hooks/useIsMobile";
+import styles from "./blocks.module.css";
 
 interface CarouselProps {
   images: string[];
@@ -13,18 +14,12 @@ const RotatingImageCarousel = ({
   intervalMs = 2500,
   transitionMs = 800,
 }: CarouselProps) => {
-  const getCount = () => (window.innerWidth < 768 ? 1 : 4);
+  const isMobile = useIsMobile();
+  const count = isMobile ? 1 : 4;
 
   const [items, setItems] = useState(images);
   const [offset, setOffset] = useState(0);
   const animatingRef = useRef(false);
-  const [count, setCount] = useState(getCount);
-
-  useEffect(() => {
-    const onResize = () => setCount(getCount());
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
 
   useEffect(() => {
     setItems(images);
@@ -57,16 +52,10 @@ const RotatingImageCarousel = ({
   const renderItems = [...items, items[0]];
 
   return (
-    <div
-      style={{
-        width: "100%",
-        overflow: "hidden",
-      }}
-    >
+    <div className={styles.carousel}>
       <div
+        className={styles.carouselTrack}
         style={{
-          display: "flex",
-          willChange: "transform",
           transform: `translate3d(-${(100 / count) * offset}%, 0, 0)`,
           transition:
             offset === 0
@@ -77,29 +66,11 @@ const RotatingImageCarousel = ({
         {renderItems.map((image, i) => (
           <div
             key={`${image}-${i}`}
-            style={{
-              flex: `0 0 ${100 / count}%`,
-              padding: "0.35em",
-            }}
+            className={styles.carouselSlot}
+            style={{ "--carousel-count": count } as React.CSSProperties}
           >
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "2 / 3",
-                borderRadius: radii.md,
-                overflow: "hidden",
-              }}
-            >
-              <img
-                src={image}
-                alt={`carousel-${i}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
+            <div className={styles.carouselFrame}>
+              <img src={image} alt={`carousel-${i}`} className={styles.carouselImage} loading="lazy" decoding="async" />
             </div>
           </div>
         ))}

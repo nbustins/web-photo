@@ -1,5 +1,7 @@
-import { FC, useEffect, useState } from "react";
-import { getPublicPath } from "../utils/pathUtils";
+import { FC } from "react";
+import { imageUrl } from "../utils/pathUtils";
+import { useIsMobile } from "../ui/hooks/useIsMobile";
+import styles from "./blocks.module.css";
 
 const uris = [
   {
@@ -21,15 +23,7 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
   height,
 }) => {
 
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 600px)");
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const isMobile = useIsMobile();
 
   const video_data = isMobile
     ? uris[0]
@@ -37,14 +31,8 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
 
   return (
     <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height,
-        overflow: "hidden",
-        background: "#000",
-        backgroundImage: `url(${getPublicPath("main/fons_video.jpg")})`,
-      }}
+      className={styles.promo}
+      style={{ height, backgroundImage: `url(${imageUrl("main/fons_video.jpg")})` }}
     >
 
       {/* vídeo principal */}
@@ -54,12 +42,7 @@ export const PromoVideoBackground: FC<PromoVideoBackgroundProps> = ({
         muted
         playsInline
         poster={video_data.poster}
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-        }}
+        className={styles.promoVideo}
       >
         <source src={video_data.video} />
       </video>

@@ -1,20 +1,11 @@
 import { Row, Col } from "antd";
-import { PricingCard, ImageSlider } from "../../components";
-import FAQs from "../../components/FAQs";
-import { getPublicPath } from "../../utils/pathUtils";
-import { CustomTitle } from "../../components/customTitle";
-import { WhyDoSession } from "../../components/whyDoSession";
-import { ThreePhotoRow } from "../../components/threePhotoComponent";
-import { pageBodyPadding } from "../../styles/tokens/radii";
-
-const rowStyle = {
-  padding: "3rem",
-  width: "100%",
-  display: "flex",
-};
+import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, WhyDoSession, ThreePhotoRow } from "@components";
+import { imageUrl } from "../../utils/pathUtils";
+import blocks from "@components/blocks.module.css";
+import styles from "./pregnant.module.css";
 
 const photoPaths: string[] = Array.from({ length: 3 }, (_, i) =>
-  getPublicPath(`pregnancy/${i + 1}.jpg`)
+  imageUrl(`pregnancy/${i + 1}.jpg`)
 );
 
 const rot_ini = 5;
@@ -22,7 +13,7 @@ const rot_end = 16;
 
 const rotPhotoPaths: string[] = Array.from(
   { length: rot_end - rot_ini + 1 },
-  (_, i) => getPublicPath(`pregnancy/${rot_ini + i}.jpg`)
+  (_, i) => imageUrl(`pregnancy/${rot_ini + i}.jpg`)
 );
 
 const textWhyDoThisSession = (
@@ -98,7 +89,7 @@ const faq6text = () => (
 
 export const PregnantPage = () => (
   <>
-    <div style={{ padding: pageBodyPadding }}>
+    <div className={blocks.pageBody}>
 
       <header>
         <CustomTitle label="SESSIÓ" title="EMBARÀS" />
@@ -108,101 +99,38 @@ export const PregnantPage = () => (
       
       <ThreePhotoRow
         photoPaths={[photoPaths[0], photoPaths[1], photoPaths[2]]}
-        rowStyle={rowStyle}
+        rowClassName={blocks.sectionRowLoose}
       />
 
       {/* Text why to do this session */}
-      <Row
-        gutter={[0, 24]}
-        justify="center"
-        style={{
-          marginLeft: -40,
-          marginRight: -40,
-        }}
-      >
-        <WhyDoSession textWhyDoThisSession={textWhyDoThisSession} />
+      <Row gutter={[0, 24]} justify="center" className={styles.whyRow}>
+        <WhyDoSession
+          heading={<>Per què recomano fer<br />la sessió d’embaràs?</>}
+          textWhyDoThisSession={textWhyDoThisSession}
+          image={imageUrl("pregnancy/4.jpg")}
+          imageAlt="Imatge de la mare embarassada"
+        />
       </Row>
 
       {/* Big quote */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-        <Col
-          style={{
-            fontSize: "clamp(1.2rem, 4vw, 2.5rem)",
-            textAlign: "center",
-            fontWeight: 600,
-            fontFamily: "Italiana",
-            letterSpacing: "0.1rem",
-            maxWidth: "2000px",
-          }}
-        >
+      <Row gutter={[24, 24]} justify="center" className={blocks.sectionRowLoose}>
+        <Col className={styles.quote}>
           “Una sessió perquè et sentis viva, única, delicada, natural, poderosa,
           lluminosa i estimada”
         </Col>
       </Row>
 
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={{ margin: "0 0 3rem 0" }}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.carouselRowLoose}>
         <ImageSlider images={rotPhotoPaths} />
       </Row>
 
       {/*  Price List */}
-      <Row gutter={[24, 24]} justify="center">
-       <Col xs ={24} md={8}>
-       
-          <PricingCard
-            title="Bàsica"
-            features={[
-              "45 minuts de sessió",
-              "Guia per anar preparats a la sessió",
-              "Vestuari inclòs",
-              "Sessió familiar i individual",
-              "Galeria Online",
-              "Entrega de 15 fotos editades (galeria completa +60€)",
-              <br />,
-              <br />,
-            ]}
-            price="210€"
-          />
-       </Col>
-        <Col xs ={24} md={8}>
-
-          <PricingCard
-            title="Exterior"
-            features={[
-              "45 minuts de sessió",
-              "Guia per anar preparats a la sessió",
-              "Vestuari inclòs",
-              "Sessió familiar i individual",
-              "Galeria online",
-              "Entrega de 20 fotos editades (galeria completa +60€)",
-              <br />,
-              <br />,
-            ]}
-            price="235€"
-          />
-        </Col>
-
-        <Col xs ={24} md={8}>
-          <PricingCard
-            title="Completa"
-            features={[
-              "45 minuts de sessió",
-              "Guia per anar preparats a la sessió",
-              "Vestuari inclòs",
-              "Sessió familiar i individual",
-              "Galeria Online",
-              "Galeria completa",
-              "Sessió de maquillatge i perruqueria",
-              "5 Fotos impreses 18x13",
-            ]}
-            price="290€"
-          />
-        </Col>
-      </Row>
+      <SessionPricingCards sessionGroupId={2} />
     </div>
 
     <FAQs
-      imageSrc={getPublicPath("pregnancy/16.jpg")}
+      imageSrc={imageUrl("pregnancy/16.jpg")}
       faqs={[
         { title: "QUINA SETMANA ÉS REALITZA LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

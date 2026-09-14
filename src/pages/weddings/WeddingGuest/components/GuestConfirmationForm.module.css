@@ -1,0 +1,19 @@
+.form {
+  text-align: left;
+  margin-top: var(--lt-space-2);
+}
+
+.guestsItem {
+  margin-bottom: var(--lt-space-2);
+}
+
+.guestName {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  color: #333;
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: var(--lt-space-2);
+}

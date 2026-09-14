@@ -1,0 +1,28 @@
+.bodyText {
+  composes: body from '../../../../ui/text.module.css';
+}
+
+.label {
+  composes: label from '../../../../ui/formStyles.module.css';
+}
+
+.input {
+  composes: input from '../../../../ui/formStyles.module.css';
+}
+
+.guestRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(124, 116, 88, 0.2);
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.codeInput {
+  font-family: var(--lt-font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}

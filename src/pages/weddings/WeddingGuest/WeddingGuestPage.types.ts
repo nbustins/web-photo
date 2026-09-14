@@ -22,6 +22,7 @@ export interface WeddingGuestPageContext {
   invitation: Invitation | null;
   manualCode: string;
   submitting: boolean;
+  submitError: string | null;
   form: FormInstance<InvitationFormValues>;
   onCodeChange: (code: string) => void;
   onCodeSubmit: () => void;

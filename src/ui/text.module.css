@@ -1,0 +1,12 @@
+/* Dos estils de text que es repetien a reserves, contracte i bodes. */
+.body {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+  color: var(--lt-color-text-secondary);
+  line-height: 1.7;
+}
+
+.caption {
+  font-size: clamp(0.8rem, 1.2vw, 0.85rem);
+  color: var(--lt-color-text-muted);
+}

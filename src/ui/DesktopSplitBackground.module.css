@@ -1,0 +1,23 @@
+.plain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--lt-color-surface-page);
+}
+
+.split {
+  composes: plain;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.half {
+  background-size: cover;
+  background-position: center;
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(246, 244, 240, 0.18);
+}

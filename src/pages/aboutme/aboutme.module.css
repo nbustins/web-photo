@@ -1,0 +1,55 @@
+.page {
+  background-color: var(--lt-color-surface-page);
+}
+
+.container {
+  max-width: var(--lt-container-page);
+  margin: 0 auto;
+  padding: 10px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.textColumn {
+  padding-right: 4rem;
+}
+
+.titleBlock {
+  max-width: 700px;
+}
+
+.textBlock {
+  max-width: 600px;
+}
+
+.presentation {
+  font-size: 1.2rem;
+  color: var(--lt-color-accent);
+  text-align: justify;
+  display: block;
+  hyphens: auto;
+  font-weight: 400;
+}
+
+.imageColumn {
+  margin-top: 40px;
+}
+
+.portrait {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 200px 200px 0 0;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.logoOverlay {
+  position: absolute;
+  bottom: -80px;
+  left: -220px;
+  width: 500px;
+  pointer-events: none;
+}

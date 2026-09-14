@@ -1,0 +1,27 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eceae2;
+}
+
+.rowLabel {
+  composes: label from '../shared.module.css';
+  flex: 0 0 auto;
+}
+
+.rowValue {
+  composes: bodyText from '../shared.module.css';
+  text-align: right;
+  margin: 0;
+}
+
+.list {
+  text-align: left;
+  margin-top: 8px;
+}
+
+.actions {
+  margin-top: 24px;
+}

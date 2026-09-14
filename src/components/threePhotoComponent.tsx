@@ -1,10 +1,11 @@
 import { Row, Col } from "antd";
 import { motion } from "framer-motion";
 import PhotoItem from "./photoComponent";
+import styles from "./blocks.module.css";
 
 type ThreePhotoRowProps = {
   photoPaths: [string, string, string];
-  rowStyle?: React.CSSProperties;
+  rowClassName?: string;
 };
 
 const containerVariants = {
@@ -18,7 +19,7 @@ const containerVariants = {
 };
 
 export const ThreePhotoRow = ({
-  photoPaths, rowStyle
+  photoPaths, rowClassName
 }: ThreePhotoRowProps) => {
   return (
     <motion.div
@@ -26,28 +27,28 @@ export const ThreePhotoRow = ({
       initial="hidden"
       animate="visible"
     >
-      <Row gutter={[24, 24]} justify="center" align="middle" style={{...rowStyle}}>
-        <Col xs={24}  md={{ flex: "0 0 auto" }}>
+      <Row gutter={[24, 24]} justify="center" align="middle" className={rowClassName}>
+        <Col xs={24} md={{ flex: "0 0 auto" }}>
           <PhotoItem
             src={photoPaths[0]}
             alt="Fotografia newborn esquerra"
-            style={{ maxWidth: "340px", width: "100%" }}
+            className={styles.photoSide}
           />
         </Col>
 
-        <Col xs={24}  md={{ flex: "0 0 auto" }}>
+        <Col xs={24} md={{ flex: "0 0 auto" }}>
           <PhotoItem
             src={photoPaths[1]}
             alt="Fotografia newborn central"
-            style={{ maxWidth: "430px", width: "100%" }}
+            className={styles.photoCenter}
           />
         </Col>
 
-        <Col xs={24}  md={{ flex: "0 0 auto" }}>
+        <Col xs={24} md={{ flex: "0 0 auto" }}>
           <PhotoItem
             src={photoPaths[2]}
             alt="Fotografia newborn dreta"
-            style={{ maxWidth: "340px", width: "100%" }}
+            className={styles.photoSide}
           />
         </Col>
       </Row>

@@ -1,0 +1,74 @@
+@import './tokens.css';
+@import '@fontsource/italiana/400.css';
+@import '@fontsource/raleway/300.css';
+@import '@fontsource/raleway/400.css';
+@import '@fontsource/raleway/500.css';
+@import '@fontsource/raleway/600.css';
+@import '@fontsource/playfair-display/400.css';
+@import '@fontsource/playfair-display/400-italic.css';
+@import '@fontsource/playfair-display/700.css';
+@import '@fontsource/playfair-display/700-italic.css';
+/* FAQs usa fontWeight:800; abans el <link> carregava Playfair variable 400..900. */
+@import '@fontsource/playfair-display/800.css';
+@import '@fontsource/indie-flower/400.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Italiana i altres display fonts només tenen pes 400: sense això el
+     navegador sintetitza una negreta falsa (es veu més gruixuda/borrosa)
+     quan un component demana fontWeight:700. */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lt-color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Space.Compact enganxa input i botó en un sol bloc: el pill de 999px que el
+   tema posa als botons hi trenca la unió, i el botó ha de seguir el radi de
+   l'Input. Els valors van a pèl expressament: antd aplica els component
+   tokens redefinint les variables globals sobre el propi <button>
+   (.ant-btn { --ant-border-radius-lg: 999px }), o sigui que llegir
+   var(--ant-border-radius-lg) aquí dins tornaria el pill, no el 6/8px que
+   l'Input veu des de :root. Si algun dia es toca el borderRadius global
+   d'antd a antd-theme.ts, cal actualitzar aquests dos números.
+   Els corners interiors ja els anul·la antd amb longhands més específics:
+   això només toca els exteriors, i tant hi fa si el botó va davant o darrere. */
+.ant-space-compact .ant-btn {
+  border-radius: 6px;
+}
+
+.ant-space-compact .ant-btn-lg {
+  border-radius: var(--lt-radius-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

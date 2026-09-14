@@ -1,21 +1,13 @@
 import { Col, Row } from "antd";
-import { CustomTitle } from "../../components/customTitle";
-import { getPublicPath } from "../../utils/pathUtils";
-import { ImageSlider, PricingCard } from "../../components";
+import { CustomTitle, ImageSlider, SessionPricingCards, ThreePhotoRow, FAQs } from "@components";
+import { imageUrl } from "../../utils/pathUtils";
 import { motion } from "framer-motion";
-import { ThreePhotoRow } from "../../components/threePhotoComponent";
-import FAQs from "../../components/FAQs";
-import { pageBodyPadding, radii } from "../../styles/tokens/radii";
+import blocks from "@components/blocks.module.css";
+import styles from "./smashcake.module.css";
 
 const fromIdx = 5;
 const toIdx = 12;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`smashcake/${fromIdx + i}.jpg`));
-
-const rowStyle = {
-  padding: "30px",
-  width: '100%',
-  display : "flex"
-}
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => imageUrl(`smashcake/${fromIdx + i}.jpg`));
 
 const containerVariants = {
   hidden: {
@@ -74,7 +66,7 @@ const faq3text = () => (
 
 export const SmashCakePage = () => (
    <>
-    <div style={{ padding: pageBodyPadding }}>
+    <div className={blocks.pageBody}>
 
       <header>
           <CustomTitle label="SESSIÓ" title="SMASH CAKE" />  
@@ -90,26 +82,11 @@ export const SmashCakePage = () => (
           >
           <Row justify="center">
           <Col xs={24}>
-            <div
-              style={{
-                width: "100%",
-                height: "min(80vh, 1050px)",
-                overflow: "hidden",
-                marginTop: "30px",
-              }}
-            >
+            <div className={styles.heroWrap}>
               <img
-              src={getPublicPath("smashcake/1.jpg")}
+              src={imageUrl("smashcake/1.jpg")}
                 alt="Imatge de la mare embarassada"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  display: "block",
-                  borderRadius: radii.md,
-                  
-                }}
+                className={blocks.heroImageRounded}
               />
             </div>
           </Col>
@@ -119,15 +96,7 @@ export const SmashCakePage = () => (
 
       {/* Text decriptiu */}
       <Row justify="center">
-        <Col
-          style={{
-            maxWidth: "1500px",
-            fontSize: "2rem",
-            textAlign: "center",
-            fontFamily: "Italiana",
-            padding: "0 1rem"
-          }}
-        >
+        <Col className={blocks.leadWide}>
           {sessionDescription}
         </Col>
       </Row>
@@ -141,70 +110,31 @@ export const SmashCakePage = () => (
       viewport={{ once: true, amount: 0.3 }}
       >
         <ThreePhotoRow
-          photoPaths={[getPublicPath(`smashcake/2.jpg`), getPublicPath(`smashcake/3.jpg`), getPublicPath(`smashcake/4.jpg`)]}
-          rowStyle={rowStyle}
+          photoPaths={[imageUrl(`smashcake/2.jpg`), imageUrl(`smashcake/3.jpg`), imageUrl(`smashcake/4.jpg`)]}
+          rowClassName={blocks.sectionRow}
         />
       </motion.div>
       
 
       {/* Descripció sessió */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-        <Col
-          style={{
-              maxWidth: "950px",
-              fontSize: "2.5rem",
-              textAlign: "center",
-              fontFamily: "Italiana",
-            }}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.sectionRow}>
+        <Col className={blocks.leadNarrow}>
           {sessionDescription2}
         </Col>
       </Row>
         
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={{marginBottom:'24px'}}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.carouselRow}>
         <ImageSlider images={rotPhotoPaths}/>
       </Row>
 
       {/*  Price List */}
-      <Row gutter={[24, 24]} justify="center" >
-        <Col xs={24} md={8}>
-            <PricingCard
-                  title="Estudi"
-                  features={[
-                    "45 minuts de sessió",
-                    "Guia per anar preparats a la sessió",
-                    "Vestuari inclòs",
-                    "Sessió familiar",
-                    "Pastís de @enrollate_bk",
-                    "Galeria Online",
-                    "Entrega de 15 fotos editades (galeria completa +60€)",
-                    "5 fotos impreses 10 x 15",
-                  ]}
-                  price="230€"
-                />
-        </Col>
-        <Col xs={24} md={8}>
-          <PricingCard
-             title="Exterior"
-            features={[
-                "45 minuts de sessió",
-                "Guia per anar preparats a la sessió",
-                "Vestuari inclòs",
-                "Sessió familiar",
-                "Pastís de @enrollate_bk",
-                "Galeria Online",
-                "Entrega de 15 fotos editades (galeria completa +60€)",
-                <br></br>
-            ]}
-            price="250€"
-          />
-        </Col>
-      </Row> 
+      <SessionPricingCards sessionGroupId={4} /> 
       </section>
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("smashcake/12.jpg")}
+      imageSrc={imageUrl("smashcake/12.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

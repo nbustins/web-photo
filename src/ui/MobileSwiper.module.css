@@ -1,0 +1,54 @@
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #c2ae95 0%, #ddd4c8 100%);
+}
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slide {
+  flex: 0 0 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  background-size: cover;
+  background-position: center;
+}
+
+.dots {
+  position: absolute;
+  bottom: var(--lt-space-4);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.55);
+  transition: width var(--lt-duration-base) ease, background var(--lt-duration-base) ease;
+}
+
+.dotActive {
+  width: 20px;
+  background: rgba(255, 255, 255, 0.95);
+}

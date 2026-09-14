@@ -1,0 +1,34 @@
+/* Capçalera de les zones d'aplicació (admin, gestor de bodes): barra fosca
+   enganxada a dalt amb títol a l'esquerra i accions a la dreta.
+   Sense regles responsive: cada consumidor hi afegeix les seves si en vol. */
+.header {
+  background: var(--lt-olive-700);
+  padding: 0;
+  height: auto;
+  line-height: normal;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* El padding horitzontal va aquí dins, no al <Header>: així el títol queda
+   alineat amb el cos de la pàgina, que també és max-width 1200 amb padding 24. */
+.content {
+  width: 100%;
+  max-width: var(--lt-container-page);
+  margin: 0 auto;
+  padding: var(--lt-space-4) var(--lt-space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--lt-font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--lt-color-text-on-brand);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}

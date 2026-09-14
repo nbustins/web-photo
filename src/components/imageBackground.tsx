@@ -1,4 +1,5 @@
 import { FC } from "react";
+import styles from "./blocks.module.css";
 
 type ImageBackgroundProps = {
   height: string;
@@ -10,12 +11,7 @@ export const ImageBackground: FC<ImageBackgroundProps> = ({
   imageUrl,
 }) => (
   <div
-    style={{
-      minHeight: height,
-      backgroundImage: `url(${imageUrl})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-    }}
+    className={styles.imageBackground}
+    style={{ minHeight: height, backgroundImage: `url(${imageUrl})` }}
   />
 );

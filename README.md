@@ -1,6 +1,12 @@
-# Photo Gallery + Wedding RSVP
+# Photo Gallery + Booking + Wedding RSVP
 
-Photography portfolio built with Vite + React + TypeScript + Ant Design + Framer Motion, with integrated Wedding RSVP feature using Supabase.
+Photography portfolio built with Vite + React + TypeScript + Ant Design + Framer Motion.
+It also hosts the session-booking flow (`/book-session`), the signed-contract view
+(`/bookings/:token`), the admin panel (`/admin`) and the wedding RSVP pages
+(`/weddings/:slug`).
+
+The backend is a separate service, **wedding-manager-api** (ASP.NET Core). This app talks to
+it over REST through `src/services/`; there is no Supabase any more.
 
 ## Setup
 
@@ -12,87 +18,53 @@ npm install
 
 ### 2. Environment variables
 
-Copy the example environment file:
-
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your configuration:
-
-#### Mock Mode (Default - for development)
+`.env` needs a single value, the backend's base URL:
 
 ```env
-VITE_USE_MOCK_DATA=true
+VITE_API_BASE_URL=http://localhost:5000
 ```
 
-No Supabase credentials needed. Uses in-memory mock data with sample guests.
-
-#### Production Mode (with Supabase)
-
-```env
-VITE_USE_MOCK_DATA=false
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
-```
-
-Get these values from your Supabase project: **Settings → API**
-
-### 3. Supabase Database Setup
-
-Create these tables in your Supabase project:
-
-#### `weddings`
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| slug | text | URL slug (e.g., "anna-joan") |
-| title | text | Wedding title |
-| event_date | date | Date of the wedding |
-| closing_date | date | RSVP deadline |
-
-#### `guests`
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| wedding_id | uuid | FK to weddings |
-| name | text | Guest name |
-| email | text | Guest email |
-| invite_code | text | Unique invite code |
-| max_companions | integer | Max companions allowed |
-
-#### `guest_confirmations`
-| Column | Type | Description |
-|--------|------|-------------|
-| guest_id | uuid | FK to guests (unique) |
-| attending | boolean | Will attend? |
-| companions_count | integer | Number of companions |
-| notes | text | Special notes |
-
-#### `guest_companions`
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| guest_confirmation_id | uuid | FK to guest_confirmations |
-| name | text | Companion name |
-
-### 4. Run development server
+### 3. Run
 
 ```bash
-npm run dev
+npm run dev        # against the real API at VITE_API_BASE_URL
+npm run dev:mock   # against mock data, no backend needed
 ```
 
-## Testing the Wedding RSVP
+## Mock mode
 
-With mock mode enabled, use these invite codes:
+`npm run dev:mock` loads `.env.mock` and starts [MSW](https://mswjs.io), which intercepts
+every HTTP request in the browser and answers it from `src/mocks/`. No application code is
+involved in the switch: `api.client.ts` and the `*.api.ts` modules run exactly as they do
+against the real API. Use it to design new pages, or to work on any flow while the backend
+is down.
 
-| Guest | Invite Code | Max Companions |
-|-------|-------------|---------------|
-| Maria Garcia | `MARIA2025` | 2 |
-| Pere López | `PERE2025` | 1 |
-| Laia Puig | `LAIA2025` | 3 |
+What you get:
 
-Navigate to: `http://localhost:5173/#/weddings/anna-joan`
+- the real session catalog (the 10 types with their prices and features, mirrored from the
+  API's seed), so pricing cards look like production;
+- a working availability calendar generated relative to today, including the two blocked
+  periods from the API's dev seed (`today+3`, and `today+7..+10`) and the "Exterior" types
+  that only shoot on Tuesday mornings;
+- writes that persist for the life of the tab — create a booking and you can then open it by
+  its token, sign the contract, and see it in the admin panel;
+- errors in the API's RFC 9457 shape with real `errorCode` values, so the Catalan messages in
+  `src/services/error-messages.ts` are actually exercised.
+
+Fixtures worth knowing:
+
+| What | Value |
+|---|---|
+| Admin login (`#/admin/login`) | any email and password |
+| Wedding | `#/weddings/anna-joan` |
+| Invite codes | `GARCIA01`, `LOPEZ002` |
+
+Adding an endpoint to `src/services/` means adding a handler in `src/mocks/handlers/`;
+`.claude/skills/mock-data.md` describes how.
 
 ## Build
 
@@ -100,10 +72,5 @@ Navigate to: `http://localhost:5173/#/weddings/anna-joan`
 npm run build
 ```
 
-Output is in the `dist` folder.
-
-## Security Note
-
-Configure Row Level Security (RLS) policies in Supabase to restrict:
-- Guests can only read their own record
-- Guests can only upsert their own confirmation
+Output is in `dist`. MSW is behind a dynamic import guarded by `VITE_ENABLE_MSW`, so it is
+never part of a production build.

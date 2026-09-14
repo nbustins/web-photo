@@ -1,0 +1,73 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 32px 36px;
+  box-sizing: border-box;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fffdf7 0%, #fbf6ea 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Detall decoratiu (paper) */
+.paperEdge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0));
+}
+
+.head {
+  text-align: center;
+}
+
+h3.title {
+  margin-top: 0;
+  margin-bottom: var(--lt-space-2);
+  font-family: var(--lt-font-display);
+  letter-spacing: 1px;
+  font-size: 2rem;
+}
+
+.separator {
+  width: 80px;
+  height: 2px;
+  margin: 10px auto 22px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+
+.text {
+  font-size: 1.1rem;
+  text-align: justify;
+  line-height: 1.8;
+  font-family: Georgia, 'Times New Roman', serif;
+  color: rgba(0, 0, 0, 0.82);
+  margin-bottom: 0;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lt-space-4);
+}
+
+.button {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 22px;
+  height: auto;
+  border-radius: var(--lt-radius-pill);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}

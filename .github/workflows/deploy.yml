@@ -22,6 +22,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Check design token drift
+        run: tools/check-tokens.sh
+
       - name: Build project
         env:
           VITE_API_BASE_URL: https://wedding-api-23912834128-cgcxcyeec2d2fggj.westeurope-01.azurewebsites.net

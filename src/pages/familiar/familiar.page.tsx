@@ -1,19 +1,13 @@
 import { Col, Row } from "antd";
-import { CustomTitle } from "../../components/customTitle";
-import { getPublicPath } from "../../utils/pathUtils";
+import { CustomTitle, ImageSlider, SessionPricingCards } from "@components";
+import { imageUrl } from "../../utils/pathUtils";
 import { ThreePhotoRow } from "./components/threeFamiliarPhotos";
-import { pageBodyPadding, radii } from "../../styles/tokens/radii";
-import { ImageSlider, PricingCard } from "../../components";
+import blocks from "@components/blocks.module.css";
+import styles from "./familiar.module.css";
 
 const fromIdx = 4;
 const toIdx = 12;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`familiar/${fromIdx + i}.jpg`));
-
-const rowStyle = {
-  padding: "30px",
-  width: '100%',
-  display : "flex"
-}
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => imageUrl(`familiar/${fromIdx + i}.jpg`));
 
 export const containerVariants = {
   hidden: {
@@ -45,7 +39,7 @@ const sessionDescription2 = (
 export const FamiliarPage = () => (
 
     <>
-        <div style={{padding : pageBodyPadding}}>
+        <div className={blocks.pageBody}>
             <header>
                 <CustomTitle label="SESSIÓ" title="FAMILIAR" />  
             </header>
@@ -53,109 +47,37 @@ export const FamiliarPage = () => (
              <ThreePhotoRow/>
 
               {/* Text decriptiu */}
-              <Row justify="center" style={rowStyle}> 
-                <Col
-                  style={{
-                    maxWidth: "1200px",
-                    fontSize: "2rem",
-                    textAlign: "center",
-                    fontFamily: "Italiana",
-                    padding: "0 1rem"
-                  }}
-                >
+              <Row justify="center" className={blocks.sectionRow}> 
+                <Col className={styles.lead}>
                   {sessionDescription}
                 </Col>
               </Row>
               
               {/* Photo kids */}
-              <Row justify="center" style={rowStyle}>
-                <div
-                  style={{
-                    width: "100%",
-                    maxWidth: "1500px",
-                    height: "600px",
-                    overflow: "hidden",
-                    borderRadius: radii.md
-                  }}
-                >
+              <Row justify="center" className={blocks.sectionRow}>
+                <div className={styles.kidsFrame}>
                   <img
-                    src={getPublicPath('familiar/4.jpg')}
+                    src={imageUrl('familiar/4.jpg')}
                     alt="three kids photo"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover"
-                    }}
+                    className={styles.kidsImage}
                   />
                 </div>
               </Row>
               
               {/* Frase 2 */}
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <div
-                  style={{
-                    maxWidth: 800,
-                    padding: "0 1rem",
-                    fontSize: "2rem",
-                    textAlign: "center",
-                    fontFamily: "'Playfair Display'",
-                    letterSpacing: "0.2rem",
-                  }}
-                >
+              <div className={styles.quoteWrap}>
+                <div className={styles.quote}>
                   {sessionDescription2}
                 </div>
               </div>
 
               {/* Carrousel images */}
-              <Row gutter={[24, 24]} justify="center" style={{ marginBottom: 24 }}>
+              <Row gutter={[24, 24]} justify="center" className={blocks.carouselRow}>
                 <ImageSlider images={rotPhotoPaths}/>
               </Row>
               
                {/*  Price List */}
-              <Row gutter={[24, 24]} justify="center" >
-                <Col xs={24} md={8}>
-                    <PricingCard
-                          title="Basic"
-                          features={[
-                            "30 minuts de sessió",
-                            "Guia per anar preparats a la sessió",
-                            "Galeria Online",
-                            "Entrega de 15 fotos editades (galeria completa +60€)",
-                            <br/>,
-                            <br/>,
-                          ]}
-                          price="170€"
-                        />
-                </Col>
-                <Col xs={24} md={8}>
-                    <PricingCard
-                      title="Exterior"
-                      features={[
-                        "45 minuts de sessió",
-                        "Guia per anar preparats a la sessió",
-                        "Vestuari inclòs (un canvi de roba)",
-                        "Galeria Online",
-                        "Entrega de 20 fotos editades (galeria completa +60€)",
-                        <br/>,
-                      ]}
-                      price="190€"
-                    />
-                </Col>
-                <Col xs={24} md={8}>
-                    <PricingCard
-                          title="Completa"
-                          features={[
-                            "45 minuts de sessió",
-                            "Guia per anar preparats a la sessió",
-                            "Vestuari inclòs (un canvi de roba)",
-                            "Galeria Online",
-                            "Galeria completa",
-                            "5 fotos impresses de 10x15",
-                          ]}
-                          price="220€"
-                        />
-                </Col>
-              </Row> 
+              <SessionPricingCards sessionGroupId={3} /> 
         </div>
     </>
 );

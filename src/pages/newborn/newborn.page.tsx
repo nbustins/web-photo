@@ -1,21 +1,13 @@
 import { Row, Col } from "antd";
 import { motion } from "framer-motion";
-import {  AdviceText,PricingCard,ImageSlider  } from "../../components";
-import FAQs from "../../components/FAQs";
-import { getPublicPath } from "../../utils/pathUtils";
-import { CustomTitle } from "../../components/customTitle";
-import { ThreePhotoRow } from "../../components/threePhotoComponent";
-import { pageBodyPadding } from "../../styles/tokens/radii";
+import { ImageSlider, SessionPricingCards, FAQs, CustomTitle, ThreePhotoRow } from "@components";
+import { imageUrl } from "../../utils/pathUtils";
+import blocks from "@components/blocks.module.css";
+import styles from "./newborn.module.css";
 
 const fromIdx = 4;
 const toIdx = 13;
-const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => getPublicPath(`newborn/${fromIdx + i}.jpg`));
-
-const rowStyle = {
-  padding: "30px",
-  width: '100%',
-  display : "flex"
-}
+const rotPhotoPaths: string[] = Array.from({ length: (toIdx - fromIdx + 1) }, (_, i) => imageUrl(`newborn/${fromIdx + i}.jpg`));
 
 const containerVariants = {
   hidden: {
@@ -82,7 +74,7 @@ Que la Mireia formi part de l'estudi és molt important pel resultat de les imat
 
 export const NewBornPage = () => (
   <>
-    <div style={{ padding: pageBodyPadding }}>
+    <div className={blocks.pageBody}>
 
       <header>
           <CustomTitle label="SESSIÓ" title="RECENT NASCUT" />  
@@ -98,25 +90,11 @@ export const NewBornPage = () => (
           >
           <Row justify="center">
           <Col xs={24}>
-            <div
-              style={{
-                width: "100%",
-                height: "min(70vh, 750px)",
-                overflow: "hidden",
-                marginTop: "30px",
-              }}
-            >
+            <div className={styles.heroWrap}>
               <img
-              src={getPublicPath("newborn/gran_new_born.jpg")}
+              src={imageUrl("newborn/gran_new_born.jpg")}
                 alt="Imatge de la mare embarassada"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  display: "block",
-                  
-                }}
+                className={blocks.heroImage}
               />
             </div>
           </Col>
@@ -126,15 +104,7 @@ export const NewBornPage = () => (
 
       {/* Text decriptiu */}
       <Row justify="center">
-        <Col
-          style={{
-            maxWidth: "1500px",
-            fontSize: "2rem",
-            textAlign: "center",
-            fontFamily: "Italiana",
-            padding: "0 1rem"
-          }}
-        >
+        <Col className={blocks.leadWide}>
           {sessionDescription}
         </Col>
       </Row>
@@ -148,81 +118,31 @@ export const NewBornPage = () => (
       viewport={{ once: true, amount: 0.3 }}
       >
         <ThreePhotoRow
-          photoPaths={[getPublicPath(`newborn/2.jpg`), getPublicPath(`newborn/3.jpg`), getPublicPath(`newborn/4.jpg`)]}
-          rowStyle={rowStyle}
+          photoPaths={[imageUrl(`newborn/2.jpg`), imageUrl(`newborn/3.jpg`), imageUrl(`newborn/4.jpg`)]}
+          rowClassName={blocks.sectionRow}
         />
       </motion.div>
       
 
       {/* Descripció sessió */}
-      <Row gutter={[24, 24]} justify="center" style={rowStyle}>
-        <Col
-          style={{
-              maxWidth: "950px",
-              fontSize: "2.5rem",
-              textAlign: "center",
-              fontFamily: "Italiana",
-            }}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.sectionRow}>
+        <Col className={blocks.leadNarrow}>
           {sessionDescription2}
         </Col>
       </Row>
         
       {/* Carrousel images */}
-      <Row gutter={[24, 24]} justify="center" style={{marginBottom: '24px'}}>
+      <Row gutter={[24, 24]} justify="center" className={blocks.carouselRow}>
         <ImageSlider images={rotPhotoPaths}/>
       </Row>
 
       {/*  Price List */}
-      <Row gutter={[24, 24]} justify="center" >
-        <Col xs={24} md={8}>
-            <PricingCard
-                  title="Bàsica"
-                  features={[
-                    "90 minuts de sessió",
-                    "Guia per anar preparats a la sessió",
-                    "Vestuari inclòs",
-                    "Entrega de 15 fotos editades (galeria completa + 70€)",
-                    <br/>,
-                    <br/>,
-
-                  ]}
-                  price="230€"
-                />
-        </Col>
-        <Col xs={24} md={8}>
-            <PricingCard
-              title="Domicili"
-              features={[
-                "90 minuts de sessió",
-                "Guia per anar preparats a la sessió",
-                "Vestuari inclòs",
-                "Entrega de 15 fotos editades (galeria completa + 70€)",
-                <br/>,
-                <AdviceText>*A partir de 35 km des de l’estudi, pot haver-hi cost extra per desplaçament</AdviceText>,
-              ]}
-              price="250€"
-            />
-        </Col>
-        <Col xs={24} md={8}>
-          <PricingCard
-            title="Completa"
-            features={[
-              "90 minuts de sessió",
-              "Guia per anar preparats a la sessió",
-              "Vestuari inclòs",
-              "Galeria completa",
-              "Sessió maquillatge i pentinat",
-              "5 fotos impresses de 18x13",
-            ]}
-            price="320€"
-          />
-        </Col>
-      </Row> 
+      <SessionPricingCards sessionGroupId={1} /> 
       </section>
     </div>
     
     <FAQs
-      imageSrc={getPublicPath("newborn/14.jpg")}
+      imageSrc={imageUrl("newborn/14.jpg")}
       faqs={[
         { title: "QUAN PODEM REALITZAR LA SESSIÓ?", text: faq1text() },
         { title: "COM I QUAN HAIG DE RESERVAR LA SESSIÓ?", text: faq2text() },

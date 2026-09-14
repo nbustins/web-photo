@@ -1,15 +1,9 @@
 import { FC } from 'react';
 import { Spin } from 'antd';
+import styles from './GuestStates.module.css';
 
-export const GuestLoadingState: FC = () => {
-  return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: 300,
-    }}>
-      <Spin size="large" />
-    </div>
-  );
-};
+export const GuestLoadingState: FC = () => (
+  <div className={styles.loadingWrap}>
+    <Spin size="large" />
+  </div>
+);

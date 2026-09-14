@@ -1,0 +1,48 @@
+.card {
+  background: var(--lt-color-surface-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--lt-radius-md);
+  padding: clamp(24px, 5vw, 40px) clamp(20px, 4vw, 32px);
+  box-shadow: 0 4px 20px rgba(124, 116, 88, 0.1), 0 0 0 1px rgba(124, 116, 88, 0.05);
+  text-align: center;
+}
+
+.header {
+  margin-bottom: var(--lt-space-2);
+}
+
+/* Amb l'element al davant perquè guanyi la mida a `h2.ant-typography` d'antd. */
+h2.title {
+  font-family: var(--lt-font-display);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 500;
+  color: var(--lt-color-brand);
+  margin: 0 0 var(--lt-space-2) 0;
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  font-weight: 400;
+  color: var(--lt-color-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.guestName {
+  display: block;
+  font-family: var(--lt-font-display);
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-style: italic;
+  color: var(--lt-color-text-muted);
+  margin-top: var(--lt-space-4);
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124, 116, 88, 0.2), transparent);
+  margin: var(--lt-space-6) 0;
+}

@@ -1,39 +1,26 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout, Card, Typography, Form } from 'antd';
-import { guestService } from '../../../services/wedding';
+import { guestService } from '../../../services/wedding/guest.provider';
 import { login, logout } from '../../../services/auth/auth.service';
 import { getUser } from '../../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../../model/wedding.types';
-import { useIsMobile } from '../common';
-import type { InvitationSummary, LoginFormValues, ManagerStats } from './WeddingManager.types';
+import { useIsMobile } from '@ui/hooks/useIsMobile';
+import { LoginCard } from '@ui/LoginCard';
+import type { InvitationSummary, LoginFormValues } from './WeddingManager.types';
+import { buildSummary, computeStats } from './manager.utils';
 import {
   ManagerDesktopDashboard,
   ManagerInvitationDrawer,
-  ManagerLoginCard,
   ManagerMobileDashboard,
   ManagerNotesModal,
 } from './components';
-import './WeddingManager.css';
+import styles from './WeddingManager.module.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
 type ManagerState = 'login' | 'loading' | 'error' | 'data';
-
-const buildSummary = (rows: ConfirmationRow[], invitationId: number): InvitationSummary | null => {
-  const matching = rows.filter(r => r.invitationId === invitationId);
-  if (!matching.length) return null;
-  const first = matching[0];
-  return {
-    invitationId: first.invitationId,
-    label: first.label,
-    inviteCode: first.inviteCode,
-    maxAddedGuests: first.maxAddedGuests,
-    notes: first.notes,
-    guests: matching.map(r => ({ id: r.guestId, name: r.guestName, isPredefined: r.isPredefined, attending: r.guestAttending })),
-  };
-};
 
 export const WeddingManagerPage: FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -114,10 +101,10 @@ export const WeddingManagerPage: FC = () => {
 
   if (weddingNotFound) {
     return (
-      <Layout className="manager-layout">
-        <Content className="manager-content">
-          <Card className="manager-card">
-            <Title level={3} className="manager-title">Boda no trobada</Title>
+      <Layout className={styles.layout}>
+        <Content className={styles.content}>
+          <Card className={styles.card}>
+            <Title level={3} className={styles.title}>Boda no trobada</Title>
             <Text type="secondary">No existeix cap boda amb el slug "{slug}".</Text>
           </Card>
         </Content>
@@ -125,22 +112,12 @@ export const WeddingManagerPage: FC = () => {
     );
   }
 
-  const getStats = (): ManagerStats => {
-    const totalGuests = rows.length;
-    const confirmed = rows.filter(r => r.guestAttending === true).length;
-    const declined = rows.filter(r => r.guestAttending === false).length;
-    const pending = rows.filter(r => r.guestAttending === null).length;
-    const invitationIds = new Set(rows.map(r => r.invitationId));
-    const respondedIds = new Set(rows.filter(r => r.guestAttending !== null).map(r => r.invitationId));
-    return { totalGuests, confirmed, declined, pending, totalInvitations: invitationIds.size, respondedInvitations: respondedIds.size };
-  };
-
   if (state === 'login' || state === 'error') {
     return (
-      <ManagerLoginCard
+      <LoginCard
         form={form}
         title={managerTitle}
-        weddingTitle={weddingTitle}
+        alt={weddingTitle}
         images={weddingImages}
         fallbackImage={isMobile ? wedding?.hero_image : wedding?.background_image}
         isMobile={isMobile}
@@ -153,15 +130,15 @@ export const WeddingManagerPage: FC = () => {
 
   if (state === 'loading') {
     return (
-      <Layout className="manager-layout">
-        <Content className="manager-content">
-          <Card className="manager-card"><Text>Carregant...</Text></Card>
+      <Layout className={styles.layout}>
+        <Content className={styles.content}>
+          <Card className={styles.card}><Text>Carregant...</Text></Card>
         </Content>
       </Layout>
     );
   }
 
-  const stats = getStats();
+  const stats = computeStats(rows);
 
   const overlays = (
     <>

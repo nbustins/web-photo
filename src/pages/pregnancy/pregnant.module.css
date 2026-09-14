@@ -1,7 +1,7 @@
 /* WhyDoSession va a sang: contraresta el padding del cos de la pàgina. */
 .whyRow {
-  margin-left: -40px;
-  margin-right: -40px;
+  /* Lligat al token: amb -40px fix sobresortia 16px per costat i el body el retallava. */
+  margin-inline: calc(-1 * var(--lt-space-page));
 }
 
 .quote {

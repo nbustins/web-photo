@@ -125,6 +125,9 @@ h1.titleMain {
   color: #f5f1ee;
   max-width: var(--lt-container-page);
   margin: 2rem auto 2rem;
+  /* El gutter d'antd posa -24px de marge inline a la Row: sense padding, a mòbil
+     el text quedava enganxat a la vora. Mateix marge lateral que l'intro de Nadal. */
+  padding-inline: var(--lt-space-6);
 }
 
 .whyHeading {
@@ -154,6 +157,18 @@ h1.titleMain {
   object-fit: cover;
   object-position: center;
   display: block;
+}
+
+/* A mòbil la caixa 70vh és vertical i retallava ~60% de les fotos apaïsades:
+   alçada automàtica perquè es vegi la foto sencera. */
+@media (max-width: 768px) {
+  .whyImageWrap {
+    height: auto;
+  }
+
+  .whyImage {
+    height: auto;
+  }
 }
 
 /* carrousel */

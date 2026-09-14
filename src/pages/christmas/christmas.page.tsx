@@ -21,7 +21,7 @@ export const ChristmasPage = () => (
       />
     </div>
 
-    <ChristmasIntroBlock image={"https://res.cloudinary.com/djxytedne/image/upload/v1789333582/nil_noa-10_sztdlu.jpg"} imageAlt="Sessió de Nadal a l'estudi" />
+    <ChristmasIntroBlock image={"https://res.cloudinary.com/djxytedne/image/upload/f_auto,q_auto,w_1600/v1789333582/nil_noa-10_sztdlu.jpg"} imageAlt="Sessió de Nadal a l'estudi" />
 
     <div className={blocks.pageBody}>
       <SessionPricingCards sessionGroupId={CHRISTMAS_GROUP_ID} />

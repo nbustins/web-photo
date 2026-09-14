@@ -64,11 +64,6 @@ export const DateTimeStep = ({
                 : 'Cap hora lliure aquest mes. Prova el mes següent.'}
             </Typography.Text>
           )}
-          {bookableUntil && (
-            <Typography.Text className={styles.horizonNote}>
-              Pots reservar fins al {bookableUntil.format('D [de] MMMM')}. Obrim noves dates cada dia.
-            </Typography.Text>
-          )}
         </Col>
         <Col xs={24} md={11}>
           <Typography.Text className={styles.dayLabel}>

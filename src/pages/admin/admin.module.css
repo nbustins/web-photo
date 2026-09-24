@@ -719,6 +719,95 @@
   gap: 2px;
 }
 
+/* --- Dates especials ------------------------------------------------------ */
+
+/* Day builder content, rendered inside the "Dates especials" edit Drawer. */
+.dayBuilderHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--lt-space-2) var(--lt-space-3);
+}
+
+.builderRow {
+  display: flex;
+  align-items: center;
+  gap: var(--lt-space-3);
+}
+
+/* The RangePicker grows to fill the row (full width on the mobile, full-width Drawer); the
+   remove icon stays a fixed touch-friendly target at its side. */
+.builderRange {
+  flex: 1;
+  min-width: 0;
+}
+
+.dateOverrideRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: var(--lt-space-3);
+  padding: var(--lt-space-3) var(--lt-space-4);
+  border-top: 1px solid var(--lt-color-border-subtle);
+}
+
+.dateOverrideRow:first-child {
+  border-top: 0;
+}
+
+.dateOverrideHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px var(--lt-space-2);
+}
+
+/* Edit/remove actions grouped together so they stay attached to the date line and right-aligned,
+   never dropping onto their own line below the chips. */
+.dateOverrideActions {
+  display: flex;
+  align-items: center;
+  gap: var(--lt-space-1);
+  flex-shrink: 0;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.warningLine {
+  flex-basis: 100%;
+  font-size: 12px;
+  color: var(--lt-color-warning, #d4880c);
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.overrideChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 6px 0 12px;
+  border-radius: var(--lt-radius-pill);
+  background: rgba(124, 116, 88, 0.14);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lt-olive-700);
+}
+
+.overrideChipMuted {
+  border: 1px dashed rgba(124, 116, 88, 0.45);
+  background: none;
+  color: var(--lt-color-text-secondary);
+  font-weight: 400;
+}
+
 /* --- Casaments ----------------------------------------------------------- */
 
 .weddingCard {
@@ -799,5 +888,10 @@
 
   .calendarTitle {
     font-size: 22px;
+  }
+
+  .dateOverrideRow {
+    grid-template-columns: 1fr;
+    gap: var(--lt-space-2);
   }
 }

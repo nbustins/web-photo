@@ -12,6 +12,7 @@ import { WEEKDAYS_MON_FIRST, WEEKDAY_LABEL, WEEKDAY_SHORT } from '../labels';
 import { AdminIcons, IconButton } from '../icons';
 import { PageHeader } from '../components/PageHeader';
 import { useApiError } from '../useApiError';
+import { DateOverridesSection } from './DateOverridesSection';
 import styles from '../admin.module.css';
 
 const TIME_FMT = 'HH:mm';
@@ -256,6 +257,10 @@ export const ScheduleTab: FC = () => {
               {addForm}
             </div>
           </Spin>
+        )}
+
+        {selectedTypeId !== null && !loading && (
+          <DateOverridesSection sessionTypeId={selectedTypeId} weeklyRanges={ranges} />
         )}
       </div>
     </>

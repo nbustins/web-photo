@@ -44,7 +44,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AvailabilityOverrideDto"
+                    "$ref": "#/components/schemas/AvailabilityOverrideDayDto"
                   }
                 }
               },
@@ -52,7 +52,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AvailabilityOverrideDto"
+                    "$ref": "#/components/schemas/AvailabilityOverrideDayDto"
                   }
                 }
               },
@@ -60,7 +60,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AvailabilityOverrideDto"
+                    "$ref": "#/components/schemas/AvailabilityOverrideDayDto"
                   }
                 }
               }
@@ -68,112 +68,6 @@
           },
           "401": {
             "description": "Unauthenticated or missing bearer token.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "AdminAvailabilityOverrides"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAvailabilityOverrideRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAvailabilityOverrideRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAvailabilityOverrideRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AvailabilityOverrideDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AvailabilityOverrideDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AvailabilityOverrideDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "TIME_RANGE_INVALID, SESSION_TYPE_NOT_BOOKABLE",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated or missing bearer token.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "AVAILABILITY_RANGE_OVERLAP",
             "content": {
               "text/plain": {
                 "schema": {
@@ -195,19 +89,28 @@
         }
       }
     },
-    "/api/admin/availability-overrides/{id}": {
-      "put": {
+    "/api/admin/availability-overrides/{sessionTypeId}/{date}": {
+      "post": {
         "tags": [
           "AdminAvailabilityOverrides"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "sessionTypeId",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
             }
           }
         ],
@@ -215,17 +118,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAvailabilityOverrideRequest"
+                "$ref": "#/components/schemas/ReplaceAvailabilityOverrideDayRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAvailabilityOverrideRequest"
+                "$ref": "#/components/schemas/ReplaceAvailabilityOverrideDayRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAvailabilityOverrideRequest"
+                "$ref": "#/components/schemas/ReplaceAvailabilityOverrideDayRequest"
               }
             }
           }
@@ -236,17 +139,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/AvailabilityOverrideDto"
+                  "$ref": "#/components/schemas/AvailabilityOverrideDayDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AvailabilityOverrideDto"
+                  "$ref": "#/components/schemas/AvailabilityOverrideDayDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AvailabilityOverrideDto"
+                  "$ref": "#/components/schemas/AvailabilityOverrideDayDto"
                 }
               }
             }
@@ -291,89 +194,8 @@
               }
             }
           },
-          "404": {
-            "description": "AVAILABILITY_OVERRIDE_NOT_FOUND",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              }
-            }
-          },
           "409": {
             "description": "AVAILABILITY_RANGE_OVERLAP",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "AdminAvailabilityOverrides"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthenticated or missing bearer token.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiProblemDetails"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "AVAILABILITY_OVERRIDE_NOT_FOUND",
             "content": {
               "text/plain": {
                 "schema": {
@@ -436,13 +258,9 @@
         "additionalProperties": false,
         "description": "Documents the RFC 9457 problem+json body WeddingManagerApi.Shared.Errors.GlobalExceptionHandler writes for every\nerror response. Microsoft's `ProblemDetails` omits `ErrorCode`, the one field the\nfrontend branches on, so this type exists purely to give Swashbuckle a schema to generate \u2014\nit is never constructed at runtime."
       },
-      "AvailabilityOverrideDto": {
+      "AvailabilityOverrideDayDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "sessionTypeId": {
             "type": "integer",
             "format": "int64"
@@ -451,6 +269,19 @@
             "type": "string",
             "format": "date"
           },
+          "ranges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailabilityRangeDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AvailabilityRangeDto": {
+        "type": "object",
+        "properties": {
           "startTime": {
             "type": "string",
             "format": "time"
@@ -462,62 +293,17 @@
         },
         "additionalProperties": false
       },
-      "UpdateAvailabilityOverrideRequest": {
+      "ReplaceAvailabilityOverrideDayRequest": {
         "required": [
-          "date",
-          "endTime",
-          "sessionTypeId",
-          "startTime"
+          "ranges"
         ],
         "type": "object",
         "properties": {
-          "sessionTypeId": {
-            "maximum": 9.223372036854776e+18,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int64"
-          },
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "time"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateAvailabilityOverrideRequest": {
-        "required": [
-          "date",
-          "endTime",
-          "sessionTypeId",
-          "startTime"
-        ],
-        "type": "object",
-        "properties": {
-          "sessionTypeId": {
-            "maximum": 9.223372036854776e+18,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int64"
-          },
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "time"
+          "ranges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailabilityRangeDto"
+            }
           }
         },
         "additionalProperties": false

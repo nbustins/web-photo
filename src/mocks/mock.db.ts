@@ -1,6 +1,6 @@
 import type {
   AdminBooking,
-  AvailabilityOverride,
+  AvailabilityOverrideDay,
   BlockedPeriod,
   WeeklyAvailability,
 } from '../services/booking/booking.admin.api';
@@ -71,12 +71,18 @@ function seedWeeklyAvailability(): WeeklyAvailability[] {
 }
 
 /** Two future dates for session type 1: one wider than the weekly grid, one split into two ranges. */
-function seedAvailabilityOverrides(): AvailabilityOverride[] {
+function seedAvailabilityOverrides(): AvailabilityOverrideDay[] {
   const today = studioToday();
   return [
-    { id: 1, sessionTypeId: 1, date: addDays(today, 5), startTime: '09:00:00', endTime: '20:00:00' },
-    { id: 2, sessionTypeId: 1, date: addDays(today, 12), startTime: '10:00:00', endTime: '13:00:00' },
-    { id: 3, sessionTypeId: 1, date: addDays(today, 12), startTime: '16:00:00', endTime: '18:00:00' },
+    { sessionTypeId: 1, date: addDays(today, 5), ranges: [{ startTime: '09:00:00', endTime: '20:00:00' }] },
+    {
+      sessionTypeId: 1,
+      date: addDays(today, 12),
+      ranges: [
+        { startTime: '10:00:00', endTime: '13:00:00' },
+        { startTime: '16:00:00', endTime: '18:00:00' },
+      ],
+    },
   ];
 }
 
@@ -154,7 +160,9 @@ export const db = {
     bookableTo: null,
   })),
   weeklyAvailabilities: seedWeeklyAvailability(),
-  availabilityOverrides: seedAvailabilityOverrides(),
+  // One entry per (sessionTypeId, date) that has an override; a date with none is simply absent
+  // — there is no stored "empty day" (spec 009 §7).
+  availabilityOverrideDays: seedAvailabilityOverrides(),
   blockedPeriods: seedBlockedPeriods(),
   bookings: seedBookings(),
   contracts: [] as MockContract[],
@@ -166,7 +174,6 @@ const sequences = {
   sessionGroup: Math.max(...db.sessionGroups.map(g => g.id)),
   sessionType: Math.max(...db.sessionTypes.map(t => t.id)),
   weeklyAvailability: Math.max(...db.weeklyAvailabilities.map(a => a.id)),
-  availabilityOverride: Math.max(...db.availabilityOverrides.map(o => o.id)),
   blockedPeriod: Math.max(...db.blockedPeriods.map(p => p.id)),
   booking: Math.max(...db.bookings.map(b => b.id)),
   participant: 3,

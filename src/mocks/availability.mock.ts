@@ -41,12 +41,12 @@ function occupiedIntervals(): { start: number; end: number }[] {
 }
 
 /**
- * Ranges in effect for a date: overrides for (sessionTypeId, date) replace the weekday's weekly
- * ranges entirely when any exist, they never merge with them (spec 009 §7).
+ * Ranges in effect for a date: an override day for (sessionTypeId, date) replaces the weekday's
+ * weekly ranges entirely when one exists, it never merges with them (spec 009 §7).
  */
 function rangesForDate(sessionTypeId: number, date: string): { startTime: string; endTime: string }[] {
-  const overrides = db.availabilityOverrides.filter(o => o.sessionTypeId === sessionTypeId && o.date === date);
-  if (overrides.length > 0) return overrides;
+  const overrideDay = db.availabilityOverrideDays.find(d => d.sessionTypeId === sessionTypeId && d.date === date);
+  if (overrideDay) return overrideDay.ranges;
   const weekday = weekdayOf(date);
   return db.weeklyAvailabilities.filter(range => range.sessionTypeId === sessionTypeId && range.weekday === weekday);
 }

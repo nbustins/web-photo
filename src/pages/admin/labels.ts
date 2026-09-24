@@ -62,6 +62,26 @@ export const WEEKDAYS_MON_FIRST: Weekday[] = [
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
 ];
 
+const WEEKDAY_NAMES: Weekday[] = [
+  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+];
+
+/** Weekday of a 'YYYY-MM-DD' date-only string — the date has no time zone to resolve. */
+export function weekdayOfDate(date: string): Weekday {
+  return WEEKDAY_NAMES[new Date(`${date}T00:00:00Z`).getUTCDay()];
+}
+
+/** "Dissabte 10 d'octubre" for a 'YYYY-MM-DD' date-only string — capitalized, no time zone to resolve. */
+export function formatDateHeading(date: string): string {
+  const text = new Date(`${date}T00:00:00Z`).toLocaleDateString('ca-ES', {
+    timeZone: 'UTC',
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 const STUDIO_TZ = 'Europe/Madrid';
 
 /** 'YYYY-MM-DD' of an instant in the studio's timezone: the day a booking belongs to. */

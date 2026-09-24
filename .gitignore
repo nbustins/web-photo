@@ -31,3 +31,6 @@ dist-ssr
 .claude/page-designs
 data
 .env
+
+## Agent tooling — machine-local, auto-generated
+.atl/

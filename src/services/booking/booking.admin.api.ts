@@ -190,50 +190,49 @@ export function deleteAvailabilityRange(id: number): Promise<void> {
 
 // --- Availability overrides ---
 
-// One time range for one session type on one specific date. Multiple non-overlapping rows may
-// exist per date; when any exist for (sessionTypeId, date) they replace that weekday's weekly
-// ranges entirely (spec 009 §7).
-export interface AvailabilityOverride {
-  id: number;
-  sessionTypeId: number;
-  date: string; // 'YYYY-MM-DD'
+// One time range, no identity of its own: it only exists as a row inside a day (spec 009 §7).
+export interface TimeRange {
   startTime: string; // 'HH:mm:ss'
   endTime: string;
 }
 
-export interface AvailabilityOverridePayload {
+// A session type's overrides for one date. When `ranges` is non-empty it replaces that weekday's
+// weekly ranges entirely; there is no representation for "empty" on the wire — an empty list
+// simply means no override exists for that date (falls back to the weekly hours, spec 009 §7).
+export interface AvailabilityOverrideDay {
   sessionTypeId: number;
-  date: string;
-  startTime: string;
-  endTime: string;
+  date: string; // 'YYYY-MM-DD'
+  ranges: TimeRange[];
 }
 
 export function fetchAvailabilityOverrides(params: {
   sessionTypeId?: number;
   from?: string;
   to?: string;
-}): Promise<AvailabilityOverride[]> {
+}): Promise<AvailabilityOverrideDay[]> {
   const qs = new URLSearchParams();
   if (params.sessionTypeId) qs.set('sessionTypeId', String(params.sessionTypeId));
   if (params.from) qs.set('from', params.from);
   if (params.to) qs.set('to', params.to);
   const s = qs.toString();
-  return apiGet<AvailabilityOverride[]>(`/api/admin/availability-overrides${s ? `?${s}` : ''}`);
+  return apiGet<AvailabilityOverrideDay[]>(`/api/admin/availability-overrides${s ? `?${s}` : ''}`);
 }
 
-export function createAvailabilityOverride(payload: AvailabilityOverridePayload): Promise<AvailabilityOverride> {
-  return apiPost<AvailabilityOverride, AvailabilityOverridePayload>('/api/admin/availability-overrides', payload);
-}
-
-export function updateAvailabilityOverride(
-  id: number,
-  payload: AvailabilityOverridePayload,
-): Promise<AvailabilityOverride> {
-  return apiPut<AvailabilityOverride, AvailabilityOverridePayload>(`/api/admin/availability-overrides/${id}`, payload);
-}
-
-export function deleteAvailabilityOverride(id: number): Promise<void> {
-  return apiDelete(`/api/admin/availability-overrides/${id}`);
+/**
+ * Replaces the whole set of ranges for one (sessionTypeId, date) atomically — every write from
+ * the day-builder UI (spec 009 design A) goes through this one function. An empty `ranges` array
+ * removes the override, which makes that date fall back to the weekly hours (it does NOT close
+ * the day — closing is Dies bloquejats).
+ */
+export function saveAvailabilityOverrideDay(
+  sessionTypeId: number,
+  date: string,
+  ranges: TimeRange[],
+): Promise<AvailabilityOverrideDay> {
+  return apiPost<AvailabilityOverrideDay, { ranges: TimeRange[] }>(
+    `/api/admin/availability-overrides/${sessionTypeId}/${date}`,
+    { ranges },
+  );
 }
 
 // --- Blocked periods ---

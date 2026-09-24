@@ -46,6 +46,8 @@ export type ErrorCode =
   | 'DATE_RANGE_TOO_LONG'
   | 'TIME_RANGE_INVALID'
   | 'AVAILABILITY_NOT_FOUND'
+  | 'AVAILABILITY_RANGE_OVERLAP'
+  | 'AVAILABILITY_OVERRIDE_NOT_FOUND'
   | 'BLOCKED_PERIOD_NOT_FOUND';
 
 export const ERROR_MESSAGE: Record<ErrorCode, string> = {
@@ -92,6 +94,8 @@ export const ERROR_MESSAGE: Record<ErrorCode, string> = {
   DATE_RANGE_TOO_LONG: 'El rang de dates és massa llarg.',
   TIME_RANGE_INVALID: "L'hora d'inici ha de ser anterior a la de fi.",
   AVAILABILITY_NOT_FOUND: "No s'ha trobat la franja de disponibilitat.",
+  AVAILABILITY_RANGE_OVERLAP: 'Aquesta franja se superposa amb una altra data especial.',
+  AVAILABILITY_OVERRIDE_NOT_FOUND: "No s'ha trobat la data especial.",
   BLOCKED_PERIOD_NOT_FOUND: "No s'ha trobat el període bloquejat.",
 };
 

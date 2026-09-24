@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import type {
+  AvailabilityOverride,
+  AvailabilityOverridePayload,
   BlockedPeriod,
   BookingSession,
   BookingSessionPayload,
@@ -244,6 +246,61 @@ export const bookingAdminHandlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
+  // --- Availability overrides -----------------------------------------------
+
+  http.get(api('/api/admin/availability-overrides'), async ({ request }) => {
+    await delay(250);
+    const url = new URL(request.url);
+    const sessionTypeId = Number(url.searchParams.get('sessionTypeId')) || null;
+    const from = url.searchParams.get('from');
+    const to = url.searchParams.get('to');
+    const overrides = db.availabilityOverrides
+      .filter(o => !sessionTypeId || o.sessionTypeId === sessionTypeId)
+      .filter(o => !from || o.date >= from)
+      .filter(o => !to || o.date <= to)
+      .sort((a, b) => a.date.localeCompare(b.date) || a.startTime.localeCompare(b.startTime));
+    return HttpResponse.json<AvailabilityOverride[]>(overrides);
+  }),
+
+  http.post(api('/api/admin/availability-overrides'), async ({ request }) => {
+    await delay(300);
+    const payload = (await request.json()) as AvailabilityOverridePayload;
+    const invalid = validateOverridePayload(payload);
+    if (invalid) return invalid;
+    if (overlapsExistingOverride(payload)) {
+      return problem(409, 'AVAILABILITY_RANGE_OVERLAP', 'Aquesta franja se superposa amb una altra data especial.');
+    }
+
+    const override: AvailabilityOverride = { id: nextId('availabilityOverride'), ...payload };
+    db.availabilityOverrides.push(override);
+    return HttpResponse.json(override, { status: 201 });
+  }),
+
+  http.put(api('/api/admin/availability-overrides/:id'), async ({ params, request }) => {
+    await delay(300);
+    const id = Number(params.id);
+    const override = db.availabilityOverrides.find(o => o.id === id);
+    if (!override) return problem(404, 'AVAILABILITY_OVERRIDE_NOT_FOUND', "No s'ha trobat la data especial.");
+
+    const payload = (await request.json()) as AvailabilityOverridePayload;
+    const invalid = validateOverridePayload(payload);
+    if (invalid) return invalid;
+    if (overlapsExistingOverride(payload, id)) {
+      return problem(409, 'AVAILABILITY_RANGE_OVERLAP', 'Aquesta franja se superposa amb una altra data especial.');
+    }
+
+    Object.assign(override, payload);
+    return HttpResponse.json(override);
+  }),
+
+  http.delete(api('/api/admin/availability-overrides/:id'), async ({ params }) => {
+    await delay(300);
+    const index = db.availabilityOverrides.findIndex(o => o.id === Number(params.id));
+    if (index < 0) return problem(404, 'AVAILABILITY_OVERRIDE_NOT_FOUND', "No s'ha trobat la data especial.");
+    db.availabilityOverrides.splice(index, 1);
+    return new HttpResponse(null, { status: 204 });
+  }),
+
   // --- Blocked periods -----------------------------------------------------
 
   http.get(api('/api/admin/blocked-periods'), async () => {
@@ -300,4 +357,26 @@ function validateRangePayload(payload: WeeklyAvailabilityPayload) {
     return problem(400, 'TIME_RANGE_INVALID', "L'hora d'inici ha de ser anterior a la de fi.");
   }
   return null;
+}
+
+// Contract's 400s for this endpoint are only TIME_RANGE_INVALID and SESSION_TYPE_NOT_BOOKABLE (spec 009 §8).
+function validateOverridePayload(payload: AvailabilityOverridePayload) {
+  if (!db.bookingSessions.some(session => session.sessionTypeId === payload.sessionTypeId)) {
+    return problem(400, 'SESSION_TYPE_NOT_BOOKABLE', 'Aquest tipus de sessió no és reservable.');
+  }
+  if (timeToMinutes(payload.startTime) >= timeToMinutes(payload.endTime)) {
+    return problem(400, 'TIME_RANGE_INVALID', "L'hora d'inici ha de ser anterior a la de fi.");
+  }
+  return null;
+}
+
+function overlapsExistingOverride(payload: AvailabilityOverridePayload, excludeId?: number): boolean {
+  return db.availabilityOverrides.some(
+    o =>
+      o.id !== excludeId &&
+      o.sessionTypeId === payload.sessionTypeId &&
+      o.date === payload.date &&
+      timeToMinutes(o.startTime) < timeToMinutes(payload.endTime) &&
+      timeToMinutes(payload.startTime) < timeToMinutes(o.endTime),
+  );
 }

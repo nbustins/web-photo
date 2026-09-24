@@ -40,13 +40,21 @@ function occupiedIntervals(): { start: number; end: number }[] {
     });
 }
 
+/**
+ * Ranges in effect for a date: overrides for (sessionTypeId, date) replace the weekday's weekly
+ * ranges entirely when any exist, they never merge with them (spec 009 §7).
+ */
+function rangesForDate(sessionTypeId: number, date: string): { startTime: string; endTime: string }[] {
+  const overrides = db.availabilityOverrides.filter(o => o.sessionTypeId === sessionTypeId && o.date === date);
+  if (overrides.length > 0) return overrides;
+  const weekday = weekdayOf(date);
+  return db.weeklyAvailabilities.filter(range => range.sessionTypeId === sessionTypeId && range.weekday === weekday);
+}
+
 function slotsForDate(date: string, durationMinutes: number, session: MockBookingSession): AvailabilitySlot[] {
   if (isBlocked(date) || !isInSeason(date, session) || date > bookableUntil()) return [];
 
-  const weekday = weekdayOf(date);
-  const ranges = db.weeklyAvailabilities.filter(
-    range => range.sessionTypeId === session.sessionTypeId && range.weekday === weekday,
-  );
+  const ranges = rangesForDate(session.sessionTypeId, date);
 
   const now = Date.now();
   const occupied = occupiedIntervals();
@@ -117,8 +125,7 @@ export function validateSlot(sessionTypeId: number, startAt: string): ErrorCode 
   const durationMs = type.durationMinutes * 60_000;
   const bufferMs = session.bufferMinutes * 60_000;
 
-  const insideARange = db.weeklyAvailabilities
-    .filter(range => range.sessionTypeId === sessionTypeId && range.weekday === weekdayOf(date))
+  const insideARange = rangesForDate(sessionTypeId, date)
     .some(range => {
       const rangeStart = studioLocalToUtc(date, timeToMinutes(range.startTime)).getTime();
       const rangeEnd = studioLocalToUtc(date, timeToMinutes(range.endTime)).getTime();

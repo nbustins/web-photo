@@ -188,6 +188,54 @@ export function deleteAvailabilityRange(id: number): Promise<void> {
   return apiDelete(`/api/admin/availability/${id}`);
 }
 
+// --- Availability overrides ---
+
+// One time range for one session type on one specific date. Multiple non-overlapping rows may
+// exist per date; when any exist for (sessionTypeId, date) they replace that weekday's weekly
+// ranges entirely (spec 009 §7).
+export interface AvailabilityOverride {
+  id: number;
+  sessionTypeId: number;
+  date: string; // 'YYYY-MM-DD'
+  startTime: string; // 'HH:mm:ss'
+  endTime: string;
+}
+
+export interface AvailabilityOverridePayload {
+  sessionTypeId: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+export function fetchAvailabilityOverrides(params: {
+  sessionTypeId?: number;
+  from?: string;
+  to?: string;
+}): Promise<AvailabilityOverride[]> {
+  const qs = new URLSearchParams();
+  if (params.sessionTypeId) qs.set('sessionTypeId', String(params.sessionTypeId));
+  if (params.from) qs.set('from', params.from);
+  if (params.to) qs.set('to', params.to);
+  const s = qs.toString();
+  return apiGet<AvailabilityOverride[]>(`/api/admin/availability-overrides${s ? `?${s}` : ''}`);
+}
+
+export function createAvailabilityOverride(payload: AvailabilityOverridePayload): Promise<AvailabilityOverride> {
+  return apiPost<AvailabilityOverride, AvailabilityOverridePayload>('/api/admin/availability-overrides', payload);
+}
+
+export function updateAvailabilityOverride(
+  id: number,
+  payload: AvailabilityOverridePayload,
+): Promise<AvailabilityOverride> {
+  return apiPut<AvailabilityOverride, AvailabilityOverridePayload>(`/api/admin/availability-overrides/${id}`, payload);
+}
+
+export function deleteAvailabilityOverride(id: number): Promise<void> {
+  return apiDelete(`/api/admin/availability-overrides/${id}`);
+}
+
 // --- Blocked periods ---
 
 export function fetchBlockedPeriods(): Promise<BlockedPeriod[]> {

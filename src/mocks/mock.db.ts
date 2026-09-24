@@ -1,4 +1,9 @@
-import type { AdminBooking, BlockedPeriod, WeeklyAvailability } from '../services/booking/booking.admin.api';
+import type {
+  AdminBooking,
+  AvailabilityOverride,
+  BlockedPeriod,
+  WeeklyAvailability,
+} from '../services/booking/booking.admin.api';
 import type { ImageRightsConsent, SessionType } from '../services/booking/booking.api';
 import type { SessionGroup } from '../services/booking/booking.admin.api';
 import { sessionGroupFixtures, sessionTypeFixtures } from './fixtures/session.fixtures';
@@ -63,6 +68,16 @@ function seedWeeklyAvailability(): WeeklyAvailability[] {
       endTime,
     }));
   });
+}
+
+/** Two future dates for session type 1: one wider than the weekly grid, one split into two ranges. */
+function seedAvailabilityOverrides(): AvailabilityOverride[] {
+  const today = studioToday();
+  return [
+    { id: 1, sessionTypeId: 1, date: addDays(today, 5), startTime: '09:00:00', endTime: '20:00:00' },
+    { id: 2, sessionTypeId: 1, date: addDays(today, 12), startTime: '10:00:00', endTime: '13:00:00' },
+    { id: 3, sessionTypeId: 1, date: addDays(today, 12), startTime: '16:00:00', endTime: '18:00:00' },
+  ];
 }
 
 function seedBlockedPeriods(): BlockedPeriod[] {
@@ -139,6 +154,7 @@ export const db = {
     bookableTo: null,
   })),
   weeklyAvailabilities: seedWeeklyAvailability(),
+  availabilityOverrides: seedAvailabilityOverrides(),
   blockedPeriods: seedBlockedPeriods(),
   bookings: seedBookings(),
   contracts: [] as MockContract[],
@@ -150,6 +166,7 @@ const sequences = {
   sessionGroup: Math.max(...db.sessionGroups.map(g => g.id)),
   sessionType: Math.max(...db.sessionTypes.map(t => t.id)),
   weeklyAvailability: Math.max(...db.weeklyAvailabilities.map(a => a.id)),
+  availabilityOverride: Math.max(...db.availabilityOverrides.map(o => o.id)),
   blockedPeriod: Math.max(...db.blockedPeriods.map(p => p.id)),
   booking: Math.max(...db.bookings.map(b => b.id)),
   participant: 3,

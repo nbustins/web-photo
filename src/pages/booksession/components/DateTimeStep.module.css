@@ -27,3 +27,13 @@
   margin-top: 24px;
   text-align: right;
 }
+
+/* Only the visible month is fetched: hide antd's adjacent-month days, and rows made only of them. */
+.row :global(.ant-picker-cell:not(.ant-picker-cell-in-view)) {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.row :global(.ant-picker-content tbody tr:not(:has(.ant-picker-cell-in-view))) {
+  display: none;
+}

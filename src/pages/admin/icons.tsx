@@ -6,6 +6,7 @@ import {
   ArrowUpOutlined,
   CalendarOutlined,
   ClockCircleOutlined,
+  CopyOutlined,
   DeleteOutlined,
   DownloadOutlined,
   EditOutlined,
@@ -36,6 +37,7 @@ import {
 export const AdminIcons = {
   create: PlusOutlined,
   edit: EditOutlined,
+  copy: CopyOutlined,
   remove: DeleteOutlined,
   retire: EyeInvisibleOutlined,
   refresh: ReloadOutlined,

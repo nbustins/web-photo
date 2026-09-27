@@ -130,13 +130,21 @@ export const DateOverridesSection: FC<Props> = ({ sessionTypeId, weeklyRanges })
     setDrawerOpen(true);
   };
 
+  // Same slots, no date: the admin picks the target date in the drawer.
+  const openCopyDrawer = (day: AvailabilityOverrideDay) => {
+    setBuilderDate(null);
+    setBuilderRows(day.ranges.map(r => [dayjs(r.startTime, 'HH:mm:ss'), dayjs(r.endTime, 'HH:mm:ss')] as RangeRow));
+    setDrawerOpen(true);
+  };
+
   const closeDrawer = () => { setDrawerOpen(false); resetBuilder(); };
 
   const onPickDate = (d: Dayjs | null) => {
     setBuilderDate(d);
     if (!d) { setBuilderRows([]); return; }
     const existing = overrideDays.find(day => day.date === d.format('YYYY-MM-DD'));
-    setBuilderRows(existing ? existing.ranges.map(r => [dayjs(r.startTime, 'HH:mm:ss'), dayjs(r.endTime, 'HH:mm:ss')] as RangeRow) : []);
+    // Keep rows already in the builder (copied slots) unless the picked date has its own override.
+    if (existing) setBuilderRows(existing.ranges.map(r => [dayjs(r.startTime, 'HH:mm:ss'), dayjs(r.endTime, 'HH:mm:ss')] as RangeRow));
   };
 
   const addRow = () => setBuilderRows(rows => [...rows, [null, null]]);
@@ -221,6 +229,7 @@ export const DateOverridesSection: FC<Props> = ({ sessionTypeId, weeklyRanges })
                     <span className={styles.strong}>{formatDateHeading(day.date)}</span>
                     <span className={styles.dateOverrideActions}>
                       <IconButton icon="edit" label="Editar dia" onClick={() => openEditDrawer(day)} />
+                      <IconButton icon="copy" label="Copiar franges a una altra data" onClick={() => openCopyDrawer(day)} />
                       <Popconfirm title={revertConfirmText(weekday)} onConfirm={() => revertDay(day)}>
                         <IconButton icon="remove" label="Tornar a l'horari setmanal" danger />
                       </Popconfirm>

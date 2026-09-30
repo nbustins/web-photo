@@ -1,5 +1,13 @@
 # Specs — Spec-Driven Design
 
+> **Workflow note:** day-to-day work in this repo is driven by Organic Driven
+> Development (ODD) — see `CLAUDE.md` → Workflow. Substantial work gets an
+> ODD feature doc at `odd/tasks/<feature-name>.md`, which references specs
+> here as requirement documents rather than following the phase-by-phase flow
+> below. Use this flow (or `specs/` as records) when a feature needs a
+> durable, reviewable requirements document; the flow below is otherwise
+> superseded by ODD.
+
 Source of truth for features before code. Every non-trivial change starts here.
 
 ## Flow

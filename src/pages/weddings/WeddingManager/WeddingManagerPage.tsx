@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Layout, Card, Typography, Form } from 'antd';
 import { guestService } from '../../../services/wedding/guest.provider';
 import { login, logout } from '../../../services/auth/auth.service';
@@ -7,18 +7,18 @@ import { getUser } from '../../../services/auth/auth.store';
 import type { Wedding, ConfirmationRow } from '../../../model/wedding.types';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import { LoginCard } from '@ui/LoginCard';
-import type { InvitationSummary, LoginFormValues } from './WeddingManager.types';
-import { buildSummary, computeStats } from './manager.utils';
-import {
-  ManagerDesktopDashboard,
-  ManagerInvitationDrawer,
-  ManagerMobileDashboard,
-  ManagerNotesModal,
-} from './components';
+import { AdminShell, ShellItem } from '@ui/AdminShell';
+import { weddingManagerSectionPath } from '../../../model/routes.model';
+import type { LoginFormValues } from './WeddingManager.types';
+import type { ManagerShellContext } from './managerShell';
 import styles from './WeddingManager.module.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
+
+const SECTIONS: ShellItem[] = [
+  { key: 'confirmacions', label: 'Confirmacions', icon: 'guests' },
+];
 
 type ManagerState = 'login' | 'loading' | 'error' | 'data';
 
@@ -32,8 +32,8 @@ export const WeddingManagerPage: FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm<LoginFormValues>();
-  const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
-  const [noteModal, setNoteModal] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -138,42 +138,17 @@ export const WeddingManagerPage: FC = () => {
     );
   }
 
-  const stats = computeStats(rows);
-
-  const overlays = (
-    <>
-      <ManagerNotesModal note={noteModal} onClose={() => setNoteModal(null)} />
-      <ManagerInvitationDrawer summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
-    </>
-  );
-
-  if (isMobile) {
-    return (
-      <>
-        <ManagerMobileDashboard
-          weddingTitle={weddingTitle}
-          rows={rows}
-          stats={stats}
-          onLogout={handleLogout}
-          onSelectInvitation={(id) => setSelectedSummary(buildSummary(rows, id))}
-          onShowNote={(note) => setNoteModal(note)}
-        />
-        {overlays}
-      </>
-    );
-  }
+  const outletContext: ManagerShellContext = { weddingTitle, rows };
 
   return (
-    <>
-      <ManagerDesktopDashboard
-        weddingTitle={weddingTitle}
-        rows={rows}
-        stats={stats}
-        onLogout={handleLogout}
-        onSelectInvitation={(id) => setSelectedSummary(buildSummary(rows, id))}
-        onShowNote={(note) => setNoteModal(note)}
-      />
-      {overlays}
-    </>
+    <AdminShell
+      brandTitle={weddingTitle || 'Casament'}
+      brandCaption="Gestió del casament"
+      items={SECTIONS}
+      activeKey={pathname.split('/')[4] ?? SECTIONS[0].key}
+      onSelect={(key) => navigate(weddingManagerSectionPath(slug ?? '', key))}
+      onLogout={handleLogout}
+      outletContext={outletContext}
+    />
   );
 };

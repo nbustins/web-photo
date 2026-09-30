@@ -20,6 +20,7 @@ import { NotFoundPage } from '../pages/notfound.page';
 import { AvisLegalPage, PrivacitatPage } from '../pages/legal/legal.page';
 
 import { GenericWedding } from '../pages/weddings/WeddingGuest/custom/GenericWedding';
+import { ConfirmacionsSection } from '../pages/weddings/WeddingManager/ConfirmacionsSection';
 import { WeddingManagerPage } from '../pages/weddings/WeddingManager/WeddingManagerPage';
 import { AdminLogin } from '../pages/admin/AdminLogin';
 import { AdminPanel } from '../pages/admin/AdminPanel';
@@ -68,7 +69,11 @@ export const AppRouter: FC = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
         <Route path="/weddings/:slug" element={<GenericWedding />} />
-        <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />} />
+        <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />}>
+          <Route index element={<Navigate to="confirmacions" replace />} />
+          <Route path="confirmacions" element={<ConfirmacionsSection />} />
+          <Route path="*" element={<Navigate to="confirmacions" replace />} />
+        </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<RequireAuth><AdminPanel /></RequireAuth>}>

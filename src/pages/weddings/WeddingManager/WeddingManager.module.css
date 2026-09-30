@@ -98,3 +98,14 @@ h3.title {
     padding: var(--lt-space-3) var(--lt-space-4);
   }
 }
+
+/* Body of a section inside the shell, under its PageHeader. The mobile dashboard pads itself. */
+.sectionBody {
+  padding: var(--lt-space-6) var(--lt-space-8);
+}
+
+@media (max-width: 768px) {
+  .sectionBody {
+    padding: 0;
+  }
+}

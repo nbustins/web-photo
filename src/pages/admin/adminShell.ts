@@ -1,10 +1,9 @@
-import { useOutletContext } from 'react-router-dom';
+import { useShell } from '@ui/shellContext';
 
-/** What the admin shell hands every section through <Outlet context>. */
+/** What the admin panel hands every section through the shell's <Outlet context>. */
 export interface AdminShellContext {
-  openMenu: () => void;
   /** Re-reads the pending-requests badge after a section changes a booking's status. */
   refreshPending: () => void;
 }
 
-export const useAdminShell = () => useOutletContext<AdminShellContext>();
+export const useAdminShell = () => useShell<AdminShellContext>();

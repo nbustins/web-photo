@@ -9,8 +9,8 @@ import {
 } from '../../../services/booking/booking.admin.api';
 import type { SessionType } from '../../../services/booking/booking.api';
 import { WEEKDAYS_MON_FIRST, WEEKDAY_LABEL, WEEKDAY_SHORT } from '../labels';
-import { AdminIcons, IconButton } from '../icons';
-import { PageHeader } from '../components/PageHeader';
+import { Icons, IconButton } from '@ui/icons';
+import { PageHeader } from '@ui/PageHeader';
 import { useApiError } from '../useApiError';
 import { DateOverridesSection } from './DateOverridesSection';
 import styles from '../admin.module.css';
@@ -212,7 +212,7 @@ export const ScheduleTab: FC = () => {
         value={draft}
         onChange={(v) => setDraft(v as [Dayjs, Dayjs] | null)}
       />
-      <Button type="primary" icon={<AdminIcons.create />} onClick={addRange} disabled={!draft}>
+      <Button type="primary" icon={<Icons.create />} onClick={addRange} disabled={!draft}>
         {isMobile ? 'Afegir' : 'Afegir franja'}
       </Button>
     </div>

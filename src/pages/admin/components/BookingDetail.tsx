@@ -3,7 +3,7 @@ import { Button, Collapse, Drawer, Popconfirm, Space, Tag, Typography } from 'an
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import type { AdminBooking, BookingStatus } from '../../../services/booking/booking.admin.api';
 import { bookingContractPath } from '../../../model/routes.model';
-import { AdminIcons } from '../icons';
+import { Icons } from '@ui/icons';
 import { BookingEmailKind, ResendEmailButtons } from './ResendEmailButtons';
 import {
   IMAGE_RIGHTS_LABEL, STATUS_ACTION_LABEL, STATUS_COLOR, STATUS_CONFIRM, STATUS_LABEL,
@@ -116,7 +116,7 @@ export const BookingDetail: FC<BookingDetailProps> = ({
                 <Tag>Pendent de signar</Tag>
               )}
               {booking.contractSignedAt && (
-                <Button size="small" icon={<AdminIcons.download />} onClick={onDownloadContract}>Descarregar</Button>
+                <Button size="small" icon={<Icons.download />} onClick={onDownloadContract}>Descarregar</Button>
               )}
             </div>
             <Typography.Paragraph type="secondary" style={{ margin: 0 }}>

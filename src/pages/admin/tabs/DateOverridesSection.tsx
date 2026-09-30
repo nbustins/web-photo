@@ -8,7 +8,7 @@ import {
   fetchAvailabilityOverrides, fetchBlockedPeriods, saveAvailabilityOverrideDay,
 } from '../../../services/booking/booking.admin.api';
 import { formatDateHeading, WEEKDAY_LABEL, weekdayOfDate } from '../labels';
-import { AdminIcons, IconButton } from '../icons';
+import { Icons, IconButton } from '@ui/icons';
 import { useApiError } from '../useApiError';
 import styles from '../admin.module.css';
 
@@ -269,7 +269,7 @@ export const DateOverridesSection: FC<Props> = ({ sessionTypeId, weeklyRanges })
             ) : (
               <Button
                 type="primary"
-                icon={<AdminIcons.save />}
+                icon={<Icons.save />}
                 onClick={save}
                 loading={saving}
                 disabled={!builderDate || !!validationMessage || builderRows.length === 0}
@@ -319,7 +319,7 @@ export const DateOverridesSection: FC<Props> = ({ sessionTypeId, weeklyRanges })
           ))}
 
           <div className={styles.dayBuilderHead}>
-            <Button icon={<AdminIcons.create />} onClick={addRow} disabled={!builderDate}>
+            <Button icon={<Icons.create />} onClick={addRow} disabled={!builderDate}>
               Afegir franja
             </Button>
             <span className={styles.muted}>

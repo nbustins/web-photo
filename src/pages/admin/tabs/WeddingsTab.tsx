@@ -17,8 +17,8 @@ import {
 import { AdminWedding, createAdminWedding, fetchAdminWeddings } from '../../../services/wedding/api/admin-wedding.api';
 import { fetchConfirmations } from '../../../services/wedding/api/confirmations.api';
 import { errorMessage } from '../../../services/error-messages';
-import { PageHeader } from '../components/PageHeader';
-import { AdminIcons } from '../icons';
+import { PageHeader } from '@ui/PageHeader';
+import { Icons } from '@ui/icons';
 import { useApiError } from '../useApiError';
 import styles from '../admin.module.css';
 
@@ -144,12 +144,12 @@ export const WeddingsTab: FC = () => {
         {isOpen(w) ? <Tag color="green">Confirmacions obertes</Tag> : <Tag>Tancat</Tag>}
       </span>
       <span className={styles.weddingMeta}>
-        <span className={styles.iconText}><AdminIcons.guests /> {w.guestCount} convidats</span>
+        <span className={styles.iconText}><Icons.guests /> {w.guestCount} convidats</span>
         {w.closingDate && <span className={styles.muted}>Tancament {formatDate(w.closingDate)}</span>}
       </span>
       <span className={styles.weddingFooter}>
-        <span className={styles.iconText}><AdminIcons.link /> /weddings/{w.slug}</span>
-        <span className={styles.iconText}>Veure confirmacions <AdminIcons.next /></span>
+        <span className={styles.iconText}><Icons.link /> /weddings/{w.slug}</span>
+        <span className={styles.iconText}>Veure confirmacions <Icons.next /></span>
       </span>
     </button>
   );
@@ -185,7 +185,7 @@ export const WeddingsTab: FC = () => {
         <div className={styles.toolbar}>
           <Input
             allowClear
-            prefix={<AdminIcons.search />}
+            prefix={<Icons.search />}
             placeholder="Cerca per nom de la parella o enllaç"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

@@ -28,13 +28,13 @@ import {
 } from '@ant-design/icons';
 
 /**
- * The admin panel's icon vocabulary. One meaning, one icon, defined here — add a case rather than
- * reaching into @ant-design/icons from a tab, or the language drifts.
+ * The shared icon vocabulary (admin panel, wedding manager). One meaning, one icon, defined here — add a case rather than
+ * reaching into @ant-design/icons from a page, or the language drifts.
  *
  * `retire` is deliberately not `remove`: retiring a session type unpublishes it (API spec 007
  * FR-8), it does not delete anything.
  */
-export const AdminIcons = {
+export const Icons = {
   create: PlusOutlined,
   edit: EditOutlined,
   copy: CopyOutlined,
@@ -62,7 +62,7 @@ export const AdminIcons = {
   link: LinkOutlined,
 } as const;
 
-export type IconName = keyof typeof AdminIcons;
+export type IconName = keyof typeof Icons;
 
 /**
  * Icon-only button. `label` is mandatory: it is both the tooltip and the accessible name, so an
@@ -72,7 +72,7 @@ export const IconButton: FC<Omit<ButtonProps, 'icon' | 'children'> & {
   icon: IconName;
   label: string;
 }> = ({ icon, label, ...buttonProps }) => {
-  const Icon = AdminIcons[icon];
+  const Icon = Icons[icon];
   return (
     <Tooltip title={label}>
       <Button {...buttonProps} icon={<Icon />} aria-label={label} />

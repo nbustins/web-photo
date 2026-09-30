@@ -69,7 +69,7 @@
   gap: var(--lt-space-2);
 }
 
-.pendingBadge {
+.badge {
   font-size: 12px;
   font-weight: 600;
   line-height: 20px;

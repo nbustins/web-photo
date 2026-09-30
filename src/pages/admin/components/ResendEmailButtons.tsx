@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Button, Popconfirm } from 'antd';
 import { AdminBooking } from '../../../services/booking/booking.admin.api';
-import { AdminIcons } from '../icons';
+import { Icons } from '@ui/icons';
 
 export type BookingEmailKind = 'requested' | 'confirmed';
 
@@ -25,7 +25,7 @@ export const ResendEmailButtons: FC<ResendEmailButtonsProps> = ({ booking, loadi
   const recipient = booking.clientEmail;
 
   if (!recipient) {
-    return <Button icon={<AdminIcons.email />} disabled>La reserva no té email</Button>;
+    return <Button icon={<Icons.email />} disabled>La reserva no té email</Button>;
   }
 
   return (
@@ -39,7 +39,7 @@ export const ResendEmailButtons: FC<ResendEmailButtonsProps> = ({ booking, loadi
           cancelText="Deixa-ho estar"
           onConfirm={() => onResend(kind)}
         >
-          <Button icon={<AdminIcons.email />} loading={loading}>{action}</Button>
+          <Button icon={<Icons.email />} loading={loading}>{action}</Button>
         </Popconfirm>
       ))}
     </>

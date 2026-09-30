@@ -2,9 +2,9 @@ import { FC } from 'react';
 import { Button } from 'antd';
 import { AppBar } from '@ui/AppBar';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
-import { AdminIcons, IconButton, IconName } from '../icons';
-import { useAdminShell } from '../adminShell';
-import styles from '../admin.module.css';
+import { Icons, IconButton, IconName } from './icons';
+import { useShell } from './shellContext';
+import styles from './PageHeader.module.css';
 
 export interface HeaderAction {
   label: string;
@@ -23,14 +23,14 @@ const onBrand = { color: 'var(--lt-color-text-on-brand)' };
  */
 export const PageHeader: FC<{ title: string; actions?: HeaderAction[] }> = ({ title, actions = [] }) => {
   const isMobile = useIsMobile();
-  const { openMenu } = useAdminShell();
+  const { openMenu } = useShell();
 
   if (isMobile) {
     return (
       <AppBar
         title={
           <span className={styles.mobileTitle}>
-            <Button type="text" icon={<AdminIcons.menu />} aria-label="Obrir menú" onClick={openMenu} style={onBrand} />
+            <Button type="text" icon={<Icons.menu />} aria-label="Obrir menú" onClick={openMenu} style={onBrand} />
             {title}
           </span>
         }
@@ -50,7 +50,7 @@ export const PageHeader: FC<{ title: string; actions?: HeaderAction[] }> = ({ ti
       <h1 className={styles.pageTitle}>{title}</h1>
       <span className={styles.headerActions}>
         {actions.map((a) => {
-          const Icon = AdminIcons[a.icon];
+          const Icon = Icons[a.icon];
           return a.primary ? (
             <Button key={a.label} type="primary" icon={<Icon />} onClick={a.onClick}>{a.label}</Button>
           ) : (

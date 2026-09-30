@@ -3,9 +3,9 @@ import { App, Badge, Button, Calendar, Collapse, DatePicker, Empty, Input, Segme
 import dayjs, { type Dayjs } from 'dayjs';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
-import { AdminIcons, IconButton } from '../icons';
+import { Icons, IconButton } from '@ui/icons';
 import { BookingDetail } from '../components/BookingDetail';
-import { PageHeader } from '../components/PageHeader';
+import { PageHeader } from '@ui/PageHeader';
 import { useAdminShell } from '../adminShell';
 import type { BookingEmailKind } from '../components/ResendEmailButtons';
 import {
@@ -71,7 +71,7 @@ const BookingRow: FC<BookingRowProps> = ({ booking: b, typeName, compact, onOpen
     {!compact && (
       <span>{b.contractSignedAt ? <Tag color="green">Contracte signat</Tag> : <Tag>Contracte pendent</Tag>}</span>
     )}
-    {!compact && <AdminIcons.next className={styles.rowChevron} />}
+    {!compact && <Icons.next className={styles.rowChevron} />}
   </button>
 );
 
@@ -329,7 +329,7 @@ export const BookingsTab: FC = () => {
           <span className={styles.spacer} />
           <Input
             allowClear
-            prefix={<AdminIcons.search />}
+            prefix={<Icons.search />}
             placeholder="Cerca per nom, telèfon o email"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -344,8 +344,8 @@ export const BookingsTab: FC = () => {
             value={view}
             onChange={setView}
             options={[
-              { value: 'list', icon: <AdminIcons.list />, label: isMobile ? undefined : 'Llista', title: 'Llista' },
-              { value: 'calendar', icon: <AdminIcons.calendar />, label: isMobile ? undefined : 'Calendari', title: 'Calendari' },
+              { value: 'list', icon: <Icons.list />, label: isMobile ? undefined : 'Llista', title: 'Llista' },
+              { value: 'calendar', icon: <Icons.calendar />, label: isMobile ? undefined : 'Calendari', title: 'Calendari' },
             ]}
           />
         </div>

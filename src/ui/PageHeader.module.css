@@ -1,0 +1,35 @@
+.pageHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lt-space-3);
+  padding: 0 var(--lt-space-8);
+  background: var(--lt-paper-100);
+  border-bottom: 1px solid var(--lt-color-border-subtle);
+}
+
+.pageTitle {
+  margin: 0;
+  font-family: var(--lt-font-display);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--lt-color-text-primary);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--lt-space-2);
+}
+
+.mobileTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--lt-space-2);
+  margin-left: calc(-1 * var(--lt-space-3));
+}

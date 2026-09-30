@@ -4,8 +4,8 @@ import dayjs, { type Dayjs } from 'dayjs';
 import {
   BlockedPeriod, createBlockedPeriod, deleteBlockedPeriod, fetchBlockedPeriods,
 } from '../../../services/booking/booking.admin.api';
-import { AdminIcons, IconButton } from '../icons';
-import { PageHeader } from '../components/PageHeader';
+import { Icons, IconButton } from '@ui/icons';
+import { PageHeader } from '@ui/PageHeader';
 import { useApiError } from '../useApiError';
 import styles from '../admin.module.css';
 
@@ -55,7 +55,7 @@ export const BlockedTab: FC = () => {
           <div className={styles.blockForm}>
             <RangePicker value={blockRange} onChange={(v) => setBlockRange(v as [Dayjs, Dayjs] | null)} />
             <Input placeholder="Motiu (opcional)" value={blockReason} onChange={(e) => setBlockReason(e.target.value)} />
-            <Button type="primary" block icon={<AdminIcons.block />} onClick={addBlock} disabled={!blockRange}>
+            <Button type="primary" block icon={<Icons.block />} onClick={addBlock} disabled={!blockRange}>
               Bloquejar aquests dies
             </Button>
           </div>

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button, Input, Space } from 'antd';
-import { AdminIcons, IconButton } from '../icons';
+import { Icons, IconButton } from '@ui/icons';
 
 /**
  * Ordered feature list of a pricing card (API spec 007 QC5): add / remove / move up-down.
@@ -35,7 +35,7 @@ export const FeaturesEditor: FC<{
           <IconButton icon="remove" label="Esborrar línia" danger onClick={() => emit(value.filter((_, i) => i !== index))} />
         </Space.Compact>
       ))}
-      <Button icon={<AdminIcons.create />} onClick={() => emit([...value, ''])} block>
+      <Button icon={<Icons.create />} onClick={() => emit([...value, ''])} block>
         Afegir línia
       </Button>
     </Space>

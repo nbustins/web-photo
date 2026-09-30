@@ -14,8 +14,8 @@ import {
 import type { SessionType } from '../../../services/booking/booking.api';
 import { useApiError } from '../useApiError';
 import { FeaturesEditor } from '../components/FeaturesEditor';
-import { PageHeader } from '../components/PageHeader';
-import { AdminIcons, IconButton } from '../icons';
+import { PageHeader } from '@ui/PageHeader';
+import { Icons, IconButton } from '@ui/icons';
 import styles from '../admin.module.css';
 
 const { RangePicker } = DatePicker;
@@ -205,7 +205,7 @@ export const SessionsTab: FC = () => {
         </div>
       )}
       <button type="button" className={styles.addDashed} onClick={newGroup}>
-        <AdminIcons.create /> Nou grup
+        <Icons.create /> Nou grup
       </button>
       <p className={styles.hint}>Cada grup és una pàgina de servei del web (Recent Nascut, Embaràs…).</p>
     </aside>

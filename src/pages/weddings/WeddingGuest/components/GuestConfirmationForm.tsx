@@ -1,12 +1,10 @@
 import { FC } from 'react';
-import { Alert, Form, Input, Switch, Button, FormInstance, Typography } from 'antd';
+import { Alert, Form, Button, FormInstance } from 'antd';
 import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import type { Invitation } from '../../../../model/wedding.types';
 import type { InvitationFormValues } from '../WeddingGuestPage.types';
-import shared from './GuestShared.module.css';
+import { GuestFormFields } from './GuestFormFields';
 import styles from './GuestConfirmationForm.module.css';
-
-const { Text } = Typography;
 
 interface GuestConfirmationFormProps {
   title: string;
@@ -41,51 +39,7 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
         onFinish={onFinish}
         className={styles.form}
       >
-        <Form.Item
-          label={<span className={shared.label}>Qui assistirà a la celebració?</span>}
-          className={styles.guestsItem}
-        >
-          <Form.List name="guests">
-            {(fields) =>
-              fields.map((field) => (
-                <div key={field.key} className={shared.guestRow}>
-                  <Form.Item name={[field.name, 'id']} hidden noStyle>
-                    <input type="hidden" />
-                  </Form.Item>
-                  <Form.Item name={[field.name, 'name']} hidden noStyle>
-                    <input type="hidden" />
-                  </Form.Item>
-                  <Text className={styles.guestName}>
-                    {form.getFieldValue(['guests', field.name, 'name'])}
-                  </Text>
-                  <Form.Item
-                    name={[field.name, 'attending']}
-                    valuePropName="checked"
-                    noStyle
-                  >
-                    <Switch
-                      checkedChildren="Vinc"
-                      unCheckedChildren="No vinc"
-                    />
-                  </Form.Item>
-                </div>
-              ))
-            }
-          </Form.List>
-        </Form.Item>
-
-        <Form.Item
-          name="notes"
-          label={<span className={shared.label}>Observacions (al·lèrgies, menú especial, etc.)</span>}
-        >
-          <Input.TextArea
-            rows={3}
-            placeholder="Escriu les teves observacions aquí..."
-            className={shared.input}
-            showCount
-            maxLength={500}
-          />
-        </Form.Item>
+        <GuestFormFields invitation={invitation} form={form} />
 
         {submitError && (
           <Form.Item>

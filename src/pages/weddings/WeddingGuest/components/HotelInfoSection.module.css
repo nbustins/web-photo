@@ -1,0 +1,42 @@
+.hotel {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-caption);
+  line-height: 1.5;
+  color: var(--lt-color-text-primary);
+}
+
+.hotel h3,
+.hotel h4 {
+  margin: 0 0 var(--lt-space-1);
+  font-family: var(--lt-font-body);
+  font-weight: 600;
+  color: var(--lt-color-text-primary);
+}
+
+.hotel h3 {
+  font-size: var(--lt-text-body);
+}
+
+.hotel h4 {
+  font-size: var(--lt-text-caption);
+}
+
+.hotel p {
+  margin: 0 0 var(--lt-space-2);
+}
+
+.hotel ul,
+.hotel ol {
+  margin: 0 0 var(--lt-space-2);
+  padding-left: var(--lt-space-5);
+  line-height: 1.6;
+}
+
+.hotel a {
+  color: var(--lt-color-brand-strong);
+  font-weight: 600;
+}
+
+.hotel > :last-child {
+  margin-bottom: 0;
+}

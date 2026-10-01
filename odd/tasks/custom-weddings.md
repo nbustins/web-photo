@@ -59,13 +59,13 @@ server-side closingDate enforcement, per-field error paths.
 - Delivery: `ask-on-risk`; forecast ~600–800 authored lines for phase 1.
 
 ## Tasks
-- [ ] T1 Data layer: types (`WeddingFeatures`, `SongRequest`, guest fields), wedding
+- [x] T1 Data layer: types (`WeddingFeatures`, `SongRequest`, guest fields), wedding
       service confirm payload/response, MSW fixtures (one wedding all features on, one all
       off) + handlers enforcing contract rules (FEATURE_IS_DISABLED, limits, non-attending
       clearing). Includes the admin data layer too (settings PUT, create fields, admin GETs,
       confirmations list) so the full contract can go to the backend after T1. Route:
       delegated (4+ files).
-- [ ] T2 Guest card sections: extract `GuestAttendanceSection`; add `TransportSection`,
+- [x] T2 Guest card sections: extract `GuestAttendanceSection`; add `TransportSection`,
       `AllergensSection`, `SongRequestsSection`, `HotelInfoSection` (+ dompurify);
       wire form values ↔ payload in `WeddingGuestPage`; notes label change. Route: delegated
       (2+ non-trivial files).
@@ -93,5 +93,27 @@ server-side closingDate enforcement, per-field error paths.
   paths globally (FE does not read `errors` outside mocks today → no impact). Backend will
   publish `docs/contracts/custom-weddings.json` when done.
 
+- T1 committed `9000299` (user authorized committing by parts). RDD assess: medium
+  (476 lines, already over the ~400 slice budget → slice closed at T1). Consent relayed;
+  user declined review for this candidate. The decline invocation itself was refused
+  (`invalid_request`: untracked files appeared from the concurrent T2 writer); a decline
+  persists nothing, so delivery follows ordinary policy.
+
+- T2 implemented by delegated writer (uncommitted): new GuestAttendanceSection,
+  HotelInfoSection (+css, dompurify ^3.4.16), TransportSection, AllergensSection,
+  SongRequestsSection, GuestSections.module.css, GuestFormFields (shared card body — mobile
+  layout had a duplicated form, now both desktop and mobile render GuestFormFields);
+  `close` icon added to `@ui/icons`; page hydration/payload per contract.
+- T2 checks: `npx tsc -b` clean, `npm run build` OK, `check-tokens.sh` OK (writer);
+  `npx eslint .` 0 errors / 4 pre-existing warnings (parent re-run). Browser check pending
+  (user).
+
+- Backend implemented the contract; OpenAPI `wedding-manager-api/docs/contracts/custom-weddings.json`
+  checked against FE services/mocks (read-only delegated compare): compatible, no breaking
+  mismatch. Asked backend to document per-allergen 100 chars, non-nullable fields, required
+  guestFile. Backend extras: create 201 returns imported invitations; confirm absent/null
+  songRequests keeps list; disabled-feature data wiped on confirm (pending user: FE
+  recommends keep). Follow-up: `GET api/weddings/{id}` has no FE caller yet (T3).
+
 ## Next step
-Commit T1 (pending user OK), then T2 guest sections.
+User tries T2 in `npm run dev:mock` (marta-pau/SOLER003, anna-joan/GARCIA01), then commit T2.

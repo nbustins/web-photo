@@ -108,6 +108,20 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
     init();
   }, [code]);
 
+  const hydrateForm = (inv: Invitation) => {
+    form.setFieldsValue({
+      notes: inv.notes ?? undefined,
+      guests: inv.guests.map(g => ({
+        id: g.id,
+        name: g.name,
+        attending: g.attending ?? false,
+        usesTransportToHotel: g.usesTransportToHotel ?? false,
+        allergens: g.allergens ?? [],
+      })),
+      songRequests: inv.songRequests ?? [],
+    });
+  };
+
   const validateCode = async (inviteCode: string) => {
     setPageState('loading');
     const found = await guestService.getInvitation(slug, inviteCode);
@@ -124,14 +138,7 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
     }
 
     setInvitation(found);
-    form.setFieldsValue({
-      notes: found.notes ?? undefined,
-      guests: found.guests.map(g => ({
-        id: g.id,
-        name: g.name,
-        attending: g.attending ?? false,
-      })),
-    });
+    hydrateForm(found);
     setPageState('form');
   };
 
@@ -141,8 +148,12 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
     }
   };
 
-  const handleFormSubmit = async (values: InvitationFormValues) => {
+  const handleFormSubmit = async (submitted: InvitationFormValues) => {
     if (!invitation) return;
+
+    // Fields owned by custom controls (allergens, songs) are only guaranteed in the full store.
+    const values: InvitationFormValues = { ...submitted, ...form.getFieldsValue(true) };
+    const { features } = invitation;
 
     setSubmitting(true);
     setSubmitError(null);
@@ -151,13 +162,31 @@ export const WeddingGuestPage: FC<WeddingGuestPageProps> = ({ slug, images = [],
       slug,
       inviteCode: invitation.inviteCode,
       notes: values.notes || null,
-      guests: values.guests.map(g => ({ id: g.id, name: g.name, attending: g.attending })),
+      // Full replace: every guest is always sent. Feature fields only when the feature is on;
+      // non-attending guests carry null / [] (the server stores the same).
+      guests: values.guests.map(g => ({
+        id: g.id,
+        name: g.name,
+        attending: g.attending,
+        ...(features.transportToHotel && {
+          usesTransportToHotel: g.attending ? (g.usesTransportToHotel ?? false) : null,
+        }),
+        ...(features.allergens && { allergens: g.attending ? (g.allergens ?? []) : [] }),
+      })),
+      ...(features.songRequests && {
+        songRequests: (values.songRequests ?? []).map(s => ({ title: s.title, artist: s.artist || null })),
+      }),
     };
 
     const result = await guestService.saveConfirmation(payload);
     setSubmitting(false);
 
     if (result.success) {
+      if (result.invitation) {
+        // The response is the new source of truth.
+        setInvitation(result.invitation);
+        hydrateForm(result.invitation);
+      }
       setAttendingCount(values.guests.filter(g => g.attending).length);
       setPageState('success');
     } else {

@@ -5,6 +5,7 @@ import {
   ArrowDownOutlined,
   ArrowUpOutlined,
   CalendarOutlined,
+  CloseOutlined,
   ClockCircleOutlined,
   CopyOutlined,
   DeleteOutlined,
@@ -36,6 +37,7 @@ import {
  */
 export const Icons = {
   create: PlusOutlined,
+  close: CloseOutlined,
   edit: EditOutlined,
   copy: CopyOutlined,
   remove: DeleteOutlined,

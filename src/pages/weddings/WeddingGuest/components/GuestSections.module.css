@@ -1,0 +1,172 @@
+/* Shared by the optional guest-card sections (hotel, transport, allergens, songs). */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-3);
+  border-top: 1px solid var(--lt-color-border-subtle);
+  padding-top: var(--lt-space-5);
+  margin-bottom: var(--lt-space-5);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lt-space-3);
+}
+
+.label {
+  composes: label from '../../../../ui/formStyles.module.css';
+  margin: 0;
+}
+
+.muted {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-caption);
+  color: var(--lt-color-text-muted);
+  margin: 0;
+}
+
+.guestRow {
+  composes: guestRow from './GuestShared.module.css';
+  min-height: 44px;
+  margin-bottom: 0;
+}
+
+.guestName {
+  font-family: var(--lt-font-body);
+  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  color: var(--lt-color-text-primary);
+}
+
+.guestNameStrong {
+  composes: guestName;
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--lt-space-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lt-space-1);
+  min-height: 32px;
+  padding: 0 var(--lt-space-1) 0 var(--lt-space-3);
+  border-radius: var(--lt-radius-pill);
+  background: var(--lt-color-surface-page);
+  border: 1px solid var(--lt-color-border-subtle);
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-caption);
+  color: var(--lt-color-text-primary);
+}
+
+/* 28px visual, 44px touch target via the pseudo-element. */
+.chipRemove {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--lt-color-brand-strong);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chipRemove::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
+.chipRemove:focus-visible,
+.suggestion:focus-visible {
+  outline: 2px solid var(--lt-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.suggestion {
+  min-height: 44px;
+  padding: 0 var(--lt-space-3);
+  border-radius: var(--lt-radius-pill);
+  border: 1px dashed var(--lt-color-border-subtle);
+  background: transparent;
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-caption);
+  color: var(--lt-color-brand-strong);
+  cursor: pointer;
+}
+
+.suggestion:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.addRow {
+  display: flex;
+  gap: var(--lt-space-2);
+}
+
+.addInput {
+  composes: input from '../../../../ui/formStyles.module.css';
+  min-height: 44px;
+}
+
+.addButton {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+
+.guestBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-2);
+}
+
+.song {
+  display: flex;
+  align-items: center;
+  gap: var(--lt-space-3);
+  min-height: 52px;
+  padding: var(--lt-space-1) var(--lt-space-1) var(--lt-space-1) var(--lt-space-4);
+  border-radius: var(--lt-radius-lg);
+  background: var(--lt-color-surface-page);
+}
+
+.songText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.songTitle {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-caption);
+  font-weight: 600;
+  color: var(--lt-color-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.songRemove {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.songForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-2);
+  padding: var(--lt-space-3);
+  border: 1px dashed var(--lt-color-border-subtle);
+  border-radius: var(--lt-radius-lg);
+}

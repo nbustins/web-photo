@@ -1,8 +1,9 @@
 import { FC } from 'react';
-import { Alert, Spin, Typography, Input, Button, Space, Form, Switch } from 'antd';
+import { Alert, Spin, Typography, Input, Button, Space, Form } from 'antd';
 import type { WeddingGuestPageContext } from '../WeddingGuestPage.types';
 import { MobileShell } from '@ui/MobileShell';
 import shared from './GuestShared.module.css';
+import { GuestFormFields } from './GuestFormFields';
 import styles from './GuestMobileLayout.module.css';
 
 const { Title, Text } = Typography;
@@ -110,48 +111,7 @@ export const GuestMobileLayout: FC<MobileLayoutProps> = ({
               onFinish={onFormSubmit}
               className={styles.form}
             >
-              <Form.Item
-                label={<span className={styles.label}>Qui assistirà a la celebració?</span>}
-                className={styles.guestsItem}
-              >
-                <Form.List name="guests">
-                  {(fields) =>
-                    fields.map((field) => (
-                      <div key={field.key} className={shared.guestRow}>
-                        <Form.Item name={[field.name, 'id']} hidden noStyle>
-                          <input type="hidden" />
-                        </Form.Item>
-                        <Form.Item name={[field.name, 'name']} hidden noStyle>
-                          <input type="hidden" />
-                        </Form.Item>
-                        <Text className={styles.guestName}>
-                          {form.getFieldValue(['guests', field.name, 'name'])}
-                        </Text>
-                        <Form.Item
-                          name={[field.name, 'attending']}
-                          valuePropName="checked"
-                          noStyle
-                        >
-                          <Switch checkedChildren="Vinc" unCheckedChildren="No vinc" />
-                        </Form.Item>
-                      </div>
-                    ))
-                  }
-                </Form.List>
-              </Form.Item>
-
-              <Form.Item
-                name="notes"
-                label={<span className={styles.label}>Observacions (al·lèrgies, menú especial, etc.)</span>}
-              >
-                <Input.TextArea
-                  rows={3}
-                  placeholder="Escriu les teves observacions aquí..."
-                  className={shared.input}
-                  showCount
-                  maxLength={500}
-                />
-              </Form.Item>
+              <GuestFormFields invitation={invitation} form={form} compact />
 
               {submitError && (
                 <Form.Item>

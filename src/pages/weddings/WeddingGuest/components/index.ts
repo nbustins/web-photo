@@ -5,3 +5,4 @@ export { GuestLoadingState } from './GuestLoadingState';
 export { GuestMobileLayout } from './GuestMobileLayout';
 export { GuestNotFoundState } from './GuestNotFoundState';
 export { GuestSuccessState } from './GuestSuccessState';
+export { GuestFormFields } from './GuestFormFields';

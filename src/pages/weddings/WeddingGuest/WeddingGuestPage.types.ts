@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { FormInstance } from 'antd';
-import type { Wedding, Invitation } from '../../../model/wedding.types';
+import type { Wedding, Invitation, SongRequest } from '../../../model/wedding.types';
 
 export type PageState = 'loading' | 'enter-code' | 'not-found' | 'closed' | 'form' | 'success';
 
@@ -8,11 +8,15 @@ export interface GuestFormValue {
   id: number;
   name: string;
   attending: boolean;
+  /** Only meaningful while the transport section is shown; unanswered reads as "No". */
+  usesTransportToHotel?: boolean;
+  allergens?: string[];
 }
 
 export interface InvitationFormValues {
   notes?: string;
   guests: GuestFormValue[];
+  songRequests?: SongRequest[];
 }
 
 export interface WeddingGuestPageContext {

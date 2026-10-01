@@ -20,6 +20,7 @@ export type ErrorCode =
   | 'GUEST_FILE_REQUIRED'
   | 'INVITATION_NOT_FOUND'
   | 'GUEST_LIMIT_EXCEEDED'
+  | 'FEATURE_IS_DISABLED'
   // sessions
   | 'SESSION_TYPE_NOT_FOUND'
   | 'SESSION_GROUP_NOT_FOUND'
@@ -67,6 +68,7 @@ export const ERROR_MESSAGE: Record<ErrorCode, string> = {
   GUEST_FILE_REQUIRED: 'Cal el fitxer de convidats.',
   INVITATION_NOT_FOUND: "No s'ha trobat la invitació.",
   GUEST_LIMIT_EXCEEDED: "S'ha superat el nombre màxim de convidats.",
+  FEATURE_IS_DISABLED: "Aquesta funcionalitat no està activada per a aquesta boda.",
 
   SESSION_TYPE_NOT_FOUND: "No s'ha trobat el tipus de sessió.",
   SESSION_GROUP_NOT_FOUND: "No s'ha trobat el grup de sessions.",

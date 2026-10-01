@@ -1,11 +1,12 @@
 import { apiGet, ApiError } from '../../api.client';
-import type { Wedding } from '../../../model/wedding.types';
+import type { Wedding, WeddingFeatures } from '../../../model/wedding.types';
 import { imageUrl } from '../../../utils/pathUtils';
 
 interface PublicWeddingDto {
   slug: string;
   title: string;
   eventDate: string | null;
+  features: WeddingFeatures;
 }
 
 function mapPublicWedding(dto: PublicWeddingDto): Wedding {
@@ -15,6 +16,7 @@ function mapPublicWedding(dto: PublicWeddingDto): Wedding {
     title: dto.title,
     event_date: dto.eventDate ?? '',
     closing_date: dto.eventDate ?? '',
+    features: dto.features,
   };
 }
 
@@ -47,6 +49,8 @@ interface WeddingSummaryDto {
   slug: string;
   title: string;
   eventDate: string | null;
+  features: WeddingFeatures;
+  hotelInfo: string | null;
 }
 
 export async function fetchAuthWeddingBySlug(slug: string): Promise<{ id: number; wedding: Wedding } | null> {
@@ -60,6 +64,8 @@ export async function fetchAuthWeddingBySlug(slug: string): Promise<{ id: number
         title: dto.title,
         event_date: dto.eventDate ?? '',
         closing_date: dto.eventDate ?? '',
+        features: dto.features,
+        hotelInfo: dto.hotelInfo,
       },
     };
   } catch (err) {

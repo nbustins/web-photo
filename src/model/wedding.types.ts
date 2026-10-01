@@ -1,3 +1,15 @@
+export interface WeddingFeatures {
+  hotelInfo: boolean;
+  transportToHotel: boolean;
+  songRequests: boolean;
+  allergens: boolean;
+}
+
+export interface SongRequest {
+  title: string;
+  artist: string | null;
+}
+
 export interface Wedding {
   id: string;
   slug: string;
@@ -8,6 +20,9 @@ export interface Wedding {
   event_date: string;
   closing_date: string;
   manager_code?: string;
+  features?: WeddingFeatures;
+  /** Admin-only; the public wedding endpoint never returns it. */
+  hotelInfo?: string | null;
 }
 
 // --- Public invitation model ---
@@ -17,6 +32,10 @@ export interface InvitationGuest {
   name: string;
   isPredefined: boolean;
   attending: boolean | null;
+  /** Present only when features.transportToHotel is on; null for non-attending guests. */
+  usesTransportToHotel?: boolean | null;
+  /** Present only when features.allergens is on. */
+  allergens?: string[];
 }
 
 export interface Invitation {
@@ -29,16 +48,33 @@ export interface Invitation {
   notes: string | null;
   slug: string;
   guests: InvitationGuest[];
+  features: WeddingFeatures;
+  /** Sanitize before rendering. Present only when features.hotelInfo is on. */
+  hotelInfo?: string | null;
+  /** Present only when features.songRequests is on. */
+  songRequests?: SongRequest[];
 }
 
 export interface ConfirmInvitationPayload {
   slug: string;
   inviteCode: string;
   notes: string | null;
-  guests: { id: number; name: string; attending: boolean | null }[];
+  guests: {
+    id: number;
+    name: string;
+    attending: boolean | null;
+    usesTransportToHotel?: boolean | null;
+    allergens?: string[];
+  }[];
+  songRequests?: SongRequest[];
 }
 
 // --- Admin model ---
+
+export interface UpdateWeddingSettingsPayload {
+  features: WeddingFeatures;
+  hotelInfo: string | null;
+}
 
 export interface ConfirmationRow {
   invitationId: number;
@@ -51,6 +87,8 @@ export interface ConfirmationRow {
   guestName: string;
   isPredefined: boolean;
   guestAttending: boolean | null;
+  usesTransportToHotel: boolean | null;
+  allergens: string[];
 }
 
 export interface Guest {

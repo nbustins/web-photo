@@ -12,6 +12,8 @@ interface ConfirmationListDto {
   guestName: string;
   isPredefined: boolean;
   guestAttending: boolean | null;
+  usesTransportToHotel?: boolean | null;
+  allergens?: string[];
 }
 
 function mapRow(dto: ConfirmationListDto): ConfirmationRow {
@@ -26,6 +28,8 @@ function mapRow(dto: ConfirmationListDto): ConfirmationRow {
     guestName: dto.guestName,
     isPredefined: dto.isPredefined,
     guestAttending: dto.guestAttending,
+    usesTransportToHotel: dto.usesTransportToHotel ?? null,
+    allergens: dto.allergens ?? [],
   };
 }
 

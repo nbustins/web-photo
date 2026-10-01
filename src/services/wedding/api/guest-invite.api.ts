@@ -1,11 +1,13 @@
 import { apiGet, apiPost, ApiError } from '../../api.client';
-import type { Invitation, ConfirmInvitationPayload } from '../../../model/wedding.types';
+import type { Invitation, ConfirmInvitationPayload, WeddingFeatures, SongRequest } from '../../../model/wedding.types';
 
 interface InvitationGuestDto {
   id: number;
   name: string;
   isPredefined: boolean;
   attending: boolean | null;
+  usesTransportToHotel?: boolean | null;
+  allergens?: string[];
 }
 
 interface InvitationDto {
@@ -17,11 +19,21 @@ interface InvitationDto {
   eventDate: string | null;
   notes: string | null;
   guests: InvitationGuestDto[];
+  features: WeddingFeatures;
+  hotelInfo?: string | null;
+  songRequests?: SongRequest[];
 }
 
 interface ConfirmInvitationRequest {
   notes: string | null;
-  guests: { id: number | null; name: string; attending: boolean | null }[];
+  guests: {
+    id: number | null;
+    name: string;
+    attending: boolean | null;
+    usesTransportToHotel?: boolean | null;
+    allergens?: string[];
+  }[];
+  songRequests?: SongRequest[];
 }
 
 function mapInvitation(dto: InvitationDto, slug: string): Invitation {
@@ -39,7 +51,12 @@ function mapInvitation(dto: InvitationDto, slug: string): Invitation {
       name: g.name,
       isPredefined: g.isPredefined,
       attending: g.attending,
+      usesTransportToHotel: g.usesTransportToHotel,
+      allergens: g.allergens,
     })),
+    features: dto.features,
+    hotelInfo: dto.hotelInfo,
+    songRequests: dto.songRequests,
   };
 }
 
@@ -58,7 +75,14 @@ export async function fetchGuestInvite(slug: string, code: string): Promise<Invi
 export async function postConfirmInvite(payload: ConfirmInvitationPayload): Promise<Invitation> {
   const body: ConfirmInvitationRequest = {
     notes: payload.notes,
-    guests: payload.guests.map(g => ({ id: g.id, name: g.name, attending: g.attending })),
+    guests: payload.guests.map(g => ({
+      id: g.id,
+      name: g.name,
+      attending: g.attending,
+      usesTransportToHotel: g.usesTransportToHotel,
+      allergens: g.allergens,
+    })),
+    songRequests: payload.songRequests,
   };
   const dto = await apiPost<InvitationDto, ConfirmInvitationRequest>(
     `/api/public/weddings/${encodeURIComponent(payload.slug)}/invites/${encodeURIComponent(payload.inviteCode)}/confirm`,

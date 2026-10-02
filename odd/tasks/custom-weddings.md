@@ -69,7 +69,25 @@ server-side closingDate enforcement, per-field error paths.
       `AllergensSection`, `SongRequestsSection`, `HotelInfoSection` (+ dompurify);
       wire form values ↔ payload in `WeddingGuestPage`; notes label change. Route: delegated
       (2+ non-trivial files).
-- [ ] T3 Phase 2 admin (to be detailed after phase 1).
+- [x] T3 Wedding manager (`/weddings/:slug/manager`) — design approved 2026-10-01, canvas
+      row "Wedding manager" (boards M1–M3), not implemented:
+      - M1 Confirmacions: remove Notes column; add "Bus a l'hotel" (Sí/No/—/Sense resposta)
+        and "Al·lèrgies" (chips / "Cap") columns; stats + quick filters "Amb bus",
+        "Amb al·lèrgies". Each column/stat/filter only when its feature is on.
+      - M2 Cançons: new sidebar item (only if features.songRequests): songs aggregated from
+        all invitations, deduped, sorted by votes, "Proposada per" invitation tags, search,
+        "Copiar llista" / "Exportar per al DJ".
+      - M3 Invitation drawer (click invitation tag): per guest attendance + transport +
+        allergens, invitation songs, Observacions (notes moved here from the table).
+      - No settings in the manager (PUT settings is AdminOnly) — feature toggles + hotel
+        rich-text editor go to /admin Casaments (T4). Hotel info not shown in manager.
+      - Expand `marta-pau` mock fixtures (Família Vidal, Amics de la uni, Família Roca) to
+        match the design sample data. Mobile manager design still pending.
+      - 2026-10-02: user asked to implement desktop manager first (mobile redesign later;
+        mobile must keep working). Route: delegated writer (existing WeddingManager has 15+
+        files; mapping + 2+ non-trivial writes).
+- [ ] T4 Admin (/admin Casaments): feature toggles + hotel info rich-text editor (PUT settings,
+      create wedding fields). Design pending.
 
 ## Acceptance criteria
 - All features off → guest card identical to today.
@@ -115,5 +133,21 @@ server-side closingDate enforcement, per-field error paths.
   songRequests keeps list; disabled-feature data wiped on confirm (pending user: FE
   recommends keep). Follow-up: `GET api/weddings/{id}` has no FE caller yet (T3).
 
+- T2: user checked visually in dev:mock; committed `9cd2495`. RDD assess: medium (781
+  lines, package-lock) → consent relayed, user declined (decline recorded).
+
+- T3 implemented by delegated writer (uncommitted): Notes column removed; feature-gated
+  bus/allergens columns, stats, pill filters; drawer rewritten (guests + transport/allergens,
+  songs, Observacions, copy invite link); ManagerNotesModal deleted; WeddingsTab passes
+  all-off features until T4; marta-pau fixtures expanded (Vidal, Amics de la uni, Roca).
+  Song data from existing `GET api/weddings/{id}` (no new backend endpoint).
+  User decision 2026-10-02: songs screen is a plain sidebar item named "Música"
+  (route `/manager/musica`), not "Cançons". Export is CSV.
+- T3 checks: `npx tsc -b` clean, `npx eslint .` 0 errors / 4 pre-existing warnings (parent
+  re-run after rename); `npm run build` OK, `check-tokens.sh` OK (writer).
+- T3 follow-up: whole table row opens the drawer (tag no longer has its own handler).
+  User checked visually 2026-10-02 and authorized the commit.
+
 ## Next step
-User tries T2 in `npm run dev:mock` (marta-pau/SOLER003, anna-joan/GARCIA01), then commit T2.
+Next session: optionally design mobile manager, then implement T3. Pending user decision: keep vs wipe disabled-feature data on confirm (FE recommends keep).
+Then T3 phase 2 admin (settings toggles + hotel rich-text editor, confirmations columns).

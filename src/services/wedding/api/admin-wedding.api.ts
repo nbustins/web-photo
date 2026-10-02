@@ -1,5 +1,5 @@
 import { apiGet, apiPostForm, apiPut } from '../../api.client';
-import type { WeddingFeatures, UpdateWeddingSettingsPayload } from '../../../model/wedding.types';
+import type { WeddingFeatures, UpdateWeddingSettingsPayload, SongRequest, InvitationSongs } from '../../../model/wedding.types';
 
 export interface AdminWedding {
   id: number;
@@ -58,4 +58,18 @@ export interface WeddingSettingsDto {
 /** PUT /api/weddings/{id}/settings — replaces the feature flags and the hotel info HTML. */
 export function updateWeddingSettings(id: number, payload: UpdateWeddingSettingsPayload): Promise<WeddingSettingsDto> {
   return apiPut<WeddingSettingsDto, UpdateWeddingSettingsPayload>(`/api/weddings/${id}/settings`, payload);
+}
+
+interface WeddingDetailDto {
+  invitations: { id: number; label: string; songRequests?: SongRequest[] | null }[] | null;
+}
+
+/** GET /api/weddings/{id} — the only manager-readable source of per-invitation song requests. */
+export async function fetchInvitationSongs(id: number): Promise<InvitationSongs[]> {
+  const dto = await apiGet<WeddingDetailDto>(`/api/weddings/${id}`);
+  return (dto.invitations ?? []).map(invitation => ({
+    invitationId: invitation.id,
+    label: invitation.label,
+    songRequests: invitation.songRequests ?? [],
+  }));
 }

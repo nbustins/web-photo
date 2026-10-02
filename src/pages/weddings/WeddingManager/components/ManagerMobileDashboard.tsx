@@ -23,7 +23,6 @@ interface ManagerMobileDashboardProps {
   /** Renders only the dashboard body, without its own header (for embedding in the admin panel). */
   embedded?: boolean;
   onSelectInvitation: (invitationId: number) => void;
-  onShowNote: (note: string) => void;
 }
 
 const NOTES_TRUNCATE = 90;
@@ -35,7 +34,6 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
   onLogout,
   embedded = false,
   onSelectInvitation,
-  onShowNote,
 }) => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<StatusFilter>('all');
@@ -107,15 +105,7 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
                 </div>
                 <LabelTag>{r.label}</LabelTag>
                 {r.notes && (
-                  <span
-                    onClick={(e) => {
-                      if (r.notes && r.notes.length > NOTES_TRUNCATE) {
-                        e.stopPropagation();
-                        onShowNote(r.notes);
-                      }
-                    }}
-                    className={styles.rowNotes}
-                  >
+                  <span className={styles.rowNotes}>
                     {r.notes.length > NOTES_TRUNCATE ? `${r.notes.slice(0, NOTES_TRUNCATE)}…` : r.notes}
                   </span>
                 )}

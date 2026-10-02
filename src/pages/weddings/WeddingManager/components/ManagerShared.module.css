@@ -93,15 +93,47 @@
   border-radius: var(--lt-radius-pill);
 }
 
-.notes {
+.chip {
+  display: inline-block;
   font-family: var(--lt-font-body);
-  font-size: 14px;
-  /* Gris càlid propi de les notes: no hi ha token semàntic per a text terciari. */
-  color: #8a8275;
+  font-size: 12px;
+  padding: 2px 8px;
+  margin: 2px 4px 2px 0;
+  border-radius: var(--lt-radius-pill);
+  color: var(--lt-color-text-brand);
+  background: rgba(174, 142, 116, 0.16);
+  border: 1px solid rgba(174, 142, 116, 0.5);
 }
 
-.notesClickable {
+.muted {
+  font-family: var(--lt-font-body);
+  color: var(--lt-color-text-muted);
+}
+
+.filterPill {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--lt-radius-pill);
+  border: 1px solid rgba(124, 116, 88, 0.4);
+  background: #fff;
+  font-family: var(--lt-font-body);
+  font-size: 13px;
+  color: var(--lt-color-text-primary);
   cursor: pointer;
+  transition: background var(--lt-duration-fast), color var(--lt-duration-fast);
+}
+
+.filterPillActive {
+  background: var(--lt-color-brand-strong);
+  border-color: var(--lt-color-brand-strong);
+  color: var(--lt-color-text-on-brand);
+}
+
+.filterSeparator {
+  width: 1px;
+  height: 24px;
+  margin: 0 6px;
+  background: var(--lt-color-border-subtle);
 }
 
 .notesEmpty {

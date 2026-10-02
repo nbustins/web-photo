@@ -1,8 +1,9 @@
-import type { Wedding, Invitation, ConfirmationRow, ConfirmInvitationPayload } from '../../model/wedding.types';
+import type { Wedding, Invitation, ConfirmationRow, InvitationSongs, ConfirmInvitationPayload } from '../../model/wedding.types';
 import type { GuestServiceProvider } from './types';
 import { fetchPublicWedding, fetchPublicWeddingPhotos, fetchAuthWeddingBySlug } from './api/public-wedding.api';
 import { fetchGuestInvite, postConfirmInvite } from './api/guest-invite.api';
 import { fetchConfirmations } from './api/confirmations.api';
+import { fetchInvitationSongs } from './api/admin-wedding.api';
 import { errorMessage } from '../error-messages';
 
 export class ApiGuestService implements GuestServiceProvider {
@@ -37,5 +38,11 @@ export class ApiGuestService implements GuestServiceProvider {
     const resolved = await fetchAuthWeddingBySlug(slug);
     if (!resolved) throw new Error('Boda no trobada');
     return fetchConfirmations(resolved.id);
+  }
+
+  async getInvitationSongs(slug: string): Promise<InvitationSongs[]> {
+    const resolved = await fetchAuthWeddingBySlug(slug);
+    if (!resolved) throw new Error('Boda no trobada');
+    return fetchInvitationSongs(resolved.id);
   }
 }

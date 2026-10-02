@@ -40,3 +40,9 @@ export const bookingContractPath = (token: string) => `${bookingPath(token)}/con
 export const weddingPath = (slug: string) => `/weddings/${slug}`;
 export const weddingManagerPath = (slug: string) => `/weddings/${slug}/manager`;
 export const weddingManagerSectionPath = (slug: string, section: string) => `${weddingManagerPath(slug)}/${section}`;
+
+/** Sections of the wedding manager, as they appear in `/weddings/:slug/manager/:section`. */
+export const ManagerSections = {
+  confirmacions: 'confirmacions',
+  musica: 'musica',
+} as const;

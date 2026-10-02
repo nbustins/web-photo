@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { PageHeader } from '@ui/PageHeader';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
+import { weddingPath } from '../../../model/routes.model';
 import type { InvitationSummary } from './WeddingManager.types';
 import { buildSummary, computeStats } from './manager.utils';
 import { useManagerShell } from './managerShell';
@@ -8,15 +10,14 @@ import {
   ManagerDesktopDashboard,
   ManagerInvitationDrawer,
   ManagerMobileDashboard,
-  ManagerNotesModal,
 } from './components';
 import styles from './WeddingManager.module.css';
 
 export const ConfirmacionsSection: FC = () => {
-  const { weddingTitle, rows } = useManagerShell();
+  const { slug = '' } = useParams<{ slug: string }>();
+  const { weddingTitle, rows, features, invitationSongs } = useManagerShell();
   const isMobile = useIsMobile();
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
-  const [noteModal, setNoteModal] = useState<string | null>(null);
 
   const dashboardProps = {
     weddingTitle,
@@ -25,18 +26,25 @@ export const ConfirmacionsSection: FC = () => {
     // The shell's Sortir owns logout; the embedded dashboards render no logout control.
     onLogout: () => {},
     embedded: true,
-    onSelectInvitation: (id: number) => setSelectedSummary(buildSummary(rows, id)),
-    onShowNote: (note: string) => setNoteModal(note),
+    onSelectInvitation: (id: number) => setSelectedSummary(buildSummary(rows, id, invitationSongs)),
   };
 
   return (
     <>
       <PageHeader title="Confirmacions" />
       <div className={styles.sectionBody}>
-        {isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} />}
+        {isMobile ? (
+          <ManagerMobileDashboard {...dashboardProps} />
+        ) : (
+          <ManagerDesktopDashboard {...dashboardProps} features={features} />
+        )}
       </div>
-      <ManagerNotesModal note={noteModal} onClose={() => setNoteModal(null)} />
-      <ManagerInvitationDrawer summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
+      <ManagerInvitationDrawer
+        summary={selectedSummary}
+        features={features}
+        inviteLink={code => `${window.location.href.split('#')[0]}#${weddingPath(slug)}?code=${encodeURIComponent(code)}`}
+        onClose={() => setSelectedSummary(null)}
+      />
     </>
   );
 };

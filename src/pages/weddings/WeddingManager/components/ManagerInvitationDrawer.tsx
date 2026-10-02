@@ -1,44 +1,112 @@
 import { FC } from 'react';
-import { Descriptions, Drawer, List, Space, Tag, Typography } from 'antd';
+import { Button, Drawer, message } from 'antd';
+import { Icons } from '@ui/icons';
+import type { WeddingFeatures } from '../../../../model/wedding.types';
 import type { InvitationSummary } from '../WeddingManager.types';
-import { StatusPill } from './ManagerShared';
+import { AllergensValue, StatusPill, TransportValue } from './ManagerShared';
 import shared from './ManagerShared.module.css';
-
-const { Title, Text } = Typography;
+import styles from './ManagerInvitationDrawer.module.css';
 
 interface ManagerInvitationDrawerProps {
   summary: InvitationSummary | null;
+  features: WeddingFeatures;
+  /** Builds the guest-facing link for an invitation code; omit to hide the copy action. */
+  inviteLink?: (inviteCode: string) => string;
   onClose: () => void;
 }
 
-export const ManagerInvitationDrawer: FC<ManagerInvitationDrawerProps> = ({ summary, onClose }) => (
-  <Drawer title={summary?.label} open={!!summary} onClose={onClose} width={360}>
-    {summary && (
-      <Space direction="vertical" style={{ width: '100%' }} size="middle">
-        <Descriptions column={1} size="small" bordered>
-          <Descriptions.Item label="Codi">
-            <Text copyable code>{summary.inviteCode}</Text>
-          </Descriptions.Item>
-          <Descriptions.Item label="Màx. afegits">{summary.maxAddedGuests}</Descriptions.Item>
-          {summary.notes && (
-            <Descriptions.Item label="Notes">{summary.notes}</Descriptions.Item>
-          )}
-        </Descriptions>
+const meta = (summary: InvitationSummary) =>
+  [
+    `Codi ${summary.inviteCode}`,
+    summary.email,
+    summary.maxAddedGuests > 0
+      ? `${summary.maxAddedGuests} acompanyant${summary.maxAddedGuests === 1 ? '' : 's'} permès${summary.maxAddedGuests === 1 ? '' : 'os'}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
 
-        <Title level={5} style={{ margin: 0 }}>Convidats</Title>
-        <List
-          size="small"
-          dataSource={summary.guests}
-          renderItem={guest => (
-            <List.Item extra={<StatusPill attending={guest.attending} />}>
-              <Space size={6}>
-                <span className={shared.guestName}>{guest.name}</span>
-                {!guest.isPredefined && <Tag className={shared.addedTag}>Afegit</Tag>}
-              </Space>
-            </List.Item>
+export const ManagerInvitationDrawer: FC<ManagerInvitationDrawerProps> = ({ summary, features, inviteLink, onClose }) => {
+  const copyLink = async () => {
+    if (!summary || !inviteLink) return;
+    try {
+      await navigator.clipboard.writeText(inviteLink(summary.inviteCode));
+      message.success("Enllaç copiat");
+    } catch {
+      message.error("No s'ha pogut copiar l'enllaç");
+    }
+  };
+
+  return (
+    <Drawer
+      title={summary && (
+        <div className={styles.header}>
+          <span className={styles.title}>{summary.label}</span>
+          <span className={styles.meta}>{meta(summary)}</span>
+        </div>
+      )}
+      open={!!summary}
+      onClose={onClose}
+      width={460}
+      footer={summary && inviteLink ? (
+        <Button icon={<Icons.link />} onClick={copyLink}>Copiar enllaç d'invitació</Button>
+      ) : undefined}
+    >
+      {summary && (
+        <div className={styles.body}>
+          <section className={styles.section}>
+            <h3 className={styles.sectionLabel}>Convidats</h3>
+            {summary.guests.map(guest => (
+              <div key={guest.id} className={styles.guest}>
+                <div className={styles.row}>
+                  <span className={styles.guestName}>
+                    {guest.name}
+                    {!guest.isPredefined && <span className={shared.addedTag}> Afegit</span>}
+                  </span>
+                  <StatusPill attending={guest.attending} />
+                </div>
+                {guest.attending === true && features.transportToHotel && (
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Bus a l'hotel</span>
+                    <TransportValue attending={guest.attending} usesTransport={guest.usesTransportToHotel} />
+                  </div>
+                )}
+                {guest.attending === true && features.allergens && (
+                  <div className={styles.row}>
+                    <span className={styles.rowLabel}>Al·lèrgies</span>
+                    <AllergensValue attending={guest.attending} allergens={guest.allergens} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </section>
+
+          {features.songRequests && (
+            <section className={styles.section}>
+              <h3 className={styles.sectionLabel}>Cançons proposades ({summary.songRequests.length})</h3>
+              {summary.songRequests.length === 0 ? (
+                <p className={shared.notesEmpty}>Cap cançó proposada.</p>
+              ) : (
+                summary.songRequests.map(song => (
+                  <div key={`${song.title}|${song.artist ?? ''}`} className={styles.song}>
+                    <span className={styles.songTitle}>{song.title}</span>
+                    <span className={shared.muted}>{song.artist || '—'}</span>
+                  </div>
+                ))
+              )}
+            </section>
           )}
-        />
-      </Space>
-    )}
-  </Drawer>
-);
+
+          <section className={styles.section}>
+            <h3 className={styles.sectionLabel}>Observacions</h3>
+            {summary.notes ? (
+              <p className={styles.notes}>{summary.notes}</p>
+            ) : (
+              <p className={shared.notesEmpty}>Sense observacions.</p>
+            )}
+          </section>
+        </div>
+      )}
+    </Drawer>
+  );
+};

@@ -5,14 +5,13 @@ import {
 import type { UploadFile } from 'antd';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
-import type { ConfirmationRow } from '../../../model/wedding.types';
+import type { ConfirmationRow, WeddingFeatures } from '../../../model/wedding.types';
 import type { InvitationSummary } from '../../weddings/WeddingManager/WeddingManager.types';
 import { buildSummary, computeStats } from '../../weddings/WeddingManager/manager.utils';
 import {
   ManagerDesktopDashboard,
   ManagerInvitationDrawer,
   ManagerMobileDashboard,
-  ManagerNotesModal,
 } from '../../weddings/WeddingManager/components';
 import { AdminWedding, createAdminWedding, fetchAdminWeddings } from '../../../services/wedding/api/admin-wedding.api';
 import { fetchConfirmations } from '../../../services/wedding/api/confirmations.api';
@@ -41,6 +40,9 @@ const isOpen = (w: AdminWedding) => !w.closingDate || new Date(w.closingDate).ge
 /** Undated weddings count as upcoming: they're still being set up. */
 const isUpcoming = (w: AdminWedding) => !w.eventDate || w.eventDate.slice(0, 10) >= dayjs().format('YYYY-MM-DD');
 
+/** The admin list does not load per-wedding features yet (T4); optional columns stay hidden here. */
+const ADMIN_FEATURES: WeddingFeatures = { hotelInfo: false, transportToHotel: false, songRequests: false, allergens: false };
+
 export const WeddingsTab: FC = () => {
   const onError = useApiError();
   const isMobile = useIsMobile();
@@ -57,7 +59,6 @@ export const WeddingsTab: FC = () => {
   const [rows, setRows] = useState<ConfirmationRow[]>([]);
   const [rowsLoading, setRowsLoading] = useState(false);
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
-  const [noteModal, setNoteModal] = useState<string | null>(null);
 
   const loadWeddings = () => {
     setLoading(true);
@@ -118,7 +119,6 @@ export const WeddingsTab: FC = () => {
     setSelected(null);
     setRows([]);
     setSelectedSummary(null);
-    setNoteModal(null);
   };
 
   const q = query.trim().toLowerCase();
@@ -168,7 +168,6 @@ export const WeddingsTab: FC = () => {
     onLogout: closeWedding,
     embedded: true,
     onSelectInvitation: (id: number) => setSelectedSummary(buildSummary(rows, id)),
-    onShowNote: (note: string) => setNoteModal(note),
   };
 
   const countLabel = (label: string, n: number) => (
@@ -229,7 +228,7 @@ export const WeddingsTab: FC = () => {
           <Spin />
         ) : (
           dashboardProps &&
-          (isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} />)
+          (isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} features={ADMIN_FEATURES} />)
         )}
       </Drawer>
 
@@ -288,8 +287,7 @@ export const WeddingsTab: FC = () => {
         </Form>
       </Drawer>
 
-      <ManagerNotesModal note={noteModal} onClose={() => setNoteModal(null)} />
-      <ManagerInvitationDrawer summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
+      <ManagerInvitationDrawer features={ADMIN_FEATURES} summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
     </>
   );
 };

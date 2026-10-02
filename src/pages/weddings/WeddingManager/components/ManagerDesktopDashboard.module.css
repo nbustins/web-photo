@@ -1,6 +1,17 @@
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: var(--lt-space-2);
   padding: var(--lt-space-2) 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--lt-space-2);
+}
+
+.clickableRow {
+  cursor: pointer;
 }

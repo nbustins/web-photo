@@ -4,11 +4,11 @@ import { Layout, Card, Typography, Form } from 'antd';
 import { guestService } from '../../../services/wedding/guest.provider';
 import { login, logout } from '../../../services/auth/auth.service';
 import { getUser } from '../../../services/auth/auth.store';
-import type { Wedding, ConfirmationRow } from '../../../model/wedding.types';
+import type { Wedding, ConfirmationRow, InvitationSongs, WeddingFeatures } from '../../../model/wedding.types';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
 import { LoginCard } from '@ui/LoginCard';
 import { AdminShell, ShellItem } from '@ui/AdminShell';
-import { weddingManagerSectionPath } from '../../../model/routes.model';
+import { ManagerSections, weddingManagerSectionPath } from '../../../model/routes.model';
 import type { LoginFormValues } from './WeddingManager.types';
 import type { ManagerShellContext } from './managerShell';
 import styles from './WeddingManager.module.css';
@@ -16,9 +16,7 @@ import styles from './WeddingManager.module.css';
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
-const SECTIONS: ShellItem[] = [
-  { key: 'confirmacions', label: 'Confirmacions', icon: 'guests' },
-];
+const NO_FEATURES: WeddingFeatures = { hotelInfo: false, transportToHotel: false, songRequests: false, allergens: false };
 
 type ManagerState = 'login' | 'loading' | 'error' | 'data';
 
@@ -29,6 +27,7 @@ export const WeddingManagerPage: FC = () => {
   const [weddingImages, setWeddingImages] = useState<string[]>([]);
   const [weddingNotFound, setWeddingNotFound] = useState(false);
   const [rows, setRows] = useState<ConfirmationRow[]>([]);
+  const [invitationSongs, setInvitationSongs] = useState<InvitationSongs[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm<LoginFormValues>();
@@ -49,9 +48,13 @@ export const WeddingManagerPage: FC = () => {
     if (!slug) return;
     setState('loading');
     try {
-      await loadWeddingVisuals();
-      const data = await guestService.getConfirmations(slug);
+      const loadedWedding = await loadWeddingVisuals();
+      const [data, songs] = await Promise.all([
+        guestService.getConfirmations(slug),
+        loadedWedding?.features?.songRequests ? guestService.getInvitationSongs(slug) : Promise.resolve([]),
+      ]);
       setRows(data);
+      setInvitationSongs(songs);
       setState('data');
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Error desconegut');
@@ -67,17 +70,18 @@ export const WeddingManagerPage: FC = () => {
       guestService.getWeddingPhotos(slug),
     ]);
 
-    setWedding(
+    const withImages =
       weddingData && photoUrls.length > 0
         ? {
             ...weddingData,
             hero_image: weddingData.hero_image ?? photoUrls[0],
             background_image: weddingData.background_image ?? photoUrls[0],
           }
-        : weddingData
-    );
+        : weddingData;
+    setWedding(withImages);
     setWeddingImages(photoUrls);
     setWeddingNotFound(weddingData === null);
+    return withImages;
   };
 
   const handleLogin = async ({ email, password }: LoginFormValues) => {
@@ -92,6 +96,7 @@ export const WeddingManagerPage: FC = () => {
   const handleLogout = () => {
     logout();
     setRows([]);
+    setInvitationSongs([]);
     form.resetFields();
     setState('login');
   };
@@ -138,14 +143,24 @@ export const WeddingManagerPage: FC = () => {
     );
   }
 
-  const outletContext: ManagerShellContext = { weddingTitle, rows };
+  const features = wedding?.features ?? NO_FEATURES;
+  const sections: ShellItem[] = [
+    {
+      key: ManagerSections.confirmacions,
+      label: 'Confirmacions',
+      icon: 'guests',
+      badge: rows.filter(r => r.guestAttending === null).length,
+    },
+    ...(features.songRequests ? [{ key: ManagerSections.musica, label: 'Música', icon: 'list' as const }] : []),
+  ];
+  const outletContext: ManagerShellContext = { weddingTitle, rows, features, invitationSongs };
 
   return (
     <AdminShell
       brandTitle={weddingTitle || 'Casament'}
       brandCaption="Gestió del casament"
-      items={SECTIONS}
-      activeKey={pathname.split('/')[4] ?? SECTIONS[0].key}
+      items={sections}
+      activeKey={pathname.split('/')[4] ?? sections[0].key}
       onSelect={(key) => navigate(weddingManagerSectionPath(slug ?? '', key))}
       onLogout={handleLogout}
       outletContext={outletContext}

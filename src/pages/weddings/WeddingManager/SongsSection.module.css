@@ -1,0 +1,43 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--lt-space-3);
+  margin-bottom: var(--lt-space-5);
+}
+
+.summary {
+  margin: 0;
+  font-family: var(--lt-font-body);
+  font-size: 15px;
+}
+
+.search {
+  width: 320px;
+  max-width: 100%;
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  border-radius: var(--lt-radius-pill);
+  background: var(--lt-color-brand-strong);
+  color: var(--lt-color-text-on-brand);
+  font-family: var(--lt-font-body);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.songTitle {
+  font-weight: 600;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lt-space-1);
+}

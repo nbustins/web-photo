@@ -91,6 +91,13 @@ export interface ConfirmationRow {
   allergens: string[];
 }
 
+/** Song requests of one invitation, as the manager reads them from `GET api/weddings/{id}`. */
+export interface InvitationSongs {
+  invitationId: number;
+  label: string;
+  songRequests: SongRequest[];
+}
+
 export interface Guest {
   id: string;
   wedding_id: string;

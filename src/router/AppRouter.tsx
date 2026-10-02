@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
-import { AppRoutes, bookingContractPath, bookingPath } from '../model/routes.model';
+import { AppRoutes, ManagerSections, bookingContractPath, bookingPath } from '../model/routes.model';
 import { MainLayout } from '../layouts/main.layout';
 import { HomePage } from '../pages/home.page';
 import { PregnantPage } from '../pages/pregnancy/pregnant.page';
@@ -21,6 +21,7 @@ import { AvisLegalPage, PrivacitatPage } from '../pages/legal/legal.page';
 
 import { GenericWedding } from '../pages/weddings/WeddingGuest/custom/GenericWedding';
 import { ConfirmacionsSection } from '../pages/weddings/WeddingManager/ConfirmacionsSection';
+import { SongsSection } from '../pages/weddings/WeddingManager/SongsSection';
 import { WeddingManagerPage } from '../pages/weddings/WeddingManager/WeddingManagerPage';
 import { AdminLogin } from '../pages/admin/AdminLogin';
 import { AdminPanel } from '../pages/admin/AdminPanel';
@@ -70,9 +71,10 @@ export const AppRouter: FC = () => {
         </Route>
         <Route path="/weddings/:slug" element={<GenericWedding />} />
         <Route path="/weddings/:slug/manager" element={<WeddingManagerPage />}>
-          <Route index element={<Navigate to="confirmacions" replace />} />
-          <Route path="confirmacions" element={<ConfirmacionsSection />} />
-          <Route path="*" element={<Navigate to="confirmacions" replace />} />
+          <Route index element={<Navigate to={ManagerSections.confirmacions} replace />} />
+          <Route path={ManagerSections.confirmacions} element={<ConfirmacionsSection />} />
+          <Route path={ManagerSections.musica} element={<SongsSection />} />
+          <Route path="*" element={<Navigate to={ManagerSections.confirmacions} replace />} />
         </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />

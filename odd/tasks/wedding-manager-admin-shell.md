@@ -28,9 +28,9 @@ cross-import (noted as follow-up).
   and a manual run in `npm run dev:mock`.
 
 ## Tasks
-- [ ] T1 Promote admin shell to `src/ui/` (AdminShell, shell context hook, PageHeader,
+- [x] T1 Promote admin shell to `src/ui/` (AdminShell, shell context hook, PageHeader,
       icons/IconButton + their CSS); `/admin` uses it unchanged. Route: delegated (10+ files).
-- [ ] T2 Manager as shell layout: nested route `/weddings/:slug/manager/confirmacions`
+- [x] T2 Manager as shell layout: nested route `/weddings/:slug/manager/confirmacions`
       (index redirect), sidebar with wedding title brand + Confirmacions + Sortir,
       confirmations section = PageHeader + embedded dashboards + overlays. Route: delegated.
 
@@ -47,9 +47,9 @@ cross-import (noted as follow-up).
   `useShell<T>()` in `@ui/shellContext`. Manager: `ConfirmacionsSection` + `useManagerShell`.
 - `npx tsc -b`: clean (writer + parent re-run). `npm run lint`: 0 errors, 4 pre-existing
   warnings (parent re-run). `npm run build`: OK. `tools/check-tokens.sh`: OK (writer).
-- Pending: manual visual check in `npm run dev:mock` (/admin unchanged, manager shell).
+- Manual check in `npm run dev:mock`: confirmed by user. Commits: T1 `47530f2`, T2 `d22f087`.
 - Follow-ups: dead non-embedded chrome in Manager*Dashboard + CSS; badge aria-label
   "pendents" hardcoded in AdminShell.
 
 ## Next step
-Manual check, then commits (ask user first).
+Feature done; follow-ups above remain optional.

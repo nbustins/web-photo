@@ -147,7 +147,14 @@ server-side closingDate enforcement, per-field error paths.
   re-run after rename); `npm run build` OK, `check-tokens.sh` OK (writer).
 - T3 follow-up: whole table row opens the drawer (tag no longer has its own handler).
   User checked visually 2026-10-02 and authorized the commit.
+- T3 committed `70ce48e`. RDD assess: medium (957 lines, slice budget reached) → consent
+  granted → 1-lens reliability review approved, no blockers; acknowledged (authority burned,
+  lineage review-51295fe0955b434d). Advisory follow-ups: (1) songs fetch shares Promise.all
+  with confirmations — a songs failure blanks the whole manager; (2) CSV export lacks
+  formula-injection guard (leading = + - @); (3) defer URL.revokeObjectURL.
 
 ## Next step
-Next session: optionally design mobile manager, then implement T3. Pending user decision: keep vs wipe disabled-feature data on confirm (FE recommends keep).
-Then T3 phase 2 admin (settings toggles + hotel rich-text editor, confirmations columns).
+Optional T3 follow-up commit for the 3 advisory review findings (songs fetch isolation, CSV
+formula guard, deferred revoke). Then mobile manager design, then T4 (/admin feature toggles +
+hotel rich-text editor). Pending user decision: keep vs wipe disabled-feature data on confirm
+(FE recommends keep).

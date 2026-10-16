@@ -1,5 +1,11 @@
 import { apiGet, apiPost, ApiError } from '../../api.client';
-import type { Invitation, ConfirmInvitationPayload, WeddingFeatures, SongRequest } from '../../../model/wedding.types';
+import type {
+  Invitation,
+  ConfirmInvitationPayload,
+  WeddingFeatures,
+  SongRequest,
+  WeddingGuestContent,
+} from '../../../model/wedding.types';
 
 interface InvitationGuestDto {
   id: number;
@@ -22,6 +28,8 @@ interface InvitationDto {
   features: WeddingFeatures;
   hotelInfo?: string | null;
   songRequests?: SongRequest[];
+  /** Provisional MSW-only shape; the backend contract is not finalized. */
+  guestContent?: WeddingGuestContent;
 }
 
 interface ConfirmInvitationRequest {
@@ -57,6 +65,7 @@ function mapInvitation(dto: InvitationDto, slug: string): Invitation {
     features: dto.features,
     hotelInfo: dto.hotelInfo,
     songRequests: dto.songRequests,
+    guestContent: dto.guestContent,
   };
 }
 

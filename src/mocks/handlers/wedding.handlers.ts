@@ -54,6 +54,17 @@ function toInvitationDto(invitation: MockInvitation) {
     features,
     ...(features.hotelInfo && { hotelInfo: wedding?.hotelInfo ?? null }),
     ...(features.songRequests && { songRequests: invitation.songRequests }),
+    ...(wedding?.guestContent && {
+      guestContent: {
+        introduction: wedding.guestContent.introduction,
+        weddingPlace: wedding.guestContent.weddingPlace,
+        schedule: wedding.guestContent.schedule,
+        donations: wedding.guestContent.donations,
+        contact: wedding.guestContent.contact,
+        ...(features.songRequests && { songRequestsPrompt: wedding.guestContent.songRequestsPrompt }),
+        ...(features.transportToHotel && { transportToHotelPrompt: wedding.guestContent.transportToHotelPrompt }),
+      },
+    }),
   };
 }
 

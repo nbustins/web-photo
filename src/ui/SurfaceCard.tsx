@@ -29,12 +29,14 @@ interface SurfaceCardHeaderProps {
   title: string;
   subtitle?: string;
   guestName?: string;
+  introduction?: ReactNode;
 }
 
 export const SurfaceCardHeader: FC<SurfaceCardHeaderProps> = ({
   title,
   subtitle,
   guestName,
+  introduction,
 }) => {
   return (
     <div className={styles.header}>
@@ -43,6 +45,7 @@ export const SurfaceCardHeader: FC<SurfaceCardHeaderProps> = ({
       </Title>
       {subtitle && <Text className={styles.subtitle}>{subtitle}</Text>}
       {guestName && <Text className={styles.guestName}>{guestName}</Text>}
+      {introduction}
       <Divider className={styles.divider} />
     </div>
   );

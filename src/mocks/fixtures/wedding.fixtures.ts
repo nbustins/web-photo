@@ -44,6 +44,16 @@ export interface MockWedding {
   photos: string[];
   features: MockWeddingFeatures;
   hotelInfo: string | null;
+  /** Provisional mock-only guest content; not a finalized API contract. */
+  guestContent?: {
+    introduction?: string | null;
+    weddingPlace?: string | null;
+    schedule?: string | null;
+    donations?: string | null;
+    contact?: string | null;
+    songRequestsPrompt?: string | null;
+    transportToHotelPrompt?: string | null;
+  };
 }
 
 /** Ported from the retired MockGuestService so the wedding pages keep the same demo data. */
@@ -63,13 +73,23 @@ const HOTEL_INFO_HTML = `<h4>Hotel Mas de les Oliveres</h4>
 </ul>
 <p>Reserves: <a href="tel:+34972000000">972 00 00 00</a> o <a href="https://example.com/mas-de-les-oliveres">al web de l'hotel</a>.</p>`;
 
+const GUEST_CONTENT = {
+  introduction: '<p>Tot va començar amb un somriure, va continuar amb un petó i ara es converteix amb un per sempre.</p>',
+  weddingPlace: '<p><strong>Mas el Martí (Viladrau)</strong></p>',
+  schedule: '<p>Benvinguda 12:30h, Un brindis per l’amor, l’amistat i les grans històries.</p><p>Cerimònia 13:00h, Un ‘Sí vull’ per una vida junts.</p>',
+  donations: '<p>La vostra presència és el nostre millor regal, si voleu tenir un detall amb nosaltres i ajudar-nos a fer realitat el casament dels nostres somnis, ho podeu fer per aquí:</p><p><strong>ES00 MOCK 0000 0000 0000 0000</strong> (compte fictici per a demostració).</p>',
+  contact: '<p>Si tens qualsevol dubte pots escriure’ns als següents contactes:</p><p><a href="mailto:casament@example.invalid">casament@example.invalid</a></p>',
+  songRequestsPrompt: '<p>Cada cançó és un record compartit. Tria la més especial per a tu i ballem-la junts.</p>',
+  transportToHotelPrompt: '<p>Volem que només us preocupeu de disfrutar. Per això, hi haurà servei d’autobús gratuït disponible per realitzar el transport de Viladrau ⇆ Mas el Martí.</p>',
+};
+
 export const weddingFixtures: MockWedding[] = [
   {
     id: 1,
     slug: 'anna-joan',
     title: 'Anna & Joan',
     eventDate: '2026-09-15',
-    closingDate: '2026-09-10T23:59:59.000Z',
+    closingDate: '2030-09-10T23:59:59.000Z',
     createdAt: '2026-01-10T09:00:00.000Z',
     photos: [
       'https://res.cloudinary.com/djxytedne/image/upload/v1777734451/joel_i_carla-5_egd7ni.jpg',
@@ -77,17 +97,19 @@ export const weddingFixtures: MockWedding[] = [
     ],
     features: { ...NO_FEATURES },
     hotelInfo: null,
+    guestContent: GUEST_CONTENT,
   },
   {
     id: 2,
-    slug: 'marta-pau',
-    title: 'Marta & Pau',
+    slug: 'marta-joan',
+    title: 'Marta & Joan',
     eventDate: '2027-06-12',
-    closingDate: '2027-06-01T23:59:59.000Z',
+    closingDate: '2030-06-01T23:59:59.000Z',
     createdAt: '2026-09-20T09:00:00.000Z',
     photos: [],
     features: { hotelInfo: true, transportToHotel: true, songRequests: true, allergens: true },
     hotelInfo: HOTEL_INFO_HTML,
+    guestContent: GUEST_CONTENT,
   },
 ];
 

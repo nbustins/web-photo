@@ -20,6 +20,16 @@
   margin: 0;
 }
 
+/* Rich HTML from couple-configured wedding content: match the guest card body font. */
+.richContent {
+  font-family: var(--lt-font-body);
+}
+
+.richContentItalic {
+  composes: richContent;
+  font-style: italic;
+}
+
 .muted {
   font-family: var(--lt-font-body);
   font-size: var(--lt-text-caption);

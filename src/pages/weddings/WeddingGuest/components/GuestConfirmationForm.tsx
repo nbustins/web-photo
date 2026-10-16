@@ -4,6 +4,7 @@ import { SurfaceCard, SurfaceCardHeader } from '@ui/SurfaceCard';
 import type { Invitation } from '../../../../model/wedding.types';
 import type { InvitationFormValues } from '../WeddingGuestPage.types';
 import { GuestFormFields } from './GuestFormFields';
+import { GuestRichHtml } from './GuestRichHtml';
 import styles from './GuestConfirmationForm.module.css';
 
 interface GuestConfirmationFormProps {
@@ -31,6 +32,9 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
         title={title}
         subtitle={subtitle}
         guestName={`Hola, ${invitation.label}!`}
+        introduction={invitation.guestContent?.introduction
+          ? <GuestRichHtml html={invitation.guestContent.introduction} italic />
+          : undefined}
       />
 
       <Form
@@ -39,7 +43,7 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
         onFinish={onFinish}
         className={styles.form}
       >
-        <GuestFormFields invitation={invitation} form={form} />
+        <GuestFormFields invitation={invitation} form={form} showIntroduction={false} />
 
         {submitError && (
           <Form.Item>

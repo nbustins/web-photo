@@ -7,27 +7,35 @@ import { HotelInfoSection } from './HotelInfoSection';
 import { TransportSection } from './TransportSection';
 import { AllergensSection } from './AllergensSection';
 import { SongRequestsSection } from './SongRequestsSection';
+import { GuestRichHtmlSection } from './GuestRichHtml';
 import shared from './GuestShared.module.css';
 
 interface GuestFormFieldsProps {
   invitation: Invitation;
   form: FormInstance<InvitationFormValues>;
   compact?: boolean;
+  showIntroduction?: boolean;
 }
 
 /** Body of the invitation card, shared by the desktop card and the mobile sheet. Must render inside a <Form>. */
-export const GuestFormFields: FC<GuestFormFieldsProps> = ({ invitation, form, compact }) => {
-  const { features, hotelInfo } = invitation;
+export const GuestFormFields: FC<GuestFormFieldsProps> = ({ invitation, form, compact, showIntroduction = true }) => {
+  const { features, hotelInfo, guestContent } = invitation;
   const guests = Form.useWatch('guests', form) ?? [];
 
   return (
     <>
+      {showIntroduction && guestContent?.introduction && <GuestRichHtmlSection label="Benvinguda" html={guestContent.introduction} italic />}
+      {guestContent?.weddingPlace && <GuestRichHtmlSection label="Lloc de la celebració" html={guestContent.weddingPlace} />}
+      {guestContent?.schedule && <GuestRichHtmlSection label="Horari" html={guestContent.schedule} />}
+      {guestContent?.donations && <GuestRichHtmlSection label="Regals" html={guestContent.donations} />}
+      {guestContent?.contact && <GuestRichHtmlSection label="Contacte" html={guestContent.contact} />}
+
       <GuestAttendanceSection form={form} compact={compact} />
 
       {features.hotelInfo && hotelInfo && <HotelInfoSection html={hotelInfo} />}
-      {features.transportToHotel && <TransportSection guests={guests} />}
+      {features.transportToHotel && <TransportSection guests={guests} prompt={guestContent?.transportToHotelPrompt} />}
       {features.allergens && <AllergensSection guests={guests} />}
-      {features.songRequests && <SongRequestsSection />}
+      {features.songRequests && <SongRequestsSection prompt={guestContent?.songRequestsPrompt} />}
 
       <Form.Item
         name="notes"

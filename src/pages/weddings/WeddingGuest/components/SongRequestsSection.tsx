@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { Form, Input } from 'antd';
 import { IconButton } from '@ui/icons';
 import type { SongRequest } from '../../../../model/wedding.types';
+import { GuestRichHtml } from './GuestRichHtml';
 import styles from './GuestSections.module.css';
 
 export const MAX_SONGS = 10;
@@ -10,10 +11,11 @@ const MAX_SONG_FIELD_LENGTH = 200;
 interface SongRequestsFieldProps {
   value?: SongRequest[];
   onChange?: (value: SongRequest[]) => void;
+  prompt?: string | null;
 }
 
 /** Controlled field (value/onChange) so it can sit inside a Form.Item. */
-const SongRequestsField: FC<SongRequestsFieldProps> = ({ value = [], onChange }) => {
+const SongRequestsField: FC<SongRequestsFieldProps> = ({ value = [], onChange, prompt }) => {
   const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');
   const atLimit = value.length >= MAX_SONGS;
@@ -39,7 +41,7 @@ const SongRequestsField: FC<SongRequestsFieldProps> = ({ value = [], onChange })
         <p className={styles.label}>Cançons per a la festa</p>
         <span className={styles.muted}>{value.length} / {MAX_SONGS}</span>
       </div>
-      <p className={styles.muted}>Quines cançons no poden faltar? El DJ les tindrà en compte.</p>
+      <GuestRichHtml html={prompt?.trim() ? prompt : 'Quines cançons no poden faltar? El DJ les tindrà en compte.'} />
 
       {value.map((song, index) => (
         <div key={`${song.title}-${index}`} className={styles.song}>
@@ -94,8 +96,12 @@ const SongRequestsField: FC<SongRequestsFieldProps> = ({ value = [], onChange })
   );
 };
 
-export const SongRequestsSection: FC = () => (
+interface SongRequestsSectionProps {
+  prompt?: string | null;
+}
+
+export const SongRequestsSection: FC<SongRequestsSectionProps> = ({ prompt }) => (
   <Form.Item name="songRequests" noStyle>
-    <SongRequestsField />
+    <SongRequestsField prompt={prompt} />
   </Form.Item>
 );

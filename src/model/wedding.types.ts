@@ -10,6 +10,17 @@ export interface SongRequest {
   artist: string | null;
 }
 
+/** Provisional mock-only guest content; this shape is not a finalized API contract. */
+export interface WeddingGuestContent {
+  introduction?: string | null;
+  weddingPlace?: string | null;
+  schedule?: string | null;
+  donations?: string | null;
+  contact?: string | null;
+  songRequestsPrompt?: string | null;
+  transportToHotelPrompt?: string | null;
+}
+
 export interface Wedding {
   id: string;
   slug: string;
@@ -53,6 +64,8 @@ export interface Invitation {
   hotelInfo?: string | null;
   /** Present only when features.songRequests is on. */
   songRequests?: SongRequest[];
+  /** Provisional mock-only content returned with a validated invitation. */
+  guestContent?: WeddingGuestContent;
 }
 
 export interface ConfirmInvitationPayload {

@@ -8,6 +8,7 @@ import { TransportSection } from './TransportSection';
 import { AllergensSection } from './AllergensSection';
 import { SongRequestsSection } from './SongRequestsSection';
 import { GuestRichHtmlSection } from './GuestRichHtml';
+import { PlaceScheduleSection } from './PlaceScheduleSection';
 import shared from './GuestShared.module.css';
 
 interface GuestFormFieldsProps {
@@ -25,16 +26,14 @@ export const GuestFormFields: FC<GuestFormFieldsProps> = ({ invitation, form, co
   return (
     <>
       {showIntroduction && guestContent?.introduction && <GuestRichHtmlSection label="Benvinguda" html={guestContent.introduction} italic />}
-      {guestContent?.weddingPlace && <GuestRichHtmlSection label="Lloc de la celebració" html={guestContent.weddingPlace} />}
-      {guestContent?.schedule && <GuestRichHtmlSection label="Horari" html={guestContent.schedule} />}
-      {guestContent?.donations && <GuestRichHtmlSection label="Regals" html={guestContent.donations} />}
-      {guestContent?.contact && <GuestRichHtmlSection label="Contacte" html={guestContent.contact} />}
+      <PlaceScheduleSection place={guestContent?.weddingPlace} schedule={guestContent?.schedule} />
 
       <GuestAttendanceSection form={form} compact={compact} />
-
+      {features.allergens && <AllergensSection guests={guests} />}
+      
       {features.hotelInfo && hotelInfo && <HotelInfoSection html={hotelInfo} />}
       {features.transportToHotel && <TransportSection guests={guests} prompt={guestContent?.transportToHotelPrompt} />}
-      {features.allergens && <AllergensSection guests={guests} />}
+
       {features.songRequests && <SongRequestsSection prompt={guestContent?.songRequestsPrompt} />}
 
       <Form.Item
@@ -44,7 +43,7 @@ export const GuestFormFields: FC<GuestFormFieldsProps> = ({ invitation, form, co
             {features.allergens ? 'Observacions' : 'Observacions (al·lèrgies, menú especial, etc.)'}
           </span>
         }
-      >
+        >
         <Input.TextArea
           rows={3}
           placeholder={
@@ -53,8 +52,11 @@ export const GuestFormFields: FC<GuestFormFieldsProps> = ({ invitation, form, co
           className={shared.input}
           showCount
           maxLength={500}
-        />
+          />
       </Form.Item>
+      
+      {guestContent?.donations && <GuestRichHtmlSection label="Regals" html={guestContent.donations} />}
+      {guestContent?.contact && <GuestRichHtmlSection label="Contacte" html={guestContent.contact} />}
     </>
   );
 };

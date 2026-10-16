@@ -180,3 +180,16 @@
   border: 1px dashed var(--lt-color-border-subtle);
   border-radius: var(--lt-radius-lg);
 }
+
+/* Merged ceremony-place + schedule block: single section, no separator line, no divider between blocks. */
+.placeScheduleSection {
+  composes: section;
+  border-top: none;
+  padding-top: 0;
+}
+
+.placeScheduleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-2);
+}

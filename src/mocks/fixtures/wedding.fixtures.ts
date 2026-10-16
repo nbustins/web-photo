@@ -64,19 +64,20 @@ export const NO_FEATURES: MockWeddingFeatures = {
   allergens: false,
 };
 
-const HOTEL_INFO_HTML = `<h4>Hotel Mas de les Oliveres</h4>
-<p>Hem reservat un bloc d'habitacions a <strong>Hotel Mas de les Oliveres</strong>, a cinc minuts del lloc de la celebració. Esmenteu el nom de la boda en fer la reserva per accedir a la tarifa especial.</p>
+const HOTEL_INFO_HTML = `
+<p>Recomanacions a prop de Mas el Martí:</p>
 <ul>
-  <li>Entrada a partir de les 15:00 h i sortida abans de les 12:00 h.</li>
-  <li>Esmorzar inclòs.</li>
-  <li>Aparcament gratuït per als convidats.</li>
-</ul>
-<p>Reserves: <a href="tel:+34972000000">972 00 00 00</a> o <a href="https://example.com/mas-de-les-oliveres">al web de l'hotel</a>.</p>`;
+  <li>Hostal de la Glòria (Viladrau)</li>
+  <li>Hotel Xalet la Coromina (Viladrau)</li>
+</ul>`;
 
 const GUEST_CONTENT = {
   introduction: '<p>Tot va començar amb un somriure, va continuar amb un petó i ara es converteix amb un per sempre.</p>',
   weddingPlace: '<p><strong>Mas el Martí (Viladrau)</strong></p>',
-  schedule: '<p>Benvinguda 12:30h, Un brindis per l’amor, l’amistat i les grans històries.</p><p>Cerimònia 13:00h, Un ‘Sí vull’ per una vida junts.</p>',
+  schedule: `
+  <p><strong>Benvinguda</strong> 12:30h, Un brindis per l’amor, l’amistat i les grans històries.</p>
+  <p><strong>Cerimònia</strong> 13:00h, Un ‘Sí vull’ per una vida junts.</p>
+  `,
   donations: '<p>La vostra presència és el nostre millor regal, si voleu tenir un detall amb nosaltres i ajudar-nos a fer realitat el casament dels nostres somnis, ho podeu fer per aquí:</p><p><strong>ES00 MOCK 0000 0000 0000 0000</strong> (compte fictici per a demostració).</p>',
   contact: '<p>Si tens qualsevol dubte pots escriure’ns als següents contactes:</p><p><a href="mailto:casament@example.invalid">casament@example.invalid</a></p>',
   songRequestsPrompt: '<p>Cada cançó és un record compartit. Tria la més especial per a tu i ballem-la junts.</p>',

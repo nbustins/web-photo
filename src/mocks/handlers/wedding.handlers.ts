@@ -3,13 +3,45 @@ import { db, nextId } from '../mock.db';
 import type { MockInvitation, MockWedding } from '../fixtures/wedding.fixtures';
 import { api, delay, isoUtc, problem, validationProblem } from '../mock.utils';
 import { NO_FEATURES } from '../fixtures/wedding.fixtures';
-import type { MockSongRequest, MockWeddingFeatures } from '../fixtures/wedding.fixtures';
+import type { MockSongRequest, MockWeddingContent, MockWeddingFeatures } from '../fixtures/wedding.fixtures';
 
 const MAX_SONGS = 10;
 const MAX_SONG_FIELD = 200;
 const MAX_ALLERGENS = 15;
 const MAX_ALLERGEN = 100;
-const MAX_HOTEL_INFO = 10_000;
+/** Wire limits of `WeddingFeaturesContentDto`, keyed by field. */
+const CONTENT_LIMITS: Record<keyof MockWeddingContent, { limit: number; key: string }> = {
+  hotelInfo: { limit: 10_000, key: 'content.hotelInfo' },
+  introductionText: { limit: 2_000, key: 'content.introductionText' },
+  weddingPlace: { limit: 500, key: 'content.weddingPlace' },
+  schedule: { limit: 10_000, key: 'content.schedule' },
+  donations: { limit: 2_000, key: 'content.donations' },
+  contact: { limit: 2_000, key: 'content.contact' },
+  songRequestsPhrase: { limit: 1_000, key: 'content.songRequestsPhrase' },
+  transportToHotelPhrase: { limit: 1_000, key: 'content.transportToHotelPhrase' },
+};
+
+const emptyContent = (): MockWeddingContent => ({
+  hotelInfo: null,
+  introductionText: null,
+  weddingPlace: null,
+  schedule: null,
+  donations: null,
+  contact: null,
+  songRequestsPhrase: null,
+  transportToHotelPhrase: null,
+});
+
+/** Blank HTML clears a field; the API sanitizes the value. */
+const parseContent = (raw: unknown): MockWeddingContent => {
+  const value = (raw && typeof raw === 'object' ? raw : {}) as Partial<MockWeddingContent>;
+  const base = emptyContent();
+  (Object.keys(base) as (keyof MockWeddingContent)[]).forEach((field) => {
+    const text = value[field];
+    base[field] = typeof text === 'string' && text.trim() ? text : null;
+  });
+  return base;
+};
 
 /** Case- and accent-insensitive key, used to drop duplicate song requests. */
 const fold = (text: string) =>
@@ -22,7 +54,6 @@ const fold = (text: string) =>
 const parseFeatures = (raw: unknown): MockWeddingFeatures => {
   const value = (raw && typeof raw === 'object' ? raw : {}) as Partial<MockWeddingFeatures>;
   return {
-    hotelInfo: value.hotelInfo === true,
     transportToHotel: value.transportToHotel === true,
     songRequests: value.songRequests === true,
     allergens: value.allergens === true,
@@ -30,6 +61,21 @@ const parseFeatures = (raw: unknown): MockWeddingFeatures => {
 };
 
 const weddingOf = (invitation: MockInvitation) => db.weddings.find(w => w.id === invitation.weddingId);
+
+/**
+ * Public invitation content: `hotelInfo` only when set (content-driven, no toggle),
+ * the standalone fields always present, and each `*Phrase` only while its feature is on.
+ */
+const toPublicContent = (content: MockWeddingContent, features: MockWeddingFeatures) => ({
+  ...(content.hotelInfo ? { hotelInfo: content.hotelInfo } : {}),
+  introductionText: content.introductionText,
+  weddingPlace: content.weddingPlace,
+  schedule: content.schedule,
+  donations: content.donations,
+  contact: content.contact,
+  ...(features.songRequests && { songRequestsPhrase: content.songRequestsPhrase }),
+  ...(features.transportToHotel && { transportToHotelPhrase: content.transportToHotelPhrase }),
+});
 
 /** The public InvitationDto: the guest page never sees the wedding id. Disabled features omit their fields. */
 function toInvitationDto(invitation: MockInvitation) {
@@ -52,19 +98,8 @@ function toInvitationDto(invitation: MockInvitation) {
       ...(features.allergens && { allergens: guest.allergens }),
     })),
     features,
-    ...(features.hotelInfo && { hotelInfo: wedding?.hotelInfo ?? null }),
     ...(features.songRequests && { songRequests: invitation.songRequests }),
-    ...(wedding?.guestContent && {
-      guestContent: {
-        introduction: wedding.guestContent.introduction,
-        weddingPlace: wedding.guestContent.weddingPlace,
-        schedule: wedding.guestContent.schedule,
-        donations: wedding.guestContent.donations,
-        contact: wedding.guestContent.contact,
-        ...(features.songRequests && { songRequestsPrompt: wedding.guestContent.songRequestsPrompt }),
-        ...(features.transportToHotel && { transportToHotelPrompt: wedding.guestContent.transportToHotelPrompt }),
-      },
-    }),
+    content: toPublicContent(wedding?.content ?? emptyContent(), features),
   };
 }
 
@@ -75,7 +110,7 @@ const toSettingsDto = (wedding: MockWedding) => ({
   eventDate: wedding.eventDate,
   closingDate: wedding.closingDate,
   features: wedding.features,
-  hotelInfo: wedding.hotelInfo,
+  content: wedding.content,
 });
 
 const findInvitation = (slug: string, code: string) =>
@@ -222,13 +257,18 @@ export const weddingHandlers = [
     await delay(400);
     const wedding = db.weddings.find(w => w.id === Number(params.weddingId));
     if (!wedding) return problem(404, 'WEDDING_NOT_FOUND', "No s'ha trobat la boda.");
-    const body = (await request.json()) as { features?: unknown; hotelInfo?: string | null };
-    const hotelInfo = body.hotelInfo?.trim() ? body.hotelInfo : null;
-    if ((hotelInfo?.length ?? 0) > MAX_HOTEL_INFO) {
-      return validationProblem({ hotelInfo: [`Hotel info must be at most ${MAX_HOTEL_INFO} characters.`] });
-    }
+    const body = (await request.json()) as { features?: unknown; content?: unknown };
+    const content = parseContent(body.content);
+    const errors: Record<string, string[]> = {};
+    (Object.keys(content) as (keyof MockWeddingContent)[]).forEach(field => {
+      const { limit, key } = CONTENT_LIMITS[field];
+      if ((content[field]?.length ?? 0) > limit) {
+        errors[key] = [`Must be at most ${limit} characters.`];
+      }
+    });
+    if (Object.keys(errors).length > 0) return validationProblem(errors);
     wedding.features = parseFeatures(body.features);
-    wedding.hotelInfo = hotelInfo;
+    wedding.content = content;
     return HttpResponse.json(toSettingsDto(wedding));
   }),
 
@@ -283,13 +323,13 @@ export const weddingHandlers = [
     await delay(600);
     const form = await request.formData();
     const featuresField = form.get('features');
-    const hotelInfoField = form.get('hotelInfo');
     const payload = JSON.parse(String(form.get('wedding') ?? '{}')) as {
       slug: string;
       title: string;
       eventDate?: string | null;
       closingDate?: string | null;
       codeLength?: number;
+      content?: unknown;
     };
 
     if (!form.get('guestFile')) {
@@ -311,7 +351,7 @@ export const weddingHandlers = [
       createdAt: isoUtc(new Date()),
       photos: [],
       features: featuresField ? parseFeatures(JSON.parse(String(featuresField))) : { ...NO_FEATURES },
-      hotelInfo: hotelInfoField ? String(hotelInfoField) : null,
+      content: parseContent(payload.content),
     };
     db.weddings.push(wedding);
 

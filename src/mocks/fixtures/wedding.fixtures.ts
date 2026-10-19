@@ -1,10 +1,20 @@
 /** Wire-shape mirrors of the API's wedding DTOs (Modules/Wedding). */
 
 export interface MockWeddingFeatures {
-  hotelInfo: boolean;
   transportToHotel: boolean;
   songRequests: boolean;
   allergens: boolean;
+}
+
+export interface MockWeddingContent {
+  hotelInfo: string | null;
+  introductionText: string | null;
+  weddingPlace: string | null;
+  schedule: string | null;
+  donations: string | null;
+  contact: string | null;
+  songRequestsPhrase: string | null;
+  transportToHotelPhrase: string | null;
 }
 
 export interface MockSongRequest {
@@ -43,22 +53,11 @@ export interface MockWedding {
   createdAt: string;
   photos: string[];
   features: MockWeddingFeatures;
-  hotelInfo: string | null;
-  /** Provisional mock-only guest content; not a finalized API contract. */
-  guestContent?: {
-    introduction?: string | null;
-    weddingPlace?: string | null;
-    schedule?: string | null;
-    donations?: string | null;
-    contact?: string | null;
-    songRequestsPrompt?: string | null;
-    transportToHotelPrompt?: string | null;
-  };
+  content: MockWeddingContent;
 }
 
 /** Ported from the retired MockGuestService so the wedding pages keep the same demo data. */
 export const NO_FEATURES: MockWeddingFeatures = {
-  hotelInfo: false,
   transportToHotel: false,
   songRequests: false,
   allergens: false,
@@ -71,8 +70,9 @@ const HOTEL_INFO_HTML = `
   <li>Hotel Xalet la Coromina (Viladrau)</li>
 </ul>`;
 
-const GUEST_CONTENT = {
-  introduction: '<p>Tot va començar amb un somriure, va continuar amb un petó i ara es converteix amb un per sempre.</p>',
+const GUEST_CONTENT: MockWeddingContent = {
+  hotelInfo: null,
+  introductionText: '<p>Tot va començar amb un somriure, va continuar amb un petó i ara es converteix amb un per sempre.</p>',
   weddingPlace: '<p><strong>Mas el Martí (Viladrau)</strong></p>',
   schedule: `
   <p><strong>Benvinguda</strong> 12:30h, Un brindis per l’amor, l’amistat i les grans històries.</p>
@@ -80,8 +80,8 @@ const GUEST_CONTENT = {
   `,
   donations: '<p>La vostra presència és el nostre millor regal, si voleu tenir un detall amb nosaltres i ajudar-nos a fer realitat el casament dels nostres somnis, ho podeu fer per aquí:</p><p><strong>ES00 MOCK 0000 0000 0000 0000</strong> (compte fictici per a demostració).</p>',
   contact: '<p>Si tens qualsevol dubte pots escriure’ns als següents contactes:</p><p><a href="mailto:casament@example.invalid">casament@example.invalid</a></p>',
-  songRequestsPrompt: '<p>Cada cançó és un record compartit. Tria la més especial per a tu i ballem-la junts.</p>',
-  transportToHotelPrompt: '<p>Volem que només us preocupeu de disfrutar. Per això, hi haurà servei d’autobús gratuït disponible per realitzar el transport de Viladrau ⇆ Mas el Martí.</p>',
+  songRequestsPhrase: '<p>Cada cançó és un record compartit. Tria la més especial per a tu i ballem-la junts.</p>',
+  transportToHotelPhrase: '<p>Volem que només us preocupeu de disfrutar. Per això, hi haurà servei d’autobús gratuït disponible per realitzar el transport de Viladrau ⇆ Mas el Martí.</p>',
 };
 
 export const weddingFixtures: MockWedding[] = [
@@ -97,8 +97,7 @@ export const weddingFixtures: MockWedding[] = [
       'https://res.cloudinary.com/djxytedne/image/upload/v1777734451/joel_i_carla-13_xpncpa.jpg',
     ],
     features: { ...NO_FEATURES },
-    hotelInfo: null,
-    guestContent: GUEST_CONTENT,
+    content: GUEST_CONTENT,
   },
   {
     id: 2,
@@ -108,9 +107,8 @@ export const weddingFixtures: MockWedding[] = [
     closingDate: '2030-06-01T23:59:59.000Z',
     createdAt: '2026-09-20T09:00:00.000Z',
     photos: [],
-    features: { hotelInfo: true, transportToHotel: true, songRequests: true, allergens: true },
-    hotelInfo: HOTEL_INFO_HTML,
-    guestContent: GUEST_CONTENT,
+    features: { transportToHotel: true, songRequests: true, allergens: true },
+    content: { ...GUEST_CONTENT, hotelInfo: HOTEL_INFO_HTML },
   },
 ];
 

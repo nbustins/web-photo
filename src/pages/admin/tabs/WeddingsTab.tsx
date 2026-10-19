@@ -41,7 +41,7 @@ const isOpen = (w: AdminWedding) => !w.closingDate || new Date(w.closingDate).ge
 const isUpcoming = (w: AdminWedding) => !w.eventDate || w.eventDate.slice(0, 10) >= dayjs().format('YYYY-MM-DD');
 
 /** The admin list does not load per-wedding features yet (T4); optional columns stay hidden here. */
-const ADMIN_FEATURES: WeddingFeatures = { hotelInfo: false, transportToHotel: false, songRequests: false, allergens: false };
+const ADMIN_FEATURES: WeddingFeatures = { transportToHotel: false, songRequests: false, allergens: false };
 
 export const WeddingsTab: FC = () => {
   const onError = useApiError();

@@ -3,7 +3,6 @@ import { Form, Input, FormInstance } from 'antd';
 import type { Invitation } from '../../../../model/wedding.types';
 import type { InvitationFormValues } from '../WeddingGuestPage.types';
 import { GuestAttendanceSection } from './GuestAttendanceSection';
-import { HotelInfoSection } from './HotelInfoSection';
 import { TransportSection } from './TransportSection';
 import { AllergensSection } from './AllergensSection';
 import { SongRequestsSection } from './SongRequestsSection';
@@ -20,21 +19,21 @@ interface GuestFormFieldsProps {
 
 /** Body of the invitation card, shared by the desktop card and the mobile sheet. Must render inside a <Form>. */
 export const GuestFormFields: FC<GuestFormFieldsProps> = ({ invitation, form, compact, showIntroduction = true }) => {
-  const { features, hotelInfo, guestContent } = invitation;
+  const { features, content } = invitation;
   const guests = Form.useWatch('guests', form) ?? [];
 
   return (
     <>
-      {showIntroduction && guestContent?.introduction && <GuestRichHtmlSection label="Benvinguda" html={guestContent.introduction} italic />}
-      <PlaceScheduleSection place={guestContent?.weddingPlace} schedule={guestContent?.schedule} />
+      {showIntroduction && content?.introductionText && <GuestRichHtmlSection label="Benvinguda" html={content.introductionText} italic />}
+      <PlaceScheduleSection place={content?.weddingPlace} schedule={content?.schedule} />
 
       <GuestAttendanceSection form={form} compact={compact} />
       {features.allergens && <AllergensSection guests={guests} />}
       
-      {features.hotelInfo && hotelInfo && <HotelInfoSection html={hotelInfo} />}
-      {features.transportToHotel && <TransportSection guests={guests} prompt={guestContent?.transportToHotelPrompt} />}
+      {content?.hotelInfo && <GuestRichHtmlSection label="Allotjament" html={content.hotelInfo} />}
+      {features.transportToHotel && <TransportSection guests={guests} prompt={content?.transportToHotelPhrase} />}
 
-      {features.songRequests && <SongRequestsSection prompt={guestContent?.songRequestsPrompt} />}
+      {features.songRequests && <SongRequestsSection prompt={content?.songRequestsPhrase} />}
 
       <Form.Item
         name="notes"
@@ -55,8 +54,8 @@ export const GuestFormFields: FC<GuestFormFieldsProps> = ({ invitation, form, co
           />
       </Form.Item>
       
-      {guestContent?.donations && <GuestRichHtmlSection label="Regals" html={guestContent.donations} />}
-      {guestContent?.contact && <GuestRichHtmlSection label="Contacte" html={guestContent.contact} />}
+      {content?.donations && <GuestRichHtmlSection label="Regals" html={content.donations} />}
+      {content?.contact && <GuestRichHtmlSection label="Contacte" html={content.contact} />}
     </>
   );
 };

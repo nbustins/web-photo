@@ -32,8 +32,8 @@ export const GuestConfirmationForm: FC<GuestConfirmationFormProps> = ({
         title={title}
         subtitle={subtitle}
         guestName={`Hola, ${invitation.label}!`}
-        introduction={invitation.guestContent?.introduction
-          ? <GuestRichHtml html={invitation.guestContent.introduction} italic />
+        introduction={invitation.content?.introductionText
+          ? <GuestRichHtml html={invitation.content.introductionText} italic />
           : undefined}
       />
 

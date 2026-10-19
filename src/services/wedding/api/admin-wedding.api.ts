@@ -1,5 +1,5 @@
 import { apiGet, apiPostForm, apiPut } from '../../api.client';
-import type { WeddingFeatures, UpdateWeddingSettingsPayload, SongRequest, InvitationSongs } from '../../../model/wedding.types';
+import type { WeddingFeatures, WeddingContent, UpdateWeddingSettingsPayload, SongRequest, InvitationSongs } from '../../../model/wedding.types';
 
 export interface AdminWedding {
   id: number;
@@ -25,12 +25,12 @@ export interface CreateWeddingPayload {
 
 export interface CreateWeddingOptions {
   features?: WeddingFeatures;
-  hotelInfo?: string | null;
+  content?: WeddingContent;
 }
 
 /**
- * POST /api/weddings — multipart: `wedding` = JSON payload, `guestFile` = optional Excel with guests,
- * optional `features` (JSON string) and `hotelInfo` (HTML string).
+ * POST /api/weddings — multipart: `wedding` = JSON payload (which also carries the optional
+ * `content` object), `guestFile` = optional Excel with guests, optional `features` (JSON string).
  */
 export function createAdminWedding(
   payload: CreateWeddingPayload,
@@ -38,9 +38,8 @@ export function createAdminWedding(
   options: CreateWeddingOptions = {},
 ): Promise<unknown> {
   const form = new FormData();
-  form.append('wedding', JSON.stringify(payload));
+  form.append('wedding', JSON.stringify({ ...payload, ...(options.content ? { content: options.content } : {}) }));
   if (options.features) form.append('features', JSON.stringify(options.features));
-  if (options.hotelInfo) form.append('hotelInfo', options.hotelInfo);
   if (guestFile) form.append('guestFile', guestFile);
   return apiPostForm<unknown>('/api/weddings', form);
 }
@@ -52,10 +51,10 @@ export interface WeddingSettingsDto {
   eventDate: string | null;
   closingDate: string | null;
   features: WeddingFeatures;
-  hotelInfo: string | null;
+  content: WeddingContent;
 }
 
-/** PUT /api/weddings/{id}/settings — replaces the feature flags and the hotel info HTML. */
+/** PUT /api/weddings/{id}/settings — replaces the feature flags and the wedding content. */
 export function updateWeddingSettings(id: number, payload: UpdateWeddingSettingsPayload): Promise<WeddingSettingsDto> {
   return apiPut<WeddingSettingsDto, UpdateWeddingSettingsPayload>(`/api/weddings/${id}/settings`, payload);
 }

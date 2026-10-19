@@ -1,5 +1,5 @@
 import { apiGet, ApiError } from '../../api.client';
-import type { Wedding, WeddingFeatures } from '../../../model/wedding.types';
+import type { Wedding, WeddingFeatures, WeddingContent } from '../../../model/wedding.types';
 import { imageUrl } from '../../../utils/pathUtils';
 
 interface PublicWeddingDto {
@@ -50,7 +50,7 @@ interface WeddingSummaryDto {
   title: string;
   eventDate: string | null;
   features: WeddingFeatures;
-  hotelInfo: string | null;
+  content: WeddingContent;
 }
 
 export async function fetchAuthWeddingBySlug(slug: string): Promise<{ id: number; wedding: Wedding } | null> {
@@ -65,7 +65,7 @@ export async function fetchAuthWeddingBySlug(slug: string): Promise<{ id: number
         event_date: dto.eventDate ?? '',
         closing_date: dto.eventDate ?? '',
         features: dto.features,
-        hotelInfo: dto.hotelInfo,
+        content: dto.content,
       },
     };
   } catch (err) {

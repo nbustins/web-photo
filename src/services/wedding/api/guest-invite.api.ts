@@ -4,7 +4,7 @@ import type {
   ConfirmInvitationPayload,
   WeddingFeatures,
   SongRequest,
-  WeddingGuestContent,
+  WeddingContent,
 } from '../../../model/wedding.types';
 
 interface InvitationGuestDto {
@@ -26,10 +26,8 @@ interface InvitationDto {
   notes: string | null;
   guests: InvitationGuestDto[];
   features: WeddingFeatures;
-  hotelInfo?: string | null;
+  content: WeddingContent;
   songRequests?: SongRequest[];
-  /** Provisional MSW-only shape; the backend contract is not finalized. */
-  guestContent?: WeddingGuestContent;
 }
 
 interface ConfirmInvitationRequest {
@@ -63,9 +61,8 @@ function mapInvitation(dto: InvitationDto, slug: string): Invitation {
       allergens: g.allergens,
     })),
     features: dto.features,
-    hotelInfo: dto.hotelInfo,
+    content: dto.content,
     songRequests: dto.songRequests,
-    guestContent: dto.guestContent,
   };
 }
 

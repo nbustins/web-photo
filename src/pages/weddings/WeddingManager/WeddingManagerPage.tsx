@@ -16,7 +16,7 @@ import styles from './WeddingManager.module.css';
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
-const NO_FEATURES: WeddingFeatures = { hotelInfo: false, transportToHotel: false, songRequests: false, allergens: false };
+const NO_FEATURES: WeddingFeatures = { transportToHotel: false, songRequests: false, allergens: false };
 
 type ManagerState = 'login' | 'loading' | 'error' | 'data';
 

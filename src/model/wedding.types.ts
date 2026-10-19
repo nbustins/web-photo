@@ -1,5 +1,8 @@
+/**
+ * Feature toggles for the features that carry behaviour. Information-only features
+ * (hotel info) have no toggle: the presence of their content field is the enabled state.
+ */
 export interface WeddingFeatures {
-  hotelInfo: boolean;
   transportToHotel: boolean;
   songRequests: boolean;
   allergens: boolean;
@@ -10,15 +13,23 @@ export interface SongRequest {
   artist: string | null;
 }
 
-/** Provisional mock-only guest content; this shape is not a finalized API contract. */
-export interface WeddingGuestContent {
-  introduction?: string | null;
+/**
+ * Mirrors the API's `WeddingFeaturesContentDto`: rich-HTML content of the wedding.
+ * `hotelInfo` is content-driven (the value itself is the state); the standalone fields
+ * are always present, and the `*Phrase` fields are only sent while their feature is on.
+ */
+export interface WeddingContent {
+  /** Sanitize before rendering. On the public invitation it is omitted when unset. */
+  hotelInfo?: string | null;
+  introductionText?: string | null;
   weddingPlace?: string | null;
   schedule?: string | null;
   donations?: string | null;
   contact?: string | null;
-  songRequestsPrompt?: string | null;
-  transportToHotelPrompt?: string | null;
+  /** Only present when features.songRequests is on. */
+  songRequestsPhrase?: string | null;
+  /** Only present when features.transportToHotel is on. */
+  transportToHotelPhrase?: string | null;
 }
 
 export interface Wedding {
@@ -33,7 +44,7 @@ export interface Wedding {
   manager_code?: string;
   features?: WeddingFeatures;
   /** Admin-only; the public wedding endpoint never returns it. */
-  hotelInfo?: string | null;
+  content?: WeddingContent;
 }
 
 // --- Public invitation model ---
@@ -60,12 +71,10 @@ export interface Invitation {
   slug: string;
   guests: InvitationGuest[];
   features: WeddingFeatures;
-  /** Sanitize before rendering. Present only when features.hotelInfo is on. */
-  hotelInfo?: string | null;
+  /** Sanitize the rich-HTML fields before rendering. */
+  content?: WeddingContent;
   /** Present only when features.songRequests is on. */
   songRequests?: SongRequest[];
-  /** Provisional mock-only content returned with a validated invitation. */
-  guestContent?: WeddingGuestContent;
 }
 
 export interface ConfirmInvitationPayload {
@@ -86,7 +95,7 @@ export interface ConfirmInvitationPayload {
 
 export interface UpdateWeddingSettingsPayload {
   features: WeddingFeatures;
-  hotelInfo: string | null;
+  content: WeddingContent;
 }
 
 export interface ConfirmationRow {

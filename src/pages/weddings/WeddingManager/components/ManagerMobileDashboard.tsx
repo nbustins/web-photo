@@ -93,14 +93,17 @@ export const ManagerMobileDashboard: FC<ManagerMobileDashboardProps> = ({
           <div className={styles.emptyState}>No hi ha resultats</div>
         ) : (
           <section className={styles.list}>
-            {filtered.map((r) => (
+            {filtered.map((r, index) => (
               <article
                 key={r.guestId}
                 onClick={() => onSelectInvitation(r.invitationId)}
                 className={styles.row}
               >
                 <div className={styles.rowHead}>
-                  <span className={styles.rowName}>{r.guestName}</span>
+                  <span className={styles.rowWho}>
+                    <span className={styles.rowIndex}>{index + 1}</span>
+                    <span className={styles.rowName}>{r.guestName}</span>
+                  </span>
                   <StatusPill attending={r.guestAttending} />
                 </div>
                 <LabelTag>{r.label}</LabelTag>

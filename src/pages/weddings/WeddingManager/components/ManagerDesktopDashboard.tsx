@@ -68,6 +68,13 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
 
   const columns: TableColumnsType<ConfirmationRow> = [
     {
+      title: 'Núm.',
+      key: 'index',
+      width: 64,
+      align: 'right',
+      render: (_, __, index) => index + 1,
+    },
+    {
       title: 'Invitació',
       key: 'invitation',
       filters: invitationFilters,
@@ -111,6 +118,13 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
           ),
         }]
       : []),
+    {
+      title: 'Comentaris',
+      key: 'notes',
+      width: 240,
+      ellipsis: true,
+      render: (_, row) => row.notes ?? '—',
+    },
   ];
 
   const body = (
@@ -149,7 +163,9 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
             columns={columns}
             dataSource={visibleRows}
             rowKey="guestId"
-            pagination={{ pageSize: 20 }}
+            // No pagination: the row number must reach N over the active filters, so the
+            // last number is the filtered guest count.
+            pagination={false}
             locale={{ emptyText: 'No hi ha convidats' }}
             rowClassName={local.clickableRow}
             onRow={row => ({ onClick: () => onSelectInvitation(row.invitationId) })}

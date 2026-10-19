@@ -117,6 +117,22 @@
   gap: 10px;
 }
 
+.rowWho {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--lt-space-2);
+  min-width: 0;
+}
+
+/* Position in the currently filtered list: the last number is the filtered count. */
+.rowIndex {
+  min-width: 20px;
+  font-family: var(--lt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lt-color-text-muted);
+}
+
 .rowName {
   font-family: var(--lt-font-display);
   font-size: 19px;

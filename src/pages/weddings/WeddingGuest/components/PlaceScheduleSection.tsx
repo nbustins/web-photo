@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { GuestRichHtml } from './GuestRichHtml';
-import { sanitizeGuestHtml } from './guestHtml.utils';
+import { sanitizeGuestHtml } from '@utils/richHtml.utils';
 import styles from './GuestSections.module.css';
 
 interface PlaceScheduleSectionProps {

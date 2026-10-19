@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { sanitizeGuestHtml } from './guestHtml.utils';
+import { sanitizeGuestHtml } from '@utils/richHtml.utils';
 import styles from './GuestSections.module.css';
 
 const contentClass = (italic?: boolean) => (italic ? styles.richContentItalic : styles.richContent);

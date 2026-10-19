@@ -23,6 +23,86 @@
 /* Rich HTML from couple-configured wedding content: match the guest card body font. */
 .richContent {
   font-family: var(--lt-font-body);
+  font-size: var(--lt-text-body);
+  color: var(--lt-color-text-primary);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.richContent > :first-child {
+  margin-top: 0;
+}
+
+.richContent > :last-child {
+  margin-bottom: 0;
+}
+
+.richContent p {
+  margin: 0 0 var(--lt-space-3);
+}
+
+.richContent h1,
+.richContent h2,
+.richContent h3,
+.richContent h4,
+.richContent h5,
+.richContent h6 {
+  font-family: var(--lt-font-display);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--lt-color-text-brand);
+  margin: var(--lt-space-5) 0 var(--lt-space-3);
+}
+
+.richContent h1 {
+  font-size: var(--lt-text-title);
+}
+
+.richContent h2 {
+  font-size: var(--lt-text-heading);
+}
+
+.richContent h3 {
+  font-size: var(--lt-text-subheading);
+}
+
+.richContent h4,
+.richContent h5,
+.richContent h6 {
+  font-size: var(--lt-text-body);
+}
+
+.richContent ul,
+.richContent ol {
+  margin: 0 0 var(--lt-space-3);
+  padding-left: var(--lt-space-6);
+}
+
+.richContent li {
+  margin-bottom: var(--lt-space-1);
+}
+
+.richContent blockquote {
+  margin: var(--lt-space-4) 0;
+  padding-left: var(--lt-space-4);
+  border-left: 2px solid var(--lt-color-border-subtle);
+  color: var(--lt-color-text-secondary);
+  font-style: italic;
+}
+
+.richContent hr {
+  border: 0;
+  border-top: 1px solid var(--lt-color-border-subtle);
+  margin: var(--lt-space-5) 0;
+}
+
+.richContent a {
+  color: var(--lt-color-text-brand);
+  text-decoration: underline;
+}
+
+.richContent s {
+  text-decoration: line-through;
 }
 
 .richContentItalic {

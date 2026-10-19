@@ -76,15 +76,15 @@ the guest renderer accepts, and admin forms that persist it.
 - [x] T1 Promote the rich-HTML sanitizer to `src/utils/richHtml.utils.ts`, widen its allow-list,
   and extend `.richContent` CSS for the new tags. Route: inline. Evidence: old
   `guestHtml.utils.ts` deleted, both guest importers updated (`npx tsc -b` clean).
-  Reopened and re-closed by L3: `code`/`pre` dropped from the allow-list and CSS.
+  Reopened and re-closed by L3: `code`/`pre` dropped from the allow-list and CSS. Commit: `42cb293`.
 - [x] T2 Add TipTap deps and build `src/pages/admin/components/RichHtmlEditor.tsx` (toolbar,
   controlled value/onChange, max length, single-line sanitized output helper). Route: inline.
   Evidence: `@tiptap/react|pm|starter-kit@3.32.0`. Reopened and re-closed by L3: inline-code and
-  code-block buttons removed and `code`/`codeBlock` disabled in the StarterKit schema.
+  code-block buttons removed and `code`/`codeBlock` disabled in the StarterKit schema. Commit: `909f667`.
 - [x] T3 Admin data layer: `fetchWeddingSettings(id)` (`GET /api/weddings/{id}`) and reuse
-  `updateWeddingSettings`; add content to create options. Route: inline.
+  `updateWeddingSettings`; add content to create options. Route: inline. Commit: `30b0639`.
 - [x] T4 Admin views: per-wedding "Configuració" drawer (toggles + 8 editors, GET → PUT) and
-  content/toggles in the "Nou casament" drawer. Route: inline.
+  content/toggles in the "Nou casament" drawer. Route: inline. Commit: `30b0639`.
 - [ ] T5 Checks + independent verification + mock-dev walkthrough. Route: delegated verification.
   Checks done: `npx tsc -b` 0 errors, `npm run lint` 0 errors (4 pre-existing warnings),
   `npm run build` OK, `bash tools/check-tokens.sh` OK, `npm run dev:mock` serves and Vite

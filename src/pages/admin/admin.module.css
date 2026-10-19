@@ -864,3 +864,8 @@
   flex-direction: column;
   gap: var(--lt-space-2);
 }
+
+/* Full-width action with a 44px touch target: the small button was hard to hit on mobile. */
+.weddingSettingsButton {
+  min-height: 44px;
+}

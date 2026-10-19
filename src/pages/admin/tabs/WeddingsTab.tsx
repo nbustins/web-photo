@@ -227,7 +227,12 @@ export const WeddingsTab: FC = () => {
           <span className={styles.iconText}>Veure confirmacions <Icons.next /></span>
         </span>
       </button>
-      <Button size="small" icon={<Icons.edit />} onClick={() => openSettings(w)}>
+      <Button
+        block
+        icon={<Icons.edit />}
+        className={styles.weddingSettingsButton}
+        onClick={() => openSettings(w)}
+      >
         Configuració
       </Button>
     </div>

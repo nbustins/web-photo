@@ -5,7 +5,7 @@ import {
 import type { UploadFile } from 'antd';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
-import type { ConfirmationRow, WeddingFeatures } from '../../../model/wedding.types';
+import type { ConfirmationRow, WeddingContent, WeddingFeatures } from '../../../model/wedding.types';
 import type { InvitationSummary } from '../../weddings/WeddingManager/WeddingManager.types';
 import { buildSummary, computeStats } from '../../weddings/WeddingManager/manager.utils';
 import {
@@ -13,7 +13,20 @@ import {
   ManagerInvitationDrawer,
   ManagerMobileDashboard,
 } from '../../weddings/WeddingManager/components';
-import { AdminWedding, createAdminWedding, fetchAdminWeddings } from '../../../services/wedding/api/admin-wedding.api';
+import {
+  AdminWedding,
+  createAdminWedding,
+  fetchAdminWeddings,
+  fetchWeddingSettings,
+  updateWeddingSettings,
+} from '../../../services/wedding/api/admin-wedding.api';
+import { WeddingContentFields } from '../components/WeddingContentFields';
+import {
+  EMPTY_FEATURES,
+  toContentFormValues,
+  toFeaturesFormValues,
+  toWireContent,
+} from '../components/weddingContentFields';
 import { fetchConfirmations } from '../../../services/wedding/api/confirmations.api';
 import { errorMessage } from '../../../services/error-messages';
 import { PageHeader } from '@ui/PageHeader';
@@ -28,6 +41,13 @@ interface CreateWeddingFormValues {
   closingDate?: Dayjs;
   codeLength?: number;
   guestFile: UploadFile[];
+  features?: WeddingFeatures;
+  content?: WeddingContent;
+}
+
+interface WeddingSettingsFormValues {
+  features?: WeddingFeatures;
+  content?: WeddingContent;
 }
 
 type WeddingFilter = 'all' | 'open' | 'closed';
@@ -55,6 +75,12 @@ export const WeddingsTab: FC = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [createForm] = Form.useForm<CreateWeddingFormValues>();
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsWedding, setSettingsWedding] = useState<AdminWedding | null>(null);
+  const [settingsLoading, setSettingsLoading] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
+  const [settingsError, setSettingsError] = useState<string | null>(null);
+  const [settingsForm] = Form.useForm<WeddingSettingsFormValues>();
   const [selected, setSelected] = useState<AdminWedding | null>(null);
   const [rows, setRows] = useState<ConfirmationRow[]>([]);
   const [rowsLoading, setRowsLoading] = useState(false);
@@ -90,6 +116,10 @@ export const WeddingsTab: FC = () => {
           codeLength: values.codeLength ?? 6,
         },
         values.guestFile[0].originFileObj as File,
+        {
+          features: toFeaturesFormValues(values.features),
+          content: toWireContent(values.content),
+        },
       );
       message.success('Casament creat');
       closeCreate();
@@ -98,6 +128,51 @@ export const WeddingsTab: FC = () => {
       setCreateError(errorMessage(err, "No s'ha pogut crear el casament. Torna-ho a provar."));
     } finally {
       setCreating(false);
+    }
+  };
+
+  const openSettings = async (wedding: AdminWedding) => {
+    setSettingsWedding(wedding);
+    setSettingsOpen(true);
+    setSettingsLoading(true);
+    setSettingsError(null);
+    settingsForm.resetFields();
+    try {
+      const settings = await fetchWeddingSettings(wedding.id);
+      settingsForm.setFieldsValue({
+        features: toFeaturesFormValues(settings.features),
+        content: toContentFormValues(settings.content),
+      });
+    } catch (err) {
+      onError(err);
+      setSettingsOpen(false);
+    } finally {
+      setSettingsLoading(false);
+    }
+  };
+
+  const closeSettings = () => {
+    setSettingsOpen(false);
+    setSettingsWedding(null);
+    setSettingsError(null);
+    settingsForm.resetFields();
+  };
+
+  const submitSettings = async (values: WeddingSettingsFormValues) => {
+    if (!settingsWedding) return;
+    setSavingSettings(true);
+    setSettingsError(null);
+    try {
+      await updateWeddingSettings(settingsWedding.id, {
+        features: toFeaturesFormValues(values.features),
+        content: toWireContent(values.content),
+      });
+      message.success('Configuració desada');
+      closeSettings();
+    } catch (err) {
+      setSettingsError(errorMessage(err, "No s'ha pogut desar la configuració. Torna-ho a provar."));
+    } finally {
+      setSavingSettings(false);
     }
   };
 
@@ -130,28 +205,32 @@ export const WeddingsTab: FC = () => {
   const past = visible.filter((w) => !isUpcoming(w)).sort((a, b) => byDate(b, a));
 
   const card = (w: AdminWedding) => (
-    <button
-      key={w.id}
-      type="button"
-      className={`${styles.surface} ${styles.weddingCard}${isUpcoming(w) ? '' : ` ${styles.past}`}`}
-      onClick={() => openWedding(w)}
-    >
-      <span className={styles.cardHead}>
-        <span className={styles.rowWho}>
-          <span className={styles.weddingTitle}>{w.title}</span>
-          <span className={styles.muted}>{formatDate(w.eventDate)}</span>
+    <div key={w.id} className={styles.weddingCardWrap}>
+      <button
+        type="button"
+        className={`${styles.surface} ${styles.weddingCard}${isUpcoming(w) ? '' : ` ${styles.past}`}`}
+        onClick={() => openWedding(w)}
+      >
+        <span className={styles.cardHead}>
+          <span className={styles.rowWho}>
+            <span className={styles.weddingTitle}>{w.title}</span>
+            <span className={styles.muted}>{formatDate(w.eventDate)}</span>
+          </span>
+          {isOpen(w) ? <Tag color="green">Confirmacions obertes</Tag> : <Tag>Tancat</Tag>}
         </span>
-        {isOpen(w) ? <Tag color="green">Confirmacions obertes</Tag> : <Tag>Tancat</Tag>}
-      </span>
-      <span className={styles.weddingMeta}>
-        <span className={styles.iconText}><Icons.guests /> {w.guestCount} convidats</span>
-        {w.closingDate && <span className={styles.muted}>Tancament {formatDate(w.closingDate)}</span>}
-      </span>
-      <span className={styles.weddingFooter}>
-        <span className={styles.iconText}><Icons.link /> /weddings/{w.slug}</span>
-        <span className={styles.iconText}>Veure confirmacions <Icons.next /></span>
-      </span>
-    </button>
+        <span className={styles.weddingMeta}>
+          <span className={styles.iconText}><Icons.guests /> {w.guestCount} convidats</span>
+          {w.closingDate && <span className={styles.muted}>Tancament {formatDate(w.closingDate)}</span>}
+        </span>
+        <span className={styles.weddingFooter}>
+          <span className={styles.iconText}><Icons.link /> /weddings/{w.slug}</span>
+          <span className={styles.iconText}>Veure confirmacions <Icons.next /></span>
+        </span>
+      </button>
+      <Button size="small" icon={<Icons.edit />} onClick={() => openSettings(w)}>
+        Configuració
+      </Button>
+    </div>
   );
 
   const section = (title: string, list: AdminWedding[]) => list.length > 0 && (
@@ -233,12 +312,18 @@ export const WeddingsTab: FC = () => {
       </Drawer>
 
       <Drawer
-        width={isMobile ? '100%' : 480}
+        width={isMobile ? '100%' : 640}
         open={createOpen}
         onClose={closeCreate}
         title="Nou casament"
       >
-        <Form form={createForm} layout="vertical" onFinish={submitCreate} disabled={creating}>
+        <Form
+          form={createForm}
+          layout="vertical"
+          onFinish={submitCreate}
+          disabled={creating}
+          initialValues={{ features: EMPTY_FEATURES }}
+        >
           <Form.Item name="title" label="Títol" rules={[{ required: true, message: 'Camp obligatori' }]}>
             <Input placeholder="Carla & Joel" />
           </Form.Item>
@@ -273,6 +358,8 @@ export const WeddingsTab: FC = () => {
             </Upload>
           </Form.Item>
 
+          <WeddingContentFields />
+
           {createError && (
             <Form.Item>
               <Alert type="warning" showIcon message={createError} />
@@ -285,6 +372,31 @@ export const WeddingsTab: FC = () => {
             </Button>
           </Form.Item>
         </Form>
+      </Drawer>
+
+      <Drawer
+        width={isMobile ? '100%' : 720}
+        open={settingsOpen}
+        onClose={closeSettings}
+        title={settingsWedding ? `Configuració · ${settingsWedding.title}` : 'Configuració'}
+      >
+        <Spin spinning={settingsLoading}>
+          <Form form={settingsForm} layout="vertical" onFinish={submitSettings} disabled={savingSettings}>
+            <WeddingContentFields />
+
+            {settingsError && (
+              <Form.Item>
+                <Alert type="warning" showIcon message={settingsError} />
+              </Form.Item>
+            )}
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit" loading={savingSettings} block>
+                Desar configuració
+              </Button>
+            </Form.Item>
+          </Form>
+        </Spin>
       </Drawer>
 
       <ManagerInvitationDrawer features={ADMIN_FEATURES} summary={selectedSummary} onClose={() => setSelectedSummary(null)} />

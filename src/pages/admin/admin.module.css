@@ -857,3 +857,10 @@
     gap: var(--lt-space-2);
   }
 }
+
+/* Card + its per-wedding settings action: the card itself stays a single button. */
+.weddingCardWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-2);
+}

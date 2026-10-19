@@ -54,6 +54,11 @@ export interface WeddingSettingsDto {
   content: WeddingContent;
 }
 
+/** GET /api/weddings/{id} — feature flags and content of one wedding (plus its invitations). */
+export function fetchWeddingSettings(id: number): Promise<WeddingSettingsDto> {
+  return apiGet<WeddingSettingsDto>(`/api/weddings/${id}`);
+}
+
 /** PUT /api/weddings/{id}/settings — replaces the feature flags and the wedding content. */
 export function updateWeddingSettings(id: number, payload: UpdateWeddingSettingsPayload): Promise<WeddingSettingsDto> {
   return apiPut<WeddingSettingsDto, UpdateWeddingSettingsPayload>(`/api/weddings/${id}/settings`, payload);

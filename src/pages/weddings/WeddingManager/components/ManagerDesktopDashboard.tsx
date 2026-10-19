@@ -70,7 +70,7 @@ export const ManagerDesktopDashboard: FC<ManagerDesktopDashboardProps> = ({
     {
       title: 'Núm.',
       key: 'index',
-      width: 64,
+      width: 70,
       align: 'right',
       render: (_, __, index) => index + 1,
     },

@@ -314,8 +314,10 @@ export const WeddingsTab: FC = () => {
         </Spin>
       </div>
 
+      {/* Wider than the 900px default: the embedded manager table carries the number,
+          transport, allergens and notes columns. */}
       <Drawer
-        width={isMobile ? '100%' : 900}
+        width={isMobile ? '100%' : 'min(1320px, calc(100vw - 48px))'}
         open={!!selected}
         onClose={closeWedding}
         title={selected?.title ?? ''}

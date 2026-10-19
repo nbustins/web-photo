@@ -60,9 +60,6 @@ const isOpen = (w: AdminWedding) => !w.closingDate || new Date(w.closingDate).ge
 /** Undated weddings count as upcoming: they're still being set up. */
 const isUpcoming = (w: AdminWedding) => !w.eventDate || w.eventDate.slice(0, 10) >= dayjs().format('YYYY-MM-DD');
 
-/** The admin list does not load per-wedding features yet (T4); optional columns stay hidden here. */
-const ADMIN_FEATURES: WeddingFeatures = { transportToHotel: false, songRequests: false, allergens: false };
-
 export const WeddingsTab: FC = () => {
   const onError = useApiError();
   const isMobile = useIsMobile();
@@ -83,6 +80,7 @@ export const WeddingsTab: FC = () => {
   const [settingsForm] = Form.useForm<WeddingSettingsFormValues>();
   const [selected, setSelected] = useState<AdminWedding | null>(null);
   const [rows, setRows] = useState<ConfirmationRow[]>([]);
+  const [selectedFeatures, setSelectedFeatures] = useState<WeddingFeatures>(EMPTY_FEATURES);
   const [rowsLoading, setRowsLoading] = useState(false);
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
 
@@ -163,11 +161,13 @@ export const WeddingsTab: FC = () => {
     setSavingSettings(true);
     setSettingsError(null);
     try {
-      await updateWeddingSettings(settingsWedding.id, {
+      const saved = await updateWeddingSettings(settingsWedding.id, {
         features: toFeaturesFormValues(values.features),
         content: toWireContent(values.content),
       });
       message.success('Configuració desada');
+      // Keep the embedded table in sync when editing the wedding it is showing.
+      if (selected?.id === saved.id) setSelectedFeatures(saved.features);
       closeSettings();
     } catch (err) {
       setSettingsError(errorMessage(err, "No s'ha pogut desar la configuració. Torna-ho a provar."));
@@ -179,9 +179,20 @@ export const WeddingsTab: FC = () => {
   const openWedding = async (wedding: AdminWedding) => {
     setSelected(wedding);
     setRows([]);
+    setSelectedFeatures(EMPTY_FEATURES);
     setRowsLoading(true);
     try {
-      setRows(await fetchConfirmations(wedding.id));
+      // Same data the public manager loads: without the per-wedding features the
+      // shared dashboard would hide the optional columns (allergens, transport, songs).
+      const [confirmations, settings] = await Promise.all([
+        fetchConfirmations(wedding.id),
+        fetchWeddingSettings(wedding.id).catch((err) => {
+          onError(err);
+          return null;
+        }),
+      ]);
+      setRows(confirmations);
+      if (settings) setSelectedFeatures(settings.features);
     } catch (err) {
       onError(err);
       setSelected(null);
@@ -193,6 +204,7 @@ export const WeddingsTab: FC = () => {
   const closeWedding = () => {
     setSelected(null);
     setRows([]);
+    setSelectedFeatures(EMPTY_FEATURES);
     setSelectedSummary(null);
   };
 
@@ -312,7 +324,7 @@ export const WeddingsTab: FC = () => {
           <Spin />
         ) : (
           dashboardProps &&
-          (isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} features={ADMIN_FEATURES} />)
+          (isMobile ? <ManagerMobileDashboard {...dashboardProps} /> : <ManagerDesktopDashboard {...dashboardProps} features={selectedFeatures} />)
         )}
       </Drawer>
 
@@ -404,7 +416,7 @@ export const WeddingsTab: FC = () => {
         </Spin>
       </Drawer>
 
-      <ManagerInvitationDrawer features={ADMIN_FEATURES} summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
+      <ManagerInvitationDrawer features={selectedFeatures} summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
     </>
   );
 };

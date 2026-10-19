@@ -1,0 +1,144 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-2);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lt-space-1);
+}
+
+.surface {
+  border: 1px solid var(--lt-color-border-subtle);
+  border-radius: var(--lt-radius-md);
+  background: var(--lt-color-surface-page);
+  padding: var(--lt-space-3);
+}
+
+.surfaceDisabled {
+  composes: surface;
+  opacity: 0.6;
+}
+
+.surface:focus-within {
+  border-color: var(--lt-color-focus-ring);
+}
+
+.content {
+  min-height: 120px;
+  outline: none;
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-body);
+  color: var(--lt-color-text-primary);
+  line-height: 1.6;
+}
+
+.content p {
+  margin: 0 0 var(--lt-space-2);
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  font-family: var(--lt-font-display);
+  font-weight: 400;
+  margin: var(--lt-space-3) 0 var(--lt-space-2);
+}
+
+.content ul,
+.content ol {
+  margin: 0 0 var(--lt-space-2);
+  padding-left: var(--lt-space-6);
+}
+
+.content blockquote {
+  margin: var(--lt-space-3) 0;
+  padding-left: var(--lt-space-4);
+  border-left: 2px solid var(--lt-color-border-subtle);
+  color: var(--lt-color-text-secondary);
+  font-style: italic;
+}
+
+.content hr {
+  border: 0;
+  border-top: 1px solid var(--lt-color-border-subtle);
+}
+
+.content a {
+  color: var(--lt-color-text-brand);
+  text-decoration: underline;
+}
+
+.counter {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-caption);
+  color: var(--lt-color-text-muted);
+  text-align: right;
+}
+
+.counterOver {
+  composes: counter;
+  color: var(--lt-color-status-danger);
+  font-weight: 600;
+}
+
+.previewBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-1);
+  border-top: 1px dashed var(--lt-color-border-subtle);
+  padding-top: var(--lt-space-2);
+}
+
+.previewLabel {
+  composes: label from '../../../ui/formStyles.module.css';
+  margin: 0;
+}
+
+.preview {
+  font-family: var(--lt-font-body);
+  font-size: var(--lt-text-body);
+  color: var(--lt-color-text-primary);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.preview p {
+  margin: 0 0 var(--lt-space-2);
+}
+
+.preview h1,
+.preview h2,
+.preview h3,
+.preview h4,
+.preview h5,
+.preview h6 {
+  font-family: var(--lt-font-display);
+  font-weight: 400;
+  color: var(--lt-color-text-brand);
+  margin: var(--lt-space-3) 0 var(--lt-space-2);
+}
+
+.preview ul,
+.preview ol {
+  margin: 0 0 var(--lt-space-2);
+  padding-left: var(--lt-space-6);
+}
+
+.preview blockquote {
+  margin: var(--lt-space-3) 0;
+  padding-left: var(--lt-space-4);
+  border-left: 2px solid var(--lt-color-border-subtle);
+  color: var(--lt-color-text-secondary);
+  font-style: italic;
+}
+
+.preview a {
+  color: var(--lt-color-text-brand);
+  text-decoration: underline;
+}

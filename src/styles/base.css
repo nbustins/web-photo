@@ -69,7 +69,11 @@ body,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    /* Must be 0s, not a near-zero duration: rc-trigger only aligns antd popups
+       (DatePicker, Select, Dropdown…) after the popup's transition reports
+       completion. A 0.01ms transition never completes for that element, so the
+       popup stays parked off-screen and the DatePicker appears not to open. */
+    transition-duration: 0s !important;
     scroll-behavior: auto !important;
   }
 }

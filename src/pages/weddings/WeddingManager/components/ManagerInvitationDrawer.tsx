@@ -1,11 +1,13 @@
-import { FC } from 'react';
-import { Button, Drawer, message } from 'antd';
+import { FC, useEffect, useState } from 'react';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Alert, Button, Drawer, message, Spin } from 'antd';
 import { Icons } from '@ui/icons';
 import type { WeddingFeatures } from '../../../../model/wedding.types';
 import type { InvitationSummary } from '../WeddingManager.types';
 import { AllergensValue, StatusPill, TransportValue } from './ManagerShared';
 import shared from './ManagerShared.module.css';
 import styles from './ManagerInvitationDrawer.module.css';
+import { downloadBlob, generateInvitationQrSvg, invitationQrFileName } from '../invitationQr.utils';
 
 interface ManagerInvitationDrawerProps {
   summary: InvitationSummary | null;
@@ -27,6 +29,26 @@ const meta = (summary: InvitationSummary) =>
     .join(' · ');
 
 export const ManagerInvitationDrawer: FC<ManagerInvitationDrawerProps> = ({ summary, features, inviteLink, onClose }) => {
+  const [qrSvg, setQrSvg] = useState('');
+  const [qrError, setQrError] = useState(false);
+
+  useEffect(() => {
+    if (!summary || !inviteLink) {
+      setQrSvg('');
+      setQrError(false);
+      return;
+    }
+
+    let active = true;
+    setQrSvg('');
+    setQrError(false);
+    generateInvitationQrSvg(inviteLink(summary.inviteCode))
+      .then(svg => { if (active) setQrSvg(svg); })
+      .catch(() => { if (active) setQrError(true); });
+
+    return () => { active = false; };
+  }, [summary, inviteLink]);
+
   const copyLink = async () => {
     if (!summary || !inviteLink) return;
     try {
@@ -35,6 +57,14 @@ export const ManagerInvitationDrawer: FC<ManagerInvitationDrawerProps> = ({ summ
     } catch {
       message.error("No s'ha pogut copiar l'enllaç");
     }
+  };
+
+  const downloadQr = () => {
+    if (!summary || !qrSvg) return;
+    downloadBlob(
+      new Blob([qrSvg], { type: 'image/svg+xml;charset=utf-8' }),
+      invitationQrFileName(summary),
+    );
   };
 
   return (
@@ -54,6 +84,27 @@ export const ManagerInvitationDrawer: FC<ManagerInvitationDrawerProps> = ({ summ
     >
       {summary && (
         <div className={styles.body}>
+          {inviteLink && (
+            <section className={styles.section}>
+              <h3 className={styles.sectionLabel}>Codi QR de la invitació</h3>
+              {qrError ? (
+                <Alert type="error" showIcon message="No s'ha pogut generar el codi QR" />
+              ) : qrSvg ? (
+                <img
+                  className={styles.qrCode}
+                  src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}`}
+                  alt={`Codi QR de ${summary.label}`}
+                />
+              ) : <Spin size="small" />}
+              <Button
+                icon={<DownloadOutlined />}
+                disabled={!qrSvg}
+                onClick={downloadQr}
+              >
+                Descarregar QR
+              </Button>
+            </section>
+          )}
           <section className={styles.section}>
             <h3 className={styles.sectionLabel}>Convidats</h3>
             {summary.guests.map(guest => (

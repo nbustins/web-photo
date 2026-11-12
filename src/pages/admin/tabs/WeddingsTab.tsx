@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import {
   Alert, App, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Segmented, Spin, Tag, Upload,
 } from 'antd';
@@ -22,6 +22,7 @@ import {
 } from '../../../services/wedding/api/admin-wedding.api';
 import { WeddingContentFields } from '../components/WeddingContentFields';
 import { WeddingManagersDrawer } from '../managers/WeddingManagersDrawer';
+import { WeddingQrArchiveButton } from './WeddingQrArchiveButton';
 import {
   EMPTY_FEATURES,
   toContentFormValues,
@@ -33,6 +34,7 @@ import { errorMessage } from '../../../services/error-messages';
 import { PageHeader } from '@ui/PageHeader';
 import { Icons } from '@ui/icons';
 import { useApiError } from '../useApiError';
+import { buildInvitationUrl, uniqueInvitationQrItems } from '../../weddings/WeddingManager/invitationQr.utils';
 import styles from '../admin.module.css';
 
 interface CreateWeddingFormValues {
@@ -85,6 +87,11 @@ export const WeddingsTab: FC = () => {
   const [rowsLoading, setRowsLoading] = useState(false);
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
   const [managersWedding, setManagersWedding] = useState<AdminWedding | null>(null);
+  const selectedSlug = selected?.slug;
+  const invitationLink = useCallback(
+    (inviteCode: string) => selectedSlug ? buildInvitationUrl(selectedSlug, inviteCode) : '',
+    [selectedSlug],
+  );
 
   const loadWeddings = () => {
     setLoading(true);
@@ -278,6 +285,8 @@ export const WeddingsTab: FC = () => {
     onSelectInvitation: (id: number) => setSelectedSummary(buildSummary(rows, id)),
   };
 
+  const qrInvitations = uniqueInvitationQrItems(rows);
+
   const countLabel = (label: string, n: number) => (
     <span className={styles.segmentLabel}>{label}<span className={styles.count}>{n}</span></span>
   );
@@ -333,6 +342,9 @@ export const WeddingsTab: FC = () => {
         open={!!selected}
         onClose={closeWedding}
         title={selected?.title ?? ''}
+        extra={selected && (
+          <WeddingQrArchiveButton weddingSlug={selected.slug} invitations={qrInvitations} />
+        )}
       >
         {rowsLoading ? (
           <Spin />
@@ -430,7 +442,12 @@ export const WeddingsTab: FC = () => {
         </Spin>
       </Drawer>
 
-      <ManagerInvitationDrawer features={selectedFeatures} summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
+      <ManagerInvitationDrawer
+        features={selectedFeatures}
+        summary={selectedSummary}
+        inviteLink={selected ? invitationLink : undefined}
+        onClose={() => setSelectedSummary(null)}
+      />
 
       <WeddingManagersDrawer
         open={!!managersWedding}

@@ -1,8 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { PageHeader } from '@ui/PageHeader';
 import { useIsMobile } from '@ui/hooks/useIsMobile';
-import { weddingPath } from '../../../model/routes.model';
 import type { InvitationSummary } from './WeddingManager.types';
 import { buildSummary, computeStats } from './manager.utils';
 import { useManagerShell } from './managerShell';
@@ -12,12 +11,14 @@ import {
   ManagerMobileDashboard,
 } from './components';
 import styles from './WeddingManager.module.css';
+import { buildInvitationUrl } from './invitationQr.utils';
 
 export const ConfirmacionsSection: FC = () => {
   const { slug = '' } = useParams<{ slug: string }>();
   const { weddingTitle, rows, features, invitationSongs } = useManagerShell();
   const isMobile = useIsMobile();
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
+  const invitationLink = useCallback((code: string) => buildInvitationUrl(slug, code), [slug]);
 
   const dashboardProps = {
     weddingTitle,
@@ -42,7 +43,7 @@ export const ConfirmacionsSection: FC = () => {
       <ManagerInvitationDrawer
         summary={selectedSummary}
         features={features}
-        inviteLink={code => `${window.location.href.split('#')[0]}#${weddingPath(slug)}?code=${encodeURIComponent(code)}`}
+        inviteLink={invitationLink}
         onClose={() => setSelectedSummary(null)}
       />
     </>

@@ -40,6 +40,13 @@
   color: var(--lt-color-brand-strong);
 }
 
+.qrCode {
+  display: block;
+  width: min(256px, 100%);
+  height: auto;
+  margin: 0 auto;
+}
+
 .guest {
   display: flex;
   flex-direction: column;

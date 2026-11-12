@@ -105,8 +105,9 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
 - [x] T2 — RED→GREEN: `passwordPolicy.ts` (S5) and `generatePassword.ts` (S6) with unit tests
   covering every rule, the multi-byte byte cap, and generator classes/length. Route: inline.
   Evidence: RED 11 failed / 2 passed against the stubs; GREEN 13 passed.
-- [ ] T3 — RED→GREEN: `wedding-managers.api.ts` (S10) with service tests (URLs, verbs, bodies,
+- [x] T3 — RED→GREEN: `wedding-managers.api.ts` (S10) with service tests (URLs, verbs, bodies,
   204 → `undefined`, `ApiError` passthrough). Route: inline.
+  Evidence: RED observed as the test could not resolve the missing module; GREEN 19 passed.
 - [ ] T4 — MSW handlers + `db.weddingManagers` + fixture seeding, registered in `handlers.ts` (S11).
   Route: inline.
 - [ ] T5 — RED→GREEN: `WeddingManagersDrawer` (S1-S9), its CSS module and the card action in
@@ -134,3 +135,5 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   (`vitest.config.ts` mirrors the Vite aliases; `src/test/setup.ts` adds RTL cleanup, `matchMedia`
   and `ResizeObserver` for antd). Password policy and generator implemented with 13 unit tests.
   `npx tsc -b` clean, eslint 0 errors (4 pre-existing warnings).
+- L6 (implementation, 2026-11-12): T3 done. `wedding-managers.api.ts` maps the five endpoints to
+  `apiGet/apiPost/apiPut/apiDelete`; 6 service tests pin path, verb, body and error passthrough.

@@ -68,12 +68,12 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   `deleteWeddingManager(weddingId, userId)`. Built on `apiGet/apiPost/apiPut/apiDelete`; no
   new fetch wrapper, no password ever placed in a URL or logged.
 - S11 — **MSW parity.** `src/mocks/handlers/wedding-managers.handlers.ts` implements all five
-  endpoints against an in-memory `db.weddingManagers` seeded with one manager for the first
-  fixture wedding. Behaviour mirrors the API: lowercased email, global case-insensitive duplicate
-  `409 USER_EMAIL_EXISTS`, unknown wedding `404 WEDDING_NOT_FOUND`, not-a-manager-of-that-wedding
-  `404 USER_NOT_FOUND`, password policy `400 VALIDATION_ERROR`, delete frees the email, list
-  ordered by `createdAt` then `id`, no password in any response. Registered in
-  `src/mocks/handlers.ts`.
+  endpoints against an in-memory `db.weddingManagers` seeded with two managers for the first
+  fixture wedding and none for the second. Behaviour mirrors the API: lowercased email, global
+  case-insensitive duplicate `409 USER_EMAIL_EXISTS`, unknown wedding `404 WEDDING_NOT_FOUND`,
+  not-a-manager-of-that-wedding `404 USER_NOT_FOUND`, password policy `400 VALIDATION_ERROR`,
+  delete frees the email, list ordered by `createdAt` then `id`, no password in any response.
+  Registered in `src/mocks/handlers.ts`.
 - S12 — **Tests (Vitest + jsdom + RTL).** New dev dependencies and `npm test`; `vitest.config.ts`
   reusing the Vite aliases; `src/test/setup.ts` wiring `@testing-library/jest-dom`.
   Required tests: every S5 rule plus the multi-byte 72-byte case and a valid password;
@@ -115,9 +115,14 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   Evidence: 7 component tests pass; the first run failed 4/7 and exposed a real duplicate-`id`
   bug across the three forms (fixed with `Form name=`). RED was not observed for this task: the
   component was drafted before its tests (deviation recorded, not hidden).
-- [ ] T6 — Checks: `npm test`, `npx tsc -b`, `npm run lint`, `npm run build`,
+- [x] T6 — Checks: `npm test`, `npx tsc -b`, `npm run lint`, `npm run build`,
   `bash tools/check-tokens.sh`, manual `npm run dev:mock` walkthrough; then one independent
   verifier (Risk item 2). Route: delegated (verify only).
+  Evidence: verifier ran every probe in a scratch copy — 36 tests, tsc, eslint (0 errors, same 4
+  baseline warnings), build and tokens all green, and baseline `10b5065` matched. Verdict: no
+  blockers, S1-S14 PASS. Its 6 advisories are handled in L9; the browser walkthrough is the only
+  human-pending item (no browser in the harness; the dev-mock server and worker were smoke-checked
+  with HTTP 200).
 
 ## Log
 - L1 (user, original): "Let's implement UI part to manage wedding managers using admin panel of weddings tab. PLease read ODD /home/nbustins/Projects/photo-project/wedding-manager-api/odd/tasks/wedding-managers.md ask me all needed questions so we can define ODD and implement it"
@@ -150,3 +155,21 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   `npx tsc -b`, `npm run lint`, `npm run build` and `check-tokens` are green. The dev-mock server
   serves the page and `mockServiceWorker.js` (200) but the interactive walkthrough is pending a
   human because the harness has no browser.
+- L9 (verification + corrections, 2026-11-12): Independent verifier returned no blockers and S1-S14
+  PASS. Advisories resolved in this batch:
+  1. S11 seed text corrected to two managers (was one) — spec now matches the fixture.
+  2. Mock duplicate check only knows managers, not the mock admin account: accepted and documented;
+     the dev mock has no users table and the UI never creates admins.
+  3. Stale rows across weddings: `loadManagers` clears the list, and a `requestedWeddingId` ref
+     discards responses for a wedding the drawer is no longer showing; pinned by a component test.
+  4. Empty confirmation field could submit: both confirm fields now carry `required`; pinned by a
+     component test.
+  5. `odd/tasks/wedding-invitation-qr-codes.md` (another feature's doc) was swept into `370558f` by
+     `git add -A`; it is removed from the index and left untracked in the worktree.
+  6. The MSW test no longer pins the mock's English `detail`; it asserts the field key only.
+  The verifier's 13 durable probes were committed as regression tests
+  (`wedding-managers.handlers.adversarial.test.ts`,
+  `wedding-managers.api.integration.test.ts`, `WeddingManagersDrawer.adversarial.test.tsx`).
+  Final: 51 tests, tsc clean, eslint 0 errors (same 4 baseline warnings), build and tokens green.
+- L10 (commits, 2026-11-12): `0ec3ca6` docs, `370558f` harness + policy, `a51c232` API client,
+  `58543ed` MSW, `5509613` drawer + card, plus the correction batch commit recorded in git log.

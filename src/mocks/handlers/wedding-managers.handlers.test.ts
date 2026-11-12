@@ -73,12 +73,15 @@ describe('wedding managers MSW handlers', () => {
       '/api/weddings/1/managers',
       json({ email: 'weak@example.com', password: 'short' }),
     );
+    const body = (await response.json()) as {
+      errorCode: string;
+      errors: Record<string, string[]>;
+    };
 
     expect(response.status).toBe(400);
-    await expect(response.json()).resolves.toMatchObject({
-      errorCode: 'VALIDATION_ERROR',
-      errors: { password: ['Password must contain at least 12 characters.'] },
-    });
+    expect(body.errorCode).toBe('VALIDATION_ERROR');
+    // Only the field key is pinned: the English detail is the mock's business, never the UI's.
+    expect(Object.keys(body.errors)).toEqual(['password']);
   });
 
   it('changes the email of a manager of that wedding', async () => {

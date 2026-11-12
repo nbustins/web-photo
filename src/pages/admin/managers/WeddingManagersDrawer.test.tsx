@@ -17,6 +17,12 @@ vi.mock('../../../services/wedding/api/wedding-managers.api', () => mocks);
 
 const WEDDING = { id: 1, slug: 'anna-joan', title: 'Anna & Joan' };
 
+const deferred = <T,>() => {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>(settle => { resolve = settle; });
+  return { promise, resolve };
+};
+
 const MANAGER = {
   id: 1,
   email: 'gestor.anna@example.com',
@@ -24,11 +30,11 @@ const MANAGER = {
   createdAt: '2026-01-12T09:00:00.000Z',
 };
 
-const renderDrawer = () =>
+const renderDrawer = (wedding: typeof WEDDING = WEDDING) =>
   render(
     <MemoryRouter>
       <App>
-        <WeddingManagersDrawer open wedding={WEDDING} onClose={() => {}} />
+        <WeddingManagersDrawer open wedding={wedding} onClose={() => {}} />
       </App>
     </MemoryRouter>,
   );
@@ -98,8 +104,45 @@ describe('WeddingManagersDrawer', () => {
     expect(mocks.createWeddingManager).not.toHaveBeenCalled();
   });
 
-  it('asks for confirmation before deleting a manager', async () => {
+  it('requires the confirmation field', async () => {
     const user = userEvent.setup();
+
+    renderDrawer();
+    await screen.findByText('Aquesta boda encara no té cap gestor.');
+
+    await user.type(screen.getByLabelText('Correu electrònic'), 'nou@example.com');
+    await user.type(screen.getByLabelText('Contrasenya'), 'Aa1!abcdefgh');
+    await user.click(screen.getByRole('button', { name: 'Crear gestor' }));
+
+    expect(await screen.findByText('Camp obligatori')).toBeInTheDocument();
+    expect(mocks.createWeddingManager).not.toHaveBeenCalled();
+  });
+
+  it('never shows the previous wedding rows while the new list loads', async () => {
+    mocks.fetchWeddingManagers.mockResolvedValueOnce([MANAGER]);
+    const pending = deferred<never[]>();
+    mocks.fetchWeddingManagers.mockReturnValueOnce(pending.promise);
+
+    const { rerender } = renderDrawer();
+    await screen.findByText(MANAGER.email);
+
+    rerender(
+      <MemoryRouter>
+        <App>
+          <WeddingManagersDrawer
+            open
+            wedding={{ id: 2, slug: 'marta-joan', title: 'Marta & Joan' }}
+            onClose={() => {}}
+          />
+        </App>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByText('Gestors · Marta & Joan')).toBeInTheDocument();
+    expect(screen.queryByText(MANAGER.email)).not.toBeInTheDocument();
+  });
+
+  it('asks for confirmation before deleting a manager', async () => {    const user = userEvent.setup();
     mocks.fetchWeddingManagers.mockResolvedValue([MANAGER]);
     mocks.deleteWeddingManager.mockResolvedValue(undefined);
 

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import {
   Alert, App, Button, Drawer, Form, Input, Modal, Popconfirm, Space, Table, Typography,
 } from 'antd';
@@ -96,22 +96,34 @@ export const WeddingManagersDrawer: FC<WeddingManagersDrawerProps> = ({ open, we
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const weddingId = wedding?.id;
+  /**
+   * The latest wedding the drawer was opened for. A slow GET for wedding A must never land
+   * rows under the title of wedding B.
+   */
+  const requestedWeddingId = useRef<number | undefined>(weddingId);
 
   const loadManagers = async (id: number) => {
+    setManagers([]);
     setLoading(true);
     setLoadFailed(false);
     try {
-      setManagers(await fetchWeddingManagers(id));
+      const list = await fetchWeddingManagers(id);
+      if (requestedWeddingId.current === id) setManagers(list);
     } catch (err) {
+      if (requestedWeddingId.current !== id) return;
       setLoadFailed(true);
       onError(err, "No s'han pogut carregar els gestors.");
     } finally {
-      setLoading(false);
+      if (requestedWeddingId.current === id) setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!open || !weddingId) return;
+    requestedWeddingId.current = open ? weddingId : undefined;
+    if (!open || !weddingId) {
+      setManagers([]);
+      return;
+    }
     // A new wedding (or a reopened drawer) never inherits the previous session's password.
     setCredentials(null);
     setEditing(null);
@@ -208,9 +220,11 @@ export const WeddingManagersDrawer: FC<WeddingManagersDrawerProps> = ({ open, we
   };
 
   const close = () => {
+    requestedWeddingId.current = undefined;
     setCredentials(null);
     setEditing(null);
     setResetting(null);
+    setManagers([]);
     createForm.resetFields();
     resetForm.resetFields();
     onClose();
@@ -351,7 +365,7 @@ export const WeddingManagersDrawer: FC<WeddingManagersDrawerProps> = ({ open, we
               name="confirm"
               label="Repeteix la contrasenya"
               dependencies={['password']}
-              rules={[confirmRule(createForm)]}
+              rules={[{ required: true, message: 'Camp obligatori' }, confirmRule(createForm)]}
             >
               <Input.Password autoComplete="new-password" />
             </Form.Item>
@@ -427,7 +441,7 @@ export const WeddingManagersDrawer: FC<WeddingManagersDrawerProps> = ({ open, we
             name="confirm"
             label="Repeteix la contrasenya"
             dependencies={['password']}
-            rules={[confirmRule(resetForm)]}
+            rules={[{ required: true, message: 'Camp obligatori' }, confirmRule(resetForm)]}
           >
             <Input.Password autoComplete="new-password" />
           </Form.Item>

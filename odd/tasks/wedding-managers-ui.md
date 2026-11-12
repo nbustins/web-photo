@@ -98,11 +98,13 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   per-card request is out of scope.
 
 ## Tasks
-- [ ] T1 — Tooling: add `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`,
+- [x] T1 — Tooling: add `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`,
   `@testing-library/user-event`; `vitest.config.ts` with the `@ui/@services/...` aliases and
-  `src/test/setup.ts`; `npm test` script. Route: inline. Evidence: one smoke test runs green.
-- [ ] T2 — RED→GREEN: `passwordPolicy.ts` (S5) and `generatePassword.ts` (S6) with unit tests
+  `src/test/setup.ts`; `npm test` script. Route: inline. Evidence: `npm test` runs Vitest 5.1.0 in
+  jsdom; `npx tsc -b` clean; eslint 0 errors.
+- [x] T2 — RED→GREEN: `passwordPolicy.ts` (S5) and `generatePassword.ts` (S6) with unit tests
   covering every rule, the multi-byte byte cap, and generator classes/length. Route: inline.
+  Evidence: RED 11 failed / 2 passed against the stubs; GREEN 13 passed.
 - [ ] T3 — RED→GREEN: `wedding-managers.api.ts` (S10) with service tests (URLs, verbs, bodies,
   204 → `undefined`, `ApiError` passthrough). Route: inline.
 - [ ] T4 — MSW handlers + `db.weddingManagers` + fixture seeding, registered in `handlers.ts` (S11).
@@ -128,3 +130,7 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   `db`; `weddingManagerPath(slug)` = `/weddings/{slug}/manager`.
 - L4 (decision): Service functions keep API naming (`weddingId`, `userId`); UI files live under
   `src/pages/admin/managers/` with the feature's CSS module and its tests alongside.
+- L5 (implementation, 2026-11-12): T1/T2 done. Vitest 5.1.0 + jsdom + Testing Library added
+  (`vitest.config.ts` mirrors the Vite aliases; `src/test/setup.ts` adds RTL cleanup, `matchMedia`
+  and `ResizeObserver` for antd). Password policy and generator implemented with 13 unit tests.
+  `npx tsc -b` clean, eslint 0 errors (4 pre-existing warnings).

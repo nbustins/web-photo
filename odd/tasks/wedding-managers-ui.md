@@ -108,8 +108,8 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
 - [x] T3 — RED→GREEN: `wedding-managers.api.ts` (S10) with service tests (URLs, verbs, bodies,
   204 → `undefined`, `ApiError` passthrough). Route: inline.
   Evidence: RED observed as the test could not resolve the missing module; GREEN 19 passed.
-- [ ] T4 — MSW handlers + `db.weddingManagers` + fixture seeding, registered in `handlers.ts` (S11).
-  Route: inline.
+- [x] T4 — MSW handlers + `db.weddingManagers` + fixture seeding, registered in `handlers.ts` (S11).
+  Route: inline. Evidence: 10 handler tests pin list/empty/404/409/policy/204/no-password; 29 total pass.
 - [ ] T5 — RED→GREEN: `WeddingManagersDrawer` (S1-S9), its CSS module and the card action in
   `WeddingsTab.tsx`; component tests per S12. Route: inline.
 - [ ] T6 — Checks: `npm test`, `npx tsc -b`, `npm run lint`, `npm run build`,
@@ -137,3 +137,7 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   `npx tsc -b` clean, eslint 0 errors (4 pre-existing warnings).
 - L6 (implementation, 2026-11-12): T3 done. `wedding-managers.api.ts` maps the five endpoints to
   `apiGet/apiPost/apiPut/apiDelete`; 6 service tests pin path, verb, body and error passthrough.
+- L7 (implementation, 2026-11-12): T4 done. In-memory `db.weddingManagers` seeded with two managers
+  on wedding 1 and none on wedding 2; the five handlers mirror the API (lowercase email, global
+  duplicate 409, wedding-scoped 404, policy 400, 204 delete, no password field anywhere) and run
+  before `/api/weddings/:weddingId`. 10 handler tests; 29 total pass.

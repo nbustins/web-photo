@@ -27,5 +27,7 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
     restoreMocks: true,
+    // The MSW helpers build absolute URLs from this value; Node's fetch needs an absolute URL.
+    env: { VITE_API_BASE_URL: 'http://localhost:5099' },
   },
 });

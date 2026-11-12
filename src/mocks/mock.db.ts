@@ -9,6 +9,8 @@ import type { SessionGroup } from '../services/booking/booking.admin.api';
 import { sessionGroupFixtures, sessionTypeFixtures } from './fixtures/session.fixtures';
 import { invitationFixtures, weddingFixtures } from './fixtures/wedding.fixtures';
 import type { MockInvitation, MockWedding } from './fixtures/wedding.fixtures';
+import { weddingManagerFixtures } from './fixtures/wedding-manager.fixtures';
+import type { MockWeddingManager } from './fixtures/wedding-manager.fixtures';
 import { addDays, isoOffset, isoUtc, newToken, studioLocalToUtc, studioToday, type Weekday } from './mock.utils';
 
 /** The agenda half of a session type (API spec 008). No row means "not reservable". */
@@ -168,6 +170,7 @@ export const db = {
   contracts: [] as MockContract[],
   weddings: structuredClone(weddingFixtures) as MockWedding[],
   invitations: structuredClone(invitationFixtures) as MockInvitation[],
+  weddingManagers: structuredClone(weddingManagerFixtures) as MockWeddingManager[],
 };
 
 const sequences = {
@@ -180,6 +183,7 @@ const sequences = {
   wedding: Math.max(...db.weddings.map(w => w.id)),
   invitation: Math.max(...db.invitations.map(i => i.id)),
   guest: Math.max(...db.invitations.flatMap(i => i.guests.map(g => g.id))),
+  weddingManager: Math.max(...db.weddingManagers.map(m => m.id)),
 };
 
 export const nextId = (sequence: keyof typeof sequences) => ++sequences[sequence];

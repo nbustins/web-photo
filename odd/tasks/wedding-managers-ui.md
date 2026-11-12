@@ -172,4 +172,5 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   `wedding-managers.api.integration.test.ts`, `WeddingManagersDrawer.adversarial.test.tsx`).
   Final: 51 tests, tsc clean, eslint 0 errors (same 4 baseline warnings), build and tokens green.
 - L10 (commits, 2026-11-12): `0ec3ca6` docs, `370558f` harness + policy, `a51c232` API client,
-  `58543ed` MSW, `5509613` drawer + card, plus the correction batch commit recorded in git log.
+  `58543ed` MSW, `5509613` drawer + card, `e8547e5` review corrections, `e3a2437` removes the
+  unrelated QR task doc from this branch (left untracked in the worktree for its own feature).

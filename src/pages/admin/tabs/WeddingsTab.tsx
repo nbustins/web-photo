@@ -21,6 +21,7 @@ import {
   updateWeddingSettings,
 } from '../../../services/wedding/api/admin-wedding.api';
 import { WeddingContentFields } from '../components/WeddingContentFields';
+import { WeddingManagersDrawer } from '../managers/WeddingManagersDrawer';
 import {
   EMPTY_FEATURES,
   toContentFormValues,
@@ -83,6 +84,7 @@ export const WeddingsTab: FC = () => {
   const [selectedFeatures, setSelectedFeatures] = useState<WeddingFeatures>(EMPTY_FEATURES);
   const [rowsLoading, setRowsLoading] = useState(false);
   const [selectedSummary, setSelectedSummary] = useState<InvitationSummary | null>(null);
+  const [managersWedding, setManagersWedding] = useState<AdminWedding | null>(null);
 
   const loadWeddings = () => {
     setLoading(true);
@@ -239,14 +241,24 @@ export const WeddingsTab: FC = () => {
           <span className={styles.iconText}>Veure confirmacions <Icons.next /></span>
         </span>
       </button>
-      <Button
-        block
-        icon={<Icons.edit />}
-        className={styles.weddingSettingsButton}
-        onClick={() => openSettings(w)}
-      >
-        Configuració
-      </Button>
+      <div className={styles.weddingCardActions}>
+        <Button
+          block
+          icon={<Icons.guests />}
+          className={styles.weddingSettingsButton}
+          onClick={() => setManagersWedding(w)}
+        >
+          Gestors
+        </Button>
+        <Button
+          block
+          icon={<Icons.edit />}
+          className={styles.weddingSettingsButton}
+          onClick={() => openSettings(w)}
+        >
+          Configuració
+        </Button>
+      </div>
     </div>
   );
 
@@ -419,6 +431,12 @@ export const WeddingsTab: FC = () => {
       </Drawer>
 
       <ManagerInvitationDrawer features={selectedFeatures} summary={selectedSummary} onClose={() => setSelectedSummary(null)} />
+
+      <WeddingManagersDrawer
+        open={!!managersWedding}
+        wedding={managersWedding}
+        onClose={() => setManagersWedding(null)}
+      />
     </>
   );
 };

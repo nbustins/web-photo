@@ -1,0 +1,52 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-3);
+  margin-top: var(--lt-space-6);
+  padding-top: var(--lt-space-5);
+  border-top: 1px solid var(--lt-color-border-subtle);
+}
+
+.sectionTitle {
+  margin: 0;
+}
+
+.formActions {
+  width: 100%;
+}
+
+.hint {
+  display: block;
+  margin-top: var(--lt-space-2);
+  font-size: var(--lt-text-caption);
+  color: var(--lt-color-text-muted);
+}
+
+.credentialRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lt-space-3);
+  padding: var(--lt-space-3);
+  border: 1px solid var(--lt-color-border-subtle);
+  border-radius: var(--lt-radius-md);
+}
+
+.credentialText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lt-space-1);
+  min-width: 0;
+}
+
+.credentialLabel {
+  font-size: var(--lt-text-caption);
+  color: var(--lt-color-text-muted);
+}
+
+.credentialValue {
+  font-size: var(--lt-text-body);
+  font-weight: 600;
+  color: var(--lt-color-text-primary);
+  overflow-wrap: anywhere;
+}

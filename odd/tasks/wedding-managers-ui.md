@@ -110,8 +110,11 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   Evidence: RED observed as the test could not resolve the missing module; GREEN 19 passed.
 - [x] T4 — MSW handlers + `db.weddingManagers` + fixture seeding, registered in `handlers.ts` (S11).
   Route: inline. Evidence: 10 handler tests pin list/empty/404/409/policy/204/no-password; 29 total pass.
-- [ ] T5 — RED→GREEN: `WeddingManagersDrawer` (S1-S9), its CSS module and the card action in
+- [x] T5 — RED→GREEN: `WeddingManagersDrawer` (S1-S9), its CSS module and the card action in
   `WeddingsTab.tsx`; component tests per S12. Route: inline.
+  Evidence: 7 component tests pass; the first run failed 4/7 and exposed a real duplicate-`id`
+  bug across the three forms (fixed with `Form name=`). RED was not observed for this task: the
+  component was drafted before its tests (deviation recorded, not hidden).
 - [ ] T6 — Checks: `npm test`, `npx tsc -b`, `npm run lint`, `npm run build`,
   `bash tools/check-tokens.sh`, manual `npm run dev:mock` walkthrough; then one independent
   verifier (Risk item 2). Route: delegated (verify only).
@@ -141,3 +144,9 @@ Risk: item 2 (credential entry/reset UI handles passwords in memory) + item 6 mi
   on wedding 1 and none on wedding 2; the five handlers mirror the API (lowercase email, global
   duplicate 409, wedding-scoped 404, policy 400, 204 delete, no password field anywhere) and run
   before `/api/weddings/:weddingId`. 10 handler tests; 29 total pass.
+- L8 (implementation, 2026-11-12): T5 done. `WeddingManagersDrawer` implements S1-S9 with antd
+  Drawer/Table/Modal/Popconfirm, the password policy mirror and the client-side generator; the
+  wedding card now shows `Gestors` next to `Configuració`. 7 component tests; 36 total pass.
+  `npx tsc -b`, `npm run lint`, `npm run build` and `check-tokens` are green. The dev-mock server
+  serves the page and `mockServiceWorker.js` (200) but the interactive walkthrough is pending a
+  human because the harness has no browser.

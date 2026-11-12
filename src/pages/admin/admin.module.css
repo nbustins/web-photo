@@ -869,3 +869,9 @@
 .weddingSettingsButton {
   min-height: 44px;
 }
+
+/* Two per-card actions side by side; they stack only if the grid gets narrower than a phone. */
+.weddingCardActions {
+  display: flex;
+  gap: var(--lt-space-2);
+}
